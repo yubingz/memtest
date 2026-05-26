@@ -1,0 +1,7 @@
+.env
+_extract_done.txt
+facts_all.json
+_parsed_text.json
+test_db_*.json
+__pycache__/
+*.pyc
