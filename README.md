@@ -1,69 +1,146 @@
-# MemTest — AI 记忆系统通用评测工具包
+# MemTest
 
-[English](README_EN.md)
+> A framework-agnostic benchmark toolkit for AI memory systems. Plug in any memory store, get a full evaluation report.
 
-> 独立于任何特定记忆系统的评测库。给一个记忆系统，给一份评测报告。
+[中文文档](README_CN.md)
 
-## 设计原则
+---
 
-- **零依赖**：纯 Python 标准库 + JSON，不绑定 NOESIS 或任何特定系统
-- **适配器模式**：被测系统只需实现 3 个函数（store / search / reset），即可接入评测
-- **标准化数据**：评测数据与评测逻辑完全分离
+## Why MemTest?
 
-## 快速开始
+AI agents increasingly rely on long-term memory — but how do you know if your memory system actually *works*? Most teams evaluate retrieval with ad-hoc scripts that couple test data to a specific backend. MemTest decouples them:
+
+- **Write once, benchmark anywhere** — the same test suite runs against any memory system
+- **6 evaluation dimensions** — not just recall, but storage integrity, clustering, forgetting, reasoning, and depth
+- **Zero dependencies** — pure Python stdlib + JSON. No framework lock-in, no install hell
+- **Synthetic or real data** — procedural generator for 10K+ test cases, or build from your own corpus
+
+## Quick Start
 
 ```python
-from memtest import MemoryTestSuite, MemoryAdapter, load_test_db
+from runner import MemoryTestSuite, MemoryAdapter, load_test_db
 
-# 1. 定义适配器：告诉评测框架你的记忆系统怎么用
-class MyMemoryAdapter(MemoryAdapter):
+# 1. Implement 3 methods for your memory system
+class MyAdapter(MemoryAdapter):
     def reset(self):
-        """清空数据库"""
         self.db.clear()
 
     def store(self, memory_text: str, metadata: dict):
-        """存入一条记忆，metadata 含 memory_id/time/location/person/event"""
         self.db.insert(text=memory_text, **metadata)
 
     def search(self, query: str, top_k: int = 20) -> list[dict]:
-        """检索记忆，返回 [{memory_id, score}, ...]"""
         return self.db.query(query, limit=top_k)
 
-# 2. 加载评测数据
-db = load_test_db("sample_db_100.json")  # 或自己生成
-
-# 3. 跑评测
-adapter = MyMemoryAdapter()
-suite = MemoryTestSuite(adapter)
+# 2. Load test data & run
+db = load_test_db("sample_db_100.json")
+suite = MemoryTestSuite(MyAdapter())
 report = suite.run(db)
 print(report.summary())
 ```
 
-## 评测数据
+## Evaluation Dimensions
 
-| 数据 | 来源 | 规模 |
-|------|------|------|
-| `sample_db_100.json` | 程序合成，100 条 | 即开即用 |
-| `test_db_10000.json` | `generator.py` 生成 | 全量 6 类 |
-| `your_books.json` | `knowledge_builder.py <语料目录>` | 自定义 |
+| Dimension | What it measures | Key metric |
+|-----------|-----------------|------------|
+| **Storage Integrity** | Are all memories successfully written? | `stored / total` |
+| **Retrieval Precision/Recall** | Does a query find the right memory? | Precision, Recall by query type |
+| **Clustering** | Are semantically grouped memories retrieved together? | Cluster accuracy |
+| **Forgetting** | Are high-frequency memories retained over low-frequency ones? | Forgetting ratio validity |
+| **Reasoning** | Can multi-hop queries chain across memories? | Logic/chain accuracy |
+| **Search Depth** | How does recall decay with semantic distance? | Near / Mid / Far recall |
 
-## 输出
+## Test Data
 
-评测报告含 6 维指标：存储完整性 / 检索 Precision/Recall / 整理聚类 / 遗忘合理性 / 逻辑推理 / 深度检索。
+| Dataset | Source | Scale | How to get it |
+|---------|--------|-------|---------------|
+| `sample_db_100.json` | Procedural synthesis | 100 memories, ~300 queries | Included in repo |
+| `test_db_10000.json` | `generator.py` | 10,000 memories, ~3,000 queries | `python generator.py --full` |
+| Custom | `knowledge_builder.py` | Any corpus | `python knowledge_builder.py <corpus_dir>` |
 
-## 文件结构
+### Procedural Generator
+
+```bash
+python generator.py              # 100-sample (quick)
+python generator.py --full       # 10,000 full-scale
+python generator.py --size 500   # Custom size
+```
+
+Generates 6 categories of test memories:
+- **Storage correctness** — can the system faithfully store and retrieve?
+- **Person-centric** — queries about people, roles, relationships
+- **Event-centric** — temporal and spatial event retrieval
+- **Composite queries** — multi-constraint combinations
+- **Clustering** — semantically related groups
+- **Reasoning chains** — multi-hop inference across memories
+
+Each memory includes 3 stylistic versions (formal, detailed, colloquial) to test robustness against paraphrase.
+
+### Knowledge Builder
+
+Build a test database from any text corpus (novels, documentation, conversation logs):
+
+```bash
+python knowledge_builder.py /path/to/corpus
+```
+
+Tested with the Four Great Classical Novels of Chinese literature (~12,000 memories, ~9,000 queries). See [benchmark results](#benchmark-results).
+
+## Benchmark Results
+
+We benchmarked three retrieval strategies against the Four Classical Novels dataset (500-query sample, top-20 retrieval):
+
+| Method | Overall Recall | Water Margin | Journey to the West | Romance of the Three Kingdoms | Dream of the Red Chamber |
+|--------|---------------|-------------|--------------------|-------------------------------|-------------------------|
+| jieba + SQL LIKE | 2.2% | 0.9% | 1.0% | 2.2% | 4.5% |
+| TF-IDF + Cosine | 53.0% | 85.1% | 53.1% | 47.8% | 28.2% |
+| Sentence-Transformers | *TBD* | - | - | - | - |
+
+**Key findings:**
+- Keyword matching (jieba + LIKE) is effectively broken for semantic retrieval
+- TF-IDF provides a 24x improvement but struggles with classical Chinese (Dream of the Red Chamber: 28.2%)
+- Neural embeddings (sentence-transformers) are expected to push recall to 70-80%+
+
+## Project Structure
 
 ```
 memtest/
-├── README.md              # 本文件
-├── API.md                 # 接口规范（MemoryAdapter 定义 + 数据格式 Schema）
-├── generator.py           # 程序合成数据生成器（6 大类，10000 条）
-├── knowledge_builder.py   # 语料→测试库（LLM 提取事实，支持经典书籍）
-├── runner.py              # 评测执行器 + MemoryAdapter 基类
-├── _gen_and_test.py       # 一键生成样例 + 自测
-├── sample_db_100.json     # 样例库（占位，运行 generator 生成）
-└── sample_queries.json    # 样例查询（运行 generator 生成）
+├── README.md                # This file
+├── README_CN.md             # Chinese documentation
+├── API.md                   # Adapter interface & data schema
+├── generator.py             # Procedural test data generator
+├── knowledge_builder.py     # Corpus -> test database builder
+├── runner.py                # Benchmark runner & MemoryAdapter base class
+├── _gen_and_test.py         # One-click generate & self-test
+├── sample_db_100.json       # Sample database (100 memories)
+└── sample_queries.json      # Sample queries
 ```
+
+## API Reference
+
+See [API.md](API.md) for the full adapter interface specification and data schema.
+
+### Minimal Adapter
+
+You only need to implement three methods:
+
+```python
+class MemoryAdapter:
+    def reset(self):
+        """Clear the memory store before each test run."""
+        
+    def store(self, memory_text: str, metadata: dict):
+        """Store a memory with standard metadata."""
+        
+    def search(self, query: str, top_k: int = 20) -> list[dict]:
+        """Search memories. Return [{"memory_id": str, "score": float, "content": str}, ...]"""
+```
+
+## Contributing
+
+Contributions welcome — especially:
+- New test data generators (domain-specific corpora)
+- Adapter implementations for popular memory systems
+- Evaluation dimension extensions
 
 ## License
 
