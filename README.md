@@ -92,6 +92,17 @@ The following results are from our custom-built **NOESIS-II** memory system, eva
 | Sentence-Transformers (MiniLM) | 9.1% | 12.4% | 0.201 |
 | **LLM Rerank (TF-IDF → LLM)** | **87.0%** | **84.9%** | **0.923** |
 
+**Multi-K comparison (TF-IDF vs LLM Rerank)**:
+
+| K | TF-IDF P@K | LLM P@K | TF-IDF R@K | LLM R@K | TF-IDF MRR | LLM MRR |
+|---|:----------:|:-------:|:----------:|:-------:|:----------:|:-------:|
+| 5 | 72.6% | **83.4%** | 75.9% | **86.7%** | 0.858 | **0.911** |
+| 10 | 61.9% | **69.7%** | 75.6% | **83.9%** | 0.859 | **0.911** |
+| 15 | 54.5% | **59.9%** | 78.6% | **84.7%** | 0.859 | **0.911** |
+| 20 | 49.1% | **52.6%** | 81.5% | **85.5%** | 0.859 | **0.911** |
+
+> LLM reranking improves precision at every K level, with the largest gain at K=5 (+10.8pp). This means LLM is especially effective at pushing the most relevant results to the top.
+
 **Breakdown by query type (LLM Rerank vs TF-IDF)**:
 
 | Query Type | TF-IDF P@20 | LLM P@20 | TF-IDF R@20 | LLM R@20 |
