@@ -81,46 +81,48 @@ Tested with the Four Great Classical Novels of Chinese literature (~12,000 memor
 
 ## Benchmark Results
 
-The following results are from our custom-built **NOESIS-II** memory system, evaluated against the Four Classical Novels dataset (11,794 unique memories, 577 queries) with a 500-query random sample, top-20 retrieval:
+The following results are from our custom-built **NOESIS-II** memory system, evaluated against the Four Classical Novels dataset (11,794 unique memories, 577 queries). The TF-IDF and ST results use a 500-query random sample; the LLM Rerank result uses a 100-query random sample, all with top-20 retrieval.
 
 **Evaluation method**: A retrieved memory is considered relevant if the target entity (person, location, event, dynasty) appears in its content. This ensures fair comparison — e.g., "Daiyu and Baoyu chatting" counts as a correct result for both "Daiyu" and "Baoyu" queries.
 
 | Method | Precision@20 | Recall@20 | MRR@20 |
 |--------|:------------:|:---------:|:------:|
 | jieba + SQL LIKE | ~2% | ~2% | N/A |
-| **TF-IDF + jieba + Cosine** | **49.6%** | **83.2%** | **0.862** |
+| TF-IDF + jieba + Cosine | 49.6% | 83.2% | 0.862 |
 | Sentence-Transformers (MiniLM) | 9.1% | 12.4% | 0.201 |
+| **LLM Rerank (TF-IDF → LLM)** | **87.0%** | **84.9%** | **0.923** |
 
-**Breakdown by query type**:
+**Breakdown by query type (LLM Rerank vs TF-IDF)**:
 
-| Query Type | TF-IDF P@20 | TF-IDF R@20 | ST P@20 | ST R@20 |
-|-----------|:-----------:|:-----------:|:-------:|:-------:|
-| Person | 67.5% | 89.2% | 4.3% | 4.7% |
-| Location | 36.9% | 73.2% | 10.7% | 15.7% |
-| Event | 43.9% | 88.9% | 8.0% | 12.7% |
-| Time | 78.3% | 85.6% | 55.0% | 55.0% |
-| Composite | 59.1% | 62.1% | 21.9% | 22.6% |
+| Query Type | TF-IDF P@20 | LLM P@20 | TF-IDF R@20 | LLM R@20 |
+|-----------|:-----------:|:--------:|:-----------:|:--------:|
+| Person | 67.0% | 90.5% | 90.3% | 87.6% |
+| Location | 39.8% | 92.8% | 76.6% | 88.2% |
+| Event | 41.9% | 80.9% | 82.6% | 80.8% |
+| Time | 60.0% | 93.8% | 92.5% | 100.0% |
+| Composite | 51.0% | 70.0% | 51.0% | 70.0% |
 
-**Breakdown by novel**:
+**Breakdown by novel (LLM Rerank vs TF-IDF)**:
 
-| Novel | TF-IDF P@20 | TF-IDF R@20 | ST P@20 | ST R@20 |
-|-------|:-----------:|:-----------:|:-------:|:-------:|
-| Water Margin | 50.2% | 88.3% | 13.3% | 18.6% |
-| Journey to the West | 48.1% | 82.8% | 6.6% | 12.1% |
-| Romance of the Three Kingdoms | 45.1% | 81.4% | 5.0% | 7.4% |
-| Dream of the Red Chamber | 72.6% | 84.3% | 24.9% | 27.7% |
+| Novel | TF-IDF P@20 | LLM P@20 | TF-IDF R@20 | LLM R@20 |
+|-------|:-----------:|:--------:|:-----------:|:--------:|
+| Water Margin | 60.0% | 90.3% | 86.3% | 87.1% |
+| Journey to the West | 52.8% | 98.9% | 78.0% | 98.3% |
+| Romance of the Three Kingdoms | 42.0% | 84.6% | 81.1% | 82.1% |
+| Dream of the Red Chamber | 62.5% | 85.0% | 79.2% | 85.0% |
 
 **Method details**:
 - **jieba + SQL LIKE**: Query tokenized via jieba, multi-token OR LIKE clauses against NOESIS-II's SQLite, top-20
 - **TF-IDF + jieba + Cosine**: Structured content (person + event + location + dynasty + text) tokenized via jieba, TF-IDF matrix with cosine similarity, top-20
 - **Sentence-Transformers**: `paraphrase-multilingual-MiniLM-L12-v2` (384d) encoding the same structured content, cosine similarity, top-20
+- **LLM Rerank (TF-IDF → LLM)**: Two-stage pipeline — TF-IDF retrieves top-50 candidates, then a large language model (via Coze session API) reranks them by relevance, top-20 selected from reranked list
 
 **Key findings**:
 1. **Keyword matching is broken** — jieba + SQL LIKE at 2% recall is essentially non-functional for semantic retrieval
-2. **TF-IDF + jieba is surprisingly strong** — 83.2% recall for entity-oriented queries on Chinese text, proving that proper tokenization + term frequency matching is hard to beat for named-entity retrieval
-3. **MiniLM underperforms on Chinese classical text** — the multilingual paraphrase model (9.1% precision) fails at entity-level discrimination: it returns semantically related passages but cannot pinpoint the specific entity being queried
-4. **ST has an edge on abstract queries** — Time queries (55% vs 78% recall) and Composite queries (22% vs 62%) show a smaller gap, suggesting neural embeddings help when queries are less entity-specific
-5. **Better Chinese embedding models** (e.g., bge-large-zh-v1.5) may significantly close this gap — this is a clear next step for the benchmark
+2. **TF-IDF + jieba is a strong baseline** — 83.2% recall proves that proper tokenization + term frequency matching works well for entity-oriented queries
+3. **MiniLM underperforms on Chinese classical text** — the multilingual paraphrase model (9.1% precision) fails at entity-level discrimination
+4. **LLM reranking is transformative** — precision nearly doubles from 49.6% to 87.0% while recall stays comparable (83.2% → 84.9%), confirming that a large model can effectively identify relevant memories from candidate sets
+5. **Two-stage retrieval (retriever + reranker) is the practical winner** — combining TF-IDF's high recall with LLM's precision yields the best overall performance (MRR 0.923)
 
 
 ## Project Structure
