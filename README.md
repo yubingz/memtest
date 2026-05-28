@@ -81,23 +81,47 @@ Tested with the Four Great Classical Novels of Chinese literature (~12,000 memor
 
 ## Benchmark Results
 
-The following results are from our custom-built **NOESIS-II** memory system, evaluated against the Four Classical Novels dataset (11,794 memories, 8,907 queries) with a 500-query random sample, top-20 retrieval:
+The following results are from our custom-built **NOESIS-II** memory system, evaluated against the Four Classical Novels dataset (11,794 unique memories, 577 queries) with a 500-query random sample, top-20 retrieval:
 
-| Method | Overall Recall | Water Margin | Journey to the West | Romance of the Three Kingdoms | Dream of the Red Chamber |
-|--------|---------------|-------------|--------------------|-------------------------------|-------------------------|
-| jieba + SQL LIKE | 2.2% | 0.9% | 1.0% | 2.2% | 4.5% |
-| TF-IDF + Cosine Similarity | 53.0% | 85.1% | 53.1% | 47.8% | 28.2% |
-| Sentence-Transformers | *TBD* | - | - | - | - |
+**Evaluation method**: A retrieved memory is considered relevant if the target entity (person, location, event, dynasty) appears in its content. This ensures fair comparison — e.g., "Daiyu and Baoyu chatting" counts as a correct result for both "Daiyu" and "Baoyu" queries.
+
+| Method | Precision@20 | Recall@20 | MRR@20 |
+|--------|:------------:|:---------:|:------:|
+| jieba + SQL LIKE | ~2% | ~2% | N/A |
+| **TF-IDF + jieba + Cosine** | **49.6%** | **83.2%** | **0.862** |
+| Sentence-Transformers (MiniLM) | 9.1% | 12.4% | 0.201 |
+
+**Breakdown by query type**:
+
+| Query Type | TF-IDF P@20 | TF-IDF R@20 | ST P@20 | ST R@20 |
+|-----------|:-----------:|:-----------:|:-------:|:-------:|
+| Person | 67.5% | 89.2% | 4.3% | 4.7% |
+| Location | 36.9% | 73.2% | 10.7% | 15.7% |
+| Event | 43.9% | 88.9% | 8.0% | 12.7% |
+| Time | 78.3% | 85.6% | 55.0% | 55.0% |
+| Composite | 59.1% | 62.1% | 21.9% | 22.6% |
+
+**Breakdown by novel**:
+
+| Novel | TF-IDF P@20 | TF-IDF R@20 | ST P@20 | ST R@20 |
+|-------|:-----------:|:-----------:|:-------:|:-------:|
+| Water Margin | 50.2% | 88.3% | 13.3% | 18.6% |
+| Journey to the West | 48.1% | 82.8% | 6.6% | 12.1% |
+| Romance of the Three Kingdoms | 45.1% | 81.4% | 5.0% | 7.4% |
+| Dream of the Red Chamber | 72.6% | 84.3% | 24.9% | 27.7% |
 
 **Method details**:
-- **jieba + SQL LIKE**: Query tokenized via jieba, multi-token OR LIKE clauses run directly against NOESIS-II's SQLite database, top-20 results
-- **TF-IDF + Cosine Similarity**: jieba-tokenized TF-IDF matrix (sklearn) over all memories and queries, cosine similarity with threshold 0.3, top-20 results
-- **Sentence-Transformers**: `paraphrase-multilingual-MiniLM-L12-v2` encoding with ChromaDB vector search — evaluation in progress
+- **jieba + SQL LIKE**: Query tokenized via jieba, multi-token OR LIKE clauses against NOESIS-II's SQLite, top-20
+- **TF-IDF + jieba + Cosine**: Structured content (person + event + location + dynasty + text) tokenized via jieba, TF-IDF matrix with cosine similarity, top-20
+- **Sentence-Transformers**: `paraphrase-multilingual-MiniLM-L12-v2` (384d) encoding the same structured content, cosine similarity, top-20
 
 **Key findings**:
-- Keyword matching (jieba + LIKE) is effectively broken for semantic retrieval — "What did Yuan Shao do?" cannot find "Yuan Shao led his troops to Bohai"
-- TF-IDF provides a 24x improvement but struggles with classical Chinese (Dream of the Red Chamber: 28.2%) — jieba tokenization is poor for semi-classical text, and word-frequency similarity cannot bridge the semantic gap
-- Neural embeddings are expected to push recall to 70-80%+, especially improving the classical Chinese scenario
+1. **Keyword matching is broken** — jieba + SQL LIKE at 2% recall is essentially non-functional for semantic retrieval
+2. **TF-IDF + jieba is surprisingly strong** — 83.2% recall for entity-oriented queries on Chinese text, proving that proper tokenization + term frequency matching is hard to beat for named-entity retrieval
+3. **MiniLM underperforms on Chinese classical text** — the multilingual paraphrase model (9.1% precision) fails at entity-level discrimination: it returns semantically related passages but cannot pinpoint the specific entity being queried
+4. **ST has an edge on abstract queries** — Time queries (55% vs 78% recall) and Composite queries (22% vs 62%) show a smaller gap, suggesting neural embeddings help when queries are less entity-specific
+5. **Better Chinese embedding models** (e.g., bge-large-zh-v1.5) may significantly close this gap — this is a clear next step for the benchmark
+
 
 ## Project Structure
 
