@@ -11,12 +11,30 @@ MemTest Knowledge Builder — 从任意中文长文本生成评测数据库
     python knowledge_builder.py ./my_books/ output.json
     python knowledge_builder.py ./my_books/ output.json --merge  # 增量追加
 
+语料要求:
+    - 格式: 仅支持 .md 文件 (其他格式需先转换)
+    - 语言: 目前仅支持中文 (英文支持计划中)
+    - 文件大小: 每个文件需 >= 500 字符 (过短跳过), 前 3000 字符参与提取
+    - 长文本建议拆分为章节级 .md 文件, 每个文件 500-3000 字效果最佳
+    - 目录名会作为分类标签使用
+
+API 配置:
+    在项目根目录或上级目录创建 .env 文件:
+        echo "DEEPSEEK_API_KEY=sk-your-key-here" > .env
+    也支持其他 OpenAI-compatible API, 修改 llm() 函数中的 endpoint 即可
+
 流程:
     1. LLM 事实提取 (content/person/location/time/dynasty/event_type)
     2. LLM 字段分类校验 (dynasty vs location vs concept)
     3. 标准化 + 推理链构建
     4. 6 类均衡查询生成
     5. LLM 预解析缓存 (查询→结构化检索参数)
+
+质量建议:
+    - 叙事类文本 (小说、传记) 提取效果最好
+    - 技术文档可用但 person/location 字段可能较少
+    - 超长文件 (>3000字) 会截断, 建议拆分
+    - 生成后建议人工抽查字段分类准确性
 """
 
 import json, os, sys, time, random
