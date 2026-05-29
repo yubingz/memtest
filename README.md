@@ -77,23 +77,28 @@ Build a test database from any text corpus (novels, documentation, conversation 
 # Prerequisites: create .env with your API key
 echo "DEEPSEEK_API_KEY=sk-your-key-here" > .env
 
-# Basic usage
+# Basic usage (auto-detect language)
 python knowledge_builder.py /path/to/corpus
 
+# Specify language explicitly
+python knowledge_builder.py /path/to/corpus output.json --lang en
+python knowledge_builder.py /path/to/corpus output.json --lang zh
+
 # Incremental mode (appends to existing database)
+python knowledge_builder.py /path/to/corpus output.json --merge
 python knowledge_builder.py /path/to/corpus output.json --merge
 ```
 
 **Corpus requirements:**
 - **Format**: Markdown (`.md`) files organized in directories. Other formats (`.txt`, `.pdf`) are not supported — convert to `.md` first.
-- **Language**: Currently Chinese only (extraction prompts are in Chinese). English support is planned.
+- **Language**: Chinese (`zh`) and English (`en`) supported. Use `--lang zh` or `--lang en` to specify, or `--lang auto` (default) to auto-detect from corpus content.
 - **File size**: Each file must be ≥ 500 characters (shorter files are skipped). Content beyond the first 3,000 characters per file is not processed — for long texts, split into chapter-sized `.md` files.
 - **Structure**: One file per chapter/section works best. Directory names are used as category labels.
 - **API dependency**: Requires a [DeepSeek API key](https://platform.deepseek.com/) (or any OpenAI-compatible API endpoint). Costs ~$0.01-0.05 per file depending on length.
 
 **What it does:**
-1. **Fact extraction**: LLM extracts structured facts (person, location, time, dynasty, event_type) from each text
-2. **Field validation**: LLM classifies ambiguous fields (e.g., is "东晋" a dynasty or a location?)
+1. **Fact extraction**: LLM extracts structured facts (person, location, time, era, event_type) from each text
+2. **Field validation**: LLM classifies ambiguous fields (e.g., is "东晋" a dynasty or a location? Is "Victorian" an era or a location?)
 3. **Memory construction**: Normalizes facts into standardized memory entries with metadata
 4. **Query generation**: Creates 6 query types (person, location, event, time, composite, chain) balanced across categories
 5. **LLM pre-cache**: Pre-resolves queries into structured search parameters for reproducible evaluation

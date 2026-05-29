@@ -74,7 +74,9 @@ python generator.py --size 500   # 自定义规模
 从任意文本语料（小说、文档、对话记录）构建测试库：
 
 ```bash
-python knowledge_builder.py /path/to/corpus
+python knowledge_builder.py /path/to/corpus                   # 自动检测语言
+python knowledge_builder.py /path/to/corpus --lang en     # 指定英文
+python knowledge_builder.py /path/to/corpus --lang zh     # 指定中文
 ```
 
 已用中国四大名著验证（~12,000 条记忆，~9,000 条查询）。详见[评测结果](#评测结果)。
