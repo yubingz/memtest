@@ -56,6 +56,8 @@ print(report.summary())
 | 数据集 | 来源 | 规模 | 获取方式 |
 |--------|------|------|----------|
 | `sample_db_100.json` | 程序合成 | 100 条记忆，50 条查询 | 仓库自带 |
+| `hp_benchmark_db.json` | 哈利波特系列（英文） | 5,925 条记忆，200 条查询，3 条链 | 仓库自带 |
+| `four_novels_db.json` | 中国四大名著（中文） | ~12,000 条记忆，~9,000 条查询 | 仓库自带 |
 | `test_db_10000.json` | `generator.py` 生成 | 10,000 条记忆，~5,000 条查询 | `python generator.py --full` |
 | 自定义 | `knowledge_builder.py` | 任意语料 | `python knowledge_builder.py <语料目录>` |
 
@@ -80,6 +82,40 @@ python knowledge_builder.py /path/to/corpus --lang zh     # 指定中文
 ```
 
 已用中国四大名著验证（~12,000 条记忆，~9,000 条查询）。详见[评测结果](#评测结果)。
+
+### 哈利波特评测库 (`hp_benchmark_db.json`)
+
+基于哈利波特系列7本书构建的英文记忆检索评测库，采用手写核心事件+程序化扩展方式生成。
+
+**统计：**
+- 5,925 条记忆，覆盖7本书（每本约840条，均匀分布）
+- 200 条查询，8种类型：人物、事件、事实、地点、物品、关系、时间、复杂多跳
+- 3 条六跳逻辑链，追踪主要剧情线（预言链、魂器链、斯内普/邓布利多链）
+- 难度分布：简单 52% / 中等 42% / 困难 6%
+
+**记忆字段：** `memory_id`, `content`, `person`, `location`, `time`, `era`, `event_type`, `book`, `house`, `tags`, `difficulty`
+
+**使用：**
+```python
+from runner import MemoryTestSuite, MemoryAdapter, load_test_db
+
+db = load_test_db("hp_benchmark_db.json")
+suite = MemoryTestSuite(MyAdapter())
+report = suite.run(db)
+```
+
+**质量保证：** 零模板生成内容，零跨书错误，所有记忆 ≥20 词，每条事件符合原著。
+
+**TF-IDF 基线结果：**
+
+| 指标 | 值 |
+|------|-----|
+| Precision@20 | 23.4% |
+| Hit Rate@20 | 62.5% |
+| MRR@20 | 0.528 |
+
+注：基线分数低于中文数据集，主要因为查询类型更复杂（多跳推理、关系检索），而非语言难度。这使得 HP 库特别适合评估推理密集型检索。
+
 
 ### 语料准备方法
 

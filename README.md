@@ -56,6 +56,8 @@ print(report.summary())
 | Dataset | Source | Scale | How to get it |
 |---------|--------|-------|---------------|
 | `sample_db_100.json` | Procedural synthesis | 100 memories, ~50 queries | Included in repo |
+| `hp_benchmark_db.json` | Harry Potter series (English) | 5,925 memories, 200 queries, 3 chains | Included in repo |
+| `four_novels_db.json` | Four Great Classical Novels (Chinese) | ~12,000 memories, ~9,000 queries | Included in repo |
 | `test_db_10000.json` | `generator.py` | 10,000 memories, ~5,000 queries | `python generator.py --full` |
 | Custom | `knowledge_builder.py` | Any corpus | `python knowledge_builder.py <corpus_dir>` |
 
@@ -110,6 +112,40 @@ python knowledge_builder.py /path/to/corpus output.json --merge
 - Review the output and manually correct any misclassified fields
 
 Tested with the Four Great Classical Novels of Chinese literature (~12,000 memories, ~9,000 queries). See [benchmark results](#benchmark-results).
+
+### Harry Potter Benchmark (`hp_benchmark_db.json`)
+
+An English-language memory retrieval benchmark built from the Harry Potter series, covering all 7 books. Generated with hand-crafted core events and programmatic expansion.
+
+**Statistics:**
+- 5,925 memories across 7 books (~840 per book, evenly distributed)
+- 200 queries across 8 types: Person, Event, Fact, Location, Object, Relationship, Time, and Complex Multi-hop
+- 3 six-hop logical chains tracing major plot arcs (Prophecy, Horcruxes, Snape/Dumbledore)
+- Difficulty: Easy 52% / Medium 42% / Hard 6%
+
+**Memory fields:** `memory_id`, `content`, `person`, `location`, `time`, `era`, `event_type`, `book`, `house`, `tags`, `difficulty`
+
+**Usage:**
+```python
+from runner import MemoryTestSuite, MemoryAdapter, load_test_db
+
+db = load_test_db("hp_benchmark_db.json")
+suite = MemoryTestSuite(MyAdapter())
+report = suite.run(db)
+```
+
+**Quality assurance:** Zero template-generated content, zero cross-book errors, all memories ≥20 words. Every event is canon-accurate.
+
+**TF-IDF baseline results:**
+
+| Metric | Value |
+|--------|-------|
+| Precision@20 | 23.4% |
+| Hit Rate@20 | 62.5% |
+| MRR@20 | 0.528 |
+
+Note: Lower baseline scores compared to the Chinese dataset reflect the more complex query types (multi-hop, relationship) rather than language difficulty. This makes the HP benchmark particularly useful for evaluating reasoning-heavy retrieval.
+
 
 ### Preparing Your Corpus
 
@@ -253,6 +289,8 @@ memtest/
 ├── runner.py                # Benchmark runner & MemoryAdapter base class
 ├── _gen_and_test.py         # One-click generate & self-test
 ├── sample_db_100.json       # Sample database (100 memories)
+├── hp_benchmark_db.json     # Harry Potter benchmark (English, 5,925 memories)
+├── four_novels_db.json      # Four Classical Novels benchmark (Chinese, ~12,000 memories)
 └── sample_queries.json      # Sample queries
 ```
 
