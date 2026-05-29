@@ -21,6 +21,33 @@ MemTest Knowledge Builder — 从任意中英文长文本生成评测数据库
     - 长文本建议拆分为章节级 .md 文件, 每个文件 500-3000 字效果最佳
     - 目录名会作为分类标签使用
 
+语料准备方法:
+    1. 获取文本:
+       - 中文公共领域: 古登堡计划(gutenberg.org/browse/languages/zh)、
+         维基文库(zh.wikisource.org)、中国哲学书电子化计划(ctext.org)
+       - 英文公共领域: Project Gutenberg(gutenberg.org)、
+         Wikisource(en.wikisource.org)、Standard Ebooks(standardebooks.org)
+       - 版权作品需自行获取授权文本
+    2. 格式转换:
+       - .txt → 直接重命名为 .md
+       - .pdf → pandoc book.pdf -t markdown -o book.md
+       - .epub → pandoc book.epub -t markdown -o book.md
+       - .docx → pandoc book.docx -t markdown -o book.md
+    3. 按章节拆分 (关键步骤):
+       - 中文小说: 按第X回/章/节 拆分
+         import re; chapters = re.split(r'(?=第.{1,3}[回章节])', text)
+       - 英文小说: 按 Chapter X 拆分
+         import re; chapters = re.split(r'(?=Chapter \d+)', text, flags=re.IGNORECASE)
+       - 每个章节保存为独立的 .md 文件
+    4. 目录组织:
+       my_corpus/
+       ├── book_one/
+       │   ├── chapter_001.md
+       │   └── ...
+       └── book_two/
+           ├── chapter_001.md
+           └── ...
+
 API 配置:
     在项目根目录或上级目录创建 .env 文件:
         echo "DEEPSEEK_API_KEY=sk-your-key-here" > .env

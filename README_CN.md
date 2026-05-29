@@ -81,6 +81,74 @@ python knowledge_builder.py /path/to/corpus --lang zh     # 指定中文
 
 已用中国四大名著验证（~12,000 条记忆，~9,000 条查询）。详见[评测结果](#评测结果)。
 
+### 语料准备方法
+
+知识构建器需要 `.md` 文件作为输入。以下是常见来源的准备方法：
+
+**从小说/书籍准备（推荐，提取效果最好）：**
+
+1. **获取文本** — 公共领域来源：
+   - 中文：[古登堡计划中文区](https://www.gutenberg.org/browse/languages/zh)、[维基文库](https://zh.wikisource.org/)、[中国哲学书电子化计划](https://ctext.org/)
+   - 英文：[Project Gutenberg](https://www.gutenberg.org/)、[Wikisource](https://en.wikisource.org/)、[Standard Ebooks](https://standardebooks.org/)
+   - 版权作品需自行获取授权文本
+2. **按章节拆分为独立 .md 文件**：
+   ```bash
+   # 中文小说按"第X回"拆分：
+   python -c "
+   import re
+   with open('novel.txt', encoding='utf-8') as f: text = f.read()
+   chapters = re.split(r'(?=第.{1,3}[回章节])', text)
+   for i, ch in enumerate(chapters):
+       if len(ch.strip()) >= 500:
+           with open(f'chapter_{i:03d}.md', 'w', encoding='utf-8') as out:
+               out.write(ch.strip())
+   "
+   # 英文小说按"Chapter X"拆分：
+   python -c "
+   import re
+   with open('novel.txt', encoding='utf-8') as f: text = f.read()
+   chapters = re.split(r'(?=Chapter \\d+)', text, flags=re.IGNORECASE)
+   for i, ch in enumerate(chapters):
+       if len(ch.strip()) >= 500:
+           with open(f'chapter_{i:03d}.md', 'w', encoding='utf-8') as out:
+               out.write(ch.strip())
+   "
+   ```
+3. **按目录组织** — 目录名会作为分类标签：
+   ```
+   my_corpus/
+   ├── book_one/
+   │   ├── chapter_001.md
+   │   └── ...
+   └── book_two/
+       ├── chapter_001.md
+       └── ...
+   ```
+
+**从其他格式转换：**
+
+| 来源 | 转换方法 |
+|------|---------|
+| `.txt` | 直接重命名为 `.md`，或 `cp novel.txt novel.md` |
+| `.pdf` | `pandoc book.pdf -t markdown -o book.md`，再按章节拆分 |
+| `.epub` | `pandoc book.epub -t markdown -o book.md`，再按章节拆分 |
+| `.docx` | `pandoc book.docx -t markdown -o book.md`，再按章节拆分 |
+| 网页文章 | 浏览器扩展或 `pandoc -f html -t markdown URL -o article.md` |
+
+**注意事项：**
+- 每个文件必须 **≥ 500 字符**（过短会跳过）
+- 每个文件只处理 **前 3000 字符**——长章节需拆分为小段
+- 最佳效果：每文件 **500–3000 字符**
+- 叙事类文本（小说、传记）提取效果最好
+
+**快速测试：**
+```bash
+echo "任意文本内容（至少500字符）..." > test_article.md
+mkdir test_corpus && mv test_article.md test_corpus/
+python knowledge_builder.py test_corpus/ test_output.json --lang zh
+```
+
+
 ## 评测结果
 
 以下结果基于我们的 **NOESIS-II** 记忆系统，使用四大名著数据集（11,794 条去重记忆，577 条查询）进行评测。TF-IDF 和 ST 结果使用 500 条随机采样；LLM 重排结果使用 100 条随机采样，均为 Top-20 检索。

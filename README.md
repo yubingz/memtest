@@ -111,6 +111,77 @@ python knowledge_builder.py /path/to/corpus output.json --merge
 
 Tested with the Four Great Classical Novels of Chinese literature (~12,000 memories, ~9,000 queries). See [benchmark results](#benchmark-results).
 
+### Preparing Your Corpus
+
+The knowledge builder requires `.md` files as input. Here's how to prepare common source materials:
+
+**From novels/books (recommended for best results):**
+
+1. **Obtain the text** — Public domain sources:
+   - Chinese: [古登堡计划中文区](https://www.gutenberg.org/browse/languages/zh), [维基文库](https://zh.wikisource.org/), [中国哲学书电子化计划](https://ctext.org/)
+   - English: [Project Gutenberg](https://www.gutenberg.org/), [Wikisource](https://en.wikisource.org/), [Standard Ebooks](https://standardebooks.org/)
+   - For copyrighted works, you'll need your own licensed copy
+2. **Split into chapter-level files** — One `.md` file per chapter or section:
+   ```bash
+   # Example: split a large text file by chapter markers
+   # For Chinese novels with "第X回" chapter headers:
+   python -c "
+   import re
+   with open('novel.txt', encoding='utf-8') as f: text = f.read()
+   chapters = re.split(r'(?=第.{1,3}[回章节])', text)
+   for i, ch in enumerate(chapters):
+       if len(ch.strip()) >= 500:
+           with open(f'chapter_{i:03d}.md', 'w', encoding='utf-8') as out:
+               out.write(ch.strip())
+   "
+   # For English novels with "Chapter X" headers:
+   python -c "
+   import re
+   with open('novel.txt', encoding='utf-8') as f: text = f.read()
+   chapters = re.split(r'(?=Chapter \d+)', text, flags=re.IGNORECASE)
+   for i, ch in enumerate(chapters):
+       if len(ch.strip()) >= 500:
+           with open(f'chapter_{i:03d}.md', 'w', encoding='utf-8') as out:
+               out.write(ch.strip())
+   "
+   ```
+3. **Organize in directories** — Directory names become category labels:
+   ```
+   my_corpus/
+   ├── book_one/
+   │   ├── chapter_001.md
+   │   ├── chapter_002.md
+   │   └── ...
+   └── book_two/
+       ├── chapter_001.md
+       └── ...
+   ```
+
+**From other formats:**
+
+| Source | How to convert |
+|--------|---------------|
+| `.txt` | Simply rename to `.md`, or `cp novel.txt novel.md` |
+| `.pdf` | Use `pandoc book.pdf -t markdown -o book.md`, then split by chapter |
+| `.epub` | Use `pandoc book.epub -t markdown -o book.md`, then split |
+| `.docx` | Use `pandoc book.docx -t markdown -o book.md`, then split |
+| Web articles | Use browser extensions or `pandoc -f html -t markdown URL -o article.md` |
+
+**Important:**
+- Each file must be **≥ 500 characters** (shorter files are skipped)
+- Only the **first 3,000 characters** per file are processed — split long chapters into smaller sections
+- Aim for **500–3,000 characters per file** for optimal extraction quality
+- Narrative texts (novels, biographies) produce the richest structured data
+
+**Quick test with a single article:**
+```bash
+# Save any text as .md (must be ≥ 500 chars)
+echo "Your article content here (at least 500 characters)..." > test_article.md
+mkdir test_corpus && mv test_article.md test_corpus/
+python knowledge_builder.py test_corpus/ test_output.json --lang en
+```
+
+
 ## Benchmark Results
 
 The following results are from our custom-built **NOESIS-II** memory system, evaluated against the Four Classical Novels dataset (11,794 unique memories, 577 queries). The TF-IDF and ST results use a 500-query random sample; the LLM Rerank result uses a 100-query random sample, all with top-20 retrieval.
