@@ -1,0 +1,833 @@
+{
+  "metadata": {
+    "name": "天龙八部记忆检索测试库",
+    "description": "基于金庸《天龙八部》的记忆检索评测数据库，含多维检索和逻辑链推理查询",
+    "source": "金庸《天龙八部》",
+    "total_memories": 48,
+    "total_queries": 33,
+    "language": "现代汉语",
+    "dimensions": [
+      "person",
+      "location",
+      "event_type",
+      "faction",
+      "time_period"
+    ],
+    "query_types": [
+      "门派检索",
+      "人物检索",
+      "多维检索",
+      "地点检索",
+      "时间线推理",
+      "事件检索",
+      "共享事件",
+      "因果推理",
+      "对比推理"
+    ]
+  },
+  "memories": [
+    {
+      "memory_id": "TLBB00001",
+      "content": "段誉在大理宫中不愿学武，离家出走，来到无量山。在无量剑派观看东宗西宗比剑，遇到钟灵。",
+      "person": "段誉",
+      "location": "无量山",
+      "event_type": "离家出走",
+      "faction": "大理段氏",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00002",
+      "content": "段誉跌入无量山玉壁谷底，见到一尊玉像，在玉像前磕头一千次，获得北冥神功和凌波微步秘籍。",
+      "person": "段誉",
+      "location": "无量山玉壁",
+      "event_type": "学艺",
+      "faction": "大理段氏",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00003",
+      "content": "段誉在万劫谷被钟万仇困住，钟灵前来相救，两人结为朋友。段誉用凌波微步逃脱。",
+      "person": "段誉",
+      "location": "万劫谷",
+      "event_type": "被救",
+      "faction": "大理段氏",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00004",
+      "content": "段誉在曼陀山庄初见王语嫣，惊为天人，从此痴心追随。王语嫣是段正淳与李青萝之女。",
+      "person": "段誉",
+      "location": "曼陀山庄",
+      "event_type": "爱慕",
+      "faction": "大理段氏",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00005",
+      "content": "段誉被鸠摩智擒至姑苏，在燕子坞结识阿朱、阿碧。鸠摩智以段誉为要挟，欲换取大理六脉神剑剑谱。",
+      "person": "段誉",
+      "location": "姑苏",
+      "event_type": "被擒",
+      "faction": "大理段氏",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00006",
+      "content": "段誉在少林寺与乔峰、虚竹结为兄弟，排行第三。三人义气相投，豪气干云。",
+      "person": "段誉",
+      "location": "少林寺",
+      "event_type": "结义",
+      "faction": "大理段氏",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00007",
+      "content": "段誉在西夏驸马招亲时，于枯井底与王语嫣表露心迹，王语嫣终于接受段誉。",
+      "person": "段誉",
+      "location": "西夏枯井",
+      "event_type": "成亲",
+      "faction": "大理段氏",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00008",
+      "content": "段誉发现自己是段延庆之子而非段正淳之子，身世真相大白，最终回到大理继承王位。",
+      "person": "段誉",
+      "location": "大理",
+      "event_type": "继位",
+      "faction": "大理段氏",
+      "time_period": "结局",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00009",
+      "content": "乔峰在杏子林中被揭发为契丹人，丐帮帮主之位被废。马夫人康敏和白世镜合谋陷害乔峰。",
+      "person": "乔峰",
+      "location": "杏子林",
+      "event_type": "被陷害",
+      "faction": "丐帮",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00010",
+      "content": "乔峰为追查身世之谜来到少林寺，发现养父母乔三槐夫妇被杀，恩师玄苦大师也被害，均被嫁祸于他。",
+      "person": "乔峰",
+      "location": "少林寺",
+      "event_type": "被陷害",
+      "faction": "丐帮",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00011",
+      "content": "乔峰在小镜湖误以为阿朱是段正淳，一掌将阿朱打死。阿朱为化解乔峰与段正淳的恩怨，易容替父受掌。",
+      "person": "乔峰",
+      "location": "小镜湖",
+      "event_type": "误杀",
+      "faction": "丐帮",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00012",
+      "content": "乔峰为救阿紫之毒，前往辽国求医。在辽国被耶律洪基封为南院大王。",
+      "person": "乔峰",
+      "location": "辽国",
+      "event_type": "封王",
+      "faction": "辽国",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00013",
+      "content": "乔峰胁迫辽帝耶律洪基折箭为誓，保证有生之年不伐宋。乔峰认为自己在辽为臣却胁迫君主，不忠不义，自尽而亡。",
+      "person": "乔峰",
+      "location": "雁门关",
+      "event_type": "自尽",
+      "faction": "辽国",
+      "time_period": "结局",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00014",
+      "content": "乔峰在聚贤庄大战群雄，以一己之力对抗数百武林人士，血战脱身。此战是为救阿朱求医而被迫出手。",
+      "person": "乔峰",
+      "location": "聚贤庄",
+      "event_type": "大战",
+      "faction": "丐帮",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00015",
+      "content": "乔峰在雁门关外石壁上发现当年父亲萧远山留下的刻字，终于查明身世——自己确实是契丹人萧远山之子。",
+      "person": "乔峰",
+      "location": "雁门关",
+      "event_type": "查明身世",
+      "faction": "丐帮",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00016",
+      "content": "乔峰在无锡松鹤楼初识段誉，两人比试酒量，惺惺相惜，当场结为异姓兄弟。",
+      "person": "乔峰",
+      "location": "无锡",
+      "event_type": "结义",
+      "faction": "丐帮",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00017",
+      "content": "虚竹本是少林寺小和尚，在珍珑棋局上误打误撞破解棋局，被逍遥派无崖子收为关门弟子，传七十余年功力。",
+      "person": "虚竹",
+      "location": "擂鼓山",
+      "event_type": "学艺",
+      "faction": "逍遥派",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00018",
+      "content": "虚竹在冰窖中与西夏公主银川相识，两人在黑暗中相守三日。虚竹破了荤戒和色戒。",
+      "person": "虚竹",
+      "location": "西夏冰窖",
+      "event_type": "破戒",
+      "faction": "逍遥派",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00019",
+      "content": "虚竹被天山童姥挟持，在天山灵鹫宫学得天山六阳掌和天山折梅手。后成为灵鹫宫主人。",
+      "person": "虚竹",
+      "location": "天山灵鹫宫",
+      "event_type": "学艺",
+      "faction": "逍遥派",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00020",
+      "content": "虚竹在西夏驸马招亲时，与银川公主梦姑相认，两人终成眷属。",
+      "person": "虚竹",
+      "location": "西夏",
+      "event_type": "成亲",
+      "faction": "逍遥派",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00021",
+      "content": "虚竹发现少林方丈玄慈是自己的生父，叶二娘是生母。玄慈当众受罚后自绝经脉而亡，叶二娘殉情。",
+      "person": "虚竹",
+      "location": "少林寺",
+      "event_type": "认亲",
+      "faction": "逍遥派",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00022",
+      "content": "慕容复在燕子坞以复国为志，武学渊博，有'南慕容'之称。与王语嫣表兄妹相称，王语嫣对他一片痴心。",
+      "person": "慕容复",
+      "location": "燕子坞",
+      "event_type": "复国",
+      "faction": "姑苏慕容",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00023",
+      "content": "慕容复在西夏驸马招亲中失败，复国无望，精神崩溃，发疯后在坟头做皇帝梦。王语嫣看清慕容复真面目，转投段誉。",
+      "person": "慕容复",
+      "location": "西夏",
+      "event_type": "发疯",
+      "faction": "姑苏慕容",
+      "time_period": "结局",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00024",
+      "content": "慕容复为拉拢各方势力，不惜与丁春秋、段延庆等人合作，甚至设计害人，行事越来越不择手段。",
+      "person": "慕容复",
+      "location": "中原",
+      "event_type": "阴谋",
+      "faction": "姑苏慕容",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00025",
+      "content": "鸠摩智是吐蕃国师，精通火焰刀等武功。为求六脉神剑剑谱，闯入大理天龙寺，以一己之力对抗枯荣大师等人。",
+      "person": "鸠摩智",
+      "location": "大理天龙寺",
+      "event_type": "抢夺",
+      "faction": "吐蕃",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00026",
+      "content": "鸠摩智强练少林七十二绝技导致走火入魔，在西夏枯井中被段誉吸尽内力，反而因祸得福消除了体内异种真气，大彻大悟出家为僧。",
+      "person": "鸠摩智",
+      "location": "西夏枯井",
+      "event_type": "出家",
+      "faction": "吐蕃",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00027",
+      "content": "阿朱是段正淳与阮星竹之女，善易容术。在曼陀山庄服侍王语嫣，后与乔峰相遇相知。",
+      "person": "阿朱",
+      "location": "曼陀山庄",
+      "event_type": "日常",
+      "faction": "姑苏慕容",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00028",
+      "content": "阿朱在小镜湖易容为段正淳替父受掌，被乔峰一掌打死。临终托付乔峰照顾妹妹阿紫。",
+      "person": "阿朱",
+      "location": "小镜湖",
+      "event_type": "被杀",
+      "faction": "无",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00029",
+      "content": "阿紫是阿朱之妹，星宿派丁春秋弟子，性格毒辣。在辽国被毒瞎双眼，乔峰带她四处求医。",
+      "person": "阿紫",
+      "location": "辽国",
+      "event_type": "受伤",
+      "faction": "星宿派",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00030",
+      "content": "乔峰自尽后，阿紫挖出双眼还虚竹，抱着乔峰的尸体跳下万丈悬崖殉情。",
+      "person": "阿紫",
+      "location": "雁门关",
+      "event_type": "殉情",
+      "faction": "星宿派",
+      "time_period": "结局",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00031",
+      "content": "萧远山三十年前在雁门关外遭中原群豪伏击，妻子被杀，自己跳崖未死。此后在少林寺藏经阁潜伏三十年，暗中报复。",
+      "person": "萧远山",
+      "location": "少林寺藏经阁",
+      "event_type": "复仇",
+      "faction": "契丹",
+      "time_period": "全程",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00032",
+      "content": "慕容博是慕容复之父，当年假传契丹人要抢少林武功的假消息，策划了雁门关血案。后在少林寺出家。",
+      "person": "慕容博",
+      "location": "少林寺",
+      "event_type": "阴谋",
+      "faction": "姑苏慕容",
+      "time_period": "全程",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00033",
+      "content": "萧远山和慕容博在少林寺藏经阁中对峙，被扫地僧以佛法化解恩怨，二人大彻大悟出家为僧。",
+      "person": "扫地僧",
+      "location": "少林寺藏经阁",
+      "event_type": "点化",
+      "faction": "少林寺",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00034",
+      "content": "游坦之原是聚贤庄游骥之子，父亲死后流落江湖。偶然获得易筋经和冰蚕毒掌，对阿紫痴迷不已。",
+      "person": "游坦之",
+      "location": "聚贤庄",
+      "event_type": "学艺",
+      "faction": "无",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00035",
+      "content": "游坦之为阿紫献出双眼，但阿紫毫不领情。最终游坦之在雁门关随阿紫跳崖。",
+      "person": "游坦之",
+      "location": "雁门关",
+      "event_type": "殉情",
+      "faction": "无",
+      "time_period": "结局",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00036",
+      "content": "丁春秋是无崖子的弟子，背叛师门后自立星宿派，以化功大法和毒功横行西域，门下弟子皆阿谀奉承。",
+      "person": "丁春秋",
+      "location": "星宿海",
+      "event_type": "背叛",
+      "faction": "星宿派",
+      "time_period": "全程",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00037",
+      "content": "丁春秋在少室山被虚竹用逍遥派武功击败，被扫地僧收服囚于少林寺。",
+      "person": "丁春秋",
+      "location": "少室山",
+      "event_type": "战败",
+      "faction": "星宿派",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00038",
+      "content": "天山童姥是无崖子师姐，修炼八荒六合唯我独尊功，每三十年返老还童一次。与李秋水争夺无崖子，争斗一生。",
+      "person": "天山童姥",
+      "location": "天山灵鹫宫",
+      "event_type": "修炼",
+      "faction": "逍遥派",
+      "time_period": "全程",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00039",
+      "content": "李秋水是无崖子师妹，西夏太妃。与天山童姥争夺无崖子感情，两人在西夏冰窖中同归于尽。",
+      "person": "李秋水",
+      "location": "西夏冰窖",
+      "event_type": "同归于尽",
+      "faction": "逍遥派",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00040",
+      "content": "康敏是丐帮马大元之妻，与白世镜通奸，合谋揭发乔峰身世。最终被阿紫折磨致死。",
+      "person": "康敏",
+      "location": "丐帮",
+      "event_type": "阴谋",
+      "faction": "丐帮",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00041",
+      "content": "段正淳是大理镇南王，风流成性，与多位女子有私情。最终在少林寺被段延庆所伤，与妻刀白凤双双殉情。",
+      "person": "段正淳",
+      "location": "大理",
+      "event_type": "死亡",
+      "faction": "大理段氏",
+      "time_period": "结局",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00042",
+      "content": "段延庆是四大恶人之首，原为大理太子，被叛乱废黜后修炼邪功。最终发现段誉是自己的亲生儿子。",
+      "person": "段延庆",
+      "location": "大理",
+      "event_type": "认亲",
+      "faction": "四大恶人",
+      "time_period": "结局",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00043",
+      "content": "木婉清是段正淳与秦红棉之女，性格刚烈。在无量山与段誉相识，与段誉同遭钟万仇困于万劫谷。",
+      "person": "木婉清",
+      "location": "无量山",
+      "event_type": "相识",
+      "faction": "无",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00044",
+      "content": "钟灵是钟万仇之女，性格活泼。在无量山与段誉相识，养有闪电貂。",
+      "person": "钟灵",
+      "location": "无量山",
+      "event_type": "相识",
+      "faction": "无",
+      "time_period": "初期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00045",
+      "content": "玄慈方丈是少林寺住持，叶二娘的情夫，虚竹的生父。少室山大战时当众受罚后自绝经脉。",
+      "person": "玄慈",
+      "location": "少林寺",
+      "event_type": "受罚",
+      "faction": "少林寺",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00046",
+      "content": "叶二娘是四大恶人之一，因失去亲子而疯狂，抢夺他人婴儿玩耍后杀害。实际是虚竹的生母。",
+      "person": "叶二娘",
+      "location": "中原",
+      "event_type": "作恶",
+      "faction": "四大恶人",
+      "time_period": "全程",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00047",
+      "content": "白世镜是丐帮执法长老，与康敏通奸，参与陷害乔峰。后事情败露被杀。",
+      "person": "白世镜",
+      "location": "丐帮",
+      "event_type": "背叛",
+      "faction": "丐帮",
+      "time_period": "中期",
+      "novel": "天龙八部"
+    },
+    {
+      "memory_id": "TLBB00048",
+      "content": "耶律洪基是辽国皇帝，与乔峰结为兄弟后封其为南院大王。后欲伐宋被乔峰阻拦。",
+      "person": "耶律洪基",
+      "location": "辽国",
+      "event_type": "封赏",
+      "faction": "辽国",
+      "time_period": "后期",
+      "novel": "天龙八部"
+    }
+  ],
+  "queries": [
+    {
+      "query": "乔峰在杏子林被陷害",
+      "query_type": "多维检索",
+      "target_entity": "乔峰+杏子林+被陷害",
+      "dimensions": [
+        "person",
+        "location",
+        "event_type"
+      ],
+      "expected_memory_ids": [
+        "TLBB00009",
+        "TLBB00010",
+        "TLBB00011",
+        "TLBB00012",
+        "TLBB00013"
+      ]
+    },
+    {
+      "query": "段誉后期的结义",
+      "query_type": "多维检索",
+      "target_entity": "段誉+后期+结义",
+      "dimensions": [
+        "person",
+        "time_period",
+        "event_type"
+      ],
+      "expected_memory_ids": [
+        "TLBB00001",
+        "TLBB00002",
+        "TLBB00003",
+        "TLBB00004",
+        "TLBB00005"
+      ]
+    },
+    {
+      "query": "谁在天龙寺对抗过鸠摩智",
+      "query_type": "共享事件",
+      "target_entity": "鸠摩智+天龙寺",
+      "logic": "鸠摩智闯寺→枯荣等人对抗",
+      "expected_memory_ids": [
+        "TLBB00025",
+        "TLBB00026"
+      ]
+    },
+    {
+      "query": "逍遥派在天山的修炼",
+      "query_type": "多维检索",
+      "target_entity": "逍遥派+天山",
+      "dimensions": [
+        "faction",
+        "location"
+      ],
+      "expected_memory_ids": [
+        "TLBB00038"
+      ]
+    },
+    {
+      "query": "鸠摩智是如何大彻大悟的",
+      "query_type": "因果推理",
+      "target_entity": "鸠摩智",
+      "logic": "强练少林武功→走火入魔→被段誉吸内力→反而痊愈→出家",
+      "expected_memory_ids": [
+        "TLBB00025",
+        "TLBB00026"
+      ]
+    },
+    {
+      "query": "段誉和虚竹都是被迫学武，有何异同",
+      "query_type": "对比推理",
+      "target_entity": "段誉+虚竹",
+      "logic": "都不愿学武→机缘不同→武功来源不同",
+      "expected_memory_ids": [
+        "TLBB00006",
+        "TLBB00001",
+        "TLBB00002",
+        "TLBB00003",
+        "TLBB00004"
+      ]
+    },
+    {
+      "query": "乔峰的经历",
+      "query_type": "人物检索",
+      "target_entity": "乔峰",
+      "expected_memory_ids": [
+        "TLBB00009",
+        "TLBB00010",
+        "TLBB00011",
+        "TLBB00012",
+        "TLBB00013"
+      ]
+    },
+    {
+      "query": "段誉的经历",
+      "query_type": "人物检索",
+      "target_entity": "段誉",
+      "expected_memory_ids": [
+        "TLBB00001",
+        "TLBB00002",
+        "TLBB00003",
+        "TLBB00004",
+        "TLBB00005"
+      ]
+    },
+    {
+      "query": "段誉最终为什么能和王语嫣在一起",
+      "query_type": "因果推理",
+      "target_entity": "段誉+王语嫣",
+      "logic": "痴心追随→慕容复拒绝→枯井表白→在一起",
+      "expected_memory_ids": [
+        "TLBB00004",
+        "TLBB00007",
+        "TLBB00001",
+        "TLBB00002",
+        "TLBB00003"
+      ]
+    },
+    {
+      "query": "虚竹的经历",
+      "query_type": "人物检索",
+      "target_entity": "虚竹",
+      "expected_memory_ids": [
+        "TLBB00017",
+        "TLBB00018",
+        "TLBB00019",
+        "TLBB00020",
+        "TLBB00021"
+      ]
+    },
+    {
+      "query": "乔峰为什么会在小镜湖误杀阿朱",
+      "query_type": "因果推理",
+      "target_entity": "乔峰+阿朱",
+      "logic": "被陷害→追查身世→误认仇人→误杀",
+      "expected_memory_ids": [
+        "TLBB00011",
+        "TLBB00014",
+        "TLBB00027",
+        "TLBB00028",
+        "TLBB00009"
+      ]
+    },
+    {
+      "query": "乔峰在辽国封王",
+      "query_type": "多维检索",
+      "target_entity": "乔峰+辽国+封王",
+      "dimensions": [
+        "person",
+        "location",
+        "event_type"
+      ],
+      "expected_memory_ids": [
+        "TLBB00012",
+        "TLBB00009",
+        "TLBB00010",
+        "TLBB00011",
+        "TLBB00013"
+      ]
+    },
+    {
+      "query": "四大恶人在大理的活动",
+      "query_type": "多维检索",
+      "target_entity": "四大恶人+大理",
+      "dimensions": [
+        "faction",
+        "location"
+      ],
+      "expected_memory_ids": [
+        "TLBB00042"
+      ]
+    },
+    {
+      "query": "乔峰和慕容复同样是复国，为何结局不同",
+      "query_type": "对比推理",
+      "target_entity": "乔峰+慕容复",
+      "logic": "目的不同→手段不同→结局不同",
+      "expected_memory_ids": [
+        "TLBB00009",
+        "TLBB00010",
+        "TLBB00011",
+        "TLBB00012",
+        "TLBB00013"
+      ]
+    },
+    {
+      "query": "乔峰段誉虚竹三人结义的经过",
+      "query_type": "共享事件",
+      "target_entity": "乔峰+段誉+虚竹",
+      "logic": "三人齐聚少林→义气相投→结为兄弟",
+      "expected_memory_ids": [
+        "TLBB00006",
+        "TLBB00016",
+        "TLBB00001",
+        "TLBB00002",
+        "TLBB00003"
+      ]
+    },
+    {
+      "query": "慕容复为什么会发疯",
+      "query_type": "因果推理",
+      "target_entity": "慕容复",
+      "logic": "复国执念→招亲失败→众叛亲离→精神崩溃",
+      "expected_memory_ids": [
+        "TLBB00022",
+        "TLBB00023",
+        "TLBB00024"
+      ]
+    },
+    {
+      "query": "萧远山和慕容博为什么在少林寺出家",
+      "query_type": "因果推理",
+      "target_entity": "萧远山+慕容博",
+      "logic": "三十年恩怨→藏经阁对峙→扫地僧点化→出家",
+      "expected_memory_ids": [
+        "TLBB00031",
+        "TLBB00032",
+        "TLBB00033"
+      ]
+    },
+    {
+      "query": "段誉从中原到大理的成长历程",
+      "query_type": "时间线推理",
+      "target_entity": "段誉",
+      "logic": "离家→学艺→被擒→结义→枯井→继位",
+      "expected_memory_ids": [
+        "TLBB00001",
+        "TLBB00002",
+        "TLBB00003",
+        "TLBB00004",
+        "TLBB00005"
+      ]
+    },
+    {
+      "query": "阿紫为什么要挖出双眼还给虚竹",
+      "query_type": "因果推理",
+      "target_entity": "阿紫+虚竹",
+      "logic": "被毒瞎→虚竹换眼→乔峰死→还眼殉情",
+      "expected_memory_ids": [
+        "TLBB00030",
+        "TLBB00017",
+        "TLBB00018",
+        "TLBB00019",
+        "TLBB00020"
+      ]
+    },
+    {
+      "query": "段誉在无量山的经历",
+      "query_type": "多维检索",
+      "target_entity": "段誉+无量山",
+      "dimensions": [
+        "person",
+        "location"
+      ],
+      "expected_memory_ids": [
+        "TLBB00001",
+        "TLBB00002",
+        "TLBB00003",
+        "TLBB00004",
+        "TLBB00005"
+      ]
+    },
+    {
+      "query": "乔峰从丐帮帮主到自尽的人生轨迹",
+      "query_type": "时间线推理",
+      "target_entity": "乔峰",
+      "logic": "帮主→被陷害→追查身世→误杀阿朱→封王→胁迫辽帝→自尽",
+      "expected_memory_ids": [
+        "TLBB00009",
+        "TLBB00010",
+        "TLBB00011",
+        "TLBB00012",
+        "TLBB00013"
+      ]
+    },
+    {
+      "query": "慕容复的经历",
+      "query_type": "人物检索",
+      "target_entity": "慕容复",
+      "expected_memory_ids": [
+        "TLBB00022",
+        "TLBB00023",
+        "TLBB00024"
+      ]
+    },
+    {
+      "query": "虚竹在西夏破戒",
+      "query_type": "多维检索",
+      "target_entity": "虚竹+西夏+破戒",
+      "dimensions": [
+        "person",
+        "location",
+        "event_type"
+      ],
+      "expected_memory_ids": [
+        "TLBB00018",
+        "TLBB00020",
+        "TLBB00017",
+        "TLBB00019",
+        "TLBB00021"
+      ]
+    },
+    {
+      "query": "虚竹是怎么从少林小和尚变成灵鹫宫主人的",
+      "query_type": "因果推理",
+      "target_entity": "虚竹",
+      "logic": "珍珑棋局→拜师→被挟持→学艺→成为宫主",
+      "expected_memory_ids": [
+        "TLBB00017",
+        "TLBB00018",
+        "TLBB00019",
+        "TLBB00020",
+        "TLBB00021"
+      ]
+    }
+  ],
+  "clean_stats": {
+    "original": 48,
+    "exact_dup": 0,
+    "cross_dup": 0,
+    "capped": 0,
+    "final": 48
+  },
+  "clean_time": "2026-05-29 14:09"
+}
