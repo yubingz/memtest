@@ -6,6 +6,12 @@
 
 ---
 
+## ⚠️ Security Notice
+
+**Never commit API keys to Git.** This repo includes `.env` in `.gitignore`, but always double-check before pushing. If you accidentally commit a key, revoke it immediately on the provider's platform.
+
+---
+
 ## Why MemTest?
 
 AI agents increasingly rely on long-term memory — but how do you know if your memory system actually *works*? Most teams evaluate retrieval with ad-hoc scripts that couple test data to a specific backend. MemTest decouples them:

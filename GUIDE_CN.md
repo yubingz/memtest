@@ -441,10 +441,18 @@ python knowledge_builder.py ./my_books/ output.json --merge  # 增量追加
 
 **阶段 5 — LLM 预解析缓存**：将每条查询预解析为结构化搜索参数（人物、地点、时间、朝代），供支持结构化查询的系统使用
 
-**依赖**：DeepSeek API key，放在 `.env` 文件中：
+**依赖**：DeepSeek API key，放在 `.env` 文件中（切勿提交；从 `.env.example` 复制）：
+
+```bash
+cp .env.example .env
+# 编辑 .env 并填入你的 key
+```
+
 ```
 DEEPSEEK_API_KEY=sk-xxx
 ```
+
+> ⚠️ **安全提示**：`.env` 已加入 `.gitignore`，但提交前务必用 `git status` 再次检查。如意外提交，请立即在服务商平台撤销该密钥。
 
 **增量模式**（`--merge`）：只处理新文件，追加到已有数据库
 

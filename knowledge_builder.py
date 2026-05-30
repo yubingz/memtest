@@ -49,9 +49,30 @@ for p in [os.path.join(os.path.dirname(__file__), '.env'),
                 if l.startswith('DEEPSEEK_API_KEY='):
                     KEY = l.split('=', 1)[1].strip().strip('"')
                     break
-    except:
+    except (OSError, IOError):
         pass
     if KEY: break
+
+
+def _safe_json_loads(raw, max_size=2*1024*1024):
+    """Parse JSON with size guard to avoid DoS from huge payloads."""
+    if isinstance(raw, str) and len(raw) > max_size:
+        raise ValueError(f"JSON payload too large: {len(raw)} bytes > {max_size}")
+    if isinstance(raw, bytes) and len(raw) > max_size:
+        raise ValueError(f"JSON payload too large: {len(raw)} bytes > {max_size}")
+    return json.loads(raw)
+
+def _validate_corpus_dir(articles_dir):
+    """Prevent path traversal via .. or symlinks outside the intended tree."""
+    abs_dir = os.path.realpath(os.path.abspath(articles_dir))
+    # Allow current directory and normal subdirectories; block /etc, /root, etc.
+    # This is a heuristic: if the resolved path contains '..' components or
+    # points to system directories, reject it.
+    blocked_prefixes = ['/etc', '/usr', '/bin', '/sbin', '/lib', '/dev', '/proc', '/sys', '/root']
+    for prefix in blocked_prefixes:
+        if abs_dir.startswith(prefix + os.sep) or abs_dir == prefix:
+            raise ValueError(f"Corpus directory points to a system path: {abs_dir}")
+    return abs_dir
 
 
 def llm(prompt, max_tokens=3000):
@@ -64,7 +85,7 @@ def llm(prompt, max_tokens=3000):
         'https://api.deepseek.com/v1/chat/completions', data=d,
         headers={'Content-Type': 'application/json', 'Authorization': 'Bearer ' + KEY}
     ), timeout=60)
-    c = json.loads(r.read())['choices'][0]['message']['content'].strip()
+    c = _safe_json_loads(r.read())['choices'][0]['message']['content'].strip()
     if c.startswith('```'):
         c = '\n'.join(c.split('\n')[1:-1])
     return c.strip()
@@ -96,8 +117,12 @@ def extract_facts(articles_dir, existing_facts=None, done_files=None):
     if existing_facts is None: existing_facts = []
     if done_files is None: done_files = set()
 
+    abs_dir = _validate_corpus_dir(articles_dir)
     todo = []
-    for root, dirs, files in os.walk(articles_dir):
+    for root, dirs, files in os.walk(abs_dir):
+        # Security: skip symlinks that point outside the validated tree
+        if os.path.islink(root) and not os.path.realpath(root).startswith(abs_dir + os.sep):
+            continue
         for fn in files:
             if fn.endswith('.md') and fn not in done_files:
                 todo.append((os.path.basename(root), os.path.join(root, fn)))
@@ -122,17 +147,20 @@ def extract_facts(articles_dir, existing_facts=None, done_files=None):
                 c = llm(EXTRACT_PROMPT + t[:3000])
                 n = 0
                 try:
-                    arr = json.loads(c)
+                    arr = _safe_json_loads(c)
                     if isinstance(arr, list):
                         for item in arr:
                             if isinstance(item, dict):
                                 existing_facts.append(item); n += 1
-                except:
+                except (json.JSONDecodeError, ValueError):
                     for l in c.split('\n'):
                         l = l.strip().rstrip(',')
                         if l.startswith('{') and l.endswith('}'):
-                            try: existing_facts.append(json.loads(l)); n += 1
-                            except: pass
+                            try:
+                                existing_facts.append(_safe_json_loads(l))
+                                n += 1
+                            except (json.JSONDecodeError, ValueError):
+                                pass
                 print(f'  [{time.strftime("%H:%M")}] +{n:4d} | {dname}/{fn[:35]}', flush=True)
                 done_files.add(fn)
             except HTTPError as e:
@@ -156,9 +184,10 @@ def classify_fields(facts):
         batch = locs[start:start + 30]
         prompt = '分类每个词: dynasty(朝代/政权/时期) | place(实体地点) | concept(抽象/建筑非地点)。返回JSON:{"词":"类别"}\n' + '\n'.join(batch)
         try:
-            result = json.loads(llm(prompt, 1000))
+            result = _safe_json_loads(llm(prompt, 1000))
             if isinstance(result, dict): loc_map.update(result)
-        except: pass
+        except (json.JSONDecodeError, ValueError):
+            pass
         print(f'  loc {min(start + 30, len(locs))}/{len(locs)}', flush=True)
 
     time_map = {}
@@ -167,9 +196,10 @@ def classify_fields(facts):
         batch = compound[start:start + 30]
         prompt = '拆分复合时间。返回JSON:{"原值":{"time":"年份","dynasty":"朝代"}}\n' + '\n'.join(batch)
         try:
-            result = json.loads(llm(prompt, 1000))
+            result = _safe_json_loads(llm(prompt, 1000))
             if isinstance(result, dict): time_map.update(result)
-        except: pass
+        except (json.JSONDecodeError, ValueError):
+            pass
         print(f'  time {min(start + 30, len(compound))}/{len(compound)}', flush=True)
 
     fix_count = 0
@@ -494,9 +524,12 @@ def build_llm_cache(queries):
                 if mm:
                     idx = int(mm.group(1))
                     if idx < len(batch):
-                        try: cache[batch[idx]['query_text']] = json.loads(mm.group(2))
-                        except: pass
-        except: pass
+                        try:
+                            cache[batch[idx]['query_text']] = _safe_json_loads(mm.group(2))
+                        except (json.JSONDecodeError, ValueError):
+                            pass
+        except (HTTPError, ValueError, RuntimeError, OSError):
+            pass
         if (start + 15) % 60 == 0:
             print(f'  cache {min(start + 15, len(queries))}/{len(queries)}', flush=True)
     print(f'[{time.strftime("%H:%M")}] Cache: {len(cache)}/{len(queries)} queries parsed')

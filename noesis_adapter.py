@@ -22,12 +22,13 @@ NOESIS-II 适配器 — 将 NOESIS-II 记忆系统接入 MemTest 评测框架
 import sys
 import re
 import json
+import os
 from pathlib import Path
 from collections import defaultdict
 from typing import Dict, List, Optional
 
 # 添加 NOESIS-II 路径
-NOESIS_ROOT = Path.home() / "NOESIS-II"
+NOESIS_ROOT = Path(os.getenv("NOESIS_ROOT", str(Path.home() / "NOESIS-II")))
 sys.path.insert(0, str(NOESIS_ROOT))
 
 from noesis_ii.core.schema import init_db, get_connection

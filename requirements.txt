@@ -1,0 +1,13 @@
+# MemTest dependencies
+# Install: pip install -r requirements.txt
+
+# Benchmarks (optional — only needed for TF-IDF / embedding baselines)
+numpy
+scikit-learn
+jieba
+
+# Optional: for sentence-transformer baselines
+# sentence-transformers
+
+# Optional: for LLM-powered knowledge builder
+# deepseek-sdk or openai

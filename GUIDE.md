@@ -442,10 +442,18 @@ python knowledge_builder.py ./my_books/ output.json --merge  # Incremental
 
 **Stage 5 — LLM Pre-parse Cache**: Pre-resolves each query into structured search parameters (person, location, time, dynasty) for systems that can use structured queries
 
-**Requirements**: DeepSeek API key in `.env` file:
+**Requirements**: DeepSeek API key in `.env` file (never commit this file; copy from `.env.example`):
+
+```bash
+cp .env.example .env
+# Edit .env and paste your key
+```
+
 ```
 DEEPSEEK_API_KEY=sk-xxx
 ```
+
+> ⚠️ **Security**: `.env` is listed in `.gitignore`, but always verify with `git status` before committing. If you accidentally commit a key, revoke it immediately on the provider's platform.
 
 **Incremental mode** (`--merge`): Processes only new files, appends to existing database
 

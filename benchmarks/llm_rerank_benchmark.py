@@ -7,13 +7,35 @@ import sqlite3, json, re, random, sys, gc, time, subprocess, os
 from collections import defaultdict
 import numpy as np
 
-DB_PATH = "/root/NOESIS-II/noesis_ii/data/noesis.db"
+# --- Security: paths from env, never hardcode absolute paths ---
+DB_PATH = os.getenv("MEMTEST_DB_PATH", "./noesis.db")
+OUTPUT_DIR = os.getenv("MEMTEST_OUTPUT_DIR", "./data")
+
 SAMPLE_SIZE = 100   # Use 100 queries for LLM reranking (speed)
 TOP_K = 20          # Final top-K for evaluation
 CANDIDATE_K = 50    # TF-IDF retrieves top-50 candidates for LLM to rerank
 BATCH_SIZE = 5      # Queries per LLM call
 PARALLEL_SESSIONS = 4  # Run this many sessions in parallel
-OUTPUT_DIR = "/root/NOESIS-II/data"
+
+_MAX_SESSION_ID_LEN = 128
+_SESSION_ID_RE = re.compile(r'^[A-Za-z0-9_-]+$')
+
+def _validate_session_id(sid):
+    """Validate session_id to prevent command injection."""
+    if not sid or len(sid) > _MAX_SESSION_ID_LEN:
+        raise ValueError(f"Invalid session_id length: {len(sid) if sid else 0}")
+    if not _SESSION_ID_RE.match(sid):
+        raise ValueError(f"Invalid session_id characters: {sid[:20]}")
+    return sid
+
+def _safe_json_loads(raw, max_size=5*1024*1024):
+    """Parse JSON with size guard to avoid DoS from huge payloads."""
+    if isinstance(raw, str) and len(raw) > max_size:
+        raise ValueError(f"JSON payload too large: {len(raw)} bytes > {max_size}")
+    if isinstance(raw, bytes) and len(raw) > max_size:
+        raise ValueError(f"JSON payload too large: {len(raw)} bytes > {max_size}")
+    return json.loads(raw)
+
 random.seed(42)
 
 def get_novel(mid_num):
@@ -179,13 +201,20 @@ def run_tfidf_topk(memories, eval_queries, mem_ids, mem_texts, topk=CANDIDATE_K)
 
 def create_session():
     """Create a new Coze session and return its ID."""
-    result = subprocess.run(['coze', 'session', 'create', '--format', 'json'],
-                          capture_output=True, text=True, timeout=15)
-    data = json.loads(result.stdout)
-    return data['session_id']
+    result = subprocess.run(
+        ['coze', 'session', 'create', '--format', 'json'],
+        capture_output=True, text=True, timeout=15,
+        # Security: fixed args, no shell; cwd not needed here
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"coze session create failed: {result.stderr[:200]}")
+    data = _safe_json_loads(result.stdout)
+    sid = data.get('session_id', '')
+    return _validate_session_id(sid)
 
 def send_message(session_id, message):
     """Send a message to a session (non-blocking)."""
+    _validate_session_id(session_id)
     proc = subprocess.Popen(
         ['coze', 'session', 'message', '-s', session_id, '--format', 'json'],
         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -193,7 +222,7 @@ def send_message(session_id, message):
     )
     try:
         stdout, stderr = proc.communicate(input=message, timeout=20)
-        data = json.loads(stdout)
+        data = _safe_json_loads(stdout)
         return data.get('status') == 'accepted', data.get('message_id')
     except subprocess.TimeoutExpired:
         proc.kill()
@@ -201,20 +230,23 @@ def send_message(session_id, message):
 
 def read_last_reply(session_id):
     """Read the last bot reply from a session."""
+    _validate_session_id(session_id)
     result = subprocess.run(
         ['coze', 'agent', 'message', 'list', '--project-id', session_id, '--json', '--size', '3'],
         capture_output=True, text=True, timeout=15
     )
-    data = json.loads(result.stdout)
+    if result.returncode != 0:
+        return None
+    data = _safe_json_loads(result.stdout)
     msgs = data.get('data', {}).get('messages', [])
     for msg in msgs:
         if msg.get('source') == 2 and msg.get('message_type') == 'reply':
             content = msg.get('content', '')
             try:
-                inner = json.loads(content)
+                inner = _safe_json_loads(content)
                 reply = inner.get('message_data', {}).get('reply', {}).get('content', '')
                 return reply
-            except:
+            except (json.JSONDecodeError, ValueError):
                 return content
     return None
 
@@ -315,39 +347,31 @@ def run_llm_rerank(eval_queries, all_candidates):
             except Exception as e:
                 print(f"  Batch {batch_idx+1}/{n_batches}: ERROR {e}", flush=True)
         
-        # Wait for responses
+        # Poll for responses with max total timeout instead of fixed sleep
         if wave_sessions:
-            wait_time = max(0, 50 - (time.time() - wave_sessions[0]['send_time']))
-            if wait_time > 0:
-                print(f"  Waiting {wait_time:.0f}s for responses...", flush=True)
-                time.sleep(wait_time)
-        
-        # Read responses
-        for ws in wave_sessions:
-            try:
-                # Try reading, with retry
-                reply = None
-                for attempt in range(3):
-                    reply = read_last_reply(ws['session_id'])
-                    if reply:
-                        break
-                    time.sleep(15)
-                
-                if reply:
-                    reranked = parse_rerank_response(reply, ws['batch_queries'], ws['batch_candidates'])
-                    for j, mem_ids in enumerate(reranked):
-                        q_idx = ws['start_q'] + j
-                        if q_idx < len(all_reranked):
-                            all_reranked[q_idx] = mem_ids
-                    print(f"  Batch {ws['batch_idx']+1}: got reply ({len(reply)} chars)", flush=True)
-                else:
-                    print(f"  Batch {ws['batch_idx']+1}: NO REPLY", flush=True)
-                    # Fallback: use TF-IDF top-20
-                    for j in range(ws['start_q'], ws['end_q']):
-                        if j < len(all_reranked) and all_reranked[j] is None:
-                            all_reranked[j] = [c['memory_id'] for c in all_candidates[j][:TOP_K]]
-            except Exception as e:
-                print(f"  Batch {ws['batch_idx']+1}: ERROR reading reply: {e}", flush=True)
+            max_wait = 120  # seconds total timeout per wave
+            poll_interval = 5
+            deadline = time.time() + max_wait
+            pending = {ws['session_id']: ws for ws in wave_sessions}
+            while pending and time.time() < deadline:
+                for sid in list(pending.keys()):
+                    try:
+                        reply = read_last_reply(sid)
+                        if reply:
+                            ws = pending.pop(sid)
+                            reranked = parse_rerank_response(reply, ws['batch_queries'], ws['batch_candidates'])
+                            for j, mem_ids in enumerate(reranked):
+                                q_idx = ws['start_q'] + j
+                                if q_idx < len(all_reranked):
+                                    all_reranked[q_idx] = mem_ids
+                            print(f"  Batch {ws['batch_idx']+1}: got reply ({len(reply)} chars)", flush=True)
+                    except Exception as e:
+                        print(f"  Batch {pending[sid]['batch_idx']+1}: poll error {e}", flush=True)
+                if pending:
+                    time.sleep(poll_interval)
+            # Fallback for any still-pending sessions
+            for ws in pending.values():
+                print(f"  Batch {ws['batch_idx']+1}: NO REPLY (timeout)", flush=True)
                 for j in range(ws['start_q'], ws['end_q']):
                     if j < len(all_reranked) and all_reranked[j] is None:
                         all_reranked[j] = [c['memory_id'] for c in all_candidates[j][:TOP_K]]
