@@ -28,7 +28,7 @@ class MemoryAdapter:
                 "person_identity": "项目经理",
                 "event_type": "交易",
                 "event_action": "购买",
-                "event_product": "CLUSTER0001",
+                "event_product": "茅台",  # 产品名示例
                 "cluster_id": "CLUSTER0001",  # 整理类测试用
                 "reasoning_chain": "CHAIN_0001",  # 推理链用
                 "chain_position": 1,

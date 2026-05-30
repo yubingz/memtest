@@ -56,13 +56,20 @@ class MemoryTestSuite:
         if not memories:
             return {"error": "empty database"}
 
-        # 1. 清空 + 加载
+        # 1. 清空 + 加载（兼容 generator 的 versions 列表和 benchmark 的 content 字符串）
         self.adapter.reset()
         stored = 0
         for m in memories:
-            for v in m.get("versions", []):
+            versions = m.get("versions")
+            if versions:
+                for v in versions:
+                    meta = self._flatten_meta(m)
+                    self.adapter.store(v.get("content", ""), meta)
+                    stored += 1
+            else:
+                # Legacy benchmark format: single content field
                 meta = self._flatten_meta(m)
-                self.adapter.store(v["content"], meta)
+                self.adapter.store(m.get("content", ""), meta)
                 stored += 1
 
         self.report = {
@@ -77,25 +84,59 @@ class MemoryTestSuite:
 
     # ---- 内部方法 ----
     def _flatten_meta(self, m: dict) -> dict:
+        """Flatten metadata, handling both nested-dict (generator) and string (legacy benchmark) formats."""
+        # Time: may be dict {'absolute':...} or plain string
+        t = m.get("time", {})
+        if isinstance(t, str):
+            time_abs, time_rel = t, ""
+        else:
+            time_abs = t.get("absolute", "") if isinstance(t, dict) else ""
+            time_rel = t.get("relative", "") if isinstance(t, dict) else ""
+
+        # Location: may be dict {'city':...} or plain string
+        loc = m.get("location", {})
+        if isinstance(loc, str):
+            loc_city, loc_place = loc, ""
+        else:
+            loc_city = loc.get("city", "") if isinstance(loc, dict) else ""
+            loc_place = loc.get("place", "") if isinstance(loc, dict) else ""
+
+        # Person: may be dict {'name':...} or plain string
+        pers = m.get("person", {})
+        if isinstance(pers, str):
+            pers_name, pers_identity = pers, ""
+        else:
+            pers_name = pers.get("name", "") if isinstance(pers, dict) else ""
+            pers_identity = pers.get("identity", "") if isinstance(pers, dict) else ""
+
+        # Event: may be dict {'type':...} or plain string
+        evt = m.get("event", {})
+        if isinstance(evt, str):
+            evt_type, evt_action, evt_product = evt, "", ""
+        else:
+            evt_type = evt.get("type", "") if isinstance(evt, dict) else ""
+            evt_action = evt.get("action", "") if isinstance(evt, dict) else ""
+            evt_product = evt.get("product", "") if isinstance(evt, dict) else ""
+
         return {
             "memory_id": m["memory_id"],
             "category": m.get("category", ""),
             "difficulty": m.get("difficulty", ""),
-            "time_absolute": m.get("time", {}).get("absolute", ""),
-            "time_relative": m.get("time", {}).get("relative", ""),
-            "location_city": m.get("location", {}).get("city", ""),
-            "location_place": m.get("location", {}).get("place", ""),
-            "person_name": m.get("person", {}).get("name", ""),
-            "person_identity": m.get("person", {}).get("identity", ""),
-            "event_type": m.get("event", {}).get("type", ""),
-            "event_action": m.get("event", {}).get("action", ""),
-            "event_product": m.get("event", {}).get("product", ""),
+            "time_absolute": time_abs,
+            "time_relative": time_rel,
+            "location_city": loc_city,
+            "location_place": loc_place,
+            "person_name": pers_name,
+            "person_identity": pers_identity,
+            "event_type": evt_type,
+            "event_action": evt_action,
+            "event_product": evt_product,
             "weight": m.get("weight", 1.0),
             "cluster_id": m.get("cluster_id"),
             "reasoning_chain": m.get("reasoning_chain"),
             "chain_position": m.get("chain_position"),
-            "decay_level": (m.get("decay") or {}).get("level"),
-            "access_count": (m.get("decay") or {}).get("access_count", 0),
+            "decay_level": (m.get("decay") or {}).get("level") if isinstance(m.get("decay"), dict) else None,
+            "access_count": (m.get("decay") or {}).get("access_count", 0) if isinstance(m.get("decay"), dict) else 0,
         }
 
     def _eval_storage(self, stored: int, total: int) -> dict:
@@ -105,20 +146,29 @@ class MemoryTestSuite:
     def _eval_retrieval(self, queries: list) -> dict:
         by_type = {}
         total_correct, total_expected = 0, 0
+        # Pre-build entity index for target_entity-based evaluation
+        entity_index = self._build_entity_index() if any(q.get("target_entity") and not q.get("expected_memory_ids") for q in queries) else None
         for q in queries:
-            expected = set(q.get("expected_memory_ids", []))
-            if not expected: continue
-            results = self.adapter.search(q["query_text"], top_k=20)
+            # Support both expected_memory_ids and target_entity evaluation
+            expected_ids = set(q.get("expected_memory_ids", []))
+            target_entity = q.get("target_entity")
+            if not expected_ids and target_entity and entity_index:
+                expected_ids = entity_index.get(target_entity, set())
+            if not expected_ids:
+                continue
+            # Support both 'query_text' (generator) and 'query' (legacy benchmark)
+            query_text = q.get("query_text") or q.get("query", "")
+            results = self.adapter.search(query_text, top_k=20)
             found_ids = {r.get("memory_id", "") for r in results[:20]}
-            correct = len(found_ids & expected)
+            correct = len(found_ids & expected_ids)
             qtype = q.get("query_type", "unknown")
             if qtype not in by_type:
                 by_type[qtype] = {"correct": 0, "expected": 0, "count": 0}
             by_type[qtype]["correct"] += correct
-            by_type[qtype]["expected"] += len(expected)
+            by_type[qtype]["expected"] += len(expected_ids)
             by_type[qtype]["count"] += 1
             total_correct += correct
-            total_expected += len(expected)
+            total_expected += len(expected_ids)
 
         for t in by_type.values():
             t["precision"] = t["correct"] / (t["count"] * 20) if t["count"] > 0 else 0
@@ -130,6 +180,34 @@ class MemoryTestSuite:
             "overall_precision": round(total_correct / (len(queries) * 20), 3) if queries else 0,
             "overall_recall": round(total_correct / total_expected, 3) if total_expected > 0 else 0,
         }
+
+    def _build_entity_index(self) -> dict:
+        """Build index of entity -> set of memory_ids for target_entity evaluation."""
+        # Use a simple approach: store all content in memory and search for entity
+        index = {}
+        # We need to get memories from the adapter, but adapter doesn't expose list interface
+        # Fallback: use JsonMemoryAdapter's internal store_dict if available
+        store_dict = getattr(self.adapter, 'store_dict', None)
+        if store_dict:
+            for mid, content in store_dict.items():
+                # Simple tokenization for entity matching
+                for entity in self._extract_entities(content):
+                    index.setdefault(entity, set()).add(mid)
+        return index
+
+    @staticmethod
+    def _extract_entities(text: str) -> list:
+        """Extract potential entity names from text for indexing."""
+        import re
+        # Match Chinese names (2-4 chars) and English capitalized words
+        entities = []
+        # Chinese consecutive characters that look like names/places
+        for m in re.finditer(r'[\u4e00-\u9fff]{2,6}', text):
+            entities.append(m.group())
+        # English words with capital letters
+        for m in re.finditer(r'[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*', text):
+            entities.append(m.group())
+        return entities
 
     def _eval_organization(self, memories: list) -> dict:
         clusters = {}
@@ -144,7 +222,14 @@ class MemoryTestSuite:
             for mid in mem_ids[:3]:
                 m = next((x for x in memories if x["memory_id"] == mid), None)
                 if not m: continue
-                query = f"{m['person']['name']} {m['event']['product']}"
+                # Support both dict and string formats for person/event
+                pers = m.get("person", {})
+                pers_name = pers.get("name", "") if isinstance(pers, dict) else str(pers)
+                evt = m.get("event", {})
+                evt_product = evt.get("product", "") if isinstance(evt, dict) else str(evt)
+                query = f"{pers_name} {evt_product}".strip()
+                if not query:
+                    query = m.get("content", "")[:40]
                 results = self.adapter.search(query, top_k=10)
                 found = {r.get("memory_id") for r in results[:10]}
                 if any(cmid in found for cmid in mem_ids if cmid != mid):
@@ -161,7 +246,12 @@ class MemoryTestSuite:
             if not mems: return {"label": label, "found": 0, "total": 0, "retention": 0}
             found = 0
             for m in mems[:20]:
-                q = m["versions"][0]["content"]
+                # Support both 'versions' list and plain 'content' string
+                versions = m.get("versions")
+                if versions:
+                    q = versions[0].get("content", "")
+                else:
+                    q = m.get("content", "")
                 results = self.adapter.search(q, top_k=10)
                 ids = {r.get("memory_id") for r in results[:10]}
                 if m["memory_id"] in ids: found += 1
@@ -182,7 +272,8 @@ class MemoryTestSuite:
             correct = 0
             for q in qs:
                 expected = set(q.get("expected_memory_ids", []))
-                results = self.adapter.search(q["query_text"], top_k=20)
+                query_text = q.get("query_text") or q.get("query", "")
+                results = self.adapter.search(query_text, top_k=20)
                 found = {r.get("memory_id") for r in results[:20]}
                 if found & expected: correct += 1
             return correct, len(qs)
@@ -200,7 +291,12 @@ class MemoryTestSuite:
             dist_map = {"近": "near", "中": "mid", "远": "far"}
             dist_raw = (m.get("depth") or {}).get("semantic_distance", "近")
             dist = dist_map.get(dist_raw, dist_raw)
-            q = m["versions"][0]["content"]
+            # Support both 'versions' list and plain 'content' string
+            versions = m.get("versions")
+            if versions:
+                q = versions[0].get("content", "")
+            else:
+                q = m.get("content", "")
             results = self.adapter.search(q, top_k=10)
             ids = {r.get("memory_id") for r in results[:10]}
             if m["memory_id"] in ids: result[dist][0] += 1
@@ -223,11 +319,25 @@ class JsonMemoryAdapter(MemoryAdapter):
         if mid: self.store_dict[mid] = memory_text
 
     def search(self, query: str, top_k: int = 20) -> list:
-        keywords = set(query.replace("，", " ").replace("？", " ").split())
+        # Simple keyword matching: English by whitespace, Chinese by character n-grams
+        import re
+        query = query.replace("，", " ").replace("？", " ").replace("。", " ")
+        # Collect keywords: English words (2+ chars) and single CJK characters
+        keywords = []
+        for token in query.split():
+            if re.search(r'[\u4e00-\u9fff]', token):
+                # CJK text: add each character as keyword
+                keywords.extend([c for c in token if re.search(r'[\u4e00-\u9fff]', c)])
+            elif len(token) >= 2:
+                keywords.append(token)
+        keywords = [k for k in set(keywords) if k]
+        if not keywords:
+            return []
         scored = []
         for mid, content in self.store_dict.items():
-            score = sum(1 for k in keywords if k in content) / max(len(keywords), 1)
-            if score > 0: scored.append({"memory_id": mid, "score": score, "content": content})
+            score = sum(1 for k in keywords if k in content) / len(keywords)
+            if score > 0:
+                scored.append({"memory_id": mid, "score": score, "content": content})
         scored.sort(key=lambda x: -x["score"])
         return scored[:top_k]
 
