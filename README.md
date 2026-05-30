@@ -57,7 +57,7 @@ print(report.summary())
 |---------|--------|-------|---------------|
 | `sample_db_100.json` | Procedural synthesis | 100 memories, ~50 queries | Included in repo |
 | `hp_benchmark_db.json` | Harry Potter series (English) | 1,626 memories, 133 queries (cleaned from 5,925) | Included in repo |
-| `four_novels_db.json` | Four Great Classical Novels (Chinese) | 4,058 memories, 187 queries (cleaned from 21,793) | Included in repo |
+| `four_novels_benchmark.json` | Four Great Classical Novels (Chinese) | 11,794 memories, 230 queries, 155 chains | Included in repo |
 | `test_db_10000.json` | `generator.py` | 10,000 memories, ~5,000 queries | `python generator.py --full` |
 | Custom | `knowledge_builder.py` | Any corpus | `python knowledge_builder.py <corpus_dir>` |
 
@@ -327,7 +327,7 @@ memtest/
 ├── _gen_and_test.py         # One-click generate & self-test
 ├── benchmark/               # Cleaned benchmark databases
 │   ├── hp_benchmark_db.json       # Harry Potter (English, 1,626 memories)
-│   ├── four_novels_db.json        # Four Classical Novels (Chinese, 4,058 memories)
+│   ├── four_novels_benchmark.json # Four Classical Novels (Chinese, 11,794 memories, 155 chains)
 │   └── tianlongbabu_db.json       # 天龙八部 (Chinese, 48 memories)
 ├── sample_db_100.json       # Sample database (100 memories)
 └── sample_queries.json      # Sample queries

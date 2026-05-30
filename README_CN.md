@@ -57,7 +57,7 @@ print(report.summary())
 |--------|------|------|----------|
 | `sample_db_100.json` | 程序合成 | 100 条记忆，50 条查询 | 仓库自带 |
 | `hp_benchmark_db.json` | 哈利波特系列（英文） | 1,626 条记忆，133 条查询（清洗自 5,925 条） | 仓库自带 |
-| `four_novels_db.json` | 中国四大名著（中文） | 4,058 条记忆，187 条查询（清洗自 21,793 条） | 仓库自带 |
+| `four_novels_benchmark.json` | 中国四大名著（中文） | 11,794 条记忆，230 条查询，155 条推理链 | 仓库自带 |
 | `test_db_10000.json` | `generator.py` 生成 | 10,000 条记忆，~5,000 条查询 | `python generator.py --full` |
 | 自定义 | `knowledge_builder.py` | 任意语料 | `python knowledge_builder.py <语料目录>` |
 
@@ -247,7 +247,7 @@ memtest/
 ├── _gen_and_test.py         # 一键生成 & 自测
 ├── benchmark/               # 清洗后的评测数据库
 │   ├── hp_benchmark_db.json       # 哈利波特（英文，1,626 条记忆）
-│   ├── four_novels_db.json        # 四大名著（中文，4,058 条记忆）
+│   ├── four_novels_benchmark.json # 四大名著（中文，11,794 条记忆，155 条推理链）
 │   └── tianlongbabu_db.json       # 天龙八部（中文，48 条记忆）
 ├── sample_db_100.json       # 样例数据库（100 条记忆）
 └── sample_queries.json      # 样例查询
