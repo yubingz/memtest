@@ -1,371 +1,132 @@
-# MemTest
+# MemTest — 测试库生成工具
 
-> A framework-agnostic benchmark toolkit for AI memory systems. Plug in any memory store, get a full evaluation report.
+从程序化合成或真实文本提取，生成标准化的 AI 记忆系统评测数据库。
 
-[中文文档](README_CN.md) | [📖 Full Documentation](GUIDE.md)
-
----
-
-## ⚠️ Security Notice
-
-**Never commit API keys to Git.** This repo includes `.env` in `.gitignore`, but always double-check before pushing. If you accidentally commit a key, revoke it immediately on the provider's platform.
-
----
-
-## Why MemTest?
-
-AI agents increasingly rely on long-term memory — but how do you know if your memory system actually *works*? Most teams evaluate retrieval with ad-hoc scripts that couple test data to a specific backend. MemTest decouples them:
-
-- **Write once, benchmark anywhere** — the same test suite runs against any memory system
-- **6 evaluation dimensions** — not just recall, but storage integrity, clustering, forgetting, reasoning, and depth
-- **Zero dependencies** — pure Python stdlib + JSON. No framework lock-in, no install hell
-- **Synthetic or real data** — procedural generator for 10K+ test cases, or build from your own corpus
-
-## Quick Start
-
-```python
-from runner import MemoryTestSuite, MemoryAdapter, load_test_db
-
-# 1. Implement 3 methods for your memory system
-class MyAdapter(MemoryAdapter):
-    def reset(self):
-        self.db.clear()
-
-    def store(self, memory_text: str, metadata: dict):
-        self.db.insert(text=memory_text, **metadata)
-
-    def search(self, query: str, top_k: int = 20) -> list[dict]:
-        return self.db.query(query, limit=top_k)
-
-# 2. Load test data & run
-db = load_test_db("sample_db_100.json")
-suite = MemoryTestSuite(MyAdapter())
-report = suite.run(db)
-print(report.summary())
-```
-
-## Evaluation Dimensions
-
-| Dimension | What it measures | Key metric |
-|-----------|-----------------|------------|
-| **Storage Integrity** | Are all memories and their 3 stylistic versions successfully written? | `stored / total` (ideal: 300%) |
-| **Retrieval Precision/Recall** | 5 query types (person/location/event/time/composite). Time queries require relative time computation. | Precision, Recall by type |
-| **Organization/Clustering** | Are semantically related memories grouped together? Does retrieving one surface its cluster-mates? | Cluster accuracy |
-| **Forgetting** | Are high-frequency memories retained over low-frequency ones? Does forgetting have directionality? | `high_freq > low_freq` |
-| **Reasoning** | Multi-constraint cross queries and multi-hop chain reasoning. Can the system connect across memories? | Logic/chain accuracy |
-| **Deep Retrieval** | 1-2 year old memories: how does recall decay across near/mid/far semantic distance? | Near / Mid / Far recall |
-
-> 📖 For design rationale, scoring formulas, result interpretation, and extension guide, see [GUIDE.md](GUIDE.md)
-
-## Test Data
-
-| Dataset | Source | Scale | How to get it |
-|---------|--------|-------|---------------|
-| `sample_db_100.json` | Procedural synthesis | 100 memories, ~50 queries | Included in repo |
-| `hp_benchmark_db.json` | Harry Potter series (English) | 1,626 memories, 133 queries (cleaned from 5,925) | Included in repo |
-| `four_novels_benchmark.json` | Four Great Classical Novels (Chinese) | 11,794 memories, 230 queries, 155 chains | Included in repo |
-| `test_db_10000.json` | `generator.py` | 10,000 memories, ~5,000 queries | `python generator.py --full` |
-| Custom | `knowledge_builder.py` | Any corpus | `python knowledge_builder.py <corpus_dir>` |
-
-### Procedural Generator
-
-```bash
-python generator.py              # 100-sample (quick)
-python generator.py --full       # 10,000 full-scale
-python generator.py --size 500   # Custom size
-```
-
-6 categories distributed evenly (~17% each). Every memory includes 3 stylistic versions to test paraphrase robustness.
-
-### Knowledge Builder
-
-Build a test database from any text corpus (novels, documentation, conversation logs) using LLM-powered fact extraction:
-
-```bash
-# Prerequisites: create .env with your API key
-echo "DEEPSEEK_API_KEY=sk-your-key-here" > .env
-
-# Basic usage (auto-detect language)
-python knowledge_builder.py /path/to/corpus
-
-# Specify language explicitly
-python knowledge_builder.py /path/to/corpus output.json --lang en
-python knowledge_builder.py /path/to/corpus output.json --lang zh
-
-# Incremental mode (appends to existing database)
-python knowledge_builder.py /path/to/corpus output.json --merge
-python knowledge_builder.py /path/to/corpus output.json --merge
-```
-
-**Corpus requirements:**
-- **Format**: Markdown (`.md`) files organized in directories. Other formats (`.txt`, `.pdf`) are not supported — convert to `.md` first.
-- **Language**: Chinese (`zh`) and English (`en`) supported. Use `--lang zh` or `--lang en` to specify, or `--lang auto` (default) to auto-detect from corpus content.
-- **File size**: Each file must be ≥ 500 characters (shorter files are skipped). Content beyond the first 3,000 characters per file is not processed — for long texts, split into chapter-sized `.md` files.
-- **Structure**: One file per chapter/section works best. Directory names are used as category labels.
-- **API dependency**: Requires a [DeepSeek API key](https://platform.deepseek.com/) (or any OpenAI-compatible API endpoint). Costs ~$0.01-0.05 per file depending on length.
-
-**What it does:**
-1. **Fact extraction**: LLM extracts structured facts (person, location, time, era, event_type) from each text
-2. **Field validation**: LLM classifies ambiguous fields (e.g., is "东晋" a dynasty or a location? Is "Victorian" an era or a location?)
-3. **Memory construction**: Normalizes facts into standardized memory entries with metadata
-4. **Data cleaning**: Three-step deduplication and balancing pipeline (see below)
-5. **Query generation**: Creates 6 query types (person, location, event, time, composite, chain) balanced across categories
-6. **LLM pre-cache**: Pre-resolves queries into structured search parameters for reproducible evaluation
-
-**Data cleaning pipeline** (Step 4) — a key innovation for novel-based corpora:
-
-Novel-based benchmark databases suffer from two systematic biases that inflate database size and distort evaluation:
-
-- **Protagonist dominance**: In Harry Potter, the protagonist appears in 81.7% of memories; in Dream of the Red Chamber, 贾宝玉 accounts for 1,182 entries. This floods keyword search with irrelevant matches.
-- **Cross-perspective duplication**: The same event ("Voldemort's rebirth") is described separately by 5+ characters, producing near-identical memories that all match the same query.
-
-Our three-step cleaning pipeline addresses both:
-
-| Step | Method | Effect |
-|------|--------|--------|
-| **Exact dedup** | Remove memories with identical content | +626 removed in HP benchmark |
-| **Cross-perspective dedup** | Union-find clustering by Jaccard similarity (>60% overlap across different persons), keep the most detailed per cluster | +641 removed in HP, +26 in Four Novels |
-| **Person balance** | Cap memories per person (key persons: 60, others: 30), with diversity-aware sampling across event_type × book | Harry Potter: 1,393 → 60 |
-
-**Cleaning results across databases:**
-
-| Database | Before | After | Exact dups | Cross-persp dups | Person-capped |
-|----------|--------|-------|------------|-------------------|---------------|
-| HP (English) | 5,925 mems / 200 queries | 1,626 / 133 | 626 | 641 → 0* | 3,673 |
-| Four Novels (Chinese) | 21,793 / 750 | 4,058 / 187 | 90 | 26 | 17,619 |
-| 天龙八部 (Chinese) | 48 / 33 | 48 / 24 | 0 | 0 | 0 |
-
-*\*Cross-perspective dedup for HP is applied after exact dedup in the full pipeline; the standalone HP clean run shows 0 because exact dedup already removed them.*
-
-**Clean existing databases without re-extraction:**
-```bash
-# Apply cleaning to an existing benchmark database
-python knowledge_builder.py hp_benchmark_db.json --clean
-python knowledge_builder.py hp_benchmark_db.json --clean hp_benchmark_cleaned.json  # custom output path
-```
-
-**Why cleaning matters for fair evaluation:** In our CausaMem evaluation, the uncleaned HP benchmark showed BM25 P@20 of only 4.8% — not because retrieval was poor, but because 81.7% of memories contained "Harry", drowning relevant results in noise. After cleaning, BM25 Hit@20 improved from 62.5% to 76.5%, and the evaluation fairly reflected actual system capability.
-
-**Output quality tips:**
-- Narrative texts (novels, biographies) produce the richest structured data
-- Technical documentation works but may have fewer person/location fields
-- Very short or very long files produce lower-quality extractions — aim for 500-3000 chars per file
-- Review the output and manually correct any misclassified fields
-
-Tested with the Four Great Classical Novels of Chinese literature (4,058 memories, 187 queries (cleaned from 21,793)). See [benchmark results](#benchmark-results).
-
-### Harry Potter Benchmark (`hp_benchmark_db.json`)
-
-An English-language memory retrieval benchmark built from the Harry Potter series, covering all 7 books. Generated with hand-crafted core events and programmatic expansion.
-
-**Statistics (after cleaning):**
-- 1,626 memories across 7 books (cleaned from 5,925 — removed 626 exact duplicates, 641 cross-perspective duplicates, and capped protagonist-dominated entries)
-- 133 queries across 8 types (balanced from 200 — each character capped at 15 queries)
-- 3 six-hop logical chains tracing major plot arcs (Prophecy, Horcruxes, Snape/Dumbledore)
-- Difficulty: Easy 52% / Medium 42% / Hard 6%
-
-**Why cleaning was necessary:** In the original 5,925-memory database, "Harry" appeared in 81.7% of memories, and the same event was described by 5+ characters, producing near-identical entries. This made keyword-based retrieval essentially random (BM25 P@20 = 4.8%). After cleaning, BM25 Hit@20 improved from 62.5% to 76.5%.
-
-**Memory fields:** `memory_id`, `content`, `person`, `location`, `time`, `era`, `event_type`, `book`, `house`, `tags`, `difficulty`
-
-**Usage:**
-```python
-from runner import MemoryTestSuite, MemoryAdapter, load_test_db
-
-db = load_test_db("hp_benchmark_db.json")
-suite = MemoryTestSuite(MyAdapter())
-report = suite.run(db)
-```
-
-**Quality assurance:** Zero template-generated content, zero cross-book errors, all memories ≥20 words. Every event is canon-accurate.
-
-**BM25 baseline results (cleaned database):**
-
-| Metric | Uncleaned (5,925 mems) | Cleaned (1,626 mems) |
-|--------|:---------------------:|:-------------------:|
-| Precision@20 | 4.8% | 5.7% |
-| Hit Rate@20 | 62.5% | 76.5% |
-| MRR@20 | 0.261 | 0.332 |
-
-The uncleaned database's low scores are an artifact of protagonist dominance and cross-perspective duplication, not retrieval difficulty. The cleaned benchmark provides a fair evaluation baseline.
-
-
-### Preparing Your Corpus
-
-The knowledge builder requires `.md` files as input. Here's how to prepare common source materials:
-
-**From novels/books (recommended for best results):**
-
-1. **Obtain the text** — Public domain sources:
-   - Chinese: [古登堡计划中文区](https://www.gutenberg.org/browse/languages/zh), [维基文库](https://zh.wikisource.org/), [中国哲学书电子化计划](https://ctext.org/)
-   - English: [Project Gutenberg](https://www.gutenberg.org/), [Wikisource](https://en.wikisource.org/), [Standard Ebooks](https://standardebooks.org/)
-   - For copyrighted works, you'll need your own licensed copy
-2. **Split into chapter-level files** — One `.md` file per chapter or section:
-   ```bash
-   # Example: split a large text file by chapter markers
-   # For Chinese novels with "第X回" chapter headers:
-   python -c "
-   import re
-   with open('novel.txt', encoding='utf-8') as f: text = f.read()
-   chapters = re.split(r'(?=第.{1,3}[回章节])', text)
-   for i, ch in enumerate(chapters):
-       if len(ch.strip()) >= 500:
-           with open(f'chapter_{i:03d}.md', 'w', encoding='utf-8') as out:
-               out.write(ch.strip())
-   "
-   # For English novels with "Chapter X" headers:
-   python -c "
-   import re
-   with open('novel.txt', encoding='utf-8') as f: text = f.read()
-   chapters = re.split(r'(?=Chapter \d+)', text, flags=re.IGNORECASE)
-   for i, ch in enumerate(chapters):
-       if len(ch.strip()) >= 500:
-           with open(f'chapter_{i:03d}.md', 'w', encoding='utf-8') as out:
-               out.write(ch.strip())
-   "
-   ```
-3. **Organize in directories** — Directory names become category labels:
-   ```
-   my_corpus/
-   ├── book_one/
-   │   ├── chapter_001.md
-   │   ├── chapter_002.md
-   │   └── ...
-   └── book_two/
-       ├── chapter_001.md
-       └── ...
-   ```
-
-**From other formats:**
-
-| Source | How to convert |
-|--------|---------------|
-| `.txt` | Simply rename to `.md`, or `cp novel.txt novel.md` |
-| `.pdf` | Use `pandoc book.pdf -t markdown -o book.md`, then split by chapter |
-| `.epub` | Use `pandoc book.epub -t markdown -o book.md`, then split |
-| `.docx` | Use `pandoc book.docx -t markdown -o book.md`, then split |
-| Web articles | Use browser extensions or `pandoc -f html -t markdown URL -o article.md` |
-
-**Important:**
-- Each file must be **≥ 500 characters** (shorter files are skipped)
-- Only the **first 3,000 characters** per file are processed — split long chapters into smaller sections
-- Aim for **500–3,000 characters per file** for optimal extraction quality
-- Narrative texts (novels, biographies) produce the richest structured data
-
-**Quick test with a single article:**
-```bash
-# Save any text as .md (must be ≥ 500 chars)
-echo "Your article content here (at least 500 characters)..." > test_article.md
-mkdir test_corpus && mv test_article.md test_corpus/
-python knowledge_builder.py test_corpus/ test_output.json --lang en
-```
-
-
-## Benchmark Results
-
-The following results are from our custom-built **NOESIS-II** memory system, evaluated against the Four Classical Novels dataset (11,794 unique memories, 577 queries). The TF-IDF and ST results use a 500-query random sample; the LLM Rerank result uses a 100-query random sample, all with top-20 retrieval.
-
-**Evaluation method**: A retrieved memory is considered relevant if the target entity (person, location, event, dynasty) appears in its content. This ensures fair comparison — e.g., "Daiyu and Baoyu chatting" counts as a correct result for both "Daiyu" and "Baoyu" queries.
-
-| Method | Precision@20 | Recall@20 | MRR@20 |
-|--------|:------------:|:---------:|:------:|
-| jieba + SQL LIKE | ~2% | ~2% | N/A |
-| TF-IDF + jieba + Cosine | 49.6% | 83.2% | 0.862 |
-| Sentence-Transformers (MiniLM) | 9.1% | 12.4% | 0.201 |
-| **LLM Rerank (TF-IDF → LLM)** | **87.0%** | **84.9%** | **0.923** |
-
-**Multi-K comparison (TF-IDF vs LLM Rerank)**:
-
-| K | TF-IDF P@K | LLM P@K | TF-IDF R@K | LLM R@K | TF-IDF MRR | LLM MRR |
-|---|:----------:|:-------:|:----------:|:-------:|:----------:|:-------:|
-| 5 | 72.6% | **83.4%** | 75.9% | **86.7%** | 0.858 | **0.911** |
-| 10 | 61.9% | **69.7%** | 75.6% | **83.9%** | 0.859 | **0.911** |
-| 15 | 54.5% | **59.9%** | 78.6% | **84.7%** | 0.859 | **0.911** |
-| 20 | 49.1% | **52.6%** | 81.5% | **85.5%** | 0.859 | **0.911** |
-
-> LLM reranking improves precision at every K level, with the largest gain at K=5 (+10.8pp). This means LLM is especially effective at pushing the most relevant results to the top.
-
-**Breakdown by query type (LLM Rerank vs TF-IDF)**:
-
-| Query Type | TF-IDF P@20 | LLM P@20 | TF-IDF R@20 | LLM R@20 |
-|-----------|:-----------:|:--------:|:-----------:|:--------:|
-| Person | 67.0% | 90.5% | 90.3% | 87.6% |
-| Location | 39.8% | 92.8% | 76.6% | 88.2% |
-| Event | 41.9% | 80.9% | 82.6% | 80.8% |
-| Time | 60.0% | 93.8% | 92.5% | 100.0% |
-| Composite | 51.0% | 70.0% | 51.0% | 70.0% |
-
-**Breakdown by novel (LLM Rerank vs TF-IDF)**:
-
-| Novel | TF-IDF P@20 | LLM P@20 | TF-IDF R@20 | LLM R@20 |
-|-------|:-----------:|:--------:|:-----------:|:--------:|
-| Water Margin | 60.0% | 90.3% | 86.3% | 87.1% |
-| Journey to the West | 52.8% | 98.9% | 78.0% | 98.3% |
-| Romance of the Three Kingdoms | 42.0% | 84.6% | 81.1% | 82.1% |
-| Dream of the Red Chamber | 62.5% | 85.0% | 79.2% | 85.0% |
-
-**Method details**:
-- **jieba + SQL LIKE**: Query tokenized via jieba, multi-token OR LIKE clauses against NOESIS-II's SQLite, top-20
-- **TF-IDF + jieba + Cosine**: Structured content (person + event + location + dynasty + text) tokenized via jieba, TF-IDF matrix with cosine similarity, top-20
-- **Sentence-Transformers**: `paraphrase-multilingual-MiniLM-L12-v2` (384d) encoding the same structured content, cosine similarity, top-20
-- **LLM Rerank (TF-IDF → LLM)**: Two-stage pipeline — TF-IDF retrieves top-50 candidates, then a large language model (via Coze session API) reranks them by relevance, top-20 selected from reranked list
-
-**Key findings**:
-1. **Keyword matching is broken** — jieba + SQL LIKE at 2% recall is essentially non-functional for semantic retrieval
-2. **TF-IDF + jieba is a strong baseline** — 83.2% recall proves that proper tokenization + term frequency matching works well for entity-oriented queries
-3. **MiniLM underperforms on Chinese classical text** — the multilingual paraphrase model (9.1% precision) fails at entity-level discrimination
-4. **LLM reranking is transformative** — precision nearly doubles from 49.6% to 87.0% while recall stays comparable (83.2% → 84.9%), confirming that a large model can effectively identify relevant memories from candidate sets
-5. **Two-stage retrieval (retriever + reranker) is the practical winner** — combining TF-IDF's high recall with LLM's precision yields the best overall performance (MRR 0.923)
-
-
-## Project Structure
+## 架构
 
 ```
 memtest/
-├── README.md                # This file
-├── README_CN.md             # Chinese documentation
-├── GUIDE.md                 # Full documentation (English)
-├── GUIDE_CN.md              # Full documentation (Chinese)
-├── API.md                   # Adapter interface & data schema
-├── generator.py             # Procedural test data generator
-├── knowledge_builder.py     # Corpus -> test database builder (with --clean mode)
-├── runner.py                # Benchmark runner & MemoryAdapter base class
-├── _gen_and_test.py         # One-click generate & self-test
-├── benchmark/               # Cleaned benchmark databases
-│   ├── hp_benchmark_db.json       # Harry Potter (English, 1,626 memories)
-│   ├── four_novels_benchmark.json # Four Classical Novels (Chinese, 11,794 memories, 155 chains)
-│   └── tianlongbabu_db.json       # 天龙八部 (Chinese, 48 memories)
-├── sample_db_100.json       # Sample database (100 memories)
-└── sample_queries.json      # Sample queries
+├── llm_interface.py          # LLM 接口抽象层（可替换为任意模型）
+├── generator.py               # 测试库生成器（程序化 / LLM增强）
+├── knowledge_builder.py       # 从文本提取知识构建测试库
+├── prompts/                   # 提示词模板（可热更新）
+│   ├── memory_enhance.md      # 生成记忆的3种表达变体
+│   ├── query_generate.md      # 生成查询变体
+│   └── fact_extract.md        # 从文本提取结构化事实
+├── benchmarks/                # 已有 benchmark 数据（可选）
+└── .env                       # API key（见 .env.example）
 ```
 
-## API Reference
+## 快速开始
 
-See [API.md](API.md) for the full adapter interface specification and data schema.
+### 1. 程序化生成（零依赖，秒级）
 
-### Minimal Adapter
+```bash
+python generator.py              # 生成 100 条记忆 + 50 条查询
+python generator.py --size=500   # 自定义规模
+python generator.py --full       # 生成 10000 条
+```
 
-You only need to implement three methods:
+输出：`sample_db_100.json`（标准 MemTest 格式）
+
+### 2. LLM 增强生成（更自然）
+
+```bash
+# 配置 API key
+cp .env.example .env
+# 编辑 .env，填入 DEEPSEEK_API_KEY=...
+
+python generator.py --llm        # LLM 生成记忆文本和查询
+```
+
+### 3. 从真实文本提取
+
+```bash
+python knowledge_builder.py ./my_books/ output.json
+```
+
+输入：Markdown 文章目录  
+输出：含 facts + chains + queries 的标准数据库
+
+## LLM 接口
+
+所有 LLM 调用通过 `llm_interface.py` 统一接口，支持：
+
+| 适配器 | 说明 | 用法 |
+|--------|------|------|
+| `deepseek` | DeepSeek API（默认） | `create_llm("deepseek")` |
+| `openai` | 任意 OpenAI-compatible | `create_llm("openai", api_key="", base_url="", model="")` |
+| `mock` | 本地模拟（离线测试） | `create_llm("mock")` |
+
+自定义适配器：
 
 ```python
-class MemoryAdapter:
-    def reset(self):
-        """Clear the memory store before each test run."""
-        
-    def store(self, memory_text: str, metadata: dict):
-        """Store a memory with standard metadata."""
-        
-    def search(self, query: str, top_k: int = 20) -> list[dict]:
-        """Search memories. Return [{"memory_id": str, "score": float, "content": str}, ...]"""
+from llm_interface import LLMInterface
+
+class MyAdapter(LLMInterface):
+    def generate(self, prompt, max_tokens=3000, temperature=0, system_prompt=""):
+        # 你的模型调用逻辑
+        return "..."
 ```
 
-## Contributing
+## 提示词系统
 
-Contributions welcome — especially:
-- New test data generators (domain-specific corpora)
-- Adapter implementations for popular memory systems
-- Evaluation dimension extensions
+所有提示词放在 `prompts/` 目录，支持热更新：
 
-## License
+- `memory_enhance.md` — 让 LLM 生成同一事件的3种表达风格（标准/详细/口语）
+- `query_generate.md` — 让 LLM 从记忆生成多样化查询
+- `fact_extract.md` — 让 LLM 从长文本提取结构化事实
+
+提示词文件不存在时自动回退到内联提示词。
+
+## 数据格式
+
+标准 MemTest JSON 包含：
+
+```json
+{
+  "database_info": { ... },
+  "memories": [
+    {
+      "memory_id": "MEM000001",
+      "category": "检索功能测试集",
+      "difficulty": "中等",
+      "time": { "absolute": "...", "relative": "...", "fuzzy": "..." },
+      "location": { "city": "...", "place": "...", "landmark": "..." },
+      "person": { "name": "...", "identity": "..." },
+      "event": { "type": "...", "action": "...", "product": "..." },
+      "versions": [
+        { "version_id": "v1", "style": "标准叙述", "content": "..." },
+        { "version_id": "v2", "style": "详细描述", "content": "..." },
+        { "version_id": "v3", "style": "口语化", "content": "..." }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "query_id": "Q0001",
+      "query_text": "张伟在北京的购买记录",
+      "query_type": "组合检索",
+      "expected_memory_ids": ["MEM000001"]
+    }
+  ]
+}
+```
+
+## 安全
+
+- `.env` 已加入 `.gitignore`，API key 不会意外提交
+- 路径遍历防护：知识构建器拒绝 `/etc`、`/root` 等系统目录
+- JSON payload 大小限制：默认 2MB 上限
+
+## 测试
+
+```bash
+python -m py_compile generator.py
+python -m py_compile knowledge_builder.py
+python -m py_compile llm_interface.py
+```
+
+## 许可
 
 MIT

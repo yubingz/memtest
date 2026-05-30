@@ -1,90 +1,82 @@
 #!/usr/bin/env python3
-"""
-MemTest 测试数据库生成器 — 零依赖，纯程序化合成
-生成 6 大类记忆测试数据 + 配套查询，输出标准 JSON。
-输出可直接喂给任意 MemoryAdapter 做评测。
+"""MemTest 测试数据库生成器 — 支持纯程序化合成 和 LLM增强生成
+
+模式:
+  --mock (默认): 纯程序化，零依赖，秒级生成
+  --llm:          LLM增强生成，记忆文本更自然，查询更多样
 
 用法:
-    python generator.py             # 生成 sample_db_100.json + sample_queries.json
-    python generator.py --full      # 生成全量 test_db_10000.json
-    python generator.py --size 500  # 自定义规模
+    python generator.py              # 程序化生成 sample_db_100.json
+    python generator.py --llm        # LLM增强生成（需要 DEEPSEEK_API_KEY）
+    python generator.py --size=500   # 自定义规模
+    python generator.py --full        # 生成10000条（程序化）
 """
 
-import json
-import random
-import hashlib
+import json, random, os, sys
 from datetime import datetime, timedelta
-from typing import List, Dict, Any
+from typing import List, Optional, Dict
 
-random.seed(42)  # 可复现
+random.seed(42)
 
 # ====== 数据池 ======
-CITIES = [
-    "北京","上海","深圳","广州","杭州","成都","武汉","西安","南京","苏州",
-    "天津","重庆","青岛","长沙","郑州","东莞","佛山","宁波","无锡","济南",
-    "合肥","福州","厦门","沈阳","大连","哈尔滨","长春","南昌","昆明","贵阳",
-    "石家庄","太原","呼和浩特","兰州","银川","西宁","乌鲁木齐","海口","三亚","拉萨",
-    "珠海","中山","惠州","汕头","江门","湛江","茂名","肇庆","清远","潮州",
-    "柳州","桂林","梧州","北海","钦州","贵港","玉林","百色","河池","来宾",
-    "绵阳","德阳","南充","宜宾","泸州","达州","乐山","内江","遂宁","自贡",
-    "昆山","常熟","张家港","太仓","江阴","宜兴","邳州","新沂","溧阳","句容",
-    "慈溪","余姚","义乌","东阳","永康","诸暨","海宁","桐乡","平湖","瑞安",
-    "温岭","玉环","龙港","乐清","苍南","晋江","石狮","南安","惠安","安溪"
-]
+CITIES = ["北京","上海","深圳","广州","杭州","成都","武汉","西安","南京","苏州"]
+PLACES = ["星巴克","肯德基","海底捞","全聚德","万达广场","太古里","公司办公室"]
+LANDMARKS = ["CBD核心区","科技园区","金融中心","地铁站"]
+NAMES = ["张伟","王芳","李明","刘洋","陈静","杨勇","赵丽","周强"]
+IDENTITIES = ["项目经理","软件工程师","产品经理","设计师","销售经理"]
+RELATIONS = ["同事","上级","下属","朋友","客户","合作伙伴"]
+EVENT_TYPES = {"交易":["购买","出售","投资","转账"],"会议":["召开","参加","主持"],"日常":["上班","出差","拜访"]}
+PRODUCTS = ["茅台","苹果股票","特斯拉","比亚迪","宁德时代","腾讯","阿里"]
 
-PLACES = [
-    "星巴克","肯德基","麦当劳","海底捞","全聚德","外婆家","绿茶餐厅","西贝莜面村",
-    "瑞幸咖啡","喜茶","奈雪的茶","一点点","CoCo都可","蜜雪冰城",
-    "万达广场","万象城","太古里","ifs国金中心","大悦城","龙湖天街","来福士",
-    "盒马鲜生","永辉超市","山姆会员店","麦德龙","家乐福","沃尔玛","大润发",
-    "故宫","长城","颐和园","西湖","黄山","泰山","兵马俑","外滩","东方明珠",
-    "公司办公室","会议室A","会议室B","茶水间","休息室","健身房","停车场"
-]
 
-LANDMARKS = [
-    "CBD核心区","科技园区","创业大厦","金融中心","商业综合体","居民小区",
-    "大学校园","中学门口","小学门口","幼儿园","医院大厅","社区卫生站",
-    "银行网点","ATM机","地铁站","公交站","高铁站","机场航站楼","加油站",
-    "公园入口","体育馆","图书馆","博物馆","剧院","电影院","网吧","棋牌室",
-    "健身房","游泳馆"
-]
+def load_prompt(name: str) -> str:
+    """从 prompts/ 目录加载提示词模板。"""
+    paths = [
+        f"prompts/{name}.md",
+        os.path.join(os.path.dirname(__file__), "prompts", f"{name}.md"),
+    ]
+    for p in paths:
+        try:
+            with open(p, encoding="utf-8") as f:
+                return f.read()
+        except (OSError, IOError):
+            pass
+    # Fallback: 返回内联提示词
+    return _INLINE_PROMPTS.get(name, "")
 
-NAMES = [
-    "张伟","王芳","李明","刘洋","陈静","杨勇","赵丽","周强","吴敏","郑鹏",
-    "孙杰","马超","朱婷","胡磊","郭峰","林雪","何涛","高建","罗欢","梁志",
-    "宋雨","唐军","许飞","韩冰","邓伟","冯磊","于娜","董洁","潘阳","蒋伟",
-    "蔡明","余涛","杜鹃","苏敏","魏强","卢杰","姜丽","阎峰","薛磊","孟莉",
-    "常琪","顾瑶","武毅","贺文","赖勇","邦达","申然","盛天","牛博","洪峰",
-    "师倩","於洋","龚伟","祁坚","缪磊","施雨","孔祥","曹华","严军","苏醒",
-    "单丹","乔磊","楚雷","楚雨","楚阳","钱伟","储勇","焦强","籍磊","窦莉",
-    "章娜","麦朵","庄潇","柴明","蒙杰","桂峰","聂攀","晁哲","哈丹","元华",
-    "卜顾","孟平","谷梁","谭勋","官恩","荆孝","巫丹","仇嵩","栾朵","戚谢",
-    "邹游","储梅","喻理","柏林","和水","窦章","桑菜","应华","宗政","蒲团"
-]
 
-IDENTITIES = [
-    "项目经理","软件工程师","产品经理","设计师","销售经理","市场专员","财务主管",
-    "HR经理","运营总监","客户经理","数据分析师","算法工程师","测试工程师","架构师",
-    "CTO","CEO","COO","CFO","总监","大学教授","中学老师","医生","律师","咨询师"
-]
+# ====== 内联提示词（当 prompts/ 目录不可用时回退） ======
+_INLINE_PROMPTS = {
+    "memory_enhance": """给定以下结构化记忆，生成同一事件的3种不同表达风格。
 
-RELATIONS = [
-    "同事","上级","下属","平级","朋友","闺蜜","兄弟","同学","客户","合作伙伴"
-]
+输入: {"person": "{person}", "identity": "{identity}", "location": "{location}", "event": "{event}", "time": "{time}"}
 
-EVENT_TYPES = {
-    "交易": ["购买","出售","投资","转账","退款"],
-    "会议": ["召开","参加","主持","复盘"],
-    "决策": ["批准","否决","确认"],
-    "日常": ["上班","出差","加班","拜访","接待"],
-    "技术": ["开发","测试","上线","发布"],
-    "情感": ["庆祝","感谢","祝福"]
+输出JSON格式: {"versions": [{"style":"标准叙述","content":"..."},{"style":"详细描述","content":"..."},{"style":"口语化","content":"..."}]}
+
+规则：
+1. 三种风格描述同一事件，核心事实一致
+2. 不要编造未提供的信息
+3. 每种版本30-120字，中文""",
+
+    "query_generate": """给定以下记忆，生成5种查询方式。
+
+输入: {"person": "{person}", "location": "{location}", "event": "{event}", "time": "{time}"}
+
+输出JSON格式: {"queries": [{"query_type":"人物检索","query_text":"...","difficulty":"简单"}, ...]}
+
+查询类型: 人物检索、地点检索、时间检索、事件检索、组合检索
+难度: 简单(单一维度)、中等(两个维度)、困难(3+维度)
+不要直接复制原文，要换一种表达""",
 }
 
-PRODUCTS = [
-    "茅台","五粮液","苹果股票","特斯拉","比亚迪","宁德时代","腾讯","阿里",
-    "字节跳动","京东","美团","百度","小米","华为","比特币","以太坊","黄金"
-]
+
+def _prompt_from_template(template_name: str, **kwargs) -> str:
+    """用kwargs填充提示词模板中的占位符。"""
+    prompt = load_prompt(template_name)
+    for key, val in kwargs.items():
+        prompt = prompt.replace("{" + key + "}", str(val))
+    return prompt
+
 
 # ====== 时间生成 ======
 def time_desc(days_ago: int) -> str:
@@ -96,15 +88,16 @@ def time_desc(days_ago: int) -> str:
     return f"{days_ago//365}年前"
 
 def fuzzy_time(days_ago: int) -> str:
-    opts = {0:"今天",1:"昨天",3:"前几天",7:"上周",14:"两周前",30:"上个月",
-            60:"两个月前",90:"三个月前",180:"半年前",365:"去年",730:"很久以前"}
+    opts = {0:"今天",1:"昨天",3:"前几天",7:"上周",30:"上个月",90:"三个月前",180:"半年前",365:"去年"}
     fuzz = "以前"
     for d, opt in sorted(opts.items(), reverse=True):
         if days_ago >= d: fuzz = opt; break
     return fuzz
 
+
 # ====== 版本生成 ======
-def make_versions(base: dict) -> list:
+def make_versions_programmatic(base: dict) -> list:
+    """程序化生成3种表达（默认，零依赖）。"""
     dt = base["base_time"]
     return [
         {"version_id": "v1", "style": "标准叙述",
@@ -115,10 +108,121 @@ def make_versions(base: dict) -> list:
          "content": f"在{base['city']}出差的{base['person1']}，{dt.day}号那天{base['action']}了{base['product']}，搞了{base['quantity']}份"}
     ]
 
+def make_versions_llm(base: dict, llm) -> list:
+    """LLM增强生成3种表达（更自然，需要API key）。"""
+    prompt = _prompt_from_template(
+        "memory_enhance",
+        person=base["person1"],
+        identity=base["identity1"],
+        location=f"{base['city']} {base['place']}",
+        event=f"{base['action']} {base['product']} {base['quantity']}股",
+        time=base["base_time"].strftime("%Y-%m-%d"),
+    )
+    result = llm.generate_json(prompt, max_tokens=1500, temperature=0.3)
+    versions = result.get("versions", [])
+    if not versions:
+        # LLM失败，回退到程序化
+        return make_versions_programmatic(base)
+    # 标准化
+    for i, v in enumerate(versions):
+        v["version_id"] = f"v{i+1}"
+    return versions
+
+
+# ====== 查询生成 ======
+QUERY_TEMPLATES = {
+    "时间检索": lambda m: [
+        f"查找{m['time']['relative']}发生的事情",
+        f"查询{m['time']['fuzzy']}在{m['location']['city']}的相关记录",
+    ],
+    "地点检索": lambda m: [
+        f"在{m['location']['city']}{m['location']['place']}发生过什么",
+        f"查询{m['location']['landmark']}的相关记忆",
+    ],
+    "人物检索": lambda m: [
+        f"{m['person']['name']}最近做了什么",
+        f"查询{m['person']['name']}的{m['person']['identity']}相关活动",
+    ],
+    "事件检索": lambda m: [
+        f"关于{m['event']['product']}的事件有哪些",
+        f"查询{m['event']['action']}相关的记录",
+    ],
+    "组合检索": lambda m: [
+        f"{m['person']['name']}在{m['location']['city']}的{m['event']['action']}记录",
+        f"查询{m['time']['relative']}{m['person']['name']}在{m['location']['place']}的{m['event']['type']}事件",
+    ]
+}
+
+def generate_queries_programmatic(memories: list, count: int = 100) -> list:
+    """程序化生成查询（默认）。"""
+    queries = []
+    selected = random.sample(memories, min(count, len(memories)))
+    for i, m in enumerate(selected):
+        qtype = random.choice(list(QUERY_TEMPLATES.keys()))
+        templates = QUERY_TEMPLATES[qtype](m)
+        queries.append({
+            "query_id": f"Q{i+1:04d}",
+            "query_text": random.choice(templates),
+            "query_type": qtype,
+            "expected_memory_ids": [m["memory_id"]],
+            "expected_answer": m["versions"][0]["content"],
+            "difficulty": m["difficulty"],
+            "search_depth": random.choice(["浅层","中层","深层"])
+        })
+    return queries
+
+def generate_queries_llm(memories: list, count: int = 100, llm=None) -> list:
+    """LLM增强生成查询（更自然多样，需要API key）。"""
+    if llm is None:
+        return generate_queries_programmatic(memories, count)
+    queries = []
+    selected = random.sample(memories, min(count, len(memories)))
+
+    for i, m in enumerate(selected):
+        prompt = _prompt_from_template(
+            "query_generate",
+            person=m["person"]["name"],
+            location=f"{m['location']['city']} {m['location']['place']}",
+            event=f"{m['event']['action']} {m['event']['product']}",
+            time=m["time"]["relative"],
+        )
+        result = llm.generate_json(prompt, max_tokens=1200, temperature=0.3)
+        qs = result.get("queries", [])
+        if not qs:
+            # LLM失败，回退程序化
+            qtype = random.choice(list(QUERY_TEMPLATES.keys()))
+            templates = QUERY_TEMPLATES[qtype](m)
+            queries.append({
+                "query_id": f"Q{i+1:04d}",
+                "query_text": random.choice(templates),
+                "query_type": qtype,
+                "expected_memory_ids": [m["memory_id"]],
+                "expected_answer": m["versions"][0]["content"],
+                "difficulty": m["difficulty"],
+                "search_depth": random.choice(["浅层","中层","深层"])
+            })
+            continue
+
+        for q in qs:
+            queries.append({
+                "query_id": f"Q{i+1:04d}",
+                "query_text": q.get("query_text", ""),
+                "query_type": q.get("query_type", "组合检索"),
+                "expected_memory_ids": [m["memory_id"]],
+                "expected_answer": m["versions"][0]["content"],
+                "difficulty": q.get("difficulty", "中等"),
+                "search_depth": random.choice(["浅层","中层","深层"])
+            })
+
+    return queries
+
+
 # ====== 记忆生成器 ======
 class MemoryGenerator:
-    def __init__(self):
+    def __init__(self, use_llm: bool = False, llm=None):
         self.memory_id = 0
+        self.use_llm = use_llm
+        self.llm = llm
 
     def _id(self) -> str:
         self.memory_id += 1
@@ -147,6 +251,11 @@ class MemoryGenerator:
             "price": random.randint(10, 10000)
         }
 
+    def _make_versions(self, base: dict) -> list:
+        if self.use_llm and self.llm:
+            return make_versions_llm(base, self.llm)
+        return make_versions_programmatic(base)
+
     def _build(self, category: str, difficulty: str, base: dict, **extra) -> dict:
         return {
             "memory_id": self._id(), "category": category, "difficulty": difficulty,
@@ -161,7 +270,7 @@ class MemoryGenerator:
                        "relation": base["relation"]},
             "event": {"type": base["event_type"], "action": base["action"],
                       "product": base["product"], "quantity": base["quantity"], "price": base["price"]},
-            "versions": make_versions(base), "tags": [],
+            "versions": self._make_versions(base), "tags": [],
             "cluster_id": None, "reasoning_chain": None, "chain_position": None,
             "decay": {"level": None, "access_count": 0}, **extra
         }
@@ -171,7 +280,8 @@ class MemoryGenerator:
         for _ in range(count):
             diff = random.choices(["简单","中等","困难"], weights=[0.3,0.4,0.3])[0]
             base = self._base(random.choice(["24h","7d","30d","90d","1y","fuzzy"]))
-            result.append(self._build("存储正确性测试集", diff, base, tags=["存储测试", diff, str(base["days_ago"])+"d"]))
+            result.append(self._build("存储正确性测试集", diff, base,
+                                      tags=["存储测试", diff, str(base["days_ago"])+"d"]))
         return result
 
     def gen_retrieval(self, count: int) -> list:
@@ -221,54 +331,14 @@ class MemoryGenerator:
             base = self._base(random.choice(["1y","fuzzy"]))
             result.append(self._build("长期记忆深度检索测试集", diff, base,
                                       depth={"layers": random.randint(3,7), "associations": random.randint(2,5),
-                                             "semantic_distance": random.choice(["near", "mid", "far"])},
+                                             "semantic_distance": random.choice(["近", "中", "远"])},
                                       tags=["深度检索", diff]))
         return result
 
-# ====== 查询生成 ======
-QUERY_TEMPLATES = {
-    "时间检索": lambda m: [
-        f"查找{m['time']['relative']}发生的事情",
-        f"查询{m['time']['fuzzy']}在{m['location']['city']}的相关记录",
-    ],
-    "地点检索": lambda m: [
-        f"在{m['location']['city']}{m['location']['place']}发生过什么",
-        f"查询{m['location']['landmark']}的相关记忆",
-    ],
-    "人物检索": lambda m: [
-        f"{m['person']['name']}最近做了什么",
-        f"查询{m['person']['name']}的{m['person']['identity']}相关活动",
-    ],
-    "事件检索": lambda m: [
-        f"关于{m['event']['product']}的事件有哪些",
-        f"查询{m['event']['action']}相关的记录",
-    ],
-    "组合检索": lambda m: [
-        f"{m['person']['name']}在{m['location']['city']}的{m['event']['action']}记录",
-        f"查询{m['time']['relative']}{m['person']['name']}在{m['location']['place']}的{m['event']['type']}事件",
-    ]
-}
-
-def generate_queries(memories: list, count: int = 100) -> list:
-    queries = []
-    selected = random.sample(memories, min(count, len(memories)))
-    for i, m in enumerate(selected):
-        qtype = random.choice(list(QUERY_TEMPLATES.keys()))
-        templates = QUERY_TEMPLATES[qtype](m)
-        queries.append({
-            "query_id": f"Q{i+1:04d}",
-            "query_text": random.choice(templates),
-            "query_type": qtype,
-            "expected_memory_ids": [m["memory_id"]],
-            "expected_answer": m["versions"][0]["content"],
-            "difficulty": m["difficulty"],
-            "search_depth": random.choice(["浅层","中层","深层"])
-        })
-    return queries
 
 # ====== 主入口 ======
-def build_database(size: int = 100) -> dict:
-    gen = MemoryGenerator()
+def build_database(size: int = 100, use_llm: bool = False, llm=None) -> dict:
+    gen = MemoryGenerator(use_llm=use_llm, llm=llm)
     ratios = {"storage":0.17,"retrieval":0.17,"org":0.17,"forget":0.17,"reason":0.16,"deep":0.16}
     storage = gen.gen_storage(max(1, int(size * ratios["storage"])))
     retrieval = gen.gen_retrieval(max(1, int(size * ratios["retrieval"])))
@@ -280,7 +350,12 @@ def build_database(size: int = 100) -> dict:
     random.shuffle(all_mems)
     cats = {}
     for m in all_mems: cats[m["category"]] = cats.get(m["category"], 0) + 1
-    queries = generate_queries(all_mems, max(30, size // 2))
+
+    if use_llm and llm:
+        queries = generate_queries_llm(all_mems, max(30, size // 2), llm)
+    else:
+        queries = generate_queries_programmatic(all_mems, max(30, size // 2))
+
     return {
         "database_info": {
             "name": "MemTest Database", "version": "1.0.0",
@@ -290,20 +365,27 @@ def build_database(size: int = 100) -> dict:
         "memories": all_mems, "queries": queries
     }
 
+
 if __name__ == "__main__":
-    import sys
     full = "--full" in sys.argv
+    use_llm = "--llm" in sys.argv
     size = 100
     for a in sys.argv:
         if a.startswith("--size="): size = int(a.split("=")[1])
     if full: size = 10000
-    db = build_database(size)
+
+    llm = None
+    if use_llm:
+        try:
+            from llm_interface import create_llm
+            llm = create_llm("deepseek")
+            print(f"[LLM模式] 使用 DeepSeek API")
+        except Exception as e:
+            print(f"[警告] LLM初始化失败: {e}，回退到程序化模式")
+            use_llm = False
+
+    db = build_database(size, use_llm=use_llm, llm=llm)
     db_file = f"test_db_{size}.json" if full or size > 100 else "sample_db_100.json"
     with open(db_file, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
     print(f"Generated {db_file}: {len(db['memories'])} memories, {len(db['queries'])} queries")
-    qs = {"queries_info": {"total_count": len(db["queries"]), "query_types": list(QUERY_TEMPLATES.keys())},
-          "queries": db["queries"]}
-    with open("sample_queries.json", "w", encoding="utf-8") as f:
-        json.dump(qs, f, ensure_ascii=False, indent=2)
-    print(f"Generated sample_queries.json")
