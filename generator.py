@@ -294,13 +294,62 @@ class MemoryGenerator:
                                       tags=["检索测试", diff, str(base["days_ago"])+"d"]))
         return result
 
-    def gen_organization(self, count: int) -> list:
+    # ====== 聚类配置 ======
+    # 生成4-6个不同主题的聚类，每聚类3-8条记忆，确保有相关性
+    # 主题维度：人物、地点、产品、时间段、事件类型
+    CLUSTER_THEMES = [
+        ("person", "张伟"), ("person", "王芳"), ("person", "李明"),
+        ("location", "北京"), ("location", "上海"),
+        ("product", "茅台"), ("product", "特斯拉"),
+        ("event_type", "会议"), ("event_type", "交易"),
+    ]
+
+    def _build_clustered(self, theme_type: str, theme_value: str, count: int, cluster_id: str) -> list:
+        """生成围绕同一主题的多条记忆，形成聚类。"""
         result = []
         for i in range(count):
             diff = random.choices(["简单","中等","困难"], weights=[0.3,0.4,0.3])[0]
             base = self._base(random.choice(["7d","30d","90d","1y"]))
-            result.append(self._build("记忆整理测试集", diff, base, cluster_id=f"CLUSTER{(i//10)+1:04d}",
-                                      tags=["整理测试", diff, base["event_type"]]))
+            # 将主题维度注入 base
+            if theme_type == "person":
+                base["person1"] = theme_value
+                # 其他人物随机变化，确保有区分度
+                base["person2"] = random.choice([n for n in NAMES if n != theme_value])
+            elif theme_type == "location":
+                base["city"] = theme_value
+                base["place"] = random.choice(PLACES)
+            elif theme_type == "product":
+                base["product"] = theme_value
+                base["event_type"] = random.choice(["交易","日常"])
+                base["action"] = random.choice(EVENT_TYPES[base["event_type"]])
+            elif theme_type == "event_type":
+                base["event_type"] = theme_value
+                base["action"] = random.choice(EVENT_TYPES[theme_value])
+            result.append(self._build("记忆整理测试集", diff, base,
+                                      cluster_id=cluster_id,
+                                      tags=["整理测试", diff, theme_type, theme_value]))
+        return result
+
+    def gen_organization(self, count: int) -> list:
+        """生成多主题聚类数据。确保4-6个不同cluster，每cluster 3-8条记忆。"""
+        # 选择4-6个不重复的主题
+        n_clusters = min(random.randint(4, 6), len(self.CLUSTER_THEMES))
+        selected_themes = random.sample(self.CLUSTER_THEMES, n_clusters)
+        # 分配记忆数量：每cluster 3-8条，总和尽量接近count
+        per_cluster = []
+        remaining = count
+        for i in range(n_clusters):
+            if i == n_clusters - 1:
+                per_cluster.append(max(3, min(8, remaining)))
+            else:
+                c = min(8, max(3, remaining // (n_clusters - i)))
+                per_cluster.append(c)
+                remaining -= c
+        # 生成各cluster
+        result = []
+        for i, (theme_type, theme_value) in enumerate(selected_themes):
+            cid = f"CLUSTER{i+1:04d}"
+            result.extend(self._build_clustered(theme_type, theme_value, per_cluster[i], cid))
         return result
 
     def gen_forgetting(self, count: int) -> list:
