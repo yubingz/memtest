@@ -876,7 +876,7 @@ def generate_queries(memories):
         ch = m.get('reasoning_chain', '')
         if ch and ch not in cs:
             cs.add(ch)
-            members = sorted([x for x in memories if x['reasoning_chain'] == ch], key=lambda x: x['chain_position'])
+            members = sorted([x for x in memories if x.get('reasoning_chain') == ch], key=lambda x: x.get('chain_position', 0))
             if len(members) >= 3:
                 chain_idx += 1
                 # 判断链类型
