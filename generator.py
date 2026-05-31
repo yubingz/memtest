@@ -447,6 +447,7 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
     dim_allocations = _allocate_queries_by_dimension(memories, count)
     
     # 生成各维度查询
+    used_chains = set()  # 每条链只生成一个查询
     for dim_name, mems in dim_allocations.items():
         if dim_name == "负样本":
             continue
@@ -463,70 +464,135 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                 elif qtype == "组合检索":
                     qtext = f'{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
                 elif qtype == "聚类检索":
-                    theme = m.get("tags", [""])[2] if len(m.get("tags", [])) > 2 else "相关"
-                    qtext = f'关于{theme}主题的记录有哪些'
+                    # 使用记忆的产品名或标签中的真实关键词，避免代码变量名
+                    theme = m.get("event", {}).get("product", "")
+                    if not theme or theme in ["event_type", "location", "memory_id"]:
+                        tags = m.get("tags", [])
+                        theme = tags[0] if tags else "相关"
+                    qtext = f'关于{theme}的记录有哪些'
                 elif qtype == "跨版本":
                     # 自然语言提问，不指定风格
                     qtext = f'关于{m["person"]["name"]}在{m["location"]["city"]}{m["event"]["action"]}的详情，多说点'
                 else:
                     qtype = "组合检索"
                     qtext = f'{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
+                
+                # 答案：所有版本作为可接受答案
+                acceptable_answers = [v["content"] for v in m.get("versions", [])]
+                
+                # 结构化答案
+                structured_answer = _format_answer_structured(m)
+                answer_text = _format_answer_text(m)
+                
+                queries.append({
+                    "query_id": f"Q{len(queries)+1:04d}",
+                    "query_text": qtext,
+                    "query_type": qtype,
+                    "test_dimension": dim_name,
+                    "expected_memory_ids": [m["memory_id"]],
+                    "expected_answer": structured_answer,
+                    "expected_answer_text": answer_text,
+                    "acceptable_answers": acceptable_answers,
+                    "expected_time": m["time"]["absolute"],
+                    "difficulty": m["difficulty"],
+                    "search_depth": random.choice(["浅层","中层","深层"])
+                })
+            
             elif dim_name in ["时序推理", "因果推理", "对比推理", "包含推理", "推导推理"]:
                 chain_id = m.get("reasoning_chain", "")
+                if chain_id and chain_id in used_chains:
+                    continue  # 该链已生成过查询，跳过
                 if chain_id:
                     chain_mems = sorted([x for x in memories if x.get("reasoning_chain") == chain_id],
                                         key=lambda x: x.get("chain_position", 0) or 0)
                     if len(chain_mems) >= 2:
-                        pos = m.get("chain_position", 1)
-                        if pos > 1 and pos <= len(chain_mems):
-                            prev_mem = chain_mems[pos - 2]
-                            # 简洁引用，不塞全文
-                            p_name = prev_mem["person"]["name"]
-                            p_action = prev_mem["event"]["action"]
-                            p_product = prev_mem["event"]["product"]
-                            if dim_name == "时序推理":
-                                qtext = f'在{p_name}{p_action}了{p_product}之后，发生了什么？'
-                            elif dim_name == "因果推理":
-                                qtext = f'因为{p_name}{p_action}了{p_product}，所以后面怎样了？'
-                            elif dim_name == "对比推理":
-                                qtext = f'和{p_name}{p_action}了{p_product}相比，有什么不同的？'
-                            elif dim_name == "包含推理":
-                                qtext = f'{p_name}{p_action}了{p_product}，这件事里还包含了什么？'
-                            elif dim_name == "推导推理":
-                                qtext = f'从{p_name}{p_action}了{p_product}出发，能推导出什么？'
+                        used_chains.add(chain_id)
+                        # 构建链的摘要作为答案
+                        chain_summary = []
+                        for cm in chain_mems:
+                            chain_summary.append(f'{cm["person"]["name"]}在{cm["location"]["city"]}{cm["event"]["action"]}了{cm["event"]["product"]}')
+                        chain_text = " → ".join(chain_summary)
+                        
+                        # 用链中的第一个动作作为查询引子
+                        first_mem = chain_mems[0]
+                        p_name = first_mem["person"]["name"]
+                        p_action = first_mem["event"]["action"]
+                        p_product = first_mem["event"]["product"]
+                        
+                        if dim_name == "时序推理":
+                            qtext = f'{p_name}的{p_action}链后续事件依次是什么？'
+                        elif dim_name == "因果推理":
+                            qtext = f'因为{p_name}{p_action}了{p_product}，导致了哪些后续事件？'
+                        elif dim_name == "对比推理":
+                            # 对比链：需要链中两个不同人物或不同动作
+                            if len(chain_mems) >= 2:
+                                qtext = f'{p_name}和{chain_mems[1]["person"]["name"]}在{p_action}了{p_product}方面有什么不同？'
                             else:
-                                qtext = f'在{p_name}{p_action}了{p_product}之后，发生了什么？'
+                                qtext = f'和{p_name}{p_action}了{p_product}相比，有什么变化？'
+                        elif dim_name == "包含推理":
+                            qtext = f'{p_name}{p_action}了{p_product}，这件事里包含了哪些子事件？'
+                        elif dim_name == "推导推理":
+                            # 推导链：前提 = 第一个记忆的实际内容，确保匹配
+                            qtext = f'从{p_name}在{p_action}了{p_product}出发，能推导出什么？'
                         else:
-                            qtext = f'{m["person"]["name"]}的{m["event"]["action"]}后续如何？'
-                    else:
-                        qtext = f'{m["person"]["name"]}的{m["event"]["action"]}发生了什么'
-                else:
-                    qtext = f'{m["person"]["name"]}的{m["event"]["action"]}发生了什么'
-                qtype = f"{dim_name}链"
+                            qtext = f'{p_name}的{p_action}链后续事件依次是什么？'
+                        
+                        # 答案：整条链的摘要
+                        structured_answer = {
+                            "chain_type": dim_name,
+                            "members": [
+                                {
+                                    "person": cm["person"]["name"],
+                                    "location": cm["location"]["city"],
+                                    "action": cm["event"]["action"],
+                                    "product": cm["event"]["product"],
+                                    "time": cm["time"]["absolute"]
+                                }
+                                for cm in chain_mems
+                            ]
+                        }
+                        answer_text = f'链式{dim_name}：{chain_text}'
+                        
+                        # expected_memory_ids = 链中所有成员
+                        expected_mem_ids = [cm["memory_id"] for cm in chain_mems]
+                        
+                        queries.append({
+                            "query_id": f"Q{len(queries)+1:04d}",
+                            "query_text": qtext,
+                            "query_type": f"{dim_name}链",
+                            "test_dimension": dim_name,
+                            "expected_memory_ids": expected_mem_ids,
+                            "expected_answer": structured_answer,
+                            "expected_answer_text": answer_text,
+                            "acceptable_answers": [chain_text],
+                            "expected_time": chain_mems[0]["time"]["absolute"],
+                            "difficulty": m["difficulty"],
+                            "search_depth": "深层"
+                        })
             else:
                 qtype = "组合检索"
                 qtext = f'{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
-            
-            # 答案：所有版本作为可接受答案
-            acceptable_answers = [v["content"] for v in m.get("versions", [])]
-            
-            # 结构化答案
-            structured_answer = _format_answer_structured(m)
-            answer_text = _format_answer_text(m)
-            
-            queries.append({
-                "query_id": f"Q{len(queries)+1:04d}",
-                "query_text": qtext,
-                "query_type": qtype,
-                "test_dimension": dim_name,
-                "expected_memory_ids": [m["memory_id"]],
-                "expected_answer": structured_answer,
-                "expected_answer_text": answer_text,
-                "acceptable_answers": acceptable_answers,
-                "expected_time": m["time"]["absolute"],
-                "difficulty": m["difficulty"],
-                "search_depth": random.choice(["浅层","中层","深层"])
-            })
+                
+                # 答案：所有版本作为可接受答案
+                acceptable_answers = [v["content"] for v in m.get("versions", [])]
+                
+                # 结构化答案
+                structured_answer = _format_answer_structured(m)
+                answer_text = _format_answer_text(m)
+                
+                queries.append({
+                    "query_id": f"Q{len(queries)+1:04d}",
+                    "query_text": qtext,
+                    "query_type": qtype,
+                    "test_dimension": dim_name,
+                    "expected_memory_ids": [m["memory_id"]],
+                    "expected_answer": structured_answer,
+                    "expected_answer_text": answer_text,
+                    "acceptable_answers": acceptable_answers,
+                    "expected_time": m["time"]["absolute"],
+                    "difficulty": m["difficulty"],
+                    "search_depth": random.choice(["浅层","中层","深层"])
+                })
     
     # 负样本：20% — 确定性生成，避免重复
     n_positive = len(queries)
@@ -1198,9 +1264,8 @@ if __name__ == "__main__":
             print(f"[警告] LLM初始化失败: {e}，回退到程序化模式")
             use_llm = False
 
-    db = build_database(size, use_llm=use_llm, llm=llm, domain=domain, time_distribution=time_distribution)
-    db_file = f"test_db_{size}.json" if full or size > 100 else "sample_db.json"
-    with open(db_file, "w", encoding="utf-8") as f:
+    # 重新生成数据
+    db = build_database(100, domain="daily", time_distribution="recent")
+    with open("sample_db.json", "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
-    print(f"Generated {db_file}: {len(db['memories'])} memories, {len(db['queries'])} queries")
-    print(f"Domain: {domain}, Time distribution: {time_distribution}")
+    print(f"Generated sample_db.json: {len(db['memories'])} memories, {len(db['queries'])} queries")
