@@ -448,9 +448,8 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                     theme = m.get("tags", [""])[2] if len(m.get("tags", [])) > 2 else "相关"
                     qtext = f'关于{theme}主题的记录有哪些'
                 elif qtype == "跨版本":
-                    styles = ["客观叙述", "主观视角", "第三方转述"]
-                    qstyle = random.choice(styles)
-                    qtext = f'用{qstyle}风格描述{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
+                    # 自然语言提问，不指定风格
+                    qtext = f'关于{m["person"]["name"]}在{m["location"]["city"]}{m["event"]["action"]}的详情，多说点'
                 else:
                     qtype = "组合检索"
                     qtext = f'{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
@@ -463,7 +462,22 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                         pos = m.get("chain_position", 1)
                         if pos > 1 and pos <= len(chain_mems):
                             prev_mem = chain_mems[pos - 2]
-                            qtext = f'在{prev_mem["versions"][0]["content"]}之后，发生了什么？'
+                            # 简洁引用，不塞全文
+                            p_name = prev_mem["person"]["name"]
+                            p_action = prev_mem["event"]["action"]
+                            p_product = prev_mem["event"]["product"]
+                            if dim_name == "时序推理":
+                                qtext = f'在{p_name}{p_action}了{p_product}之后，发生了什么？'
+                            elif dim_name == "因果推理":
+                                qtext = f'因为{p_name}{p_action}了{p_product}，所以后面怎样了？'
+                            elif dim_name == "对比推理":
+                                qtext = f'和{p_name}{p_action}了{p_product}相比，有什么不同的？'
+                            elif dim_name == "包含推理":
+                                qtext = f'{p_name}{p_action}了{p_product}，这件事里还包含了什么？'
+                            elif dim_name == "推导推理":
+                                qtext = f'从{p_name}{p_action}了{p_product}出发，能推导出什么？'
+                            else:
+                                qtext = f'在{p_name}{p_action}了{p_product}之后，发生了什么？'
                         else:
                             qtext = f'{m["person"]["name"]}的{m["event"]["action"]}后续如何？'
                     else:
@@ -475,6 +489,9 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                 qtype = "组合检索"
                 qtext = f'{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
             
+            # 答案：所有版本作为可接受答案
+            acceptable_answers = [v["content"] for v in m.get("versions", [])]
+            
             queries.append({
                 "query_id": f"Q{len(queries)+1:04d}",
                 "query_text": qtext,
@@ -482,6 +499,7 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                 "test_dimension": dim_name,
                 "expected_memory_ids": [m["memory_id"]],
                 "expected_answer": m["versions"][0]["content"],
+                "acceptable_answers": acceptable_answers,
                 "expected_time": m["time"]["absolute"],
                 "difficulty": m["difficulty"],
                 "search_depth": random.choice(["浅层","中层","深层"])
@@ -490,16 +508,35 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
     # 负样本：20%
     n_positive = len(queries)
     n_negative = max(1, int(n_positive * 0.25))
+    
+    # 收集实体用于微妙错误负样本
+    all_persons = list(set(m["person"]["name"] for m in memories if m["person"]["name"]))
+    all_cities = list(set(m["location"]["city"] for m in memories if m["location"]["city"]))
+    all_products = list(set(m["event"]["product"] for m in memories if m["event"]["product"]))
+    fake_events = ['时光旅行', '量子跃迁', '黑洞探索', '星际战争', '外星殖民', '维度穿越', '时空折叠', '虫洞穿越', '超光速飞行', '暗物质研究', '反物质引擎', '引力波通讯', '戴森球建设', '基因飞升', '机械飞升']
+    
     for i in range(n_negative):
-        neg_type = random.choice(["人物不存在", "地点不存在", "事件不存在", "组合矛盾"])
+        neg_type = random.choice(["人物不存在", "地点不存在", "事件不存在", "组合矛盾", "微妙错误"])
         if neg_type == "人物不存在":
             query_text = f"{random.choice(['赵钱孙李', '周吴郑王', '冯陈褚卫', '蒋沈韩杨'])}最近做了什么"
         elif neg_type == "地点不存在":
             query_text = f"在火星发生了什么"
         elif neg_type == "事件不存在":
             query_text = f"关于比特币购买的事件有哪些"
+        elif neg_type == "微妙错误" and all_persons and all_cities:
+            # 真实人物 + 真实地点 + 不存在的动作（测试系统对虚假细节的识别）
+            real_person = random.choice(all_persons)
+            real_city = random.choice(all_cities)
+            fake_actions = ['打篮球', '游泳', '跳舞', '画画', '唱歌']
+            query_text = f"{real_person}在{real_city}{random.choice(fake_actions)}"
         else:
-            query_text = f"张伟在火星购买茅台"
+            # 组合矛盾：真实人物 + 假地点 + 真事件
+            if all_persons and all_cities and all_products:
+                query_text = f"{random.choice(all_persons)}在火星购买了{random.choice(all_products)}"
+            elif all_persons:
+                query_text = f"{random.choice(all_persons)}在火星做了什么"
+            else:
+                query_text = f"关于{random.choice(fake_events)}的记录"
         
         queries.append({
             "query_id": f"Q{len(queries)+1:04d}",
@@ -571,6 +608,7 @@ def generate_queries_llm(memories: list, count: int = 100, llm=None) -> list:
                 "test_dimension": test_dim,
                 "expected_memory_ids": [m["memory_id"]],
                 "expected_answer": m["versions"][0]["content"],
+                "acceptable_answers": [v["content"] for v in m.get("versions", [])],
                 "expected_time": m["time"]["absolute"],
                 "difficulty": q.get("difficulty", "中等"),
                 "search_depth": random.choice(["浅层","中层","深层"])

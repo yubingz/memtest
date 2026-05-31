@@ -776,16 +776,19 @@ def generate_queries(memories):
         '跨版本': max(2, int(n_memories * 0.03)),
     }
     
-    # 精确检索：人物/地点/事件
+    # 精确检索：人物/地点/事件（用相对时间或自然表达，不用时间戳原文）
     with_time = [m for m in memories if m['time']['absolute'] and m['person']['name'] != '未知']
     for i, m in enumerate(random.sample(with_time, min(dim_quotas['精确检索'], len(with_time)))):
         queries.append({
             'query_id': f'Q{len(queries)+1:04d}',
-            'query_text': f'{m["time"]["absolute"]} {m["person"]["name"]}做了什么',
+            'query_text': f'{m["time"]["relative"] or "那天"} {m["person"]["name"]}做了什么',
             'query_type': '时间检索',
             'test_dimension': '精确检索',
             'expected_memory_ids': [m['memory_id']],
-            'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
+            'expected_answer': m['versions'][0]['content'],
+            'acceptable_answers': [v['content'] for v in m.get('versions', [])],
+            'expected_time': m['time']['absolute'],
+            'difficulty': m.get('difficulty', '中等')})
 
     with_loc = [m for m in memories if m['location']['city']]
     for i, m in enumerate(random.sample(with_loc, min(dim_quotas['精确检索'], len(with_loc)))):
@@ -795,7 +798,10 @@ def generate_queries(memories):
             'query_type': '地点检索',
             'test_dimension': '精确检索',
             'expected_memory_ids': [m['memory_id']],
-            'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
+            'expected_answer': m['versions'][0]['content'],
+            'acceptable_answers': [v['content'] for v in m.get('versions', [])],
+            'expected_time': m['time']['absolute'],
+            'difficulty': m.get('difficulty', '中等')})
 
     with_person = [m for m in memories if m['person']['name'] != '未知']
     for i, m in enumerate(random.sample(with_person, min(dim_quotas['精确检索'], len(with_person)))):
@@ -805,7 +811,10 @@ def generate_queries(memories):
             'query_type': '人物检索',
             'test_dimension': '精确检索',
             'expected_memory_ids': [m['memory_id']],
-            'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
+            'expected_answer': m['versions'][0]['content'],
+            'acceptable_answers': [v['content'] for v in m.get('versions', [])],
+            'expected_time': m['time']['absolute'],
+            'difficulty': m.get('difficulty', '中等')})
 
     for i, m in enumerate(random.sample(with_person, min(dim_quotas['精确检索'], len(with_person)))):
         queries.append({
@@ -814,18 +823,24 @@ def generate_queries(memories):
             'query_type': '事件检索',
             'test_dimension': '精确检索',
             'expected_memory_ids': [m['memory_id']],
-            'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
+            'expected_answer': m['versions'][0]['content'],
+            'acceptable_answers': [v['content'] for v in m.get('versions', [])],
+            'expected_time': m['time']['absolute'],
+            'difficulty': m.get('difficulty', '中等')})
 
     # 组合检索
     with_all = [m for m in memories if m['time']['absolute'] and m['person']['name'] != '未知' and m['location']['city']]
     for i, m in enumerate(random.sample(with_all, min(dim_quotas['组合检索'], len(with_all)))):
         queries.append({
             'query_id': f'Q{len(queries)+1:04d}',
-            'query_text': f'{m["time"]["absolute"]} {m["person"]["name"]}在{m["location"]["city"]}发生了什么',
+            'query_text': f'{m["time"]["relative"] or "那天"} {m["person"]["name"]}在{m["location"]["city"]}发生了什么',
             'query_type': '组合检索',
             'test_dimension': '组合检索',
             'expected_memory_ids': [m['memory_id']],
-            'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
+            'expected_answer': m['versions'][0]['content'],
+            'acceptable_answers': [v['content'] for v in m.get('versions', [])],
+            'expected_time': m['time']['absolute'],
+            'difficulty': m.get('difficulty', '中等')})
 
     # 链式查询（按维度分类）
     cs = set()
@@ -852,31 +867,82 @@ def generate_queries(memories):
                 else:
                     test_dim = '组合推理'
                 
-                queries.append({
-                    'query_id': f'Q{len(queries) + 1:04d}',
-                    'query_text': f'请梳理{members[0]["person"]["name"]}的完整经历脉络',
-                    'query_type': '组合推理',
-                    'test_dimension': test_dim,
-                    'expected_memory_ids': [x['memory_id'] for x in members],
-                    'expected_answer': f'{members[0]["person"]["name"]}的经历脉络',
-                    'difficulty': '中等'})
+                # 多跳链式查询，根据链类型生成不同模板
+                if len(members) >= 2:
+                    # 按 chain_relation 选择多跳模板
+                    cr = chain_relation or '关联'
+                    if cr == '时序':
+                        # 时序链：问"之后发生了什么"
+                        if len(members) >= 3:
+                            mid = len(members) // 2
+                            mid_mem = members[mid]
+                            prev_mem = members[mid - 1] if mid > 0 else members[0]
+                            qtext = f'在{prev_mem["person"]["name"]}{prev_mem["event"]["action"]}了{prev_mem["event"]["product"]}之后，{mid_mem["person"]["name"]}又做了什么？'
+                        else:
+                            qtext = f'请梳理{members[0]["person"]["name"]}的完整时间线'
+                    elif cr == '因果':
+                        # 因果链：问"为什么/导致什么"
+                        if len(members) >= 3:
+                            cause_mem = members[0]
+                            effect_mem = members[1]
+                            qtext = f'因为{cause_mem["person"]["name"]}{cause_mem["event"]["action"]}了{cause_mem["event"]["product"]}，后面导致{effect_mem["person"]["name"]}做了什么？'
+                        else:
+                            qtext = f'{members[0]["person"]["name"]}的{m["event"]["action"]}导致了什么？'
+                    elif cr == '对比':
+                        # 对比链：问"有什么不同"
+                        if len(members) >= 2:
+                            a_mem = members[0]
+                            b_mem = members[1] if len(members) > 1 else members[0]
+                            qtext = f'{a_mem["person"]["name"]}{a_mem["event"]["action"]}了{a_mem["event"]["product"]}，而{b_mem["person"]["name"]}做了什么不同的？'
+                        else:
+                            qtext = f'和{members[0]["person"]["name"]}的{m["event"]["action"]}相比，有什么不同的做法？'
+                    elif cr == '包含':
+                        # 包含链：问"里面有什么"
+                        if len(members) >= 2:
+                            parent = members[0]
+                            child = members[1] if len(members) > 1 else members[0]
+                            qtext = f'{parent["person"]["name"]}{parent["event"]["action"]}了{parent["event"]["product"]}，这件事里面包含了{child["person"]["name"]}的什么行为？'
+                        else:
+                            qtext = f'{members[0]["person"]["name"]}的{m["event"]["action"]}里面包含了哪些细节？'
+                    elif cr == '推导':
+                        # 推导链：问"能推导出什么"
+                        if len(members) >= 2:
+                            obs = members[0]
+                            conc = members[1] if len(members) > 1 else members[0]
+                            qtext = f'从{obs["person"]["name"]}{obs["event"]["action"]}了{obs["event"]["product"]}出发，能推导出{conc["person"]["name"]}做了什么？'
+                        else:
+                            qtext = f'从{members[0]["person"]["name"]}的{m["event"]["action"]}出发，能推导出什么？'
+                    else:
+                        qtext = f'请梳理{members[0]["person"]["name"]}的完整经历脉络'
+                    
+                    # 链式答案：包含所有成员的摘要
+                    chain_summary = '；'.join([
+                        f'{i+1}. {x["person"]["name"]}{x["event"]["action"]}了{x["event"]["product"]}（{x["time"]["absolute"] or x["time"]["relative"]}）'
+                        for i, x in enumerate(members)
+                    ])
+                    
+                    queries.append({
+                        'query_id': f'Q{len(queries) + 1:04d}',
+                        'query_text': qtext,
+                        'query_type': '组合推理',
+                        'test_dimension': test_dim,
+                        'expected_memory_ids': [x['memory_id'] for x in members],
+                        'expected_answer': chain_summary,
+                        'expected_time': members[0]['time']['absolute'],
+                        'difficulty': '中等'})
 
     # ===== 负样本查询（20%） =====
     n_positive = len(queries)
     n_negative = max(1, int(n_positive * 0.25))  # 约20%负样本
     
     for i in range(n_negative):
-        neg_type = random.choice(['人物不存在', '地点不存在', '事件不存在', '组合矛盾'])
+        neg_type = random.choice(['人物不存在', '地点不存在', '事件不存在', '组合矛盾', '微妙错误'])
         if neg_type == '人物不存在' and all_persons:
-            # 用真实人物名但组合假地点/事件
-            real_person = random.choice(all_persons)
-            fake_city = random.choice(fake_cities)
-            fake_event = random.choice(fake_events)
             query_text = random.choice([
                 f'{random.choice(fake_persons)}做了什么',
                 f'{random.choice(fake_persons)}在{random.choice(all_cities)}做了什么',
                 f'{random.choice(fake_persons)}关于{random.choice(all_products)}有什么经历',
-            ])
+            ]) if all_cities else f'{random.choice(fake_persons)}做了什么'
         elif neg_type == '地点不存在' and all_cities:
             query_text = random.choice([
                 f'在{random.choice(fake_cities)}发生了什么',
@@ -887,10 +953,16 @@ def generate_queries(memories):
                 f'关于{random.choice(fake_events)}的事件有哪些',
                 f'{random.choice(all_persons)}关于{random.choice(fake_events)}有什么经历',
             ]) if all_persons else f'关于{random.choice(fake_events)}的事件有哪些'
+        elif neg_type == '微妙错误' and all_persons and all_cities:
+            # 真实人物 + 真实地点 + 不存在的动作
+            real_person = random.choice(all_persons)
+            real_city = random.choice(all_cities)
+            fake_actions = ['打篮球', '游泳', '跳舞', '画画', '唱歌']
+            query_text = f'{real_person}在{real_city}{random.choice(fake_actions)}'
         else:  # 组合矛盾
             if all_persons and all_cities and all_products:
-                query_text = f'{random.choice(all_persons)}在{random.choice(fake_cities)}购买了{random.choice(fake_events)}'
-            elif all_persons:
+                query_text = f'{random.choice(all_persons)}在{random.choice(fake_cities)}购买了{random.choice(all_products)}'
+            elif all_persons and all_cities:
                 query_text = f'{random.choice(all_persons)}在{random.choice(fake_cities)}做了什么'
             else:
                 query_text = f'关于{random.choice(fake_events)}的记录'
