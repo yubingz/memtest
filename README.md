@@ -1,114 +1,116 @@
-# MemTest — 测试库生成工具
+# MemTest — Benchmark Generator for AI Memory Systems
 
-从程序化合成或真实文本提取，生成标准化的 AI 记忆系统评测数据库。
+Generate standardized evaluation databases for AI memory systems, from procedural synthesis or real-text extraction.
 
-## 架构
+**[中文文档](README_CN.md)**
+
+## Architecture
 
 ```
 memtest/
-├── llm_interface.py          # LLM 接口抽象层（可替换为任意模型）
-├── generator.py               # 测试库生成器（程序化 / LLM增强）
-├── knowledge_builder.py       # 从文本提取知识构建测试库（支持中英文混合）
-├── quality_check.py           # 数据质量校验（10项自动检查）
-├── prompts/                   # 提示词模板（可热更新）
-│   ├── memory_enhance.md      # 生成记忆的3种表达变体
-│   ├── query_generate.md      # 生成查询变体
-│   └── fact_extract.md        # 从文本提取结构化事实（中英文）
-├── benchmarks/                # 已有 benchmark 数据（可选）
-├── TODO.md                    # 待办清单与已完成变更
-└── .env                       # API key（见 .env.example）
+├── llm_interface.py          # LLM abstraction layer (swappable backends)
+├── generator.py               # Benchmark generator (procedural / LLM-enhanced)
+├── knowledge_builder.py       # Build benchmarks from text (supports EN/CN/mixed)
+├── quality_check.py           # Data quality validation (10 automated checks)
+├── prompts/                   # Prompt templates (hot-reloadable)
+│   ├── memory_enhance.md      # Generate 3 expression variants per memory
+│   ├── query_generate.md      # Generate diverse query variants
+│   └── fact_extract.md        # Extract structured facts from text (EN/CN)
+├── benchmarks/                # Pre-built benchmark data (optional)
+├── TODO.md                    # Task backlog & changelog
+└── .env                       # API keys (see .env.example)
 ```
 
-## 快速开始
+## Quick Start
 
-### 1. 程序化生成（零依赖，秒级）
+### 1. Procedural Generation (zero dependencies, instant)
 
 ```bash
-python generator.py              # 生成 100 条记忆 + 50 条查询
-python generator.py --size=500   # 自定义规模
-python generator.py --full       # 生成 10000 条
+python generator.py              # 100 memories + 50 queries
+python generator.py --size=500   # custom scale
+python generator.py --full       # 10,000 memories
 ```
 
-输出：`sample_db_100.json`（标准 MemTest 格式）
+Output: `sample_db_100.json` (standard MemTest format)
 
-### 2. LLM 增强生成（更自然）
+### 2. LLM-Enhanced Generation (more natural)
 
 ```bash
-# 配置 API key
+# Configure API key
 cp .env.example .env
-# 编辑 .env，填入 DEEPSEEK_API_KEY=...
+# Edit .env, add DEEPSEEK_API_KEY=...
 
-python generator.py --llm        # LLM 生成记忆文本和查询
+python generator.py --llm        # LLM generates memory text and queries
 ```
 
-### 3. 从真实文本提取
+### 3. Extract from Real Text
 
 ```bash
 python knowledge_builder.py ./my_books/ output.json
-python knowledge_builder.py ./my_books/ output.json --merge   # 增量追加（已有数据库+新文章）
-python knowledge_builder.py existing_db.json --clean           # 清洗已有数据库
+python knowledge_builder.py ./my_books/ output.json --merge   # incremental append
+python knowledge_builder.py existing_db.json --clean           # clean existing database
 ```
 
-输入：Markdown 文章目录（支持中文、英文或混合文本）  
-输出：含 facts + chains + queries 的标准数据库
+Input: Directory of Markdown articles (supports English, Chinese, or mixed text)
+Output: Standard database with facts + chains + queries
 
-**知识构建器优化：** 3-5x 批量LLM加速 — 提取、分类、查询预解析均使用 `batch_generate()` 并行处理。
+**Performance:** 3–5× batch LLM acceleration — extraction, classification, and query pre-parsing all use `batch_generate()` for parallel processing.
 
-### 4. 质量校验
+### 4. Quality Validation
 
 ```bash
 python quality_check.py sample_db_100.json
 ```
 
-输出：10 项自动检查报告，包含链式/聚类/负样本完整性。
+Output: 10-item automated check report covering chain/cluster/negative-sample integrity.
 
-### 5. 更多工具
+### 5. Additional Tools
 
 ```bash
-python _gen_and_test.py            # 生成样例数据 + 自测（快速验证）
+python _gen_and_test.py            # Generate sample data + self-test
 ```
 
-| 工具 | 说明 |
-|------|------|
-| `_gen_and_test.py` | 一键生成 + 自测，验证生成器正常 |
-| `noesis_adapter.py` | NOESIS-II 记忆系统适配器（评测接入示例） |
-| `llm_evaluator.py` | LLM 语义评估器（替代精确匹配的语义相关性判断） |
-| `benchmarks/` | 已有 benchmark 数据（`llm_rerank_benchmark.json` 等） |
+| Tool | Description |
+|------|-------------|
+| `_gen_and_test.py` | One-click generate + self-test |
+| `noesis_adapter.py` | NOESIS-II memory system adapter (evaluation integration example) |
+| `llm_evaluator.py` | LLM semantic evaluator (replaces exact-match with semantic relevance) |
+| `benchmarks/` | Pre-built benchmark data (`llm_rerank_benchmark.json`, etc.) |
 
-## LLM 接口
+## LLM Interface
 
-所有 LLM 调用通过 `llm_interface.py` 统一接口，支持：
+All LLM calls go through `llm_interface.py` with a unified interface:
 
-| 适配器 | 说明 | 用法 |
-|--------|------|------|
-| `deepseek` | DeepSeek API（默认） | `create_llm("deepseek")` |
-| `openai` | 任意 OpenAI-compatible | `create_llm("openai", api_key="", base_url="", model="")` |
-| `mock` | 本地模拟（离线测试） | `create_llm("mock")` |
+| Adapter | Description | Usage |
+|---------|-------------|-------|
+| `deepseek` | DeepSeek API (default) | `create_llm("deepseek")` |
+| `openai` | Any OpenAI-compatible endpoint | `create_llm("openai", api_key="", base_url="", model="")` |
+| `mock` | Local mock (offline testing) | `create_llm("mock")` |
 
-自定义适配器：
+Custom adapter:
 
 ```python
 from llm_interface import LLMInterface
 
 class MyAdapter(LLMInterface):
     def generate(self, prompt, max_tokens=3000, temperature=0, system_prompt=""):
-        # 你的模型调用逻辑
+        # Your model invocation logic
         return "..."
 ```
 
-## 提示词系统
+## Prompt System
 
-所有提示词放在 `prompts/` 目录，支持热更新：
+All prompts live in `prompts/` and support hot-reload:
 
-- `memory_enhance.md` — 让 LLM 生成同一事件的3种表达风格（**客观叙述** / **主观视角** / **第三方转述**）
-- `query_generate.md` — 让 LLM 从记忆生成多样化查询（含 few-shot 示例）
-- `fact_extract.md` — 让 LLM 从长文本提取结构化事实（含链式检测），**支持中英文混合文本**
+- `memory_enhance.md` — Generate 3 expression styles per event (**objective** / **subjective** / **third-party**)
+- `query_generate.md` — Generate diverse queries from memories (with few-shot examples)
+- `fact_extract.md` — Extract structured facts from long text (with chain detection), **supports EN/CN mixed text**
 
-提示词文件不存在时自动回退到内联提示词。
+Falls back to inline prompts when template files are absent.
 
-## 数据格式
+## Data Format
 
-标准 MemTest JSON 包含：
+Standard MemTest JSON contains:
 
 ```json
 {
@@ -116,19 +118,19 @@ class MyAdapter(LLMInterface):
   "memories": [
     {
       "memory_id": "MEM000001",
-      "category": "检索功能测试集",
-      "difficulty": "中等",
+      "category": "retrieval_test",
+      "difficulty": "medium",
       "time": { "absolute": "...", "relative": "...", "fuzzy": "..." },
       "location": { "city": "...", "place": "...", "landmark": "..." },
       "person": { "name": "...", "identity": "..." },
       "event": { "type": "...", "action": "...", "product": "..." },
       "versions": [
-        { "version_id": "v1", "style": "客观叙述", "content": "张伟在北京星巴克购买了茅台，数量100" },
-        { "version_id": "v2", "style": "主观视角", "content": "张伟回忆道：当时在北京星巴克，我（项目经理）觉得价格还行，就买了茅台..." },
-        { "version_id": "v3", "style": "第三方转述", "content": "王芳说张伟在北京那边买了茅台，大概100的样子，具体价格不太清楚" }
+        { "version_id": "v1", "style": "objective", "content": "Zhang Wei purchased Maotai at Starbucks in Beijing, quantity 100" },
+        { "version_id": "v2", "style": "subjective", "content": "Zhang Wei recalled: I was at Starbucks in Beijing, thought the price was decent, so I bought Maotai..." },
+        { "version_id": "v3", "style": "third_party", "content": "Wang Fang said Zhang Wei bought Maotai over there in Beijing, about 100, not sure about the price" }
       ],
       "cluster_id": "CLUSTER0001",
-      "reasoning_chain": "CHAIN_因果_001",
+      "reasoning_chain": "CHAIN_causal_001",
       "chain_position": 1,
       "chain_prev": "",
       "chain_next": "MEM000002"
@@ -137,8 +139,8 @@ class MyAdapter(LLMInterface):
   "queries": [
     {
       "query_id": "Q0001",
-      "query_text": "张伟在北京的购买记录",
-      "query_type": "组合检索",
+      "query_text": "Zhang Wei's purchase records in Beijing",
+      "query_type": "composite",
       "expected_memory_ids": ["MEM000001"],
       "is_negative": false
     }
@@ -146,22 +148,22 @@ class MyAdapter(LLMInterface):
 }
 ```
 
-## 参考文档
+## Documentation
 
-| 文档 | 说明 |
-|------|------|
-| [API.md](API.md) | MemoryAdapter 接口定义 + 数据格式完整规范 |
-| [GUIDE.md](GUIDE.md) / [GUIDE_CN.md](GUIDE_CN.md) | 详细使用指南（架构/评测维度/扩展） |
-| [OPTIMIZATION.md](OPTIMIZATION.md) | 问题诊断与优化路线图（已修复 + 待做） |
-| [TODO.md](TODO.md) | 待办清单与已完成变更日志 |
+| Document | Description |
+|----------|-------------|
+| [API.md](API.md) | MemoryAdapter interface + complete data format spec |
+| [GUIDE.md](GUIDE.md) / [GUIDE_CN.md](GUIDE_CN.md) | Detailed usage guide (architecture / evaluation dimensions / extensibility) |
+| [OPTIMIZATION.md](OPTIMIZATION.md) | Issue diagnosis & optimization roadmap |
+| [TODO.md](TODO.md) | Task backlog & changelog |
 
-## 安全
+## Security
 
-- `.env` 已加入 `.gitignore`，API key 不会意外提交
-- 路径遍历防护：知识构建器拒绝 `/etc`、`/root` 等系统目录
-- JSON payload 大小限制：默认 2MB 上限
+- `.env` is in `.gitignore` — API keys are never accidentally committed
+- Path traversal protection: knowledge builder rejects system directories (`/etc`, `/root`, etc.)
+- JSON payload size limit: 2MB default cap
 
-## 测试
+## Testing
 
 ```bash
 python -m py_compile generator.py
@@ -169,6 +171,6 @@ python -m py_compile knowledge_builder.py
 python -m py_compile llm_interface.py
 ```
 
-## 许可
+## License
 
 MIT
