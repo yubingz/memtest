@@ -235,16 +235,41 @@ def fuzzy_time(days_ago: int) -> str:
 
 # ====== 版本生成 ======
 def make_versions_programmatic(base: dict) -> list:
-    """程序化生成3种表达（默认，零依赖）。"""
+    """程序化生成3种表达 — 真正的语义差异：
+    v1 客观：标准叙述，完整要素
+    v2 主观：从人物1视角，含心理/感受/意图
+    v3 转述：第三方视角，含推测/省略/语气词
+    """
     dt = base["base_time"]
-    return [
-        {"version_id": "v1", "style": "标准叙述",
-         "content": f"{base['person1']}在{base['city']}{base['place']}{base['action']}了{base['product']}，数量{base['quantity']}"},
-        {"version_id": "v2", "style": "详细描述",
-         "content": f"{dt.strftime('%Y年%m月%d日 %H时%M分')}，{base['person1']}（{base['identity1']}）在{base['city']}市{base['place']}进行{base['action']}操作，涉及{base['product']}，交易数量{base['quantity']}股，单价{base['price']}元"},
-        {"version_id": "v3", "style": "口语化",
-         "content": f"在{base['city']}出差的{base['person1']}，{dt.day}号那天{base['action']}了{base['product']}，搞了{base['quantity']}份"}
-    ]
+    p1, p2 = base["person1"], base["person2"]
+    i1, i2 = base["identity1"], base["identity2"]
+    city, place = base["city"], base["place"]
+    action, product = base["action"], base["product"]
+    qty, price = base["quantity"], base["price"]
+    
+    # v1 客观叙述：标准事实，完整要素
+    v1 = {
+        "version_id": "v1", "style": "客观叙述",
+        "content": f"{p1}在{city}{place}{action}了{product}，数量{qty}"
+    }
+    
+    # v2 主观视角：从p1的视角，含心理活动和感受
+    feelings = ["觉得是个机会", "认为价格合适", "想试试运气", "觉得有必要",
+                "想趁低价入手", "认为值得投入", "考虑再三后决定", "不想错过"]
+    v2 = {
+        "version_id": "v2", "style": "主观视角",
+        "content": f"{p1}回忆道：当时{city}的{place}，{p1}（{i1}）{action}了{product}，{random.choice(feelings)}，总共{qty}，单价{price}元"
+    }
+    
+    # v3 第三方转述：从p2或旁观者的视角，含推测、省略、口语化
+    fillers = ["好像", "听说", "大概", "据说", "应该"]
+    hedges = ["大概", "差不多", "左右", "可能"]
+    v3 = {
+        "version_id": "v3", "style": "第三方转述",
+        "content": f"{p2}说{p1}在{city}那边{action}了{product}，{random.choice(fillers)}{random.choice(hedges)}{qty}的样子，具体价格不太清楚"
+    }
+    
+    return [v1, v2, v3]
 
 def make_versions_llm(base: dict, llm) -> list:
     """LLM增强生成3种表达（更自然，需要API key）。"""
