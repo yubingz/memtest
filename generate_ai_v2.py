@@ -200,11 +200,29 @@ RETRIEVAL_EXTRA = [
     {"id": "MEM000090", "ts": "2024-03-05 10:00:00", "days": 452, "city": "苏州", "place": "园林", "landmark": "景观区", "person": "周梅", "identity": "护士", "partner": "孙强", "partner_id": "医生", "relation": "同事", "event_type": "旅游", "action": "游览", "product": "拙政园", "qty": 1, "price": 80, "chain": None, "cluster": None, "tags": ["检索测试", "简单"]},
 ]
 
+# 额外深度检索测试（再增加5条）
+DEEP_EXTRA = [
+    {"id": "MEM000091", "ts": "2021-01-10 09:00:00", "days": 1237, "city": "上海", "place": "复旦大学", "landmark": "医学院", "person": "孙强", "identity": "学生", "partner": "导师", "partner_id": "教授", "relation": "师生", "event_type": "学习", "action": "学习", "product": "临床医学", "qty": 1, "price": 0, "chain": None, "cluster": None, "tags": ["深度检索", "困难"], "depth": {"layers": 5, "associations": 4, "semantic_distance": "远"}},
+    {"id": "MEM000092", "ts": "2021-06-20 14:00:00", "days": 1077, "city": "上海", "place": "医院", "landmark": "实习基地", "person": "孙强", "identity": "实习生", "partner": "导师", "partner_id": "主任医师", "relation": "师生", "event_type": "实习", "action": "轮转", "product": "各科室", "qty": 1, "price": 0, "chain": None, "cluster": None, "tags": ["深度检索", "困难"], "depth": {"layers": 4, "associations": 3, "semantic_distance": "中"}},
+    {"id": "MEM000093", "ts": "2021-12-01 10:00:00", "days": 912, "city": "武汉", "place": "医院", "landmark": "住院部", "person": "孙强", "identity": "住院医师", "partner": "同事", "partner_id": "主治医师", "relation": "同事", "event_type": "工作", "action": "参与", "product": "疑难病例会诊", "qty": 1, "price": 0, "chain": None, "cluster": None, "tags": ["深度检索", "困难"], "depth": {"layers": 3, "associations": 2, "semantic_distance": "近"}},
+    {"id": "MEM000094", "ts": "2022-03-15 08:00:00", "days": 808, "city": "武汉", "place": "医学中心", "landmark": "专科门诊", "person": "孙强", "identity": "主治医师", "partner": "同事", "partner_id": "主任", "relation": "上下级", "event_type": "晋升", "action": "晋升", "product": "副主任医师", "qty": 1, "price": 0, "chain": None, "cluster": None, "tags": ["深度检索", "困难"], "depth": {"layers": 4, "associations": 3, "semantic_distance": "中"}},
+    {"id": "MEM000095", "ts": "2022-08-20 14:00:00", "days": 650, "city": "武汉", "place": "科研中心", "landmark": "实验室", "person": "孙强", "identity": "副主任医师", "partner": "团队", "partner_id": "研究员", "relation": "同事", "event_type": "科研", "action": "发表", "product": "SCI论文", "qty": 3, "price": 0, "chain": None, "cluster": None, "tags": ["深度检索", "困难"], "depth": {"layers": 5, "associations": 4, "semantic_distance": "远"}},
+]
+
+# 额外遗忘测试（再增加5条）
+FORGET_EXTRA = [
+    {"id": "MEM000096", "ts": "2019-01-10 09:00:00", "days": 2358, "city": "广州", "place": "大学", "landmark": "法学院", "person": "吴昊", "identity": "学生", "partner": "同学", "partner_id": "学生", "relation": "同学", "event_type": "学习", "action": "参加", "product": "模拟法庭", "qty": 1, "price": 0, "chain": None, "cluster": None, "tags": ["遗忘测试", "简单", "低频记忆"], "decay": {"level": "低频记忆", "access_count": 2}},
+    {"id": "MEM000097", "ts": "2019-06-20 14:00:00", "days": 2207, "city": "广州", "place": "律所", "landmark": "实习基地", "person": "吴昊", "identity": "实习生", "partner": "导师", "partner_id": "资深律师", "relation": "师生", "event_type": "实习", "action": "整理", "product": "案卷材料", "qty": 50, "price": 0, "chain": None, "cluster": None, "tags": ["遗忘测试", "简单", "低频记忆"], "decay": {"level": "低频记忆", "access_count": 1}},
+    {"id": "MEM000098", "ts": "2019-12-01 10:00:00", "days": 2008, "city": "广州", "place": "法院", "landmark": "旁听席", "person": "吴昊", "identity": "学生", "partner": "同学", "partner_id": "学生", "relation": "同学", "event_type": "旁听", "action": "旁听", "product": "真实庭审", "qty": 1, "price": 0, "chain": None, "cluster": None, "tags": ["遗忘测试", "简单", "低频记忆"], "decay": {"level": "低频记忆", "access_count": 3}},
+    {"id": "MEM000099", "ts": "2020-03-15 08:00:00", "days": 1903, "city": "深圳", "place": "公司", "landmark": "法务部", "person": "吴昊", "identity": "法务专员", "partner": "主管", "partner_id": "法务总监", "relation": "上下级", "event_type": "工作", "action": "处理", "product": "合同纠纷", "qty": 1, "price": 0, "chain": None, "cluster": None, "tags": ["遗忘测试", "简单", "低频记忆"], "decay": {"level": "低频记忆", "access_count": 2}},
+    {"id": "MEM000100", "ts": "2020-07-20 14:00:00", "days": 1776, "city": "深圳", "place": "会议中心", "landmark": "培训室", "person": "吴昊", "identity": "法务专员", "partner": "同事", "partner_id": "律师", "relation": "同事", "event_type": "培训", "action": "参加", "product": "法律培训", "qty": 1, "price": 0, "chain": None, "cluster": None, "tags": ["遗忘测试", "简单", "低频记忆"], "decay": {"level": "低频记忆", "access_count": 1}},
+]
+
 ALL_SEEDS = (TEMPORAL_1 + TEMPORAL_2 + TEMPORAL_3 + 
              CAUSAL_1 + CAUSAL_2 + CAUSAL_3 +
              CONTRAST + INCLUSION + DEDUCTION + DEDUCTION_2 +
              CLUSTER_1 + CLUSTER_2 + CLUSTER_3 + CLUSTER_4 +
-             STORAGE + STORAGE_EXTRA + DEEP + FORGET + RETRIEVAL + RETRIEVAL_EXTRA)
+             STORAGE + STORAGE_EXTRA + DEEP + DEEP_EXTRA + FORGET + FORGET_EXTRA + RETRIEVAL + RETRIEVAL_EXTRA)
 
 
 def _relative_time(days: int) -> str:
@@ -523,13 +541,13 @@ def main():
     q_counter += 1
 
     # 深度检索
-    for seed in DEEP:
+    for seed in DEEP + DEEP_EXTRA:
         memories.append(build_memory(seed))
     queries.append(build_simple_query(DEEP[0], "深度检索", f"Q{q_counter:04d}"))
     q_counter += 1
 
     # 遗忘测试
-    for seed in FORGET:
+    for seed in FORGET + FORGET_EXTRA:
         memories.append(build_memory(seed))
     queries.append(build_simple_query(FORGET[0], "遗忘", f"Q{q_counter:04d}"))
     q_counter += 1

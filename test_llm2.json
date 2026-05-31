@@ -1,3 +1,16 @@
+开始生成 5 条记忆...
+  生成 时序 链: 郑欣 @ 上海...
+  批量生成独立记忆 1/1（2条）...
+  生成查询...
+Warning: 查询生成失败。响应: [
+  {
+    "query_id": "Q0001",
+    "query_text": "郑欣在上海受理了什么案件？",
+    "query_type": "精确检索",
+    "test_dimension": "精确检索",
+    "expected_memory_ids": ["MEM000001"],
+    "expected_answer_text": "郑欣在上海受理
+  查询生成失败，回退到规则生成
 {
   "database_info": {
     "name": "MemTest Database (LLM Generated)",
@@ -8,7 +21,7 @@
     },
     "generated_by": "llm",
     "model": "deepseek-chat",
-    "created_at": "2026-05-31 23:39:38"
+    "created_at": "2026-05-31 23:38:36"
   },
   "memories": [
     {
@@ -24,8 +37,8 @@
       },
       "location": {
         "city": "上海",
-        "place": "上海市第一中级人民法院",
-        "landmark": "立案大厅"
+        "place": "上海",
+        "landmark": "上海市第一中级人民法院"
       },
       "person": {
         "name": "郑欣",
@@ -35,9 +48,9 @@
         "relation": ""
       },
       "event": {
-        "type": "司法",
+        "type": "立案",
         "action": "受理",
-        "product": "知识产权侵权案卷",
+        "product": "金融借款合同纠纷案",
         "quantity": 1,
         "price": 0
       },
@@ -45,17 +58,17 @@
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "郑欣在上海上海市第一中级人民法院受理了知识产权侵权案卷"
+          "content": "郑欣在上海上海受理了金融借款合同纠纷案"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "郑欣回忆道：当时在上海的上海市第一中级人民法院，作为法官的郑欣受理了知识产权侵权案卷"
+          "content": "郑欣回忆道：当时在上海的上海，作为法官的郑欣受理了金融借款合同纠纷案"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "据知情人士透露，郑欣在上海那边受理了知识产权侵权案卷，具体情况还在核实中"
+          "content": "据知情人士透露，郑欣在上海那边受理了金融借款合同纠纷案，具体情况还在核实中"
         }
       ],
       "tags": [
@@ -88,8 +101,8 @@
       },
       "location": {
         "city": "上海",
-        "place": "上海市高级人民法院",
-        "landmark": "档案室"
+        "place": "上海",
+        "landmark": "法官办公室"
       },
       "person": {
         "name": "郑欣",
@@ -99,9 +112,9 @@
         "relation": ""
       },
       "event": {
-        "type": "司法",
-        "action": "调取",
-        "product": "技术鉴定报告",
+        "type": "审前准备",
+        "action": "查阅",
+        "product": "案卷材料与证据清单",
         "quantity": 3,
         "price": 0
       },
@@ -109,17 +122,17 @@
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "郑欣在上海上海市高级人民法院调取了技术鉴定报告，数量3"
+          "content": "郑欣在上海上海查阅了案卷材料与证据清单，数量3"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "郑欣回忆道：当时在上海的上海市高级人民法院，作为法官的郑欣调取了技术鉴定报告，总共3"
+          "content": "郑欣回忆道：当时在上海的上海，作为法官的郑欣查阅了案卷材料与证据清单，总共3"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "据知情人士透露，郑欣在上海那边调取了技术鉴定报告，具体情况还在核实中"
+          "content": "据知情人士透露，郑欣在上海那边查阅了案卷材料与证据清单，具体情况还在核实中"
         }
       ],
       "tags": [
@@ -145,15 +158,15 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2023-02-24 00:00:00",
+        "absolute": "2023-02-27 00:00:00",
         "relative": "2年前",
         "fuzzy": "去年",
-        "timestamp": 1677168000
+        "timestamp": 1677427200
       },
       "location": {
         "city": "上海",
-        "place": "上海市第一中级人民法院",
-        "landmark": "第七法庭"
+        "place": "上海",
+        "landmark": "上海市第一中级人民法院"
       },
       "person": {
         "name": "郑欣",
@@ -163,27 +176,27 @@
         "relation": ""
       },
       "event": {
-        "type": "司法",
-        "action": "宣判",
-        "product": "侵权赔偿判决书",
+        "type": "判决",
+        "action": "作出",
+        "product": "一审判决书",
         "quantity": 1,
-        "price": 500000
+        "price": 0
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "郑欣在上海上海市第一中级人民法院宣判了侵权赔偿判决书"
+          "content": "郑欣在上海上海作出了一审判决书"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "郑欣回忆道：当时在上海的上海市第一中级人民法院，作为法官的郑欣宣判了侵权赔偿判决书，花费500000元"
+          "content": "郑欣回忆道：当时在上海的上海，作为法官的郑欣作出了一审判决书"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "据知情人士透露，郑欣在上海那边宣判了侵权赔偿判决书，具体情况还在核实中"
+          "content": "据知情人士透露，郑欣在上海那边作出了一审判决书，具体情况还在核实中"
         }
       ],
       "tags": [
@@ -209,108 +222,45 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2021-06-20 14:00:00",
-        "relative": "4年前",
+        "absolute": "2021-08-20 14:00:00",
+        "relative": "3年前",
         "fuzzy": "去年",
-        "timestamp": 1624168800
+        "timestamp": 1629439200
       },
       "location": {
-        "city": "上海",
-        "place": "陆家嘴金融中心",
-        "landmark": "上海证券交易所"
+        "city": "深圳",
+        "place": "南山区科技园",
+        "landmark": "深圳湾创业广场"
       },
       "person": {
-        "name": "李明",
-        "identity": "金融分析师",
+        "name": "王芳",
+        "identity": "科技投资人",
         "partner_name": "",
         "partner_identity": "",
         "relation": ""
       },
       "event": {
-        "type": "投资",
-        "action": "购买",
-        "product": "科创板指数基金",
-        "quantity": 50000,
-        "price": 1.25
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "李明在上海陆家嘴金融中心购买了科创板指数基金，数量50000"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "李明回忆道：当时在上海的陆家嘴金融中心，作为金融分析师的李明购买了科创板指数基金，总共50000，花费1.25元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "据知情人士透露，李明在上海那边购买了科创板指数基金，具体情况还在核实中"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "中等"
-      ],
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "retrieval_keywords": [
-        "李明",
-        "上海",
-        "投资",
-        "购买",
-        "科创板指数基金"
-      ]
-    },
-    {
-      "memory_id": "MEM000005",
-      "category": "推理测试测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
-      "time": {
-        "absolute": "2023-09-10 08:00:00",
-        "relative": "1年前",
-        "fuzzy": "去年",
-        "timestamp": 1694304000
-      },
-      "location": {
-        "city": "成都",
-        "place": "高新区体育公园",
-        "landmark": "全民健身中心"
-      },
-      "person": {
-        "name": "刘洋",
-        "identity": "健身教练",
-        "partner_name": "",
-        "partner_identity": "",
-        "relation": ""
-      },
-      "event": {
-        "type": "培训",
-        "action": "培训",
-        "product": "青少年体能训练营",
-        "quantity": 30,
+        "type": "参观",
+        "action": "参观",
+        "product": "人工智能芯片研发实验室",
+        "quantity": 1,
         "price": 0
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "刘洋在成都高新区体育公园培训了青少年体能训练营，数量30"
+          "content": "王芳在深圳南山区科技园参观了人工智能芯片研发实验室"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "刘洋回忆道：当时在成都的高新区体育公园，作为健身教练的刘洋培训了青少年体能训练营，总共30"
+          "content": "王芳回忆道：当时在深圳的南山区科技园，作为科技投资人的王芳参观了人工智能芯片研发实验室"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "据知情人士透露，刘洋在成都那边培训了青少年体能训练营，具体情况还在核实中"
+          "content": "据知情人士透露，王芳在深圳那边参观了人工智能芯片研发实验室，具体情况还在核实中"
         }
       ],
       "tags": [
@@ -322,18 +272,81 @@
         "access_count": 0
       },
       "retrieval_keywords": [
-        "刘洋",
-        "成都",
-        "培训",
-        "培训",
-        "青少年体能训练营"
+        "王芳",
+        "深圳",
+        "参观",
+        "参观",
+        "人工智能芯片研发实验室"
+      ]
+    },
+    {
+      "memory_id": "MEM000005",
+      "category": "推理测试测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2023-03-10 10:15:00",
+        "relative": "2年前",
+        "fuzzy": "去年",
+        "timestamp": 1678414500
+      },
+      "location": {
+        "city": "上海",
+        "place": "浦东新区陆家嘴",
+        "landmark": "上海证券交易所"
+      },
+      "person": {
+        "name": "赵磊",
+        "identity": "职业交易员",
+        "partner_name": "",
+        "partner_identity": "",
+        "relation": ""
+      },
+      "event": {
+        "type": "购买",
+        "action": "购买",
+        "product": "科创板新能源上市公司股票",
+        "quantity": 20000,
+        "price": 58.5
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "赵磊在上海浦东新区陆家嘴购买了科创板新能源上市公司股票，数量20000"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "赵磊回忆道：当时在上海的浦东新区陆家嘴，作为职业交易员的赵磊购买了科创板新能源上市公司股票，总共20000，花费58.5元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "据知情人士透露，赵磊在上海那边购买了科创板新能源上市公司股票，具体情况还在核实中"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等"
+      ],
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "赵磊",
+        "上海",
+        "购买",
+        "购买",
+        "科创板新能源上市公司股票"
       ]
     }
   ],
   "queries": [
     {
       "query_id": "Q0001",
-      "query_text": "郑欣在上海受理了知识产权侵权案卷，后续事件依次是什么？",
+      "query_text": "郑欣在上海受理了金融借款合同纠纷案，后续事件依次是什么？",
       "query_type": "时序推理链",
       "test_dimension": "时序推理",
       "expected_memory_ids": [
@@ -341,9 +354,9 @@
         "MEM000002",
         "MEM000003"
       ],
-      "expected_answer_text": "郑欣在上海受理了知识产权侵权案卷 → 郑欣在上海调取了技术鉴定报告 → 郑欣在上海宣判了侵权赔偿判决书",
+      "expected_answer_text": "郑欣在上海受理了金融借款合同纠纷案 → 郑欣在上海查阅了案卷材料与证据清单 → 郑欣在上海作出了一审判决书",
       "acceptable_answers": [
-        "郑欣在上海受理了知识产权侵权案卷 → 郑欣在上海调取了技术鉴定报告 → 郑欣在上海宣判了侵权赔偿判决书"
+        "郑欣在上海受理了金融借款合同纠纷案 → 郑欣在上海查阅了案卷材料与证据清单 → 郑欣在上海作出了一审判决书"
       ],
       "is_negative": false,
       "difficulty": "中等"
@@ -356,9 +369,9 @@
       "expected_memory_ids": [
         "MEM000001"
       ],
-      "expected_answer_text": "郑欣在上海受理了知识产权侵权案卷",
+      "expected_answer_text": "郑欣在上海受理了金融借款合同纠纷案",
       "acceptable_answers": [
-        "郑欣在上海受理了知识产权侵权案卷"
+        "郑欣在上海受理了金融借款合同纠纷案"
       ],
       "is_negative": false,
       "difficulty": "简单"
@@ -371,9 +384,9 @@
       "expected_memory_ids": [
         "MEM000002"
       ],
-      "expected_answer_text": "郑欣在上海调取了技术鉴定报告",
+      "expected_answer_text": "郑欣在上海查阅了案卷材料与证据清单",
       "acceptable_answers": [
-        "郑欣在上海调取了技术鉴定报告"
+        "郑欣在上海查阅了案卷材料与证据清单"
       ],
       "is_negative": false,
       "difficulty": "简单"
@@ -386,39 +399,39 @@
       "expected_memory_ids": [
         "MEM000003"
       ],
-      "expected_answer_text": "郑欣在上海宣判了侵权赔偿判决书",
+      "expected_answer_text": "郑欣在上海作出了一审判决书",
       "acceptable_answers": [
-        "郑欣在上海宣判了侵权赔偿判决书"
+        "郑欣在上海作出了一审判决书"
       ],
       "is_negative": false,
       "difficulty": "简单"
     },
     {
       "query_id": "Q0005",
-      "query_text": "李明在上海做了什么？",
+      "query_text": "王芳在深圳做了什么？",
       "query_type": "精确检索",
       "test_dimension": "精确检索",
       "expected_memory_ids": [
         "MEM000004"
       ],
-      "expected_answer_text": "李明在上海购买了科创板指数基金",
+      "expected_answer_text": "王芳在深圳参观了人工智能芯片研发实验室",
       "acceptable_answers": [
-        "李明在上海购买了科创板指数基金"
+        "王芳在深圳参观了人工智能芯片研发实验室"
       ],
       "is_negative": false,
       "difficulty": "简单"
     },
     {
       "query_id": "Q0006",
-      "query_text": "刘洋在成都做了什么？",
+      "query_text": "赵磊在上海做了什么？",
       "query_type": "精确检索",
       "test_dimension": "精确检索",
       "expected_memory_ids": [
         "MEM000005"
       ],
-      "expected_answer_text": "刘洋在成都培训了青少年体能训练营",
+      "expected_answer_text": "赵磊在上海购买了科创板新能源上市公司股票",
       "acceptable_answers": [
-        "刘洋在成都培训了青少年体能训练营"
+        "赵磊在上海购买了科创板新能源上市公司股票"
       ],
       "is_negative": false,
       "difficulty": "简单"
@@ -436,3 +449,5 @@
     }
   ]
 }
+生成完成: 5 条记忆, 7 条查询
+
