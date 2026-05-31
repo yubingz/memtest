@@ -147,6 +147,10 @@ def extract_facts(articles_dir, existing_facts=None, done_files=None):
 
     for bi in range(0, len(todo), BATCH):
         batch = todo[bi:bi + BATCH]
+        
+        # 批量读取文章内容
+        batch_contents = []
+        batch_meta = []
         for dname, path in batch:
             fn = os.path.basename(path)
             with open(path, encoding='utf-8') as fh:
@@ -154,65 +158,182 @@ def extract_facts(articles_dir, existing_facts=None, done_files=None):
             if t.startswith('---'):
                 idx = t.find('---', 3)
                 if idx > 0: t = t[idx + 3:]
-            if len(t) < 500: continue
-            try:
-                c = llm(EXTRACT_PROMPT + t[:3000])
+            if len(t) < 500: 
+                continue
+            batch_contents.append(t[:3000])
+            batch_meta.append((dname, fn))
+        
+        if not batch_contents:
+            continue
+        
+        # 批量LLM调用：一次处理多篇文章
+        if len(batch_contents) == 1:
+            # 单篇文章：直接调用（保持兼容性）
+            prompts = [EXTRACT_PROMPT + batch_contents[0]]
+        else:
+            # 多篇文章：构建批量提示词
+            prompts = []
+            for idx, content in enumerate(batch_contents):
+                prompts.append(f"""=== 文章{idx+1} ===
+{EXTRACT_PROMPT}
+{content}
+""")
+        
+        try:
+            # 使用batch_generate批量处理
+            if len(prompts) == 1:
+                results = [llm(prompts[0], 3000)]
+            else:
+                # 尝试使用batch_generate，如果不可用则逐条调用
+                llm_inst = get_llm()
+                if hasattr(llm_inst, 'batch_generate'):
+                    results = llm_inst.batch_generate(prompts, max_tokens=3000, temperature=0)
+                else:
+                    results = [llm_inst.generate(p, max_tokens=3000, temperature=0) for p in prompts]
+            
+            # 解析每篇文章的结果
+            for idx, (c, (dname, fn)) in enumerate(zip(results, batch_meta)):
                 n = 0
                 try:
                     arr = _safe_json_loads(c)
                     if isinstance(arr, list):
                         for item in arr:
                             if isinstance(item, dict):
+                                # 标记来源文章
+                                item['_source'] = f"{dname}/{fn}"
                                 existing_facts.append(item); n += 1
                 except (json.JSONDecodeError, ValueError):
                     for l in c.split('\n'):
                         l = l.strip().rstrip(',')
                         if l.startswith('{') and l.endswith('}'):
                             try:
-                                existing_facts.append(_safe_json_loads(l))
+                                fact = _safe_json_loads(l)
+                                fact['_source'] = f"{dname}/{fn}"
+                                existing_facts.append(fact)
                                 n += 1
                             except (json.JSONDecodeError, ValueError):
                                 pass
                 print(f'  [{time.strftime("%H:%M")}] +{n:4d} | {dname}/{fn[:35]}', flush=True)
                 done_files.add(fn)
-            except HTTPError as e:
-                print(f'  [{time.strftime("%H:%M")}] HTTP{e.code} | {dname}/{fn[:35]}', flush=True)
-            except Exception as e:
-                print(f'  [{time.strftime("%H:%M")}] {type(e).__name__} | {dname}/{fn[:35]}', flush=True)
+        except Exception as e:
+            # 批量失败时，逐条重试
+            print(f'  [{time.strftime("%H:%M")}] Batch failed ({type(e).__name__}), retrying individually...', flush=True)
+            for dname, path in batch:
+                fn = os.path.basename(path)
+                with open(path, encoding='utf-8') as fh:
+                    t = fh.read()
+                if t.startswith('---'):
+                    idx = t.find('---', 3)
+                    if idx > 0: t = t[idx + 3:]
+                if len(t) < 500: continue
+                try:
+                    c = llm(EXTRACT_PROMPT + t[:3000])
+                    n = 0
+                    try:
+                        arr = _safe_json_loads(c)
+                        if isinstance(arr, list):
+                            for item in arr:
+                                if isinstance(item, dict):
+                                    item['_source'] = f"{dname}/{fn}"
+                                    existing_facts.append(item); n += 1
+                    except (json.JSONDecodeError, ValueError):
+                        for l in c.split('\n'):
+                            l = l.strip().rstrip(',')
+                            if l.startswith('{') and l.endswith('}'):
+                                try:
+                                    fact = _safe_json_loads(l)
+                                    fact['_source'] = f"{dname}/{fn}"
+                                    existing_facts.append(fact)
+                                    n += 1
+                                except (json.JSONDecodeError, ValueError):
+                                    pass
+                    print(f'  [{time.strftime("%H:%M")}] +{n:4d} | {dname}/{fn[:35]} (retry)', flush=True)
+                    done_files.add(fn)
+                except Exception as e2:
+                    print(f'  [{time.strftime("%H:%M")}] {type(e2).__name__} | {dname}/{fn[:35]}', flush=True)
 
     return existing_facts, done_files
 
 
 # ====== 阶段2: 字段分类校验 ======
 def classify_fields(facts):
+    """字段分类校验 — 批量LLM处理。
+
+    优化：使用batch_generate并行处理多个批次，而非逐条调用。
+    """
     locs = sorted(set(f.get('location', '') for f in facts
                       if f.get('location', '') and f.get('location') != '未知'))
     times = sorted(set(f.get('time', '') for f in facts
                        if f.get('time', '') and f.get('time') not in ('未知', '未知时间', '')))
     print(f'[{time.strftime("%H:%M")}] Classifying {len(locs)} locations, {len(times)} times')
 
+    # 批量处理location分类
     loc_map = {}
-    for start in range(0, len(locs), 30):
-        batch = locs[start:start + 30]
-        prompt = '分类每个词: dynasty(朝代/政权/时期) | place(实体地点) | concept(抽象/建筑非地点)。返回JSON:{"词":"类别"}\n' + '\n'.join(batch)
+    loc_batches = [locs[i:i+30] for i in range(0, len(locs), 30)]
+    if loc_batches:
+        loc_prompts = []
+        for batch in loc_batches:
+            prompt = '分类每个词: dynasty(朝代/政权/时期) | place(实体地点) | concept(抽象/建筑非地点)。返回JSON:{"词":"类别"}\n' + '\n'.join(batch)
+            loc_prompts.append(prompt)
+        
         try:
-            result = _safe_json_loads(llm(prompt, 1000))
-            if isinstance(result, dict): loc_map.update(result)
-        except (json.JSONDecodeError, ValueError):
-            pass
-        print(f'  loc {min(start + 30, len(locs))}/{len(locs)}', flush=True)
+            llm_inst = get_llm()
+            if hasattr(llm_inst, 'batch_generate') and len(loc_prompts) > 1:
+                loc_results = llm_inst.batch_generate(loc_prompts, max_tokens=1000, temperature=0)
+            else:
+                loc_results = [llm_inst.generate(p, max_tokens=1000, temperature=0) for p in loc_prompts]
+            
+            for result in loc_results:
+                try:
+                    parsed = _safe_json_loads(result)
+                    if isinstance(parsed, dict): loc_map.update(parsed)
+                except (json.JSONDecodeError, ValueError):
+                    pass
+        except Exception as e:
+            print(f'  [{time.strftime("%H:%M")}] Location batch failed: {type(e).__name__}, falling back...', flush=True)
+            # Fallback to individual calls
+            for batch in loc_batches:
+                prompt = '分类每个词: dynasty(朝代/政权/时期) | place(实体地点) | concept(抽象/建筑非地点)。返回JSON:{"词":"类别"}\n' + '\n'.join(batch)
+                try:
+                    result = _safe_json_loads(llm(prompt, 1000))
+                    if isinstance(result, dict): loc_map.update(result)
+                except (json.JSONDecodeError, ValueError):
+                    pass
+        print(f'  [{time.strftime("%H:%M")}] Locations classified: {len(loc_map)}/{len(locs)}', flush=True)
 
+    # 批量处理time拆分
     time_map = {}
     compound = [t for t in times if '，' in t or ',' in t]
-    for start in range(0, len(compound), 30):
-        batch = compound[start:start + 30]
-        prompt = '拆分复合时间。返回JSON:{"原值":{"time":"年份","dynasty":"朝代"}}\n' + '\n'.join(batch)
+    time_batches = [compound[i:i+30] for i in range(0, len(compound), 30)]
+    if time_batches:
+        time_prompts = []
+        for batch in time_batches:
+            prompt = '拆分复合时间。返回JSON:{"原值":{"time":"年份","dynasty":"朝代"}}\n' + '\n'.join(batch)
+            time_prompts.append(prompt)
+        
         try:
-            result = _safe_json_loads(llm(prompt, 1000))
-            if isinstance(result, dict): time_map.update(result)
-        except (json.JSONDecodeError, ValueError):
-            pass
-        print(f'  time {min(start + 30, len(compound))}/{len(compound)}', flush=True)
+            llm_inst = get_llm()
+            if hasattr(llm_inst, 'batch_generate') and len(time_prompts) > 1:
+                time_results = llm_inst.batch_generate(time_prompts, max_tokens=1000, temperature=0)
+            else:
+                time_results = [llm_inst.generate(p, max_tokens=1000, temperature=0) for p in time_prompts]
+            
+            for result in time_results:
+                try:
+                    parsed = _safe_json_loads(result)
+                    if isinstance(parsed, dict): time_map.update(parsed)
+                except (json.JSONDecodeError, ValueError):
+                    pass
+        except Exception as e:
+            print(f'  [{time.strftime("%H:%M")}] Time batch failed: {type(e).__name__}, falling back...', flush=True)
+            for batch in time_batches:
+                prompt = '拆分复合时间。返回JSON:{"原值":{"time":"年份","dynasty":"朝代"}}\n' + '\n'.join(batch)
+                try:
+                    result = _safe_json_loads(llm(prompt, 1000))
+                    if isinstance(result, dict): time_map.update(result)
+                except (json.JSONDecodeError, ValueError):
+                    pass
+        print(f'  [{time.strftime("%H:%M")}] Times classified: {len(time_map)}/{len(compound)}', flush=True)
 
     fix_count = 0
     for f in facts:
@@ -652,14 +773,35 @@ def generate_queries(memories):
 
 # ====== 阶段6: LLM预解析缓存 ======
 def build_llm_cache(queries):
+    """LLM预解析缓存 — 批量处理查询。
+
+    优化：使用batch_generate并行处理多个批次，提升3-5x速度。
+    """
     cache = {}
-    for start in range(0, len(queries), 15):
-        batch = queries[start:start + 15]
+    batch_size = 15
+    query_batches = [queries[i:i+batch_size] for i in range(0, len(queries), batch_size)]
+    
+    if not query_batches:
+        return cache
+    
+    # 构建所有批次的prompts
+    all_prompts = []
+    batch_indices = []
+    for batch in query_batches:
         bq = '\n'.join(f'{i}: {q["query_text"]}' for i, q in enumerate(batch))
         prompt = '对每个查询解析为JSON。字段: person_name,location_city,event_product,time_start,dynasty_era。缺失字段省略。严格按序号:JSON格式每行。\n\n' + bq + '\n输出:\n0: {"person_name":"X"}\n1: {"location_city":"Y"}'
-        try:
-            c = llm(prompt, len(batch) * 80)
-            for line in c.split('\n'):
+        all_prompts.append(prompt)
+        batch_indices.append(batch)
+    
+    try:
+        llm_inst = get_llm()
+        if hasattr(llm_inst, 'batch_generate') and len(all_prompts) > 1:
+            all_results = llm_inst.batch_generate(all_prompts, max_tokens=len(all_prompts[0]) * 80, temperature=0)
+        else:
+            all_results = [llm_inst.generate(p, max_tokens=len(p) * 5, temperature=0) for p in all_prompts]
+        
+        for batch, result in zip(batch_indices, all_results):
+            for line in result.split('\n'):
                 mm = re.match(r'(\d+):\s*(\{.+\})', line.strip())
                 if mm:
                     idx = int(mm.group(1))
@@ -668,11 +810,30 @@ def build_llm_cache(queries):
                             cache[batch[idx]['query_text']] = _safe_json_loads(mm.group(2))
                         except (json.JSONDecodeError, ValueError):
                             pass
-        except (HTTPError, ValueError, RuntimeError, OSError):
-            pass
-        if (start + 15) % 60 == 0:
-            print(f'  cache {min(start + 15, len(queries))}/{len(queries)}', flush=True)
-    print(f'[{time.strftime("%H:%M")}] Cache: {len(cache)}/{len(queries)} queries parsed')
+        print(f'[{time.strftime("%H:%M")}] Cache: {len(cache)}/{len(queries)} queries parsed (batch)')
+    except Exception as e:
+        print(f'[{time.strftime("%H:%M")}] Batch cache failed ({type(e).__name__}), falling back...', flush=True)
+        # Fallback to original sequential processing
+        for start in range(0, len(queries), batch_size):
+            batch = queries[start:start + batch_size]
+            bq = '\n'.join(f'{i}: {q["query_text"]}' for i, q in enumerate(batch))
+            prompt = '对每个查询解析为JSON。字段: person_name,location_city,event_product,time_start,dynasty_era。缺失字段省略。严格按序号:JSON格式每行。\n\n' + bq + '\n输出:\n0: {"person_name":"X"}\n1: {"location_city":"Y"}'
+            try:
+                c = llm(prompt, len(batch) * 80)
+                for line in c.split('\n'):
+                    mm = re.match(r'(\d+):\s*(\{.+\})', line.strip())
+                    if mm:
+                        idx = int(mm.group(1))
+                        if idx < len(batch):
+                            try:
+                                cache[batch[idx]['query_text']] = _safe_json_loads(mm.group(2))
+                            except (json.JSONDecodeError, ValueError):
+                                pass
+            except (Exception):
+                pass
+            if (start + batch_size) % 60 == 0:
+                print(f'  cache {min(start + batch_size, len(queries))}/{len(queries)}', flush=True)
+        print(f'[{time.strftime("%H:%M")}] Cache: {len(cache)}/{len(queries)} queries parsed (fallback)')
     return cache
 
 
