@@ -5,3 +5,25 @@ _parsed_text.json
 test_db_*.json
 __pycache__/
 *.pyc
+
+# 临时文件
+*.tmp
+*.bak
+*~
+
+# 日志
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 生成的大型数据文件
+four_novels_db_*.json
+hp_db_*.json
