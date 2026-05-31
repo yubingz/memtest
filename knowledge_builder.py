@@ -236,6 +236,12 @@ def classify_fields(facts):
 
 # ====== 阶段3: 标准化 + 建链 ======
 def build_memories(facts):
+    """标准化事实为记忆 + 构建推理链。
+
+    链构建策略（优先级）：
+    1. LLM提取的chain_id：如果事实包含chain_id，按chain_id分组构建链
+    2. 人物分组：chain_id为空时，按人物分组构建链（3条以上）
+    """
     memories = []
     for i, f in enumerate(facts):
         pid = f'MEM{10000 + i:06d}'
@@ -245,12 +251,15 @@ def build_memories(facts):
         t = f.get('time', '') or ''
         era = f.get('dynasty', '') or ''
         ep = f.get('event_type', '事件')
+        chain_id = f.get('chain_id', '')  # LLM提取的链ID
+        chain_pos = f.get('chain_position', 0)  # LLM提取的位置
         memories.append({
             'memory_id': pid, 'category': 'knowledge', 'weight': 0.7,
             'person': {'name': pn.split(',')[0] if ',' in pn else pn, 'identity': ''},
             'location': {'city': loc.split(',')[0] if ',' in loc else loc, 'place': '', 'landmark': ''},
             'time': {'absolute': t, 'era': era, 'relative': '', 'fuzzy': ''},
             'event': {'type': 'event', 'product': ep[:30], 'action': c[:20]},
+            'chain_id': chain_id,  # 保留原始chain_id用于调试
             'reasoning_chain': '', 'chain_position': 0, 'cluster_id': None,
             'decay': {'level': None, 'access_count': 0},
             'versions': [
@@ -264,19 +273,61 @@ def build_memories(facts):
             'difficulty': '中等'
         })
 
-    bp = defaultdict(list)
+    # 链构建策略1：优先使用LLM提取的chain_id
+    chain_groups = defaultdict(list)
+    unchained = []  # 没有chain_id的记忆
     for m in memories:
+        cid = m.get('chain_id', '')
+        if cid:
+            chain_groups[cid].append(m)
+        else:
+            unchained.append(m)
+
+    # 处理LLM链：按chain_id分组，每组最多MAX_CHAIN_DEPTH条
+    cid = 1
+    for ch_id, ms in chain_groups.items():
+        if len(ms) >= 2:  # 至少2条才算链
+            ch = f'CHAIN_{cid:05d}'
+            # 按LLM提供的位置排序，无位置则按原顺序
+            ms_sorted = sorted(ms, key=lambda x: x.get('chain_position', 0) or 0)
+            for pos, m in enumerate(ms_sorted[:MAX_CHAIN_DEPTH]):
+                m['reasoning_chain'] = ch
+                m['chain_position'] = pos + 1
+                # 设置链连接
+                m['chain_hop'] = pos + 1
+                m['chain_total'] = min(len(ms_sorted), MAX_CHAIN_DEPTH)
+            cid += 1
+
+    # 链构建策略2：无chain_id的记忆，按人物分组
+    bp = defaultdict(list)
+    for m in unchained:
         pn = m['person']['name']
         if pn and pn != '未知': bp[pn].append(m)
-    cid = 1
     for pn, ms in bp.items():
         if len(ms) >= 3:
             ch = f'CHAIN_{cid:05d}'
             for pos, m in enumerate(ms[:MAX_CHAIN_DEPTH]):
-                m['reasoning_chain'] = ch; m['chain_position'] = pos + 1
+                m['reasoning_chain'] = ch
+                m['chain_position'] = pos + 1
+                m['chain_hop'] = pos + 1
+                m['chain_total'] = min(len(ms), MAX_CHAIN_DEPTH)
             cid += 1
-    n_chains = sum(1 for m in memories if m['reasoning_chain'])
-    print(f'[{time.strftime("%H:%M")}] {len(memories)} mems, {n_chains} in chains')
+
+    # 设置链连接（prev/next）
+    chain_map = defaultdict(list)
+    for m in memories:
+        ch = m.get('reasoning_chain', '')
+        if ch:
+            chain_map[ch].append(m)
+    for ch, ms in chain_map.items():
+        ms_sorted = sorted(ms, key=lambda x: x['chain_position'])
+        for i, m in enumerate(ms_sorted):
+            m['chain_prev'] = ms_sorted[i-1]['memory_id'] if i > 0 else ''
+            m['chain_next'] = ms_sorted[i+1]['memory_id'] if i < len(ms_sorted) - 1 else ''
+
+    n_llm_chains = sum(1 for m in memories if m.get('chain_id') and m.get('reasoning_chain'))
+    n_person_chains = sum(1 for m in memories if m.get('reasoning_chain') and not m.get('chain_id'))
+    print(f'[{time.strftime("%H:%M")}] {len(memories)} mems, chains: {n_llm_chains}(LLM) + {n_person_chains}(person) = {n_llm_chains + n_person_chains}')
     return memories
 
 
@@ -438,60 +489,133 @@ def deduplicate_memories(memories):
 
 # ====== 阶段5: 生成查询 ======
 def generate_queries(memories):
+    """生成查询（含20%负样本）。
+
+    正样本：5类查询 + 链式查询
+    负样本：人物不存在/地点不存在/事件不存在/组合矛盾
+    """
     queries = []
+    # 收集所有实体用于负样本构造
+    all_persons = list(set(m['person']['name'] for m in memories if m['person']['name'] != '未知'))
+    all_cities = list(set(m['location']['city'] for m in memories if m['location']['city']))
+    all_products = list(set(m['event']['product'] for m in memories if m['event']['product']))
+    all_eras = list(set(m['time']['era'] for m in memories if m['time']['era']))
+    
+    # 用于生成负样本的假实体池
+    fake_persons = ['赵钱孙', '周吴郑', '冯陈褚', '卫蒋沈', '韩杨朱', '秦尤许', '何吕施', '张孔曹']
+    fake_cities = ['火星', '月球', '水星', '金星', '木星', '土星', '冥王星', '开普勒']
+    fake_events = ['时光旅行', '量子跃迁', '黑洞探索', '星际战争', '外星殖民', '维度穿越']
+
+    # ===== 正样本查询 =====
     with_time = [m for m in memories if m['time']['absolute'] and m['person']['name'] != '未知']
-    for m in random.sample(with_time, min(QUERIES_PER_TYPE, len(with_time))):
+    for i, m in enumerate(random.sample(with_time, min(QUERIES_PER_TYPE, len(with_time)))):
         queries.append({
+            'query_id': f'Q{i+1:04d}',
             'query_text': f'{m["time"]["absolute"]} {m["person"]["name"]}做了什么',
             'query_type': '时间检索', 'expected_memory_ids': [m['memory_id']],
             'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
 
     with_loc = [m for m in memories if m['location']['city']]
-    for m in random.sample(with_loc, min(QUERIES_PER_TYPE, len(with_loc))):
+    for i, m in enumerate(random.sample(with_loc, min(QUERIES_PER_TYPE, len(with_loc)))):
         queries.append({
+            'query_id': f'Q{len(queries)+1:04d}',
             'query_text': f'在{m["location"]["city"]}发生过什么',
             'query_type': '地点检索', 'expected_memory_ids': [m['memory_id']],
             'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
 
     with_person = [m for m in memories if m['person']['name'] != '未知']
-    for m in random.sample(with_person, min(QUERIES_PER_TYPE, len(with_person))):
+    for i, m in enumerate(random.sample(with_person, min(QUERIES_PER_TYPE, len(with_person)))):
         queries.append({
+            'query_id': f'Q{len(queries)+1:04d}',
             'query_text': f'{m["person"]["name"]}做了什么',
             'query_type': '人物检索', 'expected_memory_ids': [m['memory_id']],
             'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
 
-    for m in random.sample(with_person, min(QUERIES_PER_TYPE, len(with_person))):
+    for i, m in enumerate(random.sample(with_person, min(QUERIES_PER_TYPE, len(with_person)))):
         queries.append({
+            'query_id': f'Q{len(queries)+1:04d}',
             'query_text': f'{m["person"]["name"]}关于{m["event"]["product"]}有什么经历',
             'query_type': '事件检索', 'expected_memory_ids': [m['memory_id']],
             'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
 
     with_all = [m for m in memories if m['time']['absolute'] and m['person']['name'] != '未知' and m['location']['city']]
-    for m in random.sample(with_all, min(QUERIES_PER_TYPE, len(with_all))):
+    for i, m in enumerate(random.sample(with_all, min(QUERIES_PER_TYPE, len(with_all)))):
         queries.append({
+            'query_id': f'Q{len(queries)+1:04d}',
             'query_text': f'{m["time"]["absolute"]} {m["person"]["name"]}在{m["location"]["city"]}发生了什么',
             'query_type': '组合检索', 'expected_memory_ids': [m['memory_id']],
             'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
 
+    # 链式查询
+    # 链式查询
     cs = set()
+    chain_idx = 0
     for m in memories:
         ch = m['reasoning_chain']
         if ch and ch not in cs:
             cs.add(ch)
             members = sorted([x for x in memories if x['reasoning_chain'] == ch], key=lambda x: x['chain_position'])
             if len(members) >= 3:
+                chain_idx += 1
                 queries.append({
+                    'query_id': f'Q{len(queries) + 1:04d}',
                     'query_text': f'请梳理{members[0]["person"]["name"]}的完整经历脉络',
                     'query_type': '组合推理',
                     'expected_memory_ids': [x['memory_id'] for x in members],
                     'expected_answer': f'{members[0]["person"]["name"]}的经历脉络',
                     'difficulty': '中等'})
 
-    # 查询人物平衡：每人物最多QUERY_PERSON_CAP条
+    # ===== 负样本查询（20%） =====
+    n_positive = len(queries)
+    n_negative = max(1, int(n_positive * 0.25))  # 约20%负样本
+    
+    for i in range(n_negative):
+        neg_type = random.choice(['人物不存在', '地点不存在', '事件不存在', '组合矛盾'])
+        if neg_type == '人物不存在' and all_persons:
+            # 用真实人物名但组合假地点/事件
+            real_person = random.choice(all_persons)
+            fake_city = random.choice(fake_cities)
+            fake_event = random.choice(fake_events)
+            query_text = random.choice([
+                f'{random.choice(fake_persons)}做了什么',
+                f'{random.choice(fake_persons)}在{random.choice(all_cities)}做了什么',
+                f'{random.choice(fake_persons)}关于{random.choice(all_products)}有什么经历',
+            ])
+        elif neg_type == '地点不存在' and all_cities:
+            query_text = random.choice([
+                f'在{random.choice(fake_cities)}发生了什么',
+                f'{random.choice(all_persons)}在{random.choice(fake_cities)}做了什么',
+            ]) if all_persons else f'在{random.choice(fake_cities)}发生了什么'
+        elif neg_type == '事件不存在' and all_products:
+            query_text = random.choice([
+                f'关于{random.choice(fake_events)}的事件有哪些',
+                f'{random.choice(all_persons)}关于{random.choice(fake_events)}有什么经历',
+            ]) if all_persons else f'关于{random.choice(fake_events)}的事件有哪些'
+        else:  # 组合矛盾
+            if all_persons and all_cities and all_products:
+                query_text = f'{random.choice(all_persons)}在{random.choice(fake_cities)}购买了{random.choice(fake_events)}'
+            elif all_persons:
+                query_text = f'{random.choice(all_persons)}在{random.choice(fake_cities)}做了什么'
+            else:
+                query_text = f'关于{random.choice(fake_events)}的记录'
+        
+        queries.append({
+            'query_id': f'NEG{i+1:04d}',
+            'query_text': query_text,
+            'query_type': '负样本',
+            'expected_memory_ids': [],
+            'expected_answer': '',
+            'difficulty': '困难',
+            'search_depth': '浅层',
+            'is_negative': True,
+        })
+
+    # 查询人物平衡（正样本）
+    mem_map = {m['memory_id']: m for m in memories}
     by_person = defaultdict(list)
     for q in queries:
-        # 从expected_memory_ids反查人物
-        mem_map = {m['memory_id']: m for m in memories}
+        if q.get('is_negative'):
+            continue  # 负样本不参与人物平衡
         eids = q.get('expected_memory_ids', [])
         person = mem_map[eids[0]]['person']['name'] if eids and eids[0] in mem_map else '未知'
         by_person[person].append(q)
@@ -515,10 +639,14 @@ def generate_queries(memories):
                 sampled = random.sample(sampled, cap)
             balanced_queries.extend(sampled)
 
+    # 加入负样本（不参与人物平衡）
+    neg_queries = [q for q in queries if q.get('is_negative')]
+    balanced_queries.extend(neg_queries)
+
     random.shuffle(balanced_queries)
     tc = defaultdict(int)
     for q in balanced_queries: tc[q['query_type']] += 1
-    print(f'[{time.strftime("%H:%M")}] Queries: {dict(tc)} total={len(balanced_queries)}')
+    print(f'[{time.strftime("%H:%M")}] Queries: {dict(tc)} total={len(balanced_queries)} (neg={len(neg_queries)})')
     return balanced_queries
 
 
