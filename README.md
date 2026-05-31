@@ -8,12 +8,14 @@
 memtest/
 ├── llm_interface.py          # LLM 接口抽象层（可替换为任意模型）
 ├── generator.py               # 测试库生成器（程序化 / LLM增强）
-├── knowledge_builder.py       # 从文本提取知识构建测试库
+├── knowledge_builder.py       # 从文本提取知识构建测试库（支持中英文混合）
+├── quality_check.py           # 数据质量校验（10项自动检查）
 ├── prompts/                   # 提示词模板（可热更新）
 │   ├── memory_enhance.md      # 生成记忆的3种表达变体
 │   ├── query_generate.md      # 生成查询变体
-│   └── fact_extract.md        # 从文本提取结构化事实
+│   └── fact_extract.md        # 从文本提取结构化事实（中英文）
 ├── benchmarks/                # 已有 benchmark 数据（可选）
+├── TODO.md                    # 待办清单与已完成变更
 └── .env                       # API key（见 .env.example）
 ```
 
@@ -43,10 +45,14 @@ python generator.py --llm        # LLM 生成记忆文本和查询
 
 ```bash
 python knowledge_builder.py ./my_books/ output.json
+python knowledge_builder.py ./my_books/ output.json --merge   # 增量追加（已有数据库+新文章）
+python knowledge_builder.py existing_db.json --clean           # 清洗已有数据库
 ```
 
-输入：Markdown 文章目录  
+输入：Markdown 文章目录（支持中文、英文或混合文本）  
 输出：含 facts + chains + queries 的标准数据库
+
+**知识构建器优化：** 3-5x 批量LLM加速 — 提取、分类、查询预解析均使用 `batch_generate()` 并行处理。
 
 ### 4. 质量校验
 
@@ -55,6 +61,19 @@ python quality_check.py sample_db_100.json
 ```
 
 输出：10 项自动检查报告，包含链式/聚类/负样本完整性。
+
+### 5. 更多工具
+
+```bash
+python _gen_and_test.py            # 生成样例数据 + 自测（快速验证）
+```
+
+| 工具 | 说明 |
+|------|------|
+| `_gen_and_test.py` | 一键生成 + 自测，验证生成器正常 |
+| `noesis_adapter.py` | NOESIS-II 记忆系统适配器（评测接入示例） |
+| `llm_evaluator.py` | LLM 语义评估器（替代精确匹配的语义相关性判断） |
+| `benchmarks/` | 已有 benchmark 数据（`llm_rerank_benchmark.json` 等） |
 
 ## LLM 接口
 
@@ -83,9 +102,7 @@ class MyAdapter(LLMInterface):
 
 - `memory_enhance.md` — 让 LLM 生成同一事件的3种表达风格（**客观叙述** / **主观视角** / **第三方转述**）
 - `query_generate.md` — 让 LLM 从记忆生成多样化查询（含 few-shot 示例）
-- `fact_extract.md` — 让 LLM 从长文本提取结构化事实（含链式检测）
-
-提示词文件不存在时自动回退到内联提示词。
+- `fact_extract.md` — 让 LLM 从长文本提取结构化事实（含链式检测），**支持中英文混合文本**
 
 提示词文件不存在时自动回退到内联提示词。
 
@@ -122,11 +139,21 @@ class MyAdapter(LLMInterface):
       "query_id": "Q0001",
       "query_text": "张伟在北京的购买记录",
       "query_type": "组合检索",
-      "expected_memory_ids": ["MEM000001"]
+      "expected_memory_ids": ["MEM000001"],
+      "is_negative": false
     }
   ]
 }
 ```
+
+## 参考文档
+
+| 文档 | 说明 |
+|------|------|
+| [API.md](API.md) | MemoryAdapter 接口定义 + 数据格式完整规范 |
+| [GUIDE.md](GUIDE.md) / [GUIDE_CN.md](GUIDE_CN.md) | 详细使用指南（架构/评测维度/扩展） |
+| [OPTIMIZATION.md](OPTIMIZATION.md) | 问题诊断与优化路线图（已修复 + 待做） |
+| [TODO.md](TODO.md) | 待办清单与已完成变更日志 |
 
 ## 安全
 

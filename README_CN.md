@@ -70,24 +70,33 @@ print(report.summary())
 ### 程序化数据生成器
 
 ```bash
-python generator.py              # 100 条样例（快速）
+python generator.py              # 100 条样例（快速，零依赖）
+python generator.py --size=500   # 自定义规模
 python generator.py --full       # 10,000 条全量
-python generator.py --size 500   # 自定义规模
+python generator.py --llm        # LLM增强生成（记忆文本更自然，需 API key）
 ```
 
-6 大类记忆按比例分配（各约 17%），每条记忆包含 3 种风格版本测试改写鲁棒性。
+6 大类记忆按比例分配（各约 17%），每条记忆包含 3 种风格版本测试改写鲁棒性。20% 查询为负样本（测试 Precision）。
+
+**质量校验**：
+```bash
+python quality_check.py sample_db_100.json
+```
+输出 10 项自动检查：ID 唯一性、查询有效性、负样本比例、链式/聚类完整性、版本长度合理性等。
 
 ### 知识构建器
 
-从任意文本语料（小说、文档、对话记录）构建测试库：
+从任意文本语料（小说、文档、对话记录）构建测试库，**支持中文、英文或混合文本**：
 
 ```bash
-python knowledge_builder.py /path/to/corpus                   # 自动检测语言
-python knowledge_builder.py /path/to/corpus --lang en     # 指定英文
-python knowledge_builder.py /path/to/corpus --lang zh     # 指定中文
+python knowledge_builder.py ./my_books/ output.json
+python knowledge_builder.py ./my_books/ output.json --merge   # 增量追加（已有数据库+新文章）
+python knowledge_builder.py existing_db.json --clean           # 清洗已有数据库
 ```
 
-已用中国四大名著验证（4,058 条记忆，187 条查询（清洗自 21,793 条））。详见[评测结果](#评测结果)。
+**优化**：3-5x 批量LLM加速 — 提取、分类、查询预解析均使用 `batch_generate()` 并行处理。
+
+已用中国四大名著验证（4,058 条记忆，187 条查询）。详见[评测结果](#评测结果)。
 
 ### 哈利波特评测库 (`hp_benchmark_db.json`)
 
@@ -242,22 +251,40 @@ python knowledge_builder.py test_corpus/ test_output.json --lang zh
 
 ```
 memtest/
-├── README.md                # 英文文档
-├── README_CN.md             # 中文文档
+├── README.md                # 中文文档（主入口）
 ├── GUIDE.md                 # 英文详细说明文档
 ├── GUIDE_CN.md              # 中文详细说明文档
 ├── API.md                   # 适配器接口 & 数据格式规范
-├── generator.py             # 程序化测试数据生成器
-├── knowledge_builder.py     # 语料 → 测试库构建器（含 --clean 清洗模式）
-├── runner.py                # 评测执行器 & MemoryAdapter 基类
+├── OPTIMIZATION.md          # 问题诊断与优化路线图
+├── TODO.md                  # 待办清单与已完成变更
+├── generator.py             # 程序化测试数据生成器（零依赖 / LLM增强）
+├── knowledge_builder.py     # 语料 → 测试库构建器（支持中英文混合）
+├── quality_check.py         # 数据质量校验（10项自动检查）
+├── prompts/                 # 提示词模板（可热更新）
+│   ├── memory_enhance.md    # 3种表达风格（客观/主观/转述）
+│   ├── query_generate.md    # 查询生成提示词
+│   └── fact_extract.md      # 事实提取提示词（中英文）
+├── runner.py                # 可选评测执行器（已从核心剥离）
+├── noesis_adapter.py        # NOESIS-II 记忆系统适配器示例
+├── llm_evaluator.py         # LLM 语义评估器
 ├── _gen_and_test.py         # 一键生成 & 自测
 ├── benchmark/               # 清洗后的评测数据库
 │   ├── hp_benchmark_db.json       # 哈利波特（英文，1,626 条记忆）
-│   ├── four_novels_benchmark.json # 四大名著（中文，11,794 条记忆，155 条推理链）
+│   ├── four_novels_benchmark.json # 四大名著（中文，11,794 条记忆）
+│   ├── llm_rerank_benchmark.json  # LLM重排评测数据
 │   └── tianlongbabu_db.json       # 天龙八部（中文，48 条记忆）
 ├── sample_db_100.json       # 样例数据库（100 条记忆）
 └── sample_queries.json      # 样例查询
 ```
+
+## 更多工具
+
+| 工具 | 说明 |
+|------|------|
+| `_gen_and_test.py` | 一键生成样例数据 + 自测，快速验证生成器正常 |
+| `noesis_adapter.py` | NOESIS-II 记忆系统适配器（评测接入示例） |
+| `llm_evaluator.py` | LLM 语义评估器（替代精确匹配的语义相关性判断） |
+| `benchmarks/` | 已有 benchmark 数据（`llm_rerank_benchmark.json` 等） |
 
 ## API 参考
 
@@ -278,6 +305,15 @@ class MemoryAdapter:
     def search(self, query: str, top_k: int = 20) -> list[dict]:
         """检索记忆，返回 [{"memory_id": str, "score": float, "content": str}, ...]"""
 ```
+
+## 参考文档
+
+| 文档 | 说明 |
+|------|------|
+| [API.md](API.md) | MemoryAdapter 接口定义 + 数据格式完整规范 |
+| [GUIDE.md](GUIDE.md) / [GUIDE_CN.md](GUIDE_CN.md) | 详细使用指南（架构/评测维度/扩展） |
+| [OPTIMIZATION.md](OPTIMIZATION.md) | 问题诊断与优化路线图（已修复 + 待做） |
+| [TODO.md](TODO.md) | 待办清单与已完成变更日志 |
 
 ## 贡献
 

@@ -43,11 +43,12 @@ Traditional evaluation approaches couple test data to a specific backend. MemTes
 │  (procedural)   │     │  (test data) │     │   (corpus-based)│
 └─────────────────┘     └──────┬───────┘     └─────────────────┘
                                │
+                               │  (test data — decoupled)
                                ▼
                      ┌──────────────────┐
-                     │    runner.py      │
-                     │  (evaluation      │
-                     │   engine)         │
+                     │  Your Evaluation │  ←  接任意评测框架
+                     │  (runner.py, or  │     或自己实现
+                     │   your own)      │
                      └────────┬─────────┘
                               │
                     ┌─────────┴─────────┐
@@ -58,6 +59,8 @@ Traditional evaluation approaches couple test data to a specific backend. MemTes
            │              │   │  keyword-only│
            └──────────────┘   └──────────────┘
 ```
+
+> **注意**：`runner.py` 已从核心包剥离，作为可选评测工具保留。核心定位是**纯数据生成工具**，评测由用户自行选择或实现框架。见 [README.md](README.md) 快速开始。
 
 - **generator.py**: Procedurally generates test data with controlled randomness
 - **knowledge_builder.py**: Extracts facts from real text corpora via LLM, then structures them into the same format

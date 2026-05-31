@@ -90,9 +90,9 @@ class MemoryAdapter:
     "price": 1800
   },
   "versions": [
-    {"version_id": "v1", "style": "标准叙述", "content": "..."},
-    {"version_id": "v2", "style": "详细描述", "content": "..."},
-    {"version_id": "v3", "style": "口语化", "content": "..."}
+    {"version_id": "v1", "style": "客观叙述", "content": "..."},
+    {"version_id": "v2", "style": "主观视角", "content": "..."},
+    {"version_id": "v3", "style": "第三方转述", "content": "..."}
   ],
   "tags": ["存储测试", "中等", "5d"],
   "cluster_id": null,
@@ -112,7 +112,8 @@ class MemoryAdapter:
   "expected_memory_ids": ["MEM000001"],
   "expected_answer": "...",
   "difficulty": "中等",
-  "search_depth": "中层"
+  "search_depth": "中层",
+  "is_negative": false
 }
 ```
 
