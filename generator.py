@@ -168,6 +168,77 @@ PRODUCTS = [
 ]
 
 
+# ====== 动作-产品语义约束 ======
+# 避免不合理的搭配（如"造成了海底电缆""实施了药品"）
+ACTION_PRODUCT_COMPAT = {
+    # 交易类 → 金融/商品
+    "购买": "financial", "出售": "financial", "投资": "financial", "转账": "financial",
+    "退款": "financial", "捐赠": "goods", "抵押": "financial", "拍卖": "goods",
+    "收购": "company", "合并": "company",
+    # 会议类 → 活动类产品（不需要特定product）
+    "召开": "event", "参加": "event", "主持": "event", "复盘": "event",
+    # 日常类 → 服务/活动
+    "拜访": "service", "接待": "service", "出差": "travel",
+    # 冲突类 → 案件/投诉
+    "投诉": "complaint", "起诉": "case", "判决": "case",
+    # 技术类 → 技术产品
+    "开发": "tech", "测试": "tech", "上线": "tech", "发布": "tech",
+    "部署": "tech", "维护": "tech", "升级": "tech",
+    # 发现/创造类 → 科技/研究
+    "发现": "research", "发明": "tech", "创造": "tech", "设计": "tech",
+    "验证": "research", "实施": "project",
+    # 转折类 → 职位/公司
+    "升职": "position", "离职": "position", "入职": "position",
+    # 因果类（最易出问题）→ 明确用event_type相关product
+    "导致": "event_result", "引发": "event_result", "造成": "event_result",
+    "触发": "event_result", "产生": "event_result", "带来": "event_result",
+    "形成": "event_result",
+    # 通用动作
+    "进行": "activity", "处理": "task", "推进": "project", "开展": "activity",
+}
+
+PRODUCT_CATEGORIES = {
+    "financial": ["茅台", "五粮液", "苹果股票", "特斯拉", "比亚迪", "宁德时代",
+                  "腾讯", "阿里", "比特币", "黄金", "基金", "债券", "保险",
+                  "科创板指数基金", "国债", "理财产品"],
+    "goods": ["新能源汽车", "茅台", "五粮液", "房产", "珠宝", "艺术品", "古董"],
+    "company": ["字节跳动", "京东", "美团", "百度", "小米", "华为"],
+    "event": ["项目启动会", "年度总结会", "技术评审会", "产品发布会", "战略研讨会",
+              "董事会", "股东会", "培训会", "交流会", "分享会"],
+    "service": ["客户", "合作方", "供应商", "投资人", "领导", "考察团"],
+    "travel": ["北京", "上海", "深圳", "杭州", "成都", "出差任务", "调研项目"],
+    "complaint": ["服务质量投诉", "产品质量问题", "消费纠纷", "售后问题"],
+    "case": ["民事案件", "刑事案件", "知识产权案", "合同纠纷", "侵权赔偿案"],
+    "tech": ["人工智能系统", "云计算平台", "大数据方案", "区块链应用", "物联网设备",
+             "5G基站", "芯片", "半导体", "自动驾驶系统", "无人机", "机器人",
+             "VR设备", "AR应用", "量子计算原型", "脑机接口", "类脑芯片"],
+    "research": ["新型材料", "基因编辑技术", "量子效应", "超导现象", "暗物质证据",
+                 "新物种", "考古发现", "天文现象"],
+    "project": ["城市更新项目", "数字化转型项目", "基建工程", "环保项目", "社区改造"],
+    "position": ["部门经理", "技术总监", "项目负责人", "首席架构师", "区域经理"],
+    "event_result": ["连锁反应", "市场波动", "政策调整", "行业变革", "技术突破",
+                     "社会影响", "经济损失", "安全隐患", "机遇", "挑战"],
+    "activity": ["调研", "评估", "审查", "协商", "研讨", "规划", "测试"],
+    "task": ["投诉", "申请", "报告", "审批", "合同", "流程"],
+}
+
+def _compatible_product(action, products_pool=None):
+    """Select a semantically compatible product for the given action."""
+    cat = ACTION_PRODUCT_COMPAT.get(action)
+    if cat and cat in PRODUCT_CATEGORIES:
+        compatible = PRODUCT_CATEGORIES[cat]
+        if products_pool:
+            # Prefer items from the pool that are also in the compatible list
+            overlap = [p for p in products_pool if p in compatible]
+            if overlap:
+                return random.choice(overlap)
+        return random.choice(compatible)
+    # Fallback: use the provided pool or general PRODUCTS
+    if products_pool:
+        return random.choice(products_pool)
+    return random.choice(PRODUCTS)
+
+
 def load_prompt(name: str) -> str:
     """从 prompts/ 目录加载提示词模板。"""
     paths = [
@@ -251,7 +322,7 @@ def make_versions_programmatic(base: dict) -> list:
     # v1 客观叙述：标准事实，完整要素
     v1 = {
         "version_id": "v1", "style": "客观叙述",
-        "content": f"{p1}在{city}{place}{action}了{product}，数量{qty}"
+        "content": f"{p1}在{city}{place}{_natural_action_product_phrase(action, product)}，数量{qty}"
     }
     
     # v2 主观视角：从p1的视角，含心理活动和感受
@@ -259,7 +330,7 @@ def make_versions_programmatic(base: dict) -> list:
                 "想趁低价入手", "认为值得投入", "考虑再三后决定", "不想错过"]
     v2 = {
         "version_id": "v2", "style": "主观视角",
-        "content": f"{p1}回忆道：当时{city}的{place}，{p1}（{i1}）{action}了{product}，{random.choice(feelings)}，总共{qty}，单价{price}元"
+        "content": f"{p1}回忆道：当时{city}的{place}，{p1}（{i1}）{_natural_action_product_phrase(action, product)}，{random.choice(feelings)}，总共{qty}，单价{price}元"
     }
     
     # v3 第三方转述：从p2或旁观者的视角，含推测、省略、口语化
@@ -267,7 +338,7 @@ def make_versions_programmatic(base: dict) -> list:
     hedges = ["大概", "差不多", "左右", "可能"]
     v3 = {
         "version_id": "v3", "style": "第三方转述",
-        "content": f"{p2}说{p1}在{city}那边{action}了{product}，{random.choice(fillers)}{random.choice(hedges)}{qty}的样子，具体价格不太清楚"
+        "content": f"{p2}说{p1}在{city}那边{_natural_action_product_phrase(action, product)}，{random.choice(fillers)}{random.choice(hedges)}{qty}的样子，具体价格不太清楚"
     }
     
     return [v1, v2, v3]
@@ -822,6 +893,30 @@ def generate_queries_llm(memories: list, count: int = 100, llm=None) -> list:
 
 
 # ====== 记忆生成器 ======
+
+def _natural_action_product_phrase(action, product, qty=None):
+    """Generate natural Chinese phrasing for action+product combinations.
+    Avoids awkward phrasing like '进行了基金' or '实施了药品'."""
+    generic_actions = {"进行", "处理", "推进", "实施", "开展", "继续", "执行"}
+    if action in generic_actions:
+        # Restructure: "进行了基金的申购" or "实施了药品的管理"
+        suffixes = {
+            "基金": "投资", "股票": "交易", "债券": "认购", "保险": "购买",
+            "药品": "管理", "医疗服务": "采购", "教育课程": "推广",
+            "服装": "采购", "食品": "检验", "玩具": "质检",
+            "城市更新项目": "推进", "数字化转型项目": "推进",
+            "基建工程": "监管", "环保项目": "落实", "社区改造": "推进",
+            "投诉": "处理", "申请": "审核", "报告": "审阅",
+            "审批": "办理", "合同": "签署", "流程": "优化",
+            "调研": "开展", "评估": "进行", "审查": "执行",
+            "协商": "推进", "研讨": "组织", "规划": "制定",
+            "测试": "完成", "连锁反应": "应对", "市场波动": "监控",
+            "政策调整": "适应", "技术突破": "把握", "安全隐患": "排查",
+        }
+        suffix = suffixes.get(product, "操作")
+        return f"{action}了{product}的{suffix}"
+    return f"{action}了{product}"
+
 class MemoryGenerator:
     def __init__(self, use_llm: bool = False, llm=None, domain: str = "daily", time_distribution: str = "recent"):
         self.memory_id = 0
@@ -879,8 +974,8 @@ class MemoryGenerator:
             "landmark": random.choice(LANDMARKS),
             "person1": p1, "person2": p2, "identity1": i1, "identity2": i2,
             "relation": random.choice(RELATIONS),
-            "event_type": etype, "action": random.choice(actions),
-            "product": random.choice(products) if products else random.choice(PRODUCTS),
+            "event_type": etype, "action": (sel_action := random.choice(actions)),
+            "product": _compatible_product(sel_action, products),
             "quantity": random.randint(1, 1000) * (10 if random.random() > 0.5 else 1),
             "price": random.randint(10, 10000)
         }
@@ -1131,6 +1226,8 @@ class MemoryGenerator:
                         if a in forbidden:
                             # 替换为安全动词
                             clean_actions.append(random.choice(["进行", "处理", "推进", "实施"]))
+                            # Ensure product is compatible with generic action
+                            base["product"] = _compatible_product(clean_actions[-1], PRODUCTS)
                         else:
                             clean_actions.append(a)
                     return clean_actions
@@ -1181,7 +1278,7 @@ class MemoryGenerator:
                                 base["action"] = random.choice(["投资", "购买", "决策", "启动"])
                             elif hop == 1:
                                 base["action"] = random.choice(["导致", "引发", "造成", "触发"])
-                                base["product"] = random.choice(PRODUCTS)
+                                base["product"] = _compatible_product(base.get("action", ""), PRODUCTS)
                             elif hop == 2:
                                 base["action"] = random.choice(["产生", "带来", "造成", "形成"])
                                 base["event_type"] = random.choice(["交易", "冲突", "转折"])
@@ -1205,6 +1302,7 @@ class MemoryGenerator:
                             else:
                                 # 中间节点：用过程动词，不用时间虚词
                                 base["action"] = random.choice(["进行", "处理", "推进", "实施", "开展", "继续"])
+                                base["product"] = _compatible_product(base["action"], PRODUCTS)
                                 
                         elif logic_type == "对比":
                             if hop % 2 == 0:
@@ -1223,11 +1321,12 @@ class MemoryGenerator:
                                 base["product"] = random.choice(["项目", "计划", "方案"])
                             elif hop == 1:
                                 base["action"] = random.choice(["包含", "涉及", "覆盖"])
-                                base["product"] = random.choice(PRODUCTS)
+                                base["product"] = _compatible_product(base.get("action", ""), PRODUCTS)
                             elif hop == 2:
                                 base["action"] = random.choice(["细化", "落实", "分解"])
                             else:
                                 base["action"] = random.choice(["执行", "实施", "完成"])
+                                base["product"] = _compatible_product(base["action"], PRODUCTS)
                                 
                         elif logic_type == "推导":
                             if hop == 0:
