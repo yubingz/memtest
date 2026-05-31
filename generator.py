@@ -594,17 +594,21 @@ class MemoryGenerator:
                         base["action"] = random.choice(["随后", "接着", "然后", "之后"])
                         
                 elif logic_type == "对比":
-                    # 对比链：交替展示不同人物或相反动作
+                    # 对比链：人物A做正向动作，人物B做反向动作，交替呈现
+                    # 使用真实动词而非伪动词
                     if hop % 2 == 0:
-                        # 主视角
+                        # 人物A：正向动作
                         base["person1"] = person
-                        base["action"] = random.choice(["支持", "赞同", "购买", "投资"])
+                        base["action"] = random.choice(["购买", "投资", "支持", "收购", "赞同", "批准"])
+                        base["event_type"] = random.choice(["交易", "情感"])
                     else:
-                        # 对比视角：不同人物，相反动作
+                        # 人物B：反向动作（不同人物，相反行为）
                         alt_names = [n for n in NAMES if n != person]
                         base["person1"] = random.choice(alt_names)
-                        base["action"] = random.choice(["反对", "否决", "出售", "撤资"])
-                    base["action"] = random.choice(["对比", "相反", "不同于"]) if hop > 0 else base["action"]
+                        base["action"] = random.choice(["出售", "撤资", "反对", "否决", "拒绝", "退出"])
+                        base["event_type"] = random.choice(["交易", "冲突"])
+                    #  hop > 0 时保持真实动作，不覆盖为伪动词
+                    # 对比关系体现在两个人物的相反行为，而非动作本身叫"对比"
                     
                 elif logic_type == "包含":
                     # 包含链：从整体到部分，范围缩小
