@@ -2,133 +2,132 @@
   "database_info": {
     "name": "MemTest Database",
     "version": "1.0.0",
-    "total_count": 43,
+    "total_count": 66,
     "categories": {
+      "遗忘功能测试集": 8,
+      "逻辑推理测试集": 22,
       "记忆整理测试集": 12,
-      "逻辑推理测试集": 27,
-      "检索功能测试集": 1,
-      "遗忘功能测试集": 1,
-      "长期记忆深度检索测试集": 1,
-      "存储正确性测试集": 1
+      "长期记忆深度检索测试集": 8,
+      "存储正确性测试集": 8,
+      "检索功能测试集": 8
     },
-    "created_at": "2026-05-31 14:21:16"
+    "created_at": "2026-05-31 14:41:03"
   },
   "memories": [
     {
-      "memory_id": "MEM000012",
-      "category": "记忆整理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
+      "memory_id": "MEM000036",
+      "category": "遗忘功能测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
       "time": {
-        "absolute": "2026-03-11 14:21:16",
-        "relative": "2个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1773210076
+        "absolute": "2026-05-28 14:41:03",
+        "relative": "3天前",
+        "fuzzy": "前几天",
+        "timestamp": 1779950463
       },
       "location": {
-        "city": "济宁",
-        "place": "IFS国金中心",
-        "landmark": "酒吧一条街"
+        "city": "上海",
+        "place": "法院",
+        "landmark": "老城区"
       },
       "person": {
-        "name": "李明",
-        "identity": "画家",
-        "partner_name": "公孙",
-        "partner_identity": "舞者",
-        "relation": "战友"
+        "name": "储勇",
+        "identity": "消防员",
+        "partner_name": "仇嵩",
+        "partner_identity": "武警",
+        "relation": "夫妻"
       },
       "event": {
         "type": "社交",
-        "action": "联谊",
-        "product": "生物材料",
-        "quantity": 2560,
-        "price": 1245
+        "action": "相亲",
+        "product": "石墨烯",
+        "quantity": 5010,
+        "price": 3947
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "李明在济宁IFS国金中心联谊了生物材料，数量2560"
+          "content": "储勇在上海法院相亲了石墨烯，数量5010"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "李明回忆道：当时济宁的IFS国金中心，李明（画家）联谊了生物材料，认为价格合适，总共2560，单价1245元"
+          "content": "储勇回忆道：当时上海的法院，储勇（消防员）相亲了石墨烯，不想错过，总共5010，单价3947元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "公孙说李明在济宁那边联谊了生物材料，好像大概2560的样子，具体价格不太清楚"
+          "content": "仇嵩说储勇在上海那边相亲了石墨烯，据说大概5010的样子，具体价格不太清楚"
         }
       ],
       "tags": [
-        "整理测试",
-        "中等",
-        "person",
-        "李明"
+        "遗忘测试",
+        "简单",
+        "偶发事件"
       ],
-      "cluster_id": "CLUSTER0004",
+      "cluster_id": null,
       "reasoning_chain": null,
       "chain_position": null,
       "decay": {
-        "level": null,
-        "access_count": 0
+        "level": "偶发事件",
+        "access_count": 82
       }
     },
     {
-      "memory_id": "MEM000040",
+      "memory_id": "MEM000058",
       "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
+      "difficulty": "简单",
+      "weight": 0.5,
       "time": {
-        "absolute": "2026-05-29 14:21:16",
-        "relative": "2天前",
-        "fuzzy": "昨天",
-        "timestamp": 1780035676
+        "absolute": "2026-05-11 14:41:03",
+        "relative": "2周前",
+        "fuzzy": "上周",
+        "timestamp": 1778481663
       },
       "location": {
-        "city": "金华",
-        "place": "长城",
-        "landmark": "滨江带"
+        "city": "梧州",
+        "place": "科技馆",
+        "landmark": "商业步行街"
       },
       "person": {
-        "name": "楚阳",
-        "identity": "调度员",
-        "partner_name": "东方",
-        "partner_identity": "巡逻",
-        "relation": "师妹"
+        "name": "亓官",
+        "identity": "育婴师",
+        "partner_name": "冯磊",
+        "partner_identity": "导游",
+        "relation": "球友"
       },
       "event": {
-        "type": "推导",
-        "action": "预测",
-        "product": "石油",
-        "quantity": 704,
-        "price": 4344
+        "type": "决策",
+        "action": "得出",
+        "product": "二维材料",
+        "quantity": 974,
+        "price": 5952
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "楚阳在金华长城预测了石油，数量704"
+          "content": "亓官在梧州科技馆得出了二维材料，数量974"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "楚阳回忆道：当时金华的长城，楚阳（调度员）预测了石油，觉得有必要，总共704，单价4344元"
+          "content": "亓官回忆道：当时梧州的科技馆，亓官（育婴师）得出了二维材料，认为值得投入，总共974，单价5952元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "东方说楚阳在金华那边预测了石油，据说大概704的样子，具体价格不太清楚"
+          "content": "冯磊说亓官在梧州那边得出了二维材料，应该左右974的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "困难",
+        "简单",
         "推导"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_推导_0037",
+      "reasoning_chain": "CHAIN_temporal_0007",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -138,63 +137,63 @@
         "type": "推导"
       },
       "chain_hop": 3,
-      "chain_total": 5,
-      "chain_relation": "推导",
-      "chain_prev": "MEM000039",
-      "chain_next": "MEM000041"
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000057",
+      "chain_next": "MEM000056"
     },
     {
-      "memory_id": "MEM000003",
+      "memory_id": "MEM000017",
       "category": "记忆整理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
+      "difficulty": "简单",
+      "weight": 0.5,
       "time": {
-        "absolute": "2025-06-01 14:21:16",
-        "relative": "12个月前",
-        "fuzzy": "半年前",
-        "timestamp": 1748758876
+        "absolute": "2026-05-30 14:41:03",
+        "relative": "昨天",
+        "fuzzy": "昨天",
+        "timestamp": 1780123263
       },
       "location": {
-        "city": "铜仁",
-        "place": "跳蚤市场",
-        "landmark": "商业步行街"
+        "city": "上海",
+        "place": "植物园",
+        "landmark": "公交站"
       },
       "person": {
-        "name": "余涛",
-        "identity": "中学老师",
-        "partner_name": "桑菜",
-        "partner_identity": "安检",
-        "relation": "狱友"
+        "name": "乐正",
+        "identity": "快递员",
+        "partner_name": "缪磊",
+        "partner_identity": "公证员",
+        "relation": "师兄弟"
       },
       "event": {
-        "type": "交易",
-        "action": "转账",
-        "product": "茅台",
-        "quantity": 678,
-        "price": 4751
+        "type": "冲突",
+        "action": "辩护",
+        "product": "月球基地",
+        "quantity": 162,
+        "price": 8910
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "余涛在铜仁跳蚤市场转账了茅台，数量678"
+          "content": "乐正在上海植物园辩护了月球基地，数量162"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "余涛回忆道：当时铜仁的跳蚤市场，余涛（中学老师）转账了茅台，认为价格合适，总共678，单价4751元"
+          "content": "乐正回忆道：当时上海的植物园，乐正（快递员）辩护了月球基地，想趁低价入手，总共162，单价8910元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "桑菜说余涛在铜仁那边转账了茅台，据说左右678的样子，具体价格不太清楚"
+          "content": "缪磊说乐正在上海那边辩护了月球基地，应该大概162的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "整理测试",
-        "困难",
-        "product",
-        "茅台"
+        "简单",
+        "location",
+        "上海"
       ],
       "cluster_id": "CLUSTER0001",
       "reasoning_chain": null,
@@ -205,186 +204,50 @@
       }
     },
     {
-      "memory_id": "MEM000031",
+      "memory_id": "MEM000037",
       "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
+      "difficulty": "中等",
+      "weight": 1.0,
       "time": {
-        "absolute": "2026-04-17 14:21:16",
+        "absolute": "2026-04-17 14:41:03",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1776406876
+        "timestamp": 1776408063
       },
       "location": {
-        "city": "永州",
-        "place": "菜市场",
-        "landmark": "科技园区"
+        "city": "扬州",
+        "place": "检察院",
+        "landmark": "森林公园入口"
       },
       "person": {
-        "name": "宇文",
-        "identity": "数据分析师",
-        "partner_name": "高建",
-        "partner_identity": "HR经理",
-        "relation": "远亲"
+        "name": "司马",
+        "identity": "检验师",
+        "partner_name": "楚雷",
+        "partner_identity": "零售商",
+        "relation": "业主"
       },
       "event": {
-        "type": "情感",
-        "action": "收购",
-        "product": "芯片",
-        "quantity": 4850,
-        "price": 9250
+        "type": "交通",
+        "action": "投资",
+        "product": "波浪发电",
+        "quantity": 3610,
+        "price": 4448
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "宇文在永州菜市场收购了芯片，数量4850"
+          "content": "司马在扬州检察院投资了波浪发电，数量3610"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "宇文回忆道：当时永州的菜市场，宇文（数据分析师）收购了芯片，认为值得投入，总共4850，单价9250元"
+          "content": "司马回忆道：当时扬州的检察院，司马（检验师）投资了波浪发电，认为价格合适，总共3610，单价4448元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "高建说宇文在永州那边收购了芯片，听说大概4850的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "困难",
-        "对比"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_对比_0026",
-      "chain_position": 5,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "对比"
-      },
-      "chain_hop": 5,
-      "chain_total": 6,
-      "chain_relation": "对比",
-      "chain_prev": "MEM000030",
-      "chain_next": "MEM000032"
-    },
-    {
-      "memory_id": "MEM000034",
-      "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
-      "time": {
-        "absolute": "2026-03-08 14:21:16",
-        "relative": "2个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1772950876
-      },
-      "location": {
-        "city": "长沙",
-        "place": "体检中心",
-        "landmark": "灯塔"
-      },
-      "person": {
-        "name": "佘佴",
-        "identity": "消防员",
-        "partner_name": "许飞",
-        "partner_identity": "调度员",
-        "relation": "见证人"
-      },
-      "event": {
-        "type": "意外",
-        "action": "涉及",
-        "product": "碳交易",
-        "quantity": 5070,
-        "price": 2989
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "佘佴在长沙体检中心涉及了碳交易，数量5070"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "佘佴回忆道：当时长沙的体检中心，佘佴（消防员）涉及了碳交易，想趁低价入手，总共5070，单价2989元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "许飞说佘佴在长沙那边涉及了碳交易，应该左右5070的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "中等",
-        "包含"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_包含_0032",
-      "chain_position": 2,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "包含"
-      },
-      "chain_hop": 2,
-      "chain_total": 5,
-      "chain_relation": "包含",
-      "chain_prev": "MEM000033",
-      "chain_next": "MEM000035"
-    },
-    {
-      "memory_id": "MEM000017",
-      "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
-      "time": {
-        "absolute": "2026-05-25 14:21:16",
-        "relative": "6天前",
-        "fuzzy": "前几天",
-        "timestamp": 1779690076
-      },
-      "location": {
-        "city": "丽水",
-        "place": "加油站",
-        "landmark": "机场航站楼"
-      },
-      "person": {
-        "name": "罗欢",
-        "identity": "工程师",
-        "partner_name": "聂攀",
-        "partner_identity": "收银员",
-        "relation": "远亲"
-      },
-      "event": {
-        "type": "技术",
-        "action": "引发",
-        "product": "光刻工作台",
-        "quantity": 620,
-        "price": 5627
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "罗欢在丽水加油站引发了光刻工作台，数量620"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "罗欢回忆道：当时丽水的加油站，罗欢（工程师）引发了光刻工作台，不想错过，总共620，单价5627元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "聂攀说罗欢在丽水那边引发了光刻工作台，大概大概620的样子，具体价格不太清楚"
+          "content": "楚雷说司马在扬州那边投资了波浪发电，听说左右3610的样子，具体价格不太清楚"
         }
       ],
       "tags": [
@@ -393,8 +256,8 @@
         "因果"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_因果_0015",
-      "chain_position": 2,
+      "reasoning_chain": "CHAIN_temporal_0004",
+      "chain_position": 1,
       "decay": {
         "level": null,
         "access_count": 0
@@ -402,57 +265,118 @@
       "logic": {
         "type": "因果"
       },
-      "chain_hop": 2,
-      "chain_total": 6,
-      "chain_relation": "因果",
-      "chain_prev": "MEM000016",
-      "chain_next": "MEM000018"
+      "chain_hop": 1,
+      "chain_total": 3,
+      "chain_relation": "时序",
+      "chain_prev": "",
+      "chain_next": "MEM000039"
     },
     {
-      "memory_id": "MEM000014",
+      "memory_id": "MEM000021",
       "category": "记忆整理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
+      "difficulty": "困难",
+      "weight": 1.5,
       "time": {
-        "absolute": "2026-04-18 14:21:16",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1776493276
+        "absolute": "2026-05-19 14:41:03",
+        "relative": "1周前",
+        "fuzzy": "上周",
+        "timestamp": 1779172863
       },
       "location": {
-        "city": "武汉",
-        "place": "青年旅舍",
-        "landmark": "文化街区"
+        "city": "桂林",
+        "place": "中学",
+        "landmark": "博览中心"
       },
       "person": {
-        "name": "李明",
-        "identity": "CEO",
-        "partner_name": "牛博",
-        "partner_identity": "康复师",
-        "relation": "学生"
+        "name": "邦达",
+        "identity": "财务主管",
+        "partner_name": "独孤",
+        "partner_identity": "导演",
+        "relation": "师兄弟"
       },
       "event": {
         "type": "会议",
-        "action": "提前",
+        "action": "召开",
         "product": "新能源汽车",
-        "quantity": 590,
-        "price": 1322
+        "quantity": 8070,
+        "price": 6277
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "李明在武汉青年旅舍提前了新能源汽车，数量590"
+          "content": "邦达在桂林中学召开了新能源汽车，数量8070"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "李明回忆道：当时武汉的青年旅舍，李明（CEO）提前了新能源汽车，认为价格合适，总共590，单价1322元"
+          "content": "邦达回忆道：当时桂林的中学，邦达（财务主管）召开了新能源汽车，不想错过，总共8070，单价6277元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "牛博说李明在武汉那边提前了新能源汽车，应该大概590的样子，具体价格不太清楚"
+          "content": "独孤说邦达在桂林那边召开了新能源汽车，听说差不多8070的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "困难",
+        "event_type",
+        "会议"
+      ],
+      "cluster_id": "CLUSTER0002",
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000024",
+      "category": "记忆整理测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-03-23 14:41:03",
+        "relative": "2个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1774248063
+      },
+      "location": {
+        "city": "拉萨",
+        "place": "音乐厅",
+        "landmark": "古玩一条街"
+      },
+      "person": {
+        "name": "李明",
+        "identity": "司机",
+        "partner_name": "阳佟",
+        "partner_identity": "护士",
+        "relation": "投资方"
+      },
+      "event": {
+        "type": "居住",
+        "action": "续租",
+        "product": "太空旅游",
+        "quantity": 568,
+        "price": 6898
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "李明在拉萨音乐厅续租了太空旅游，数量568"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "李明回忆道：当时拉萨的音乐厅，李明（司机）续租了太空旅游，考虑再三后决定，总共568，单价6898元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "阳佟说李明在拉萨那边续租了太空旅游，听说左右568的样子，具体价格不太清楚"
         }
       ],
       "tags": [
@@ -461,1007 +385,138 @@
         "person",
         "李明"
       ],
-      "cluster_id": "CLUSTER0004",
-      "reasoning_chain": null,
-      "chain_position": null,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      }
-    },
-    {
-      "memory_id": "MEM000029",
-      "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
-      "time": {
-        "absolute": "2026-03-14 14:21:16",
-        "relative": "2个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1773469276
-      },
-      "location": {
-        "city": "永州",
-        "place": "图书馆",
-        "landmark": "历史街区"
-      },
-      "person": {
-        "name": "宇文",
-        "identity": "运动员",
-        "partner_name": "宇文",
-        "partner_identity": "月嫂",
-        "relation": "平级"
-      },
-      "event": {
-        "type": "交易",
-        "action": "收购",
-        "product": "碳封存",
-        "quantity": 6850,
-        "price": 6634
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "宇文在永州图书馆收购了碳封存，数量6850"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "宇文回忆道：当时永州的图书馆，宇文（运动员）收购了碳封存，觉得是个机会，总共6850，单价6634元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "宇文说宇文在永州那边收购了碳封存，据说大概6850的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "困难",
-        "对比"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_对比_0026",
-      "chain_position": 3,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "对比"
-      },
-      "chain_hop": 3,
-      "chain_total": 6,
-      "chain_relation": "对比",
-      "chain_prev": "MEM000028",
-      "chain_next": "MEM000030"
-    },
-    {
-      "memory_id": "MEM000011",
-      "category": "记忆整理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
-      "time": {
-        "absolute": "2026-05-01 14:21:16",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1777616476
-      },
-      "location": {
-        "city": "上海",
-        "place": "跳蚤市场",
-        "landmark": "老城区"
-      },
-      "person": {
-        "name": "汝鄢",
-        "identity": "监控",
-        "partner_name": "涂钦",
-        "partner_identity": "公务员",
-        "relation": "母子"
-      },
-      "event": {
-        "type": "交通",
-        "action": "乘车",
-        "product": "碳复合材料",
-        "quantity": 363,
-        "price": 7661
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "汝鄢在上海跳蚤市场乘车了碳复合材料，数量363"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "汝鄢回忆道：当时上海的跳蚤市场，汝鄢（监控）乘车了碳复合材料，觉得是个机会，总共363，单价7661元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "涂钦说汝鄢在上海那边乘车了碳复合材料，好像大概363的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "整理测试",
-        "简单",
-        "location",
-        "上海"
-      ],
       "cluster_id": "CLUSTER0003",
-      "reasoning_chain": null,
-      "chain_position": null,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      }
-    },
-    {
-      "memory_id": "MEM000020",
-      "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
-      "time": {
-        "absolute": "2026-05-01 14:21:16",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1777616476
-      },
-      "location": {
-        "city": "丽水",
-        "place": "公园",
-        "landmark": "机场航站楼"
-      },
-      "person": {
-        "name": "罗欢",
-        "identity": "警察",
-        "partner_name": "独孤",
-        "partner_identity": "仲裁员",
-        "relation": "见证人"
-      },
-      "event": {
-        "type": "发现",
-        "action": "最终",
-        "product": "自愈合材料",
-        "quantity": 228,
-        "price": 7551
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "罗欢在丽水公园最终了自愈合材料，数量228"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "罗欢回忆道：当时丽水的公园，罗欢（警察）最终了自愈合材料，觉得有必要，总共228，单价7551元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "独孤说罗欢在丽水那边最终了自愈合材料，好像差不多228的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "困难",
-        "因果"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_因果_0015",
-      "chain_position": 5,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "因果"
-      },
-      "chain_hop": 5,
-      "chain_total": 6,
-      "chain_relation": "因果",
-      "chain_prev": "MEM000019",
-      "chain_next": "MEM000021"
-    },
-    {
-      "memory_id": "MEM000028",
-      "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
-      "time": {
-        "absolute": "2026-05-12 14:21:16",
-        "relative": "2周前",
-        "fuzzy": "上周",
-        "timestamp": 1778566876
-      },
-      "location": {
-        "city": "永州",
-        "place": "派出所",
-        "landmark": "古村落"
-      },
-      "person": {
-        "name": "杨勇",
-        "identity": "COO",
-        "partner_name": "缪磊",
-        "partner_identity": "口译",
-        "relation": "租客"
-      },
-      "event": {
-        "type": "冲突",
-        "action": "拒绝",
-        "product": "mRNA疫苗",
-        "quantity": 853,
-        "price": 9579
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "杨勇在永州派出所拒绝了mRNA疫苗，数量853"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "杨勇回忆道：当时永州的派出所，杨勇（COO）拒绝了mRNA疫苗，不想错过，总共853，单价9579元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "缪磊说杨勇在永州那边拒绝了mRNA疫苗，好像左右853的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "困难",
-        "对比"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_对比_0026",
-      "chain_position": 2,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "对比"
-      },
-      "chain_hop": 2,
-      "chain_total": 6,
-      "chain_relation": "对比",
-      "chain_prev": "MEM000027",
-      "chain_next": "MEM000029"
-    },
-    {
-      "memory_id": "MEM000036",
-      "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
-      "time": {
-        "absolute": "2025-09-14 14:21:16",
-        "relative": "8个月前",
-        "fuzzy": "半年前",
-        "timestamp": 1757830876
-      },
-      "location": {
-        "city": "长沙",
-        "place": "万象城",
-        "landmark": "综合体育馆"
-      },
-      "person": {
-        "name": "佘佴",
-        "identity": "军人",
-        "partner_name": "孙叔",
-        "partner_identity": "检验师",
-        "relation": "狱友"
-      },
-      "event": {
-        "type": "技术",
-        "action": "实施",
-        "product": "锂电池",
-        "quantity": 7610,
-        "price": 3043
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "佘佴在长沙万象城实施了锂电池，数量7610"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "佘佴回忆道：当时长沙的万象城，佘佴（军人）实施了锂电池，想趁低价入手，总共7610，单价3043元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "孙叔说佘佴在长沙那边实施了锂电池，好像差不多7610的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "困难",
-        "包含"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_包含_0032",
-      "chain_position": 4,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "包含"
-      },
-      "chain_hop": 4,
-      "chain_total": 5,
-      "chain_relation": "包含",
-      "chain_prev": "MEM000035",
-      "chain_next": "MEM000037"
-    },
-    {
-      "memory_id": "MEM000022",
-      "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
-      "time": {
-        "absolute": "2026-04-08 14:21:16",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1775629276
-      },
-      "location": {
-        "city": "大连",
-        "place": "黄山",
-        "landmark": "金融中心"
-      },
-      "person": {
-        "name": "微生",
-        "identity": "飞行员",
-        "partner_name": "仉督",
-        "partner_identity": "牧民",
-        "relation": "物业"
-      },
-      "event": {
-        "type": "金融",
-        "action": "发起",
-        "product": "基因编辑",
-        "quantity": 9480,
-        "price": 3238
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "微生在大连黄山发起了基因编辑，数量9480"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "微生回忆道：当时大连的黄山，微生（飞行员）发起了基因编辑，认为值得投入，总共9480，单价3238元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "仉督说微生在大连那边发起了基因编辑，应该左右9480的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "中等",
-        "时序"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_时序_0021",
+      "reasoning_chain": "CHAIN_temporal_0003",
       "chain_position": 1,
       "decay": {
         "level": null,
         "access_count": 0
       },
-      "logic": {
-        "type": "时序"
-      },
       "chain_hop": 1,
-      "chain_total": 5,
+      "chain_total": 3,
       "chain_relation": "时序",
       "chain_prev": "",
       "chain_next": "MEM000023"
     },
     {
-      "memory_id": "MEM000019",
-      "category": "逻辑推理测试集",
+      "memory_id": "MEM000066",
+      "category": "长期记忆深度检索测试集",
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-12-27 14:21:16",
-        "relative": "5个月前",
-        "fuzzy": "三个月前",
-        "timestamp": 1766816476
+        "absolute": "2024-12-09 14:41:03",
+        "relative": "1年前",
+        "fuzzy": "去年",
+        "timestamp": 1733726463
       },
       "location": {
-        "city": "丽水",
-        "place": "博物馆",
-        "landmark": "工业区"
+        "city": "焦作",
+        "place": "小学",
+        "landmark": "公交站"
       },
       "person": {
-        "name": "罗欢",
-        "identity": "经销商",
-        "partner_name": "哈丹",
-        "partner_identity": "数据分析师",
-        "relation": "父女"
+        "name": "戚谢",
+        "identity": "演员",
+        "partner_name": "王芳",
+        "partner_identity": "保洁",
+        "relation": "堂亲"
       },
       "event": {
-        "type": "旅行",
-        "action": "最终",
-        "product": "二维材料",
-        "quantity": 9060,
-        "price": 2542
+        "type": "金融",
+        "action": "存款",
+        "product": "棉花",
+        "quantity": 7650,
+        "price": 6173
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "罗欢在丽水博物馆最终了二维材料，数量9060"
+          "content": "戚谢在焦作小学存款了棉花，数量7650"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "罗欢回忆道：当时丽水的博物馆，罗欢（经销商）最终了二维材料，想试试运气，总共9060，单价2542元"
+          "content": "戚谢回忆道：当时焦作的小学，戚谢（演员）存款了棉花，想试试运气，总共7650，单价6173元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "哈丹说罗欢在丽水那边最终了二维材料，据说大概9060的样子，具体价格不太清楚"
+          "content": "王芳说戚谢在焦作那边存款了棉花，大概左右7650的样子，具体价格不太清楚"
         }
       ],
       "tags": [
-        "推理测试",
-        "简单",
-        "因果"
+        "深度检索",
+        "简单"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_因果_0015",
-      "chain_position": 4,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "因果"
-      },
-      "chain_hop": 4,
-      "chain_total": 6,
-      "chain_relation": "因果",
-      "chain_prev": "MEM000018",
-      "chain_next": "MEM000020"
-    },
-    {
-      "memory_id": "MEM000041",
-      "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
-      "time": {
-        "absolute": "2026-05-04 14:21:16",
-        "relative": "3周前",
-        "fuzzy": "上周",
-        "timestamp": 1777875676
-      },
-      "location": {
-        "city": "金华",
-        "place": "健身房",
-        "landmark": "河滨公园"
-      },
-      "person": {
-        "name": "楚阳",
-        "identity": "保洁",
-        "partner_name": "籍磊",
-        "partner_identity": "总监",
-        "relation": "师妹"
-      },
-      "event": {
-        "type": "决策",
-        "action": "得出",
-        "product": "光伏板",
-        "quantity": 4800,
-        "price": 6604
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "楚阳在金华健身房得出了光伏板，数量4800"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "楚阳回忆道：当时金华的健身房，楚阳（保洁）得出了光伏板，不想错过，总共4800，单价6604元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "籍磊说楚阳在金华那边得出了光伏板，据说大概4800的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "困难",
-        "推导"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_推导_0037",
-      "chain_position": 4,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "推导"
-      },
-      "chain_hop": 4,
-      "chain_total": 5,
-      "chain_relation": "推导",
-      "chain_prev": "MEM000040",
-      "chain_next": "MEM000042"
-    },
-    {
-      "memory_id": "MEM000023",
-      "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
-      "time": {
-        "absolute": "2026-05-31 14:21:16",
-        "relative": "刚刚",
-        "fuzzy": "今天",
-        "timestamp": 1780208476
-      },
-      "location": {
-        "city": "大连",
-        "place": "公园",
-        "landmark": "滨江带"
-      },
-      "person": {
-        "name": "微生",
-        "identity": "放射师",
-        "partner_name": "司寇",
-        "partner_identity": "导游",
-        "relation": "姐弟"
-      },
-      "event": {
-        "type": "健康",
-        "action": "之后",
-        "product": "金刚石",
-        "quantity": 6810,
-        "price": 2861
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "微生在大连公园之后了金刚石，数量6810"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "微生回忆道：当时大连的公园，微生（放射师）之后了金刚石，觉得是个机会，总共6810，单价2861元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "司寇说微生在大连那边之后了金刚石，大概左右6810的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "中等",
-        "时序"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_时序_0021",
-      "chain_position": 2,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "时序"
-      },
-      "chain_hop": 2,
-      "chain_total": 5,
-      "chain_relation": "时序",
-      "chain_prev": "MEM000022",
-      "chain_next": "MEM000024"
-    },
-    {
-      "memory_id": "MEM000006",
-      "category": "记忆整理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
-      "time": {
-        "absolute": "2026-05-08 14:21:16",
-        "relative": "3周前",
-        "fuzzy": "上周",
-        "timestamp": 1778221276
-      },
-      "location": {
-        "city": "洛阳",
-        "place": "来福士",
-        "landmark": "会议中心"
-      },
-      "person": {
-        "name": "司徒",
-        "identity": "测试工程师",
-        "partner_name": "韩冰",
-        "partner_identity": "技工",
-        "relation": "业主"
-      },
-      "event": {
-        "type": "交易",
-        "action": "收购",
-        "product": "黄金",
-        "quantity": 395,
-        "price": 7678
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "司徒在洛阳来福士收购了黄金，数量395"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "司徒回忆道：当时洛阳的来福士，司徒（测试工程师）收购了黄金，想趁低价入手，总共395，单价7678元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "韩冰说司徒在洛阳那边收购了黄金，应该大概395的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "整理测试",
-        "中等",
-        "event_type",
-        "交易"
-      ],
-      "cluster_id": "CLUSTER0002",
       "reasoning_chain": null,
       "chain_position": null,
       "decay": {
         "level": null,
         "access_count": 0
+      },
+      "depth": {
+        "layers": 6,
+        "associations": 5,
+        "semantic_distance": "中"
       }
     },
     {
-      "memory_id": "MEM000042",
+      "memory_id": "MEM000050",
       "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
+      "difficulty": "困难",
+      "weight": 1.5,
       "time": {
-        "absolute": "2026-05-27 14:21:16",
-        "relative": "4天前",
-        "fuzzy": "前几天",
-        "timestamp": 1779862876
+        "absolute": "2026-01-20 14:41:03",
+        "relative": "4个月前",
+        "fuzzy": "三个月前",
+        "timestamp": 1768891263
       },
       "location": {
-        "city": "金华",
-        "place": "美术馆",
-        "landmark": "展示中心"
-      },
-      "person": {
-        "name": "楚阳",
-        "identity": "法官",
-        "partner_name": "羊舌",
-        "partner_identity": "财务主管",
-        "relation": "下属"
-      },
-      "event": {
-        "type": "决策",
-        "action": "得出",
-        "product": "脉冲神经网络",
-        "quantity": 420,
-        "price": 2880
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "楚阳在金华美术馆得出了脉冲神经网络，数量420"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "楚阳回忆道：当时金华的美术馆，楚阳（法官）得出了脉冲神经网络，不想错过，总共420，单价2880元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "羊舌说楚阳在金华那边得出了脉冲神经网络，大概差不多420的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "中等",
-        "推导"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_推导_0037",
-      "chain_position": 5,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "推导"
-      },
-      "chain_hop": 5,
-      "chain_total": 5,
-      "chain_relation": "推导",
-      "chain_prev": "MEM000041",
-      "chain_next": ""
-    },
-    {
-      "memory_id": "MEM000039",
-      "category": "逻辑推理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
-      "time": {
-        "absolute": "2026-05-08 14:21:16",
-        "relative": "3周前",
-        "fuzzy": "上周",
-        "timestamp": 1778221276
-      },
-      "location": {
-        "city": "金华",
-        "place": "会议室B",
-        "landmark": "灯塔"
-      },
-      "person": {
-        "name": "楚阳",
-        "identity": "列车长",
-        "partner_name": "仲孙",
-        "partner_identity": "护士",
-        "relation": "同学"
-      },
-      "event": {
-        "type": "分析",
-        "action": "分析",
-        "product": "橡胶",
-        "quantity": 9710,
-        "price": 3467
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "楚阳在金华会议室B分析了橡胶，数量9710"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "楚阳回忆道：当时金华的会议室B，楚阳（列车长）分析了橡胶，想试试运气，总共9710，单价3467元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "仲孙说楚阳在金华那边分析了橡胶，听说差不多9710的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "简单",
-        "推导"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_推导_0037",
-      "chain_position": 2,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "推导"
-      },
-      "chain_hop": 2,
-      "chain_total": 5,
-      "chain_relation": "推导",
-      "chain_prev": "MEM000038",
-      "chain_next": "MEM000040"
-    },
-    {
-      "memory_id": "MEM000038",
-      "category": "逻辑推理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
-      "time": {
-        "absolute": "2026-05-23 14:21:16",
-        "relative": "1周前",
-        "fuzzy": "上周",
-        "timestamp": 1779517276
-      },
-      "location": {
-        "city": "金华",
-        "place": "喜茶",
-        "landmark": "灯塔"
-      },
-      "person": {
-        "name": "楚阳",
-        "identity": "飞行员",
-        "partner_name": "长孙",
-        "partner_identity": "COO",
-        "relation": "兄弟"
-      },
-      "event": {
-        "type": "发现",
-        "action": "观察",
-        "product": "物联网",
-        "quantity": 8310,
-        "price": 4988
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "楚阳在金华喜茶观察了物联网，数量8310"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "楚阳回忆道：当时金华的喜茶，楚阳（飞行员）观察了物联网，认为价格合适，总共8310，单价4988元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "长孙说楚阳在金华那边观察了物联网，应该可能8310的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "简单",
-        "推导"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_推导_0037",
-      "chain_position": 1,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "推导"
-      },
-      "chain_hop": 1,
-      "chain_total": 5,
-      "chain_relation": "推导",
-      "chain_prev": "",
-      "chain_next": "MEM000039"
-    },
-    {
-      "memory_id": "MEM000016",
-      "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
-      "time": {
-        "absolute": "2026-03-03 14:21:16",
-        "relative": "2个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1772518876
-      },
-      "location": {
-        "city": "丽水",
-        "place": "大润发",
-        "landmark": "非遗街区"
-      },
-      "person": {
-        "name": "罗欢",
-        "identity": "保镖",
-        "partner_name": "李明",
-        "partner_identity": "科学家",
-        "relation": "师兄"
-      },
-      "event": {
-        "type": "日常",
-        "action": "投资",
-        "product": "碳达峰",
-        "quantity": 903,
-        "price": 4012
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "罗欢在丽水大润发投资了碳达峰，数量903"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "罗欢回忆道：当时丽水的大润发，罗欢（保镖）投资了碳达峰，不想错过，总共903，单价4012元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "李明说罗欢在丽水那边投资了碳达峰，应该左右903的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "中等",
-        "因果"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_因果_0015",
-      "chain_position": 1,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "因果"
-      },
-      "chain_hop": 1,
-      "chain_total": 6,
-      "chain_relation": "因果",
-      "chain_prev": "",
-      "chain_next": "MEM000017"
-    },
-    {
-      "memory_id": "MEM000037",
-      "category": "逻辑推理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
-      "time": {
-        "absolute": "2026-04-17 14:21:16",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1776406876
-      },
-      "location": {
-        "city": "长沙",
-        "place": "外滩",
+        "city": "六盘水",
+        "place": "派出所",
         "landmark": "金融中心"
       },
       "person": {
-        "name": "佘佴",
-        "identity": "药剂师",
-        "partner_name": "邦达",
-        "partner_identity": "设计师",
-        "relation": "兄弟"
+        "name": "郑鹏",
+        "identity": "渔民",
+        "partner_name": "第五",
+        "partner_identity": "营养师",
+        "relation": "客户"
       },
       "event": {
-        "type": "社交",
-        "action": "实施",
-        "product": "小行星采矿",
-        "quantity": 7150,
-        "price": 8052
+        "type": "交通",
+        "action": "覆盖",
+        "product": "橡胶",
+        "quantity": 2330,
+        "price": 7120
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "佘佴在长沙外滩实施了小行星采矿，数量7150"
+          "content": "郑鹏在六盘水派出所覆盖了橡胶，数量2330"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "佘佴回忆道：当时长沙的外滩，佘佴（药剂师）实施了小行星采矿，不想错过，总共7150，单价8052元"
+          "content": "郑鹏回忆道：当时六盘水的派出所，郑鹏（渔民）覆盖了橡胶，不想错过，总共2330，单价7120元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "邦达说佘佴在长沙那边实施了小行星采矿，据说可能7150的样子，具体价格不太清楚"
+          "content": "第五说郑鹏在六盘水那边覆盖了橡胶，听说左右2330的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "简单",
+        "困难",
         "包含"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_包含_0032",
-      "chain_position": 5,
+      "reasoning_chain": "CHAIN_temporal_0006",
+      "chain_position": 1,
       "decay": {
         "level": null,
         "access_count": 0
@@ -1469,334 +524,22 @@
       "logic": {
         "type": "包含"
       },
-      "chain_hop": 5,
-      "chain_total": 5,
-      "chain_relation": "包含",
-      "chain_prev": "MEM000036",
-      "chain_next": ""
-    },
-    {
-      "memory_id": "MEM000010",
-      "category": "记忆整理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
-      "time": {
-        "absolute": "2026-04-30 14:21:16",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1777530076
-      },
-      "location": {
-        "city": "上海",
-        "place": "喜茶",
-        "landmark": "纪念堂"
-      },
-      "person": {
-        "name": "东郭",
-        "identity": "裁判",
-        "partner_name": "夹谷",
-        "partner_identity": "运动员",
-        "relation": "同学"
-      },
-      "event": {
-        "type": "交易",
-        "action": "转账",
-        "product": "白银",
-        "quantity": 928,
-        "price": 5423
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "东郭在上海喜茶转账了白银，数量928"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "东郭回忆道：当时上海的喜茶，东郭（裁判）转账了白银，觉得有必要，总共928，单价5423元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "夹谷说东郭在上海那边转账了白银，大概可能928的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "整理测试",
-        "简单",
-        "location",
-        "上海"
-      ],
-      "cluster_id": "CLUSTER0003",
-      "reasoning_chain": null,
-      "chain_position": null,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      }
-    },
-    {
-      "memory_id": "MEM000005",
-      "category": "记忆整理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
-      "time": {
-        "absolute": "2025-10-16 14:21:16",
-        "relative": "7个月前",
-        "fuzzy": "半年前",
-        "timestamp": 1760595676
-      },
-      "location": {
-        "city": "威海",
-        "place": "加油站",
-        "landmark": "纪念馆"
-      },
-      "person": {
-        "name": "何涛",
-        "identity": "康复师",
-        "partner_name": "缪磊",
-        "partner_identity": "作家",
-        "relation": "二房东"
-      },
-      "event": {
-        "type": "日常",
-        "action": "打卡",
-        "product": "茅台",
-        "quantity": 143,
-        "price": 9207
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "何涛在威海加油站打卡了茅台，数量143"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "何涛回忆道：当时威海的加油站，何涛（康复师）打卡了茅台，考虑再三后决定，总共143，单价9207元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "缪磊说何涛在威海那边打卡了茅台，应该可能143的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "整理测试",
-        "困难",
-        "product",
-        "茅台"
-      ],
-      "cluster_id": "CLUSTER0001",
-      "reasoning_chain": null,
-      "chain_position": null,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      }
-    },
-    {
-      "memory_id": "MEM000018",
-      "category": "逻辑推理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
-      "time": {
-        "absolute": "2026-05-25 14:21:16",
-        "relative": "6天前",
-        "fuzzy": "前几天",
-        "timestamp": 1779690076
-      },
-      "location": {
-        "city": "丽水",
-        "place": "太古里",
-        "landmark": "纪念堂"
-      },
-      "person": {
-        "name": "罗欢",
-        "identity": "算法工程师",
-        "partner_name": "章娜",
-        "partner_identity": "项目经理",
-        "relation": "师兄"
-      },
-      "event": {
-        "type": "交易",
-        "action": "收购",
-        "product": "二维材料",
-        "quantity": 5650,
-        "price": 9199
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "罗欢在丽水太古里收购了二维材料，数量5650"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "罗欢回忆道：当时丽水的太古里，罗欢（算法工程师）收购了二维材料，觉得是个机会，总共5650，单价9199元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "章娜说罗欢在丽水那边收购了二维材料，大概差不多5650的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "简单",
-        "因果"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_因果_0015",
-      "chain_position": 3,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "因果"
-      },
-      "chain_hop": 3,
+      "chain_hop": 1,
       "chain_total": 6,
-      "chain_relation": "因果",
-      "chain_prev": "MEM000017",
-      "chain_next": "MEM000019"
-    },
-    {
-      "memory_id": "MEM000009",
-      "category": "记忆整理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
-      "time": {
-        "absolute": "2025-12-08 14:21:16",
-        "relative": "5个月前",
-        "fuzzy": "三个月前",
-        "timestamp": 1765174876
-      },
-      "location": {
-        "city": "上海",
-        "place": "维修站",
-        "landmark": "体育场馆"
-      },
-      "person": {
-        "name": "焦强",
-        "identity": "同传",
-        "partner_name": "公西",
-        "partner_identity": "作家",
-        "relation": "棋友"
-      },
-      "event": {
-        "type": "社交",
-        "action": "联谊",
-        "product": "钾离子电池",
-        "quantity": 6880,
-        "price": 7187
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "焦强在上海维修站联谊了钾离子电池，数量6880"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "焦强回忆道：当时上海的维修站，焦强（同传）联谊了钾离子电池，不想错过，总共6880，单价7187元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "公西说焦强在上海那边联谊了钾离子电池，好像差不多6880的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "整理测试",
-        "简单",
-        "location",
-        "上海"
-      ],
-      "cluster_id": "CLUSTER0003",
-      "reasoning_chain": null,
-      "chain_position": null,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      }
-    },
-    {
-      "memory_id": "MEM000007",
-      "category": "记忆整理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
-      "time": {
-        "absolute": "2026-05-25 14:21:16",
-        "relative": "6天前",
-        "fuzzy": "前几天",
-        "timestamp": 1779690076
-      },
-      "location": {
-        "city": "聊城",
-        "place": "来福士",
-        "landmark": "古村落"
-      },
-      "person": {
-        "name": "乐正",
-        "identity": "精算",
-        "partner_name": "籍磊",
-        "partner_identity": "技工",
-        "relation": "同事"
-      },
-      "event": {
-        "type": "交易",
-        "action": "退款",
-        "product": "光刻光源",
-        "quantity": 781,
-        "price": 1753
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "乐正在聊城来福士退款了光刻光源，数量781"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "乐正回忆道：当时聊城的来福士，乐正（精算）退款了光刻光源，觉得有必要，总共781，单价1753元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "籍磊说乐正在聊城那边退款了光刻光源，听说左右781的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "整理测试",
-        "中等",
-        "event_type",
-        "交易"
-      ],
-      "cluster_id": "CLUSTER0002",
-      "reasoning_chain": null,
-      "chain_position": null,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      }
+      "chain_relation": "时序",
+      "chain_prev": "",
+      "chain_next": "MEM000054"
     },
     {
       "memory_id": "MEM000002",
-      "category": "检索功能测试集",
+      "category": "存储正确性测试集",
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2024-08-25 14:21:16",
+        "absolute": "2024-08-25 14:41:03",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1724566876
+        "timestamp": 1724568063
       },
       "location": {
         "city": "郴州",
@@ -1835,7 +578,7 @@
         }
       ],
       "tags": [
-        "检索测试",
+        "存储测试",
         "困难",
         "644d"
       ],
@@ -1845,70 +588,131 @@
       "decay": {
         "level": null,
         "access_count": 0
-      },
-      "retrieval_keywords": [
-        "宇文",
-        "郴州",
-        "交易",
-        "捐赠",
-        "空间站"
-      ]
+      }
     },
     {
-      "memory_id": "MEM000025",
+      "memory_id": "MEM000048",
       "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
+      "difficulty": "中等",
+      "weight": 1.0,
       "time": {
-        "absolute": "2026-05-27 14:21:16",
-        "relative": "4天前",
-        "fuzzy": "前几天",
-        "timestamp": 1779862876
+        "absolute": "2025-12-16 14:41:03",
+        "relative": "5个月前",
+        "fuzzy": "三个月前",
+        "timestamp": 1765867263
       },
       "location": {
-        "city": "大连",
-        "place": "花鸟市场",
-        "landmark": "会展中心"
+        "city": "重庆",
+        "place": "清真寺",
+        "landmark": "渡口"
       },
       "person": {
-        "name": "微生",
-        "identity": "算法工程师",
-        "partner_name": "赵丽",
-        "partner_identity": "公务员",
-        "relation": "合作伙伴"
+        "name": "单丹",
+        "identity": "保姆",
+        "partner_name": "乐正",
+        "partner_identity": "估价",
+        "relation": "见证人"
       },
       "event": {
-        "type": "交通",
-        "action": "之后",
-        "product": "富勒烯",
-        "quantity": 9080,
-        "price": 3195
+        "type": "交易",
+        "action": "否决",
+        "product": "海水淡化",
+        "quantity": 891,
+        "price": 3922
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "微生在大连花鸟市场之后了富勒烯，数量9080"
+          "content": "单丹在重庆清真寺否决了海水淡化，数量891"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "微生回忆道：当时大连的花鸟市场，微生（算法工程师）之后了富勒烯，考虑再三后决定，总共9080，单价3195元"
+          "content": "单丹回忆道：当时重庆的清真寺，单丹（保姆）否决了海水淡化，认为值得投入，总共891，单价3922元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "赵丽说微生在大连那边之后了富勒烯，听说差不多9080的样子，具体价格不太清楚"
+          "content": "乐正说单丹在重庆那边否决了海水淡化，据说可能891的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "困难",
+        "中等",
+        "对比"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_对比_0042",
+      "chain_position": 6,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "对比"
+      },
+      "chain_hop": 6,
+      "chain_total": 6,
+      "chain_relation": "对比",
+      "chain_prev": "MEM000047",
+      "chain_next": ""
+    },
+    {
+      "memory_id": "MEM000040",
+      "category": "逻辑推理测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-05-31 14:41:03",
+        "relative": "刚刚",
+        "fuzzy": "今天",
+        "timestamp": 1780209663
+      },
+      "location": {
+        "city": "济宁",
+        "place": "4S店",
+        "landmark": "古镇入口"
+      },
+      "person": {
+        "name": "宰父",
+        "identity": "教练",
+        "partner_name": "慕容",
+        "partner_identity": "代驾",
+        "relation": "乙方"
+      },
+      "event": {
+        "type": "娱乐",
+        "action": "开始",
+        "product": "碳陶瓷",
+        "quantity": 3130,
+        "price": 996
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "宰父在济宁4S店开始了碳陶瓷，数量3130"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "宰父回忆道：当时济宁的4S店，宰父（教练）开始了碳陶瓷，觉得有必要，总共3130，单价996元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "慕容说宰父在济宁那边开始了碳陶瓷，听说左右3130的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
         "时序"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_时序_0021",
-      "chain_position": 4,
+      "reasoning_chain": "CHAIN_temporal_0001",
+      "chain_position": 3,
       "decay": {
         "level": null,
         "access_count": 0
@@ -1916,117 +720,245 @@
       "logic": {
         "type": "时序"
       },
-      "chain_hop": 4,
-      "chain_total": 5,
+      "chain_hop": 3,
+      "chain_total": 4,
       "chain_relation": "时序",
-      "chain_prev": "MEM000024",
-      "chain_next": "MEM000026"
+      "chain_prev": "MEM000042",
+      "chain_next": "MEM000041"
     },
     {
-      "memory_id": "MEM000015",
+      "memory_id": "MEM000035",
       "category": "遗忘功能测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
+      "difficulty": "困难",
+      "weight": 1.5,
       "time": {
-        "absolute": "2026-05-27 14:21:16",
-        "relative": "4天前",
-        "fuzzy": "前几天",
-        "timestamp": 1779862876
+        "absolute": "2026-05-05 14:41:03",
+        "relative": "3周前",
+        "fuzzy": "上周",
+        "timestamp": 1777963263
       },
       "location": {
-        "city": "天津",
-        "place": "大学",
-        "landmark": "烈士陵园"
+        "city": "银川",
+        "place": "休息室",
+        "landmark": "工业区"
       },
       "person": {
-        "name": "蔡明",
-        "identity": "警察",
-        "partner_name": "闫法",
-        "partner_identity": "数据分析师",
-        "relation": "学员"
+        "name": "乐正",
+        "identity": "门卫",
+        "partner_name": "慕容",
+        "partner_identity": "船长",
+        "relation": "父子"
       },
       "event": {
-        "type": "法律",
-        "action": "继承",
-        "product": "可控核聚变",
-        "quantity": 2100,
-        "price": 5157
+        "type": "金融",
+        "action": "理财",
+        "product": "黑磷",
+        "quantity": 2500,
+        "price": 9346
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "蔡明在天津大学继承了可控核聚变，数量2100"
+          "content": "乐正在银川休息室理财了黑磷，数量2500"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "蔡明回忆道：当时天津的大学，蔡明（警察）继承了可控核聚变，考虑再三后决定，总共2100，单价5157元"
+          "content": "乐正回忆道：当时银川的休息室，乐正（门卫）理财了黑磷，觉得是个机会，总共2500，单价9346元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "闫法说蔡明在天津那边继承了可控核聚变，听说左右2100的样子，具体价格不太清楚"
+          "content": "慕容说乐正在银川那边理财了黑磷，据说左右2500的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "遗忘测试",
-        "中等",
-        "中等频率"
+        "困难",
+        "偶发事件"
       ],
       "cluster_id": null,
       "reasoning_chain": null,
       "chain_position": null,
       "decay": {
-        "level": "中等频率",
-        "access_count": 33
+        "level": "偶发事件",
+        "access_count": 43
       }
     },
     {
-      "memory_id": "MEM000043",
-      "category": "长期记忆深度检索测试集",
+      "memory_id": "MEM000022",
+      "category": "记忆整理测试集",
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2024-07-10 14:21:16",
-        "relative": "1年前",
-        "fuzzy": "去年",
-        "timestamp": 1720592476
+        "absolute": "2025-09-04 14:41:03",
+        "relative": "8个月前",
+        "fuzzy": "半年前",
+        "timestamp": 1756968063
       },
       "location": {
-        "city": "惠州",
-        "place": "休息室",
-        "landmark": "烈士陵园"
+        "city": "烟台",
+        "place": "健身房",
+        "landmark": "仓储中心"
       },
       "person": {
-        "name": "闾丘",
-        "identity": "巡逻",
-        "partner_name": "韩冰",
-        "partner_identity": "经纪人",
-        "relation": "父女"
+        "name": "哈丹",
+        "identity": "教练",
+        "partner_name": "严军",
+        "partner_identity": "财务主管",
+        "relation": "客户"
       },
       "event": {
-        "type": "餐饮",
-        "action": "等位",
-        "product": "波浪发电",
-        "quantity": 4220,
-        "price": 4732
+        "type": "会议",
+        "action": "取消",
+        "product": "碳达峰",
+        "quantity": 6570,
+        "price": 8795
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "闾丘在惠州休息室等位了波浪发电，数量4220"
+          "content": "哈丹在烟台健身房取消了碳达峰，数量6570"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "闾丘回忆道：当时惠州的休息室，闾丘（巡逻）等位了波浪发电，认为价格合适，总共4220，单价4732元"
+          "content": "哈丹回忆道：当时烟台的健身房，哈丹（教练）取消了碳达峰，觉得是个机会，总共6570，单价8795元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "韩冰说闾丘在惠州那边等位了波浪发电，大概左右4220的样子，具体价格不太清楚"
+          "content": "严军说哈丹在烟台那边取消了碳达峰，好像左右6570的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "困难",
+        "event_type",
+        "会议"
+      ],
+      "cluster_id": "CLUSTER0002",
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000012",
+      "category": "检索功能测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-05-30 14:41:03",
+        "relative": "昨天",
+        "fuzzy": "昨天",
+        "timestamp": 1780123263
+      },
+      "location": {
+        "city": "潍坊",
+        "place": "体检中心",
+        "landmark": "综合体育馆"
+      },
+      "person": {
+        "name": "邓伟",
+        "identity": "司机",
+        "partner_name": "墨哈",
+        "partner_identity": "中介",
+        "relation": "兄弟"
+      },
+      "event": {
+        "type": "餐饮",
+        "action": "排队",
+        "product": "以太坊",
+        "quantity": 4130,
+        "price": 1800
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "邓伟在潍坊体检中心排队了以太坊，数量4130"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "邓伟回忆道：当时潍坊的体检中心，邓伟（司机）排队了以太坊，觉得有必要，总共4130，单价1800元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "墨哈说邓伟在潍坊那边排队了以太坊，听说差不多4130的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "困难",
+        "1d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "邓伟",
+        "潍坊",
+        "餐饮",
+        "排队",
+        "以太坊"
+      ]
+    },
+    {
+      "memory_id": "MEM000060",
+      "category": "长期记忆深度检索测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2025-10-12 14:41:03",
+        "relative": "7个月前",
+        "fuzzy": "半年前",
+        "timestamp": 1760251263
+      },
+      "location": {
+        "city": "焦作",
+        "place": "跳蚤市场",
+        "landmark": "科技园区"
+      },
+      "person": {
+        "name": "阎峰",
+        "identity": "法官",
+        "partner_name": "苏敏",
+        "partner_identity": "摄影师",
+        "relation": "姐弟"
+      },
+      "event": {
+        "type": "情感",
+        "action": "庆祝",
+        "product": "碳排放权",
+        "quantity": 8090,
+        "price": 9657
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "阎峰在焦作跳蚤市场庆祝了碳排放权，数量8090"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "阎峰回忆道：当时焦作的跳蚤市场，阎峰（法官）庆祝了碳排放权，想趁低价入手，总共8090，单价9657元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "苏敏说阎峰在焦作那边庆祝了碳排放权，好像差不多8090的样子，具体价格不太清楚"
         }
       ],
       "tags": [
@@ -2041,323 +973,264 @@
         "access_count": 0
       },
       "depth": {
-        "layers": 6,
+        "layers": 5,
         "associations": 2,
-        "semantic_distance": "中"
+        "semantic_distance": "近"
       }
-    },
-    {
-      "memory_id": "MEM000032",
-      "category": "逻辑推理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
-      "time": {
-        "absolute": "2026-05-15 14:21:16",
-        "relative": "2周前",
-        "fuzzy": "上周",
-        "timestamp": 1778826076
-      },
-      "location": {
-        "city": "永州",
-        "place": "4S店",
-        "landmark": "美食一条街"
-      },
-      "person": {
-        "name": "晁哲",
-        "identity": "财务主管",
-        "partner_name": "段干",
-        "partner_identity": "放射师",
-        "relation": "经纪人"
-      },
-      "event": {
-        "type": "交易",
-        "action": "退出",
-        "product": "天然气",
-        "quantity": 6070,
-        "price": 3988
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "晁哲在永州4S店退出了天然气，数量6070"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "晁哲回忆道：当时永州的4S店，晁哲（财务主管）退出了天然气，觉得是个机会，总共6070，单价3988元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "段干说晁哲在永州那边退出了天然气，大概可能6070的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "简单",
-        "对比"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_对比_0026",
-      "chain_position": 6,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "对比"
-      },
-      "chain_hop": 6,
-      "chain_total": 6,
-      "chain_relation": "对比",
-      "chain_prev": "MEM000031",
-      "chain_next": ""
-    },
-    {
-      "memory_id": "MEM000024",
-      "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
-      "time": {
-        "absolute": "2026-05-23 14:21:16",
-        "relative": "1周前",
-        "fuzzy": "上周",
-        "timestamp": 1779517276
-      },
-      "location": {
-        "city": "大连",
-        "place": "美术馆",
-        "landmark": "新城区"
-      },
-      "person": {
-        "name": "微生",
-        "identity": "会计",
-        "partner_name": "微生",
-        "partner_identity": "门卫",
-        "relation": "教练"
-      },
-      "event": {
-        "type": "购物",
-        "action": "然后",
-        "product": "机器人",
-        "quantity": 675,
-        "price": 8455
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "微生在大连美术馆然后了机器人，数量675"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "微生回忆道：当时大连的美术馆，微生（会计）然后了机器人，认为价格合适，总共675，单价8455元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "微生说微生在大连那边然后了机器人，听说左右675的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "中等",
-        "时序"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_时序_0021",
-      "chain_position": 3,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "时序"
-      },
-      "chain_hop": 3,
-      "chain_total": 5,
-      "chain_relation": "时序",
-      "chain_prev": "MEM000023",
-      "chain_next": "MEM000025"
     },
     {
       "memory_id": "MEM000013",
-      "category": "记忆整理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
-      "time": {
-        "absolute": "2026-05-19 14:21:16",
-        "relative": "1周前",
-        "fuzzy": "上周",
-        "timestamp": 1779171676
-      },
-      "location": {
-        "city": "兴义",
-        "place": "西贝莜面村",
-        "landmark": "自由贸易区"
-      },
-      "person": {
-        "name": "李明",
-        "identity": "保姆",
-        "partner_name": "蒙杰",
-        "partner_identity": "作家",
-        "relation": "见证人"
-      },
-      "event": {
-        "type": "娱乐",
-        "action": "看电影",
-        "product": "燃料电池",
-        "quantity": 2720,
-        "price": 7464
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "李明在兴义西贝莜面村看电影了燃料电池，数量2720"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "李明回忆道：当时兴义的西贝莜面村，李明（保姆）看电影了燃料电池，考虑再三后决定，总共2720，单价7464元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "蒙杰说李明在兴义那边看电影了燃料电池，应该可能2720的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "整理测试",
-        "困难",
-        "person",
-        "李明"
-      ],
-      "cluster_id": "CLUSTER0004",
-      "reasoning_chain": null,
-      "chain_position": null,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      }
-    },
-    {
-      "memory_id": "MEM000004",
-      "category": "记忆整理测试集",
+      "category": "检索功能测试集",
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-04-21 14:21:16",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1776752476
+        "absolute": "2026-05-27 14:41:03",
+        "relative": "4天前",
+        "fuzzy": "前几天",
+        "timestamp": 1779864063
       },
       "location": {
-        "city": "连云港",
-        "place": "棋牌室",
-        "landmark": "自由贸易区"
+        "city": "临沂",
+        "place": "羽毛球馆",
+        "landmark": "船闸"
       },
       "person": {
-        "name": "和水",
-        "identity": "程序员",
-        "partner_name": "邹游",
-        "partner_identity": "仲裁员",
-        "relation": "师兄弟"
+        "name": "申然",
+        "identity": "警卫",
+        "partner_name": "麦朵",
+        "partner_identity": "警察",
+        "relation": "母子"
       },
       "event": {
-        "type": "交易",
-        "action": "捐赠",
-        "product": "茅台",
-        "quantity": 389,
-        "price": 9135
+        "type": "日常",
+        "action": "上班",
+        "product": "脑机接口",
+        "quantity": 857,
+        "price": 1538
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "和水在连云港棋牌室捐赠了茅台，数量389"
+          "content": "申然在临沂羽毛球馆上班了脑机接口，数量857"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "和水回忆道：当时连云港的棋牌室，和水（程序员）捐赠了茅台，觉得是个机会，总共389，单价9135元"
+          "content": "申然回忆道：当时临沂的羽毛球馆，申然（警卫）上班了脑机接口，觉得有必要，总共857，单价1538元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "邹游说和水在连云港那边捐赠了茅台，听说大概389的样子，具体价格不太清楚"
+          "content": "麦朵说申然在临沂那边上班了脑机接口，听说可能857的样子，具体价格不太清楚"
         }
       ],
       "tags": [
-        "整理测试",
+        "检索测试",
         "中等",
-        "product",
-        "茅台"
+        "4d"
       ],
-      "cluster_id": "CLUSTER0001",
+      "cluster_id": null,
       "reasoning_chain": null,
       "chain_position": null,
       "decay": {
         "level": null,
         "access_count": 0
+      },
+      "retrieval_keywords": [
+        "申然",
+        "临沂",
+        "日常",
+        "上班",
+        "脑机接口"
+      ]
+    },
+    {
+      "memory_id": "MEM000061",
+      "category": "长期记忆深度检索测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-01-29 14:41:03",
+        "relative": "4个月前",
+        "fuzzy": "三个月前",
+        "timestamp": 1769668863
+      },
+      "location": {
+        "city": "长沙",
+        "place": "诊所",
+        "landmark": "非遗街区"
+      },
+      "person": {
+        "name": "宇文",
+        "identity": "代表",
+        "partner_name": "公孙",
+        "partner_identity": "跑腿",
+        "relation": "驴友"
+      },
+      "event": {
+        "type": "金融",
+        "action": "期货",
+        "product": "百度",
+        "quantity": 7450,
+        "price": 8553
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "宇文在长沙诊所期货了百度，数量7450"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "宇文回忆道：当时长沙的诊所，宇文（代表）期货了百度，觉得是个机会，总共7450，单价8553元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "公孙说宇文在长沙那边期货了百度，好像可能7450的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "深度检索",
+        "困难"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "depth": {
+        "layers": 5,
+        "associations": 5,
+        "semantic_distance": "远"
       }
     },
     {
-      "memory_id": "MEM000027",
+      "memory_id": "MEM000057",
       "category": "逻辑推理测试集",
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-01 14:21:16",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1777616476
+        "absolute": "2026-05-04 14:41:03",
+        "relative": "3周前",
+        "fuzzy": "上周",
+        "timestamp": 1777876863
       },
       "location": {
-        "city": "永州",
-        "place": "祠堂",
-        "landmark": "码头"
+        "city": "梧州",
+        "place": "IFS国金中心",
+        "landmark": "金融中心"
       },
       "person": {
-        "name": "宇文",
-        "identity": "律师",
-        "partner_name": "仲孙",
-        "partner_identity": "警察",
-        "relation": "委托人"
+        "name": "亓官",
+        "identity": "警卫",
+        "partner_name": "东门",
+        "partner_identity": "药剂师",
+        "relation": "朋友"
       },
       "event": {
-        "type": "情感",
-        "action": "支持",
-        "product": "高温气冷堆",
-        "quantity": 451,
-        "price": 4691
+        "type": "推导",
+        "action": "判断",
+        "product": "光刻掩膜",
+        "quantity": 119,
+        "price": 8817
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "宇文在永州祠堂支持了高温气冷堆，数量451"
+          "content": "亓官在梧州IFS国金中心判断了光刻掩膜，数量119"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "宇文回忆道：当时永州的祠堂，宇文（律师）支持了高温气冷堆，认为价格合适，总共451，单价4691元"
+          "content": "亓官回忆道：当时梧州的IFS国金中心，亓官（警卫）判断了光刻掩膜，认为值得投入，总共119，单价8817元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "仲孙说宇文在永州那边支持了高温气冷堆，听说差不多451的样子，具体价格不太清楚"
+          "content": "东门说亓官在梧州那边判断了光刻掩膜，应该可能119的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
         "简单",
+        "推导"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0007",
+      "chain_position": 2,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "推导"
+      },
+      "chain_hop": 2,
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000055",
+      "chain_next": "MEM000058"
+    },
+    {
+      "memory_id": "MEM000047",
+      "category": "逻辑推理测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2025-06-28 14:41:03",
+        "relative": "11个月前",
+        "fuzzy": "半年前",
+        "timestamp": 1751092863
+      },
+      "location": {
+        "city": "重庆",
+        "place": "洗车店",
+        "landmark": "观景台"
+      },
+      "person": {
+        "name": "孙杰",
+        "identity": "保安",
+        "partner_name": "楚雷",
+        "partner_identity": "园丁",
+        "relation": "教练"
+      },
+      "event": {
+        "type": "情感",
+        "action": "赞同",
+        "product": "白银",
+        "quantity": 2830,
+        "price": 6808
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙杰在重庆洗车店赞同了白银，数量2830"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙杰回忆道：当时重庆的洗车店，孙杰（保安）赞同了白银，觉得是个机会，总共2830，单价6808元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "楚雷说孙杰在重庆那边赞同了白银，大概左右2830的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
         "对比"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_对比_0026",
+      "reasoning_chain": "CHAIN_temporal_0005",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -2367,65 +1240,200 @@
         "type": "对比"
       },
       "chain_hop": 1,
-      "chain_total": 6,
-      "chain_relation": "对比",
+      "chain_total": 3,
+      "chain_relation": "时序",
       "chain_prev": "",
-      "chain_next": "MEM000028"
+      "chain_next": "MEM000045"
     },
     {
-      "memory_id": "MEM000030",
-      "category": "逻辑推理测试集",
+      "memory_id": "MEM000016",
+      "category": "检索功能测试集",
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-25 14:21:16",
-        "relative": "6天前",
-        "fuzzy": "前几天",
-        "timestamp": 1779690076
+        "absolute": "2025-10-27 14:41:03",
+        "relative": "7个月前",
+        "fuzzy": "半年前",
+        "timestamp": 1761547263
       },
       "location": {
-        "city": "永州",
-        "place": "海关",
-        "landmark": "湖畔步道"
+        "city": "焦作",
+        "place": "青年旅舍",
+        "landmark": "灯塔"
       },
       "person": {
-        "name": "长孙",
-        "identity": "警卫",
-        "partner_name": "魏强",
-        "partner_identity": "演员",
-        "relation": "球友"
+        "name": "段干",
+        "identity": "数据分析师",
+        "partner_name": "呼延",
+        "partner_identity": "中学老师",
+        "relation": "学员"
       },
       "event": {
-        "type": "交易",
-        "action": "反对",
-        "product": "潮汐发电",
-        "quantity": 3460,
-        "price": 6221
+        "type": "餐饮",
+        "action": "加菜",
+        "product": "可控核聚变",
+        "quantity": 2100,
+        "price": 5157
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "长孙在永州海关反对了潮汐发电，数量3460"
+          "content": "段干在焦作青年旅舍加菜了可控核聚变，数量2100"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "长孙回忆道：当时永州的海关，长孙（警卫）反对了潮汐发电，不想错过，总共3460，单价6221元"
+          "content": "段干回忆道：当时焦作的青年旅舍，段干（数据分析师）加菜了可控核聚变，觉得有必要，总共2100，单价5157元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "魏强说长孙在永州那边反对了潮汐发电，好像大概3460的样子，具体价格不太清楚"
+          "content": "呼延说段干在焦作那边加菜了可控核聚变，大概可能2100的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "简单",
+        "216d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "段干",
+        "焦作",
+        "餐饮",
+        "加菜",
+        "可控核聚变"
+      ]
+    },
+    {
+      "memory_id": "MEM000051",
+      "category": "逻辑推理测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-05-30 14:41:03",
+        "relative": "昨天",
+        "fuzzy": "昨天",
+        "timestamp": 1780123263
+      },
+      "location": {
+        "city": "六盘水",
+        "place": "大悦城",
+        "landmark": "工业区"
+      },
+      "person": {
+        "name": "郑鹏",
+        "identity": "安检",
+        "partner_name": "郭峰",
+        "partner_identity": "代理",
+        "relation": "房东"
+      },
+      "event": {
+        "type": "旅行",
+        "action": "具体",
+        "product": "橡胶",
+        "quantity": 175,
+        "price": 9995
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑鹏在六盘水大悦城具体了橡胶，数量175"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑鹏回忆道：当时六盘水的大悦城，郑鹏（安检）具体了橡胶，不想错过，总共175，单价9995元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "郭峰说郑鹏在六盘水那边具体了橡胶，应该差不多175的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "简单",
+        "中等",
+        "包含"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0006",
+      "chain_position": 6,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "包含"
+      },
+      "chain_hop": 6,
+      "chain_total": 6,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000053",
+      "chain_next": ""
+    },
+    {
+      "memory_id": "MEM000046",
+      "category": "逻辑推理测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-05-30 14:41:03",
+        "relative": "昨天",
+        "fuzzy": "昨天",
+        "timestamp": 1780123263
+      },
+      "location": {
+        "city": "重庆",
+        "place": "肯德基",
+        "landmark": "船闸"
+      },
+      "person": {
+        "name": "伯赏",
+        "identity": "解说员",
+        "partner_name": "微生",
+        "partner_identity": "木工",
+        "relation": "房东"
+      },
+      "event": {
+        "type": "冲突",
+        "action": "撤资",
+        "product": "合成生物学",
+        "quantity": 8620,
+        "price": 7570
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "伯赏在重庆肯德基撤资了合成生物学，数量8620"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "伯赏回忆道：当时重庆的肯德基，伯赏（解说员）撤资了合成生物学，想趁低价入手，总共8620，单价7570元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "微生说伯赏在重庆那边撤资了合成生物学，应该左右8620的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "困难",
         "对比"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_对比_0026",
+      "reasoning_chain": "CHAIN_对比_0042",
       "chain_position": 4,
       "decay": {
         "level": null,
@@ -2437,64 +1445,255 @@
       "chain_hop": 4,
       "chain_total": 6,
       "chain_relation": "对比",
-      "chain_prev": "MEM000029",
-      "chain_next": "MEM000031"
+      "chain_prev": "MEM000045",
+      "chain_next": "MEM000047"
     },
     {
-      "memory_id": "MEM000035",
-      "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
+      "memory_id": "MEM000062",
+      "category": "长期记忆深度检索测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
       "time": {
-        "absolute": "2026-05-26 14:21:16",
-        "relative": "5天前",
-        "fuzzy": "前几天",
-        "timestamp": 1779776476
+        "absolute": "2024-06-14 14:41:03",
+        "relative": "1年前",
+        "fuzzy": "去年",
+        "timestamp": 1718347263
       },
       "location": {
-        "city": "长沙",
-        "place": "清真寺",
-        "landmark": "工业区"
+        "city": "中山",
+        "place": "KTV",
+        "landmark": "经济开发区"
       },
       "person": {
-        "name": "佘佴",
-        "identity": "解说员",
-        "partner_name": "唐军",
-        "partner_identity": "导游",
-        "relation": "患者"
+        "name": "董洁",
+        "identity": "列车长",
+        "partner_name": "闾丘",
+        "partner_identity": "总监",
+        "relation": "客户"
       },
       "event": {
-        "type": "交通",
-        "action": "细化",
-        "product": "MXene",
-        "quantity": 812,
-        "price": 4830
+        "type": "日常",
+        "action": "加班",
+        "product": "高温气冷堆",
+        "quantity": 6400,
+        "price": 8994
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "佘佴在长沙清真寺细化了MXene，数量812"
+          "content": "董洁在中山KTV加班了高温气冷堆，数量6400"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "佘佴回忆道：当时长沙的清真寺，佘佴（解说员）细化了MXene，认为值得投入，总共812，单价4830元"
+          "content": "董洁回忆道：当时中山的KTV，董洁（列车长）加班了高温气冷堆，想趁低价入手，总共6400，单价8994元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "唐军说佘佴在长沙那边细化了MXene，据说左右812的样子，具体价格不太清楚"
+          "content": "闾丘说董洁在中山那边加班了高温气冷堆，据说可能6400的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "深度检索",
+        "困难"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "depth": {
+        "layers": 5,
+        "associations": 5,
+        "semantic_distance": "远"
+      }
+    },
+    {
+      "memory_id": "MEM000030",
+      "category": "遗忘功能测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-05-15 14:41:03",
+        "relative": "2周前",
+        "fuzzy": "上周",
+        "timestamp": 1778827263
+      },
+      "location": {
+        "city": "银川",
+        "place": "图书馆",
+        "landmark": "历史街区"
+      },
+      "person": {
+        "name": "蒲团",
+        "identity": "运动员",
+        "partner_name": "宇文",
+        "partner_identity": "月嫂",
+        "relation": "平级"
+      },
+      "event": {
+        "type": "意外",
+        "action": "受伤",
+        "product": "碳封存",
+        "quantity": 6850,
+        "price": 6634
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "蒲团在银川图书馆受伤了碳封存，数量6850"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "蒲团回忆道：当时银川的图书馆，蒲团（运动员）受伤了碳封存，想试试运气，总共6850，单价6634元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "宇文说蒲团在银川那边受伤了碳封存，应该大概6850的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "遗忘测试",
+        "中等",
+        "中等频率"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": "中等频率",
+        "access_count": 59
+      }
+    },
+    {
+      "memory_id": "MEM000009",
+      "category": "检索功能测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-05-30 14:41:03",
+        "relative": "昨天",
+        "fuzzy": "昨天",
+        "timestamp": 1780123263
+      },
+      "location": {
+        "city": "天津",
+        "place": "奈雪的茶",
+        "landmark": "综合体育馆"
+      },
+      "person": {
+        "name": "哈丹",
+        "identity": "CTO",
+        "partner_name": "乔磊",
+        "partner_identity": "解说员",
+        "relation": "委托人"
+      },
+      "event": {
+        "type": "金融",
+        "action": "取款",
+        "product": "基因芯片",
+        "quantity": 785,
+        "price": 7797
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "哈丹在天津奈雪的茶取款了基因芯片，数量785"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "哈丹回忆道：当时天津的奈雪的茶，哈丹（CTO）取款了基因芯片，想试试运气，总共785，单价7797元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "乔磊说哈丹在天津那边取款了基因芯片，大概可能785的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "中等",
+        "1d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "哈丹",
+        "天津",
+        "金融",
+        "取款",
+        "基因芯片"
+      ]
+    },
+    {
+      "memory_id": "MEM000054",
+      "category": "逻辑推理测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-05-04 14:41:03",
+        "relative": "3周前",
+        "fuzzy": "上周",
+        "timestamp": 1777876863
+      },
+      "location": {
+        "city": "六盘水",
+        "place": "网吧",
+        "landmark": "纪念馆"
+      },
+      "person": {
+        "name": "郑鹏",
+        "identity": "法官",
+        "partner_name": "况后",
+        "partner_identity": "保安",
+        "relation": "闺蜜"
+      },
+      "event": {
+        "type": "情感",
+        "action": "完成",
+        "product": "拓扑绝缘体",
+        "quantity": 350,
+        "price": 2163
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑鹏在六盘水网吧完成了拓扑绝缘体，数量350"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑鹏回忆道：当时六盘水的网吧，郑鹏（法官）完成了拓扑绝缘体，考虑再三后决定，总共350，单价2163元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "况后说郑鹏在六盘水那边完成了拓扑绝缘体，听说差不多350的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "中等",
+        "简单",
         "包含"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_包含_0032",
-      "chain_position": 3,
+      "reasoning_chain": "CHAIN_temporal_0006",
+      "chain_position": 2,
       "decay": {
         "level": null,
         "access_count": 0
@@ -2502,11 +1701,330 @@
       "logic": {
         "type": "包含"
       },
+      "chain_hop": 2,
+      "chain_total": 6,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000050",
+      "chain_next": "MEM000049"
+    },
+    {
+      "memory_id": "MEM000005",
+      "category": "存储正确性测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2024-06-13 14:41:03",
+        "relative": "1年前",
+        "fuzzy": "去年",
+        "timestamp": 1718260863
+      },
+      "location": {
+        "city": "贵港",
+        "place": "全聚德",
+        "landmark": "博览中心"
+      },
+      "person": {
+        "name": "宰父",
+        "identity": "出纳",
+        "partner_name": "孔祥",
+        "partner_identity": "CTO",
+        "relation": "丁方"
+      },
+      "event": {
+        "type": "意外",
+        "action": "受伤",
+        "product": "钍基熔盐堆",
+        "quantity": 68,
+        "price": 9302
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "宰父在贵港全聚德受伤了钍基熔盐堆，数量68"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "宰父回忆道：当时贵港的全聚德，宰父（出纳）受伤了钍基熔盐堆，认为值得投入，总共68，单价9302元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "孔祥说宰父在贵港那边受伤了钍基熔盐堆，听说可能68的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "困难",
+        "717d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0001",
+      "chain_position": 1,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 1,
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "",
+      "chain_next": "MEM000042"
+    },
+    {
+      "memory_id": "MEM000025",
+      "category": "记忆整理测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-05-28 14:41:03",
+        "relative": "3天前",
+        "fuzzy": "前几天",
+        "timestamp": 1779950463
+      },
+      "location": {
+        "city": "临沂",
+        "place": "医院",
+        "landmark": "英雄广场"
+      },
+      "person": {
+        "name": "李明",
+        "identity": "司机",
+        "partner_name": "谯笪",
+        "partner_identity": "会计",
+        "relation": "球友"
+      },
+      "event": {
+        "type": "购物",
+        "action": "换货",
+        "product": "形状记忆合金",
+        "quantity": 8130,
+        "price": 2790
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "李明在临沂医院换货了形状记忆合金，数量8130"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "李明回忆道：当时临沂的医院，李明（司机）换货了形状记忆合金，认为价格合适，总共8130，单价2790元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "谯笪说李明在临沂那边换货了形状记忆合金，大概左右8130的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "中等",
+        "person",
+        "李明"
+      ],
+      "cluster_id": "CLUSTER0003",
+      "reasoning_chain": "CHAIN_temporal_0003",
+      "chain_position": 3,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
       "chain_hop": 3,
-      "chain_total": 5,
-      "chain_relation": "包含",
-      "chain_prev": "MEM000034",
-      "chain_next": "MEM000036"
+      "chain_total": 3,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000023",
+      "chain_next": ""
+    },
+    {
+      "memory_id": "MEM000031",
+      "category": "遗忘功能测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-02-17 14:41:03",
+        "relative": "3个月前",
+        "fuzzy": "三个月前",
+        "timestamp": 1771310463
+      },
+      "location": {
+        "city": "沈阳",
+        "place": "绿茶餐厅",
+        "landmark": "物流园区"
+      },
+      "person": {
+        "name": "唐军",
+        "identity": "交传",
+        "partner_name": "商牟",
+        "partner_identity": "收银员",
+        "relation": "见证人"
+      },
+      "event": {
+        "type": "购物",
+        "action": "发货",
+        "product": "免疫疗法",
+        "quantity": 466,
+        "price": 6221
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "唐军在沈阳绿茶餐厅发货了免疫疗法，数量466"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "唐军回忆道：当时沈阳的绿茶餐厅，唐军（交传）发货了免疫疗法，考虑再三后决定，总共466，单价6221元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "商牟说唐军在沈阳那边发货了免疫疗法，大概大概466的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "遗忘测试",
+        "困难",
+        "低频记忆"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": "低频记忆",
+        "access_count": 96
+      }
+    },
+    {
+      "memory_id": "MEM000063",
+      "category": "长期记忆深度检索测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2025-11-12 14:41:03",
+        "relative": "6个月前",
+        "fuzzy": "半年前",
+        "timestamp": 1762929663
+      },
+      "location": {
+        "city": "贵港",
+        "place": "药店",
+        "landmark": "夜市一条街"
+      },
+      "person": {
+        "name": "令狐",
+        "identity": "裁判",
+        "partner_name": "仲孙",
+        "partner_identity": "翻译",
+        "relation": "租客"
+      },
+      "event": {
+        "type": "健康",
+        "action": "就医",
+        "product": "海底电缆",
+        "quantity": 438,
+        "price": 4186
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "令狐在贵港药店就医了海底电缆，数量438"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "令狐回忆道：当时贵港的药店，令狐（裁判）就医了海底电缆，不想错过，总共438，单价4186元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "仲孙说令狐在贵港那边就医了海底电缆，好像大概438的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "深度检索",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "depth": {
+        "layers": 5,
+        "associations": 3,
+        "semantic_distance": "远"
+      }
+    },
+    {
+      "memory_id": "MEM000064",
+      "category": "长期记忆深度检索测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2025-07-24 14:41:03",
+        "relative": "10个月前",
+        "fuzzy": "半年前",
+        "timestamp": 1753339263
+      },
+      "location": {
+        "city": "盐城",
+        "place": "酒店",
+        "landmark": "山顶观景台"
+      },
+      "person": {
+        "name": "邓伟",
+        "identity": "服务员",
+        "partner_name": "窦章",
+        "partner_identity": "CEO",
+        "relation": "兄妹"
+      },
+      "event": {
+        "type": "金融",
+        "action": "基金",
+        "product": "碳足迹",
+        "quantity": 8950,
+        "price": 6939
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "邓伟在盐城酒店基金了碳足迹，数量8950"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "邓伟回忆道：当时盐城的酒店，邓伟（服务员）基金了碳足迹，想趁低价入手，总共8950，单价6939元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "窦章说邓伟在盐城那边基金了碳足迹，大概大概8950的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "深度检索",
+        "困难"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "depth": {
+        "layers": 3,
+        "associations": 4,
+        "semantic_distance": "远"
+      }
     },
     {
       "memory_id": "MEM000001",
@@ -2514,10 +2032,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-30 14:21:16",
+        "absolute": "2026-05-30 14:41:03",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780122076
+        "timestamp": 1780123263
       },
       "location": {
         "city": "重庆",
@@ -2569,193 +2087,314 @@
       }
     },
     {
-      "memory_id": "MEM000033",
-      "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
+      "memory_id": "MEM000059",
+      "category": "长期记忆深度检索测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
       "time": {
-        "absolute": "2026-05-26 14:21:16",
-        "relative": "5天前",
-        "fuzzy": "前几天",
-        "timestamp": 1779776476
+        "absolute": "2025-02-23 14:41:03",
+        "relative": "1年前",
+        "fuzzy": "去年",
+        "timestamp": 1740292863
       },
       "location": {
-        "city": "长沙",
-        "place": "图书馆",
-        "landmark": "商业步行街"
+        "city": "深圳",
+        "place": "绿茶餐厅",
+        "landmark": "会议中心"
       },
       "person": {
-        "name": "佘佴",
-        "identity": "设计师",
-        "partner_name": "仇嵩",
-        "partner_identity": "笔译",
-        "relation": "二房东"
+        "name": "余涛",
+        "identity": "咨询师",
+        "partner_name": "孙叔",
+        "partner_identity": "作家",
+        "relation": "被投资方"
       },
       "event": {
-        "type": "交通",
-        "action": "涵盖",
-        "product": "计划",
-        "quantity": 1810,
-        "price": 4435
+        "type": "法律",
+        "action": "续约",
+        "product": "芯片",
+        "quantity": 8060,
+        "price": 1134
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "佘佴在长沙图书馆涵盖了计划，数量1810"
+          "content": "余涛在深圳绿茶餐厅续约了芯片，数量8060"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "佘佴回忆道：当时长沙的图书馆，佘佴（设计师）涵盖了计划，不想错过，总共1810，单价4435元"
+          "content": "余涛回忆道：当时深圳的绿茶餐厅，余涛（咨询师）续约了芯片，觉得有必要，总共8060，单价1134元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "仇嵩说佘佴在长沙那边涵盖了计划，据说左右1810的样子，具体价格不太清楚"
+          "content": "孙叔说余涛在深圳那边续约了芯片，听说左右8060的样子，具体价格不太清楚"
         }
       ],
       "tags": [
-        "推理测试",
-        "中等",
-        "包含"
+        "深度检索",
+        "简单"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_包含_0032",
-      "chain_position": 1,
+      "reasoning_chain": null,
+      "chain_position": null,
       "decay": {
         "level": null,
         "access_count": 0
       },
-      "logic": {
-        "type": "包含"
-      },
-      "chain_hop": 1,
-      "chain_total": 5,
-      "chain_relation": "包含",
-      "chain_prev": "",
-      "chain_next": "MEM000034"
+      "depth": {
+        "layers": 7,
+        "associations": 3,
+        "semantic_distance": "远"
+      }
     },
     {
       "memory_id": "MEM000026",
-      "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
-      "time": {
-        "absolute": "2026-05-31 14:21:16",
-        "relative": "刚刚",
-        "fuzzy": "今天",
-        "timestamp": 1780208476
-      },
-      "location": {
-        "city": "大连",
-        "place": "绿茶餐厅",
-        "landmark": "船闸"
-      },
-      "person": {
-        "name": "微生",
-        "identity": "运动员",
-        "partner_name": "长孙",
-        "partner_identity": "导演",
-        "relation": "师兄弟"
-      },
-      "event": {
-        "type": "居住",
-        "action": "结束",
-        "product": "氮化硼",
-        "quantity": 1370,
-        "price": 8712
-      },
-      "versions": [
-        {
-          "version_id": "v1",
-          "style": "客观叙述",
-          "content": "微生在大连绿茶餐厅结束了氮化硼，数量1370"
-        },
-        {
-          "version_id": "v2",
-          "style": "主观视角",
-          "content": "微生回忆道：当时大连的绿茶餐厅，微生（运动员）结束了氮化硼，不想错过，总共1370，单价8712元"
-        },
-        {
-          "version_id": "v3",
-          "style": "第三方转述",
-          "content": "长孙说微生在大连那边结束了氮化硼，应该可能1370的样子，具体价格不太清楚"
-        }
-      ],
-      "tags": [
-        "推理测试",
-        "困难",
-        "时序"
-      ],
-      "cluster_id": null,
-      "reasoning_chain": "CHAIN_时序_0021",
-      "chain_position": 5,
-      "decay": {
-        "level": null,
-        "access_count": 0
-      },
-      "logic": {
-        "type": "时序"
-      },
-      "chain_hop": 5,
-      "chain_total": 5,
-      "chain_relation": "时序",
-      "chain_prev": "MEM000025",
-      "chain_next": ""
-    },
-    {
-      "memory_id": "MEM000008",
       "category": "记忆整理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
+      "difficulty": "简单",
+      "weight": 0.5,
       "time": {
-        "absolute": "2026-05-26 14:21:16",
-        "relative": "5天前",
-        "fuzzy": "前几天",
-        "timestamp": 1779776476
+        "absolute": "2026-05-03 14:41:03",
+        "relative": "4周前",
+        "fuzzy": "上周",
+        "timestamp": 1777790463
       },
       "location": {
-        "city": "安顺",
-        "place": "网球场",
-        "landmark": "博览中心"
+        "city": "成都",
+        "place": "西湖",
+        "landmark": "文化街区"
       },
       "person": {
-        "name": "谷梁",
-        "identity": "销售经理",
-        "partner_name": "闾丘",
-        "partner_identity": "技工",
-        "relation": "丙方"
+        "name": "张伟",
+        "identity": "书法家",
+        "partner_name": "蒲团",
+        "partner_identity": "园丁",
+        "relation": "合作伙伴"
       },
       "event": {
         "type": "交易",
-        "action": "出售",
-        "product": "比特币",
-        "quantity": 2470,
-        "price": 1300
+        "action": "拍卖",
+        "product": "富勒烯",
+        "quantity": 9080,
+        "price": 3195
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "谷梁在安顺网球场出售了比特币，数量2470"
+          "content": "张伟在成都西湖拍卖了富勒烯，数量9080"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "谷梁回忆道：当时安顺的网球场，谷梁（销售经理）出售了比特币，不想错过，总共2470，单价1300元"
+          "content": "张伟回忆道：当时成都的西湖，张伟（书法家）拍卖了富勒烯，不想错过，总共9080，单价3195元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "闾丘说谷梁在安顺那边出售了比特币，好像差不多2470的样子，具体价格不太清楚"
+          "content": "蒲团说张伟在成都那边拍卖了富勒烯，据说差不多9080的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "整理测试",
-        "困难",
+        "简单",
+        "person",
+        "张伟"
+      ],
+      "cluster_id": "CLUSTER0004",
+      "reasoning_chain": "CHAIN_temporal_0002",
+      "chain_position": 2,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 2,
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000028",
+      "chain_next": "MEM000027"
+    },
+    {
+      "memory_id": "MEM000015",
+      "category": "检索功能测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-05-30 14:41:03",
+        "relative": "昨天",
+        "fuzzy": "昨天",
+        "timestamp": 1780123263
+      },
+      "location": {
+        "city": "都匀",
+        "place": "古玩市场",
+        "landmark": "码头"
+      },
+      "person": {
+        "name": "卜顾",
+        "identity": "测试工程师",
+        "partner_name": "郭峰",
+        "partner_identity": "安检",
+        "relation": "邻居"
+      },
+      "event": {
+        "type": "居住",
+        "action": "租房",
+        "product": "光刻对准系统",
+        "quantity": 830,
+        "price": 1132
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "卜顾在都匀古玩市场租房了光刻对准系统，数量830"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "卜顾回忆道：当时都匀的古玩市场，卜顾（测试工程师）租房了光刻对准系统，认为价格合适，总共830，单价1132元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "郭峰说卜顾在都匀那边租房了光刻对准系统，听说可能830的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "简单",
+        "1d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "卜顾",
+        "都匀",
+        "居住",
+        "租房",
+        "光刻对准系统"
+      ]
+    },
+    {
+      "memory_id": "MEM000003",
+      "category": "存储正确性测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-05-05 14:41:03",
+        "relative": "3周前",
+        "fuzzy": "上周",
+        "timestamp": 1777963263
+      },
+      "location": {
+        "city": "天津",
+        "place": "税务局",
+        "landmark": "滨江带"
+      },
+      "person": {
+        "name": "焦强",
+        "identity": "保镖",
+        "partner_name": "马超",
+        "partner_identity": "司机",
+        "relation": "债务人"
+      },
+      "event": {
+        "type": "娱乐",
+        "action": "滑雪",
+        "product": "Web3",
+        "quantity": 722,
+        "price": 3743
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "焦强在天津税务局滑雪了Web3，数量722"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "焦强回忆道：当时天津的税务局，焦强（保镖）滑雪了Web3，想趁低价入手，总共722，单价3743元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "马超说焦强在天津那边滑雪了Web3，好像差不多722的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "简单",
+        "26d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000020",
+      "category": "记忆整理测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-03-25 14:41:03",
+        "relative": "2个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1774420863
+      },
+      "location": {
+        "city": "拉萨",
+        "place": "码头",
+        "landmark": "会议中心"
+      },
+      "person": {
+        "name": "夹谷",
+        "identity": "司机",
+        "partner_name": "阎峰",
+        "partner_identity": "厨师",
+        "relation": "闺蜜"
+      },
+      "event": {
+        "type": "会议",
+        "action": "取消",
+        "product": "靶向药",
+        "quantity": 699,
+        "price": 1694
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "夹谷在拉萨码头取消了靶向药，数量699"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "夹谷回忆道：当时拉萨的码头，夹谷（司机）取消了靶向药，考虑再三后决定，总共699，单价1694元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "阎峰说夹谷在拉萨那边取消了靶向药，应该差不多699的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "中等",
         "event_type",
-        "交易"
+        "会议"
       ],
       "cluster_id": "CLUSTER0002",
       "reasoning_chain": null,
@@ -2766,50 +2405,178 @@
       }
     },
     {
-      "memory_id": "MEM000021",
-      "category": "逻辑推理测试集",
+      "memory_id": "MEM000034",
+      "category": "遗忘功能测试集",
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-09-15 14:21:16",
-        "relative": "8个月前",
-        "fuzzy": "半年前",
-        "timestamp": 1757917276
+        "absolute": "2026-02-09 14:41:03",
+        "relative": "3个月前",
+        "fuzzy": "三个月前",
+        "timestamp": 1770619263
       },
       "location": {
-        "city": "丽水",
-        "place": "美术馆",
-        "landmark": "展示中心"
+        "city": "衢州",
+        "place": "桌游吧",
+        "landmark": "山顶观景台"
       },
       "person": {
-        "name": "罗欢",
-        "identity": "消防员",
-        "partner_name": "高建",
-        "partner_identity": "经纪人",
-        "relation": "被投资方"
+        "name": "栾朵",
+        "identity": "交传",
+        "partner_name": "漆雕",
+        "partner_identity": "零售商",
+        "relation": "上级"
       },
       "event": {
-        "type": "居住",
-        "action": "最终",
-        "product": "自愈合材料",
-        "quantity": 8990,
-        "price": 2935
+        "type": "日常",
+        "action": "调休",
+        "product": "光刻机",
+        "quantity": 109,
+        "price": 5944
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "罗欢在丽水美术馆最终了自愈合材料，数量8990"
+          "content": "栾朵在衢州桌游吧调休了光刻机，数量109"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "罗欢回忆道：当时丽水的美术馆，罗欢（消防员）最终了自愈合材料，认为价格合适，总共8990，单价2935元"
+          "content": "栾朵回忆道：当时衢州的桌游吧，栾朵（交传）调休了光刻机，想试试运气，总共109，单价5944元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "高建说罗欢在丽水那边最终了自愈合材料，应该可能8990的样子，具体价格不太清楚"
+          "content": "漆雕说栾朵在衢州那边调休了光刻机，据说差不多109的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "遗忘测试",
+        "困难",
+        "偶发事件"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": "偶发事件",
+        "access_count": 90
+      }
+    },
+    {
+      "memory_id": "MEM000052",
+      "category": "逻辑推理测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-05-10 14:41:03",
+        "relative": "3周前",
+        "fuzzy": "上周",
+        "timestamp": 1778395263
+      },
+      "location": {
+        "city": "六盘水",
+        "place": "游泳馆",
+        "landmark": "古村落"
+      },
+      "person": {
+        "name": "郑鹏",
+        "identity": "保镖",
+        "partner_name": "钱伟",
+        "partner_identity": "检察官",
+        "relation": "师妹"
+      },
+      "event": {
+        "type": "交易",
+        "action": "实施",
+        "product": "橡胶",
+        "quantity": 76,
+        "price": 5671
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑鹏在六盘水游泳馆实施了橡胶，数量76"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑鹏回忆道：当时六盘水的游泳馆，郑鹏（保镖）实施了橡胶，想趁低价入手，总共76，单价5671元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "钱伟说郑鹏在六盘水那边实施了橡胶，据说左右76的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "简单",
+        "包含"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0006",
+      "chain_position": 4,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "包含"
+      },
+      "chain_hop": 4,
+      "chain_total": 6,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000049",
+      "chain_next": "MEM000053"
+    },
+    {
+      "memory_id": "MEM000038",
+      "category": "逻辑推理测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-05-25 14:41:03",
+        "relative": "6天前",
+        "fuzzy": "前几天",
+        "timestamp": 1779691263
+      },
+      "location": {
+        "city": "扬州",
+        "place": "游乐场",
+        "landmark": "瞭望塔"
+      },
+      "person": {
+        "name": "司马",
+        "identity": "画家",
+        "partner_name": "盛天",
+        "partner_identity": "诗人",
+        "relation": "师妹"
+      },
+      "event": {
+        "type": "交通",
+        "action": "导致",
+        "product": "高温气冷堆",
+        "quantity": 304,
+        "price": 2949
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "司马在扬州游乐场导致了高温气冷堆，数量304"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "司马回忆道：当时扬州的游乐场，司马（画家）导致了高温气冷堆，觉得是个机会，总共304，单价2949元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "盛天说司马在扬州那边导致了高温气冷堆，好像左右304的样子，具体价格不太清楚"
         }
       ],
       "tags": [
@@ -2818,8 +2585,8 @@
         "因果"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_因果_0015",
-      "chain_position": 6,
+      "reasoning_chain": "CHAIN_temporal_0004",
+      "chain_position": 3,
       "decay": {
         "level": null,
         "access_count": 0
@@ -2827,305 +2594,1995 @@
       "logic": {
         "type": "因果"
       },
-      "chain_hop": 6,
+      "chain_hop": 3,
+      "chain_total": 3,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000039",
+      "chain_next": ""
+    },
+    {
+      "memory_id": "MEM000019",
+      "category": "记忆整理测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-05-30 14:41:03",
+        "relative": "昨天",
+        "fuzzy": "昨天",
+        "timestamp": 1780123263
+      },
+      "location": {
+        "city": "上海",
+        "place": "肯德基",
+        "landmark": "创业孵化园"
+      },
+      "person": {
+        "name": "东门",
+        "identity": "武警",
+        "partner_name": "长孙",
+        "partner_identity": "算法工程师",
+        "relation": "师兄"
+      },
+      "event": {
+        "type": "交易",
+        "action": "投资",
+        "product": "二维材料",
+        "quantity": 5650,
+        "price": 9199
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "东门在上海肯德基投资了二维材料，数量5650"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "东门回忆道：当时上海的肯德基，东门（武警）投资了二维材料，认为价格合适，总共5650，单价9199元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "长孙说东门在上海那边投资了二维材料，好像差不多5650的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "简单",
+        "location",
+        "上海"
+      ],
+      "cluster_id": "CLUSTER0001",
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000045",
+      "category": "逻辑推理测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-04-24 14:41:03",
+        "relative": "1个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1777012863
+      },
+      "location": {
+        "city": "重庆",
+        "place": "麦德龙",
+        "landmark": "码头"
+      },
+      "person": {
+        "name": "孙杰",
+        "identity": "项目经理",
+        "partner_name": "子车",
+        "partner_identity": "警卫",
+        "relation": "债务人"
+      },
+      "event": {
+        "type": "交易",
+        "action": "赞同",
+        "product": "光刻透镜",
+        "quantity": 641,
+        "price": 855
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙杰在重庆麦德龙赞同了光刻透镜，数量641"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙杰回忆道：当时重庆的麦德龙，孙杰（项目经理）赞同了光刻透镜，想趁低价入手，总共641，单价855元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "子车说孙杰在重庆那边赞同了光刻透镜，据说可能641的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "简单",
+        "对比"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0005",
+      "chain_position": 2,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "对比"
+      },
+      "chain_hop": 2,
+      "chain_total": 3,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000047",
+      "chain_next": "MEM000043"
+    },
+    {
+      "memory_id": "MEM000053",
+      "category": "逻辑推理测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-05-12 14:41:03",
+        "relative": "2周前",
+        "fuzzy": "上周",
+        "timestamp": 1778568063
+      },
+      "location": {
+        "city": "六盘水",
+        "place": "民宿",
+        "landmark": "滨江带"
+      },
+      "person": {
+        "name": "郑鹏",
+        "identity": "评论员",
+        "partner_name": "董洁",
+        "partner_identity": "渔民",
+        "relation": "甲方"
+      },
+      "event": {
+        "type": "金融",
+        "action": "实施",
+        "product": "橡胶",
+        "quantity": 282,
+        "price": 813
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑鹏在六盘水民宿实施了橡胶，数量282"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑鹏回忆道：当时六盘水的民宿，郑鹏（评论员）实施了橡胶，觉得有必要，总共282，单价813元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "董洁说郑鹏在六盘水那边实施了橡胶，应该左右282的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "困难",
+        "包含"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0006",
+      "chain_position": 5,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "包含"
+      },
+      "chain_hop": 5,
       "chain_total": 6,
-      "chain_relation": "因果",
-      "chain_prev": "MEM000020",
+      "chain_relation": "时序",
+      "chain_prev": "MEM000052",
+      "chain_next": "MEM000051"
+    },
+    {
+      "memory_id": "MEM000023",
+      "category": "记忆整理测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-04-29 14:41:03",
+        "relative": "1个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1777444863
+      },
+      "location": {
+        "city": "聊城",
+        "place": "KTV",
+        "landmark": "非遗街区"
+      },
+      "person": {
+        "name": "李明",
+        "identity": "船长",
+        "partner_name": "张伟",
+        "partner_identity": "估价",
+        "relation": "母女"
+      },
+      "event": {
+        "type": "健康",
+        "action": "康复",
+        "product": "脉冲神经网络",
+        "quantity": 195,
+        "price": 7154
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "李明在聊城KTV康复了脉冲神经网络，数量195"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "李明回忆道：当时聊城的KTV，李明（船长）康复了脉冲神经网络，觉得有必要，总共195，单价7154元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "张伟说李明在聊城那边康复了脉冲神经网络，大概可能195的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "简单",
+        "person",
+        "李明"
+      ],
+      "cluster_id": "CLUSTER0003",
+      "reasoning_chain": "CHAIN_temporal_0003",
+      "chain_position": 2,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 2,
+      "chain_total": 3,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000024",
+      "chain_next": "MEM000025"
+    },
+    {
+      "memory_id": "MEM000008",
+      "category": "存储正确性测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-05-27 14:41:03",
+        "relative": "4天前",
+        "fuzzy": "前几天",
+        "timestamp": 1779864063
+      },
+      "location": {
+        "city": "凯里",
+        "place": "蜜雪冰城",
+        "landmark": "纪念堂"
+      },
+      "person": {
+        "name": "张伟",
+        "identity": "保洁",
+        "partner_name": "焦强",
+        "partner_identity": "导演",
+        "relation": "乙方"
+      },
+      "event": {
+        "type": "居住",
+        "action": "合租",
+        "product": "基因编辑",
+        "quantity": 157,
+        "price": 2656
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "张伟在凯里蜜雪冰城合租了基因编辑，数量157"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "张伟回忆道：当时凯里的蜜雪冰城，张伟（保洁）合租了基因编辑，觉得是个机会，总共157，单价2656元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "焦强说张伟在凯里那边合租了基因编辑，应该左右157的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "简单",
+        "4d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0002",
+      "chain_position": 4,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 4,
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000027",
+      "chain_next": ""
+    },
+    {
+      "memory_id": "MEM000033",
+      "category": "遗忘功能测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-05-30 14:41:03",
+        "relative": "昨天",
+        "fuzzy": "昨天",
+        "timestamp": 1780123263
+      },
+      "location": {
+        "city": "平顶山",
+        "place": "4S店",
+        "landmark": "美食一条街"
+      },
+      "person": {
+        "name": "元华",
+        "identity": "财务主管",
+        "partner_name": "董洁",
+        "partner_identity": "放射师",
+        "relation": "经纪人"
+      },
+      "event": {
+        "type": "金融",
+        "action": "还款",
+        "product": "天然气",
+        "quantity": 6070,
+        "price": 3988
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "元华在平顶山4S店还款了天然气，数量6070"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "元华回忆道：当时平顶山的4S店，元华（财务主管）还款了天然气，想趁低价入手，总共6070，单价3988元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "董洁说元华在平顶山那边还款了天然气，应该大概6070的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "遗忘测试",
+        "中等",
+        "高频记忆"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": "高频记忆",
+        "access_count": 89
+      }
+    },
+    {
+      "memory_id": "MEM000014",
+      "category": "检索功能测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-05-24 14:41:03",
+        "relative": "1周前",
+        "fuzzy": "上周",
+        "timestamp": 1779604863
+      },
+      "location": {
+        "city": "潮州",
+        "place": "泰山",
+        "landmark": "会议中心"
+      },
+      "person": {
+        "name": "欧阳",
+        "identity": "编辑",
+        "partner_name": "林雪",
+        "partner_identity": "渔民",
+        "relation": "二房东"
+      },
+      "event": {
+        "type": "交易",
+        "action": "退款",
+        "product": "碳纤维",
+        "quantity": 7140,
+        "price": 9115
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "欧阳在潮州泰山退款了碳纤维，数量7140"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "欧阳回忆道：当时潮州的泰山，欧阳（编辑）退款了碳纤维，不想错过，总共7140，单价9115元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "林雪说欧阳在潮州那边退款了碳纤维，听说差不多7140的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "中等",
+        "7d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "欧阳",
+        "潮州",
+        "交易",
+        "退款",
+        "碳纤维"
+      ]
+    },
+    {
+      "memory_id": "MEM000056",
+      "category": "逻辑推理测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-05-24 14:41:03",
+        "relative": "1周前",
+        "fuzzy": "上周",
+        "timestamp": 1779604863
+      },
+      "location": {
+        "city": "梧州",
+        "place": "美术馆",
+        "landmark": "游泳馆"
+      },
+      "person": {
+        "name": "亓官",
+        "identity": "公证员",
+        "partner_name": "刘洋",
+        "partner_identity": "司机",
+        "relation": "师兄"
+      },
+      "event": {
+        "type": "分析",
+        "action": "分析",
+        "product": "核电池",
+        "quantity": 8430,
+        "price": 6096
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "亓官在梧州美术馆分析了核电池，数量8430"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "亓官回忆道：当时梧州的美术馆，亓官（公证员）分析了核电池，不想错过，总共8430，单价6096元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "刘洋说亓官在梧州那边分析了核电池，好像左右8430的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "简单",
+        "推导"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0007",
+      "chain_position": 4,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "推导"
+      },
+      "chain_hop": 4,
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000058",
+      "chain_next": ""
+    },
+    {
+      "memory_id": "MEM000027",
+      "category": "记忆整理测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2026-05-24 14:41:03",
+        "relative": "1周前",
+        "fuzzy": "上周",
+        "timestamp": 1779604863
+      },
+      "location": {
+        "city": "日照",
+        "place": "绿茶餐厅",
+        "landmark": "船闸"
+      },
+      "person": {
+        "name": "张伟",
+        "identity": "运动员",
+        "partner_name": "晋楚",
+        "partner_identity": "导演",
+        "relation": "师兄弟"
+      },
+      "event": {
+        "type": "居住",
+        "action": "买房",
+        "product": "氮化硼",
+        "quantity": 1370,
+        "price": 8712
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "张伟在日照绿茶餐厅买房了氮化硼，数量1370"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "张伟回忆道：当时日照的绿茶餐厅，张伟（运动员）买房了氮化硼，认为值得投入，总共1370，单价8712元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "晋楚说张伟在日照那边买房了氮化硼，据说可能1370的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "简单",
+        "person",
+        "张伟"
+      ],
+      "cluster_id": "CLUSTER0004",
+      "reasoning_chain": "CHAIN_temporal_0002",
+      "chain_position": 3,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 3,
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000026",
+      "chain_next": "MEM000008"
+    },
+    {
+      "memory_id": "MEM000055",
+      "category": "逻辑推理测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-03-29 14:41:03",
+        "relative": "2个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1774766463
+      },
+      "location": {
+        "city": "梧州",
+        "place": "公司办公室",
+        "landmark": "游泳馆"
+      },
+      "person": {
+        "name": "亓官",
+        "identity": "编辑",
+        "partner_name": "窦莉",
+        "partner_identity": "检察官",
+        "relation": "供应商"
+      },
+      "event": {
+        "type": "发现",
+        "action": "注意到",
+        "product": "仿生材料",
+        "quantity": 987,
+        "price": 3706
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "亓官在梧州公司办公室注意到了仿生材料，数量987"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "亓官回忆道：当时梧州的公司办公室，亓官（编辑）注意到了仿生材料，考虑再三后决定，总共987，单价3706元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "窦莉说亓官在梧州那边注意到了仿生材料，应该左右987的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "困难",
+        "推导"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0007",
+      "chain_position": 1,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "推导"
+      },
+      "chain_hop": 1,
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "",
+      "chain_next": "MEM000057"
+    },
+    {
+      "memory_id": "MEM000039",
+      "category": "逻辑推理测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-05-04 14:41:03",
+        "relative": "3周前",
+        "fuzzy": "上周",
+        "timestamp": 1777876863
+      },
+      "location": {
+        "city": "扬州",
+        "place": "医院",
+        "landmark": "山顶观景台"
+      },
+      "person": {
+        "name": "司马",
+        "identity": "设计师",
+        "partner_name": "于娜",
+        "partner_identity": "海关",
+        "relation": "战友"
+      },
+      "event": {
+        "type": "转折",
+        "action": "升职",
+        "product": "高温气冷堆",
+        "quantity": 9640,
+        "price": 1879
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "司马在扬州医院升职了高温气冷堆，数量9640"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "司马回忆道：当时扬州的医院，司马（设计师）升职了高温气冷堆，想试试运气，总共9640，单价1879元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "于娜说司马在扬州那边升职了高温气冷堆，听说左右9640的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "因果"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0004",
+      "chain_position": 2,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "因果"
+      },
+      "chain_hop": 2,
+      "chain_total": 3,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000037",
+      "chain_next": "MEM000038"
+    },
+    {
+      "memory_id": "MEM000032",
+      "category": "遗忘功能测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-02-04 14:41:03",
+        "relative": "3个月前",
+        "fuzzy": "三个月前",
+        "timestamp": 1770187263
+      },
+      "location": {
+        "city": "太原",
+        "place": "家乐福",
+        "landmark": "展示中心"
+      },
+      "person": {
+        "name": "戚谢",
+        "identity": "CFO",
+        "partner_name": "曹华",
+        "partner_identity": "数据分析师",
+        "relation": "下属"
+      },
+      "event": {
+        "type": "交易",
+        "action": "合并",
+        "product": "5G",
+        "quantity": 245,
+        "price": 1884
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "戚谢在太原家乐福合并了5G，数量245"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "戚谢回忆道：当时太原的家乐福，戚谢（CFO）合并了5G，想趁低价入手，总共245，单价1884元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "曹华说戚谢在太原那边合并了5G，大概差不多245的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "遗忘测试",
+        "中等",
+        "中等频率"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": "中等频率",
+        "access_count": 59
+      }
+    },
+    {
+      "memory_id": "MEM000028",
+      "category": "记忆整理测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2025-12-11 14:41:03",
+        "relative": "5个月前",
+        "fuzzy": "三个月前",
+        "timestamp": 1765435263
+      },
+      "location": {
+        "city": "永州",
+        "place": "祠堂",
+        "landmark": "码头"
+      },
+      "person": {
+        "name": "张伟",
+        "identity": "律师",
+        "partner_name": "乔磊",
+        "partner_identity": "警察",
+        "relation": "委托人"
+      },
+      "event": {
+        "type": "技术",
+        "action": "发布",
+        "product": "高温气冷堆",
+        "quantity": 451,
+        "price": 4691
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "张伟在永州祠堂发布了高温气冷堆，数量451"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "张伟回忆道：当时永州的祠堂，张伟（律师）发布了高温气冷堆，想趁低价入手，总共451，单价4691元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "乔磊说张伟在永州那边发布了高温气冷堆，大概左右451的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "困难",
+        "person",
+        "张伟"
+      ],
+      "cluster_id": "CLUSTER0004",
+      "reasoning_chain": "CHAIN_temporal_0002",
+      "chain_position": 1,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 1,
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "",
+      "chain_next": "MEM000026"
+    },
+    {
+      "memory_id": "MEM000043",
+      "category": "逻辑推理测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-05-26 14:41:03",
+        "relative": "5天前",
+        "fuzzy": "前几天",
+        "timestamp": 1779777663
+      },
+      "location": {
+        "city": "重庆",
+        "place": "长城",
+        "landmark": "英雄广场"
+      },
+      "person": {
+        "name": "孙杰",
+        "identity": "会计",
+        "partner_name": "令狐",
+        "partner_identity": "法官",
+        "relation": "下属"
+      },
+      "event": {
+        "type": "情感",
+        "action": "批准",
+        "product": "脉冲神经网络",
+        "quantity": 420,
+        "price": 2880
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙杰在重庆长城批准了脉冲神经网络，数量420"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙杰回忆道：当时重庆的长城，孙杰（会计）批准了脉冲神经网络，想趁低价入手，总共420，单价2880元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "令狐说孙杰在重庆那边批准了脉冲神经网络，听说可能420的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "对比"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0005",
+      "chain_position": 3,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "对比"
+      },
+      "chain_hop": 3,
+      "chain_total": 3,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000045",
+      "chain_next": ""
+    },
+    {
+      "memory_id": "MEM000029",
+      "category": "遗忘功能测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-05-30 14:41:03",
+        "relative": "昨天",
+        "fuzzy": "昨天",
+        "timestamp": 1780123263
+      },
+      "location": {
+        "city": "南京",
+        "place": "大学",
+        "landmark": "古玩一条街"
+      },
+      "person": {
+        "name": "薛磊",
+        "identity": "牧民",
+        "partner_name": "苏醒",
+        "partner_identity": "水工",
+        "relation": "被投资方"
+      },
+      "event": {
+        "type": "转折",
+        "action": "撤职",
+        "product": "仿生材料",
+        "quantity": 426,
+        "price": 6893
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "薛磊在南京大学撤职了仿生材料，数量426"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "薛磊回忆道：当时南京的大学，薛磊（牧民）撤职了仿生材料，觉得是个机会，总共426，单价6893元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "苏醒说薛磊在南京那边撤职了仿生材料，应该可能426的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "遗忘测试",
+        "困难",
+        "偶发事件"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": "偶发事件",
+        "access_count": 98
+      }
+    },
+    {
+      "memory_id": "MEM000018",
+      "category": "记忆整理测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-03-03 14:41:03",
+        "relative": "2个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1772520063
+      },
+      "location": {
+        "city": "上海",
+        "place": "沃尔玛",
+        "landmark": "游泳馆"
+      },
+      "person": {
+        "name": "谯笪",
+        "identity": "收银员",
+        "partner_name": "于娜",
+        "partner_identity": "公证员",
+        "relation": "远亲"
+      },
+      "event": {
+        "type": "情感",
+        "action": "安慰",
+        "product": "月球基地",
+        "quantity": 620,
+        "price": 5627
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "谯笪在上海沃尔玛安慰了月球基地，数量620"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "谯笪回忆道：当时上海的沃尔玛，谯笪（收银员）安慰了月球基地，想趁低价入手，总共620，单价5627元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "于娜说谯笪在上海那边安慰了月球基地，应该可能620的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "中等",
+        "location",
+        "上海"
+      ],
+      "cluster_id": "CLUSTER0001",
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000006",
+      "category": "存储正确性测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-10-09 14:41:03",
+        "relative": "1年前",
+        "fuzzy": "去年",
+        "timestamp": 1728456063
+      },
+      "location": {
+        "city": "丽水",
+        "place": "泰山",
+        "landmark": "游泳馆"
+      },
+      "person": {
+        "name": "姜丽",
+        "identity": "保安",
+        "partner_name": "焦强",
+        "partner_identity": "警察",
+        "relation": "业主"
+      },
+      "event": {
+        "type": "社交",
+        "action": "展会",
+        "product": "钾离子电池",
+        "quantity": 371,
+        "price": 2276
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "姜丽在丽水泰山展会了钾离子电池，数量371"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "姜丽回忆道：当时丽水的泰山，姜丽（保安）展会了钾离子电池，不想错过，总共371，单价2276元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "焦强说姜丽在丽水那边展会了钾离子电池，好像大概371的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "中等",
+        "599d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000044",
+      "category": "逻辑推理测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-01-15 14:41:03",
+        "relative": "4个月前",
+        "fuzzy": "三个月前",
+        "timestamp": 1768459263
+      },
+      "location": {
+        "city": "重庆",
+        "place": "蜜雪冰城",
+        "landmark": "自由贸易区"
+      },
+      "person": {
+        "name": "夹谷",
+        "identity": "导游",
+        "partner_name": "戚谢",
+        "partner_identity": "税务",
+        "relation": "被投资方"
+      },
+      "event": {
+        "type": "冲突",
+        "action": "出售",
+        "product": "光刻掩膜",
+        "quantity": 2960,
+        "price": 6571
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "夹谷在重庆蜜雪冰城出售了光刻掩膜，数量2960"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "夹谷回忆道：当时重庆的蜜雪冰城，夹谷（导游）出售了光刻掩膜，认为价格合适，总共2960，单价6571元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "戚谢说夹谷在重庆那边出售了光刻掩膜，大概左右2960的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "困难",
+        "对比"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_对比_0042",
+      "chain_position": 2,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "对比"
+      },
+      "chain_hop": 2,
+      "chain_total": 6,
+      "chain_relation": "对比",
+      "chain_prev": "MEM000043",
+      "chain_next": "MEM000045"
+    },
+    {
+      "memory_id": "MEM000004",
+      "category": "存储正确性测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-04-14 14:41:03",
+        "relative": "1个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1776148863
+      },
+      "location": {
+        "city": "湛江",
+        "place": "沃尔玛",
+        "landmark": "烈士陵园"
+      },
+      "person": {
+        "name": "孙叔",
+        "identity": "经销商",
+        "partner_name": "东门",
+        "partner_identity": "记者",
+        "relation": "师弟"
+      },
+      "event": {
+        "type": "旅行",
+        "action": "到达",
+        "product": "机器人",
+        "quantity": 5470,
+        "price": 2687
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙叔在湛江沃尔玛到达了机器人，数量5470"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙叔回忆道：当时湛江的沃尔玛，孙叔（经销商）到达了机器人，不想错过，总共5470，单价2687元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "东门说孙叔在湛江那边到达了机器人，据说左右5470的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "困难",
+        "47d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000042",
+      "category": "逻辑推理测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2026-01-10 14:41:03",
+        "relative": "4个月前",
+        "fuzzy": "三个月前",
+        "timestamp": 1768027263
+      },
+      "location": {
+        "city": "济宁",
+        "place": "西贝莜面村",
+        "landmark": "自由贸易区"
+      },
+      "person": {
+        "name": "宰父",
+        "identity": "电工",
+        "partner_name": "曹华",
+        "partner_identity": "仲裁员",
+        "relation": "丙方"
+      },
+      "event": {
+        "type": "冲突",
+        "action": "收尾",
+        "product": "类脑计算",
+        "quantity": 944,
+        "price": 2047
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "宰父在济宁西贝莜面村收尾了类脑计算，数量944"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "宰父回忆道：当时济宁的西贝莜面村，宰父（电工）收尾了类脑计算，考虑再三后决定，总共944，单价2047元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "曹华说宰父在济宁那边收尾了类脑计算，大概可能944的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "时序"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0001",
+      "chain_position": 2,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "时序"
+      },
+      "chain_hop": 2,
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000005",
+      "chain_next": "MEM000040"
+    },
+    {
+      "memory_id": "MEM000049",
+      "category": "逻辑推理测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-05-09 14:41:03",
+        "relative": "3周前",
+        "fuzzy": "上周",
+        "timestamp": 1778308863
+      },
+      "location": {
+        "city": "六盘水",
+        "place": "花鸟市场",
+        "landmark": "古镇入口"
+      },
+      "person": {
+        "name": "郑鹏",
+        "identity": "保洁",
+        "partner_name": "杜鹃",
+        "partner_identity": "审计",
+        "relation": "母子"
+      },
+      "event": {
+        "type": "情感",
+        "action": "规划",
+        "product": "项目",
+        "quantity": 160,
+        "price": 6727
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑鹏在六盘水花鸟市场规划了项目，数量160"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑鹏回忆道：当时六盘水的花鸟市场，郑鹏（保洁）规划了项目，不想错过，总共160，单价6727元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "杜鹃说郑鹏在六盘水那边规划了项目，大概左右160的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "困难",
+        "包含"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0006",
+      "chain_position": 3,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "包含"
+      },
+      "chain_hop": 3,
+      "chain_total": 6,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000054",
+      "chain_next": "MEM000052"
+    },
+    {
+      "memory_id": "MEM000065",
+      "category": "长期记忆深度检索测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2025-12-13 14:41:03",
+        "relative": "5个月前",
+        "fuzzy": "三个月前",
+        "timestamp": 1765608063
+      },
+      "location": {
+        "city": "贺州",
+        "place": "酒店",
+        "landmark": "商业步行街"
+      },
+      "person": {
+        "name": "墨哈",
+        "identity": "教练",
+        "partner_name": "慕容",
+        "partner_identity": "技术员",
+        "relation": "母女"
+      },
+      "event": {
+        "type": "旅行",
+        "action": "退票",
+        "product": "神经形态芯片",
+        "quantity": 2320,
+        "price": 9200
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "墨哈在贺州酒店退票了神经形态芯片，数量2320"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "墨哈回忆道：当时贺州的酒店，墨哈（教练）退票了神经形态芯片，想趁低价入手，总共2320，单价9200元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "慕容说墨哈在贺州那边退票了神经形态芯片，好像差不多2320的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "深度检索",
+        "中等"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "depth": {
+        "layers": 7,
+        "associations": 2,
+        "semantic_distance": "远"
+      }
+    },
+    {
+      "memory_id": "MEM000010",
+      "category": "检索功能测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2025-11-20 14:41:03",
+        "relative": "6个月前",
+        "fuzzy": "半年前",
+        "timestamp": 1763620863
+      },
+      "location": {
+        "city": "济宁",
+        "place": "万象城",
+        "landmark": "工业区"
+      },
+      "person": {
+        "name": "元华",
+        "identity": "批发商",
+        "partner_name": "欧阳",
+        "partner_identity": "飞行员",
+        "relation": "驴友"
+      },
+      "event": {
+        "type": "居住",
+        "action": "买房",
+        "product": "碳封存",
+        "quantity": 220,
+        "price": 3780
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "元华在济宁万象城买房了碳封存，数量220"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "元华回忆道：当时济宁的万象城，元华（批发商）买房了碳封存，觉得有必要，总共220，单价3780元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "欧阳说元华在济宁那边买房了碳封存，好像大概220的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "困难",
+        "192d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "元华",
+        "济宁",
+        "居住",
+        "买房",
+        "碳封存"
+      ]
+    },
+    {
+      "memory_id": "MEM000007",
+      "category": "存储正确性测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-05-25 14:41:03",
+        "relative": "6天前",
+        "fuzzy": "前几天",
+        "timestamp": 1779691263
+      },
+      "location": {
+        "city": "清远",
+        "place": "温泉",
+        "landmark": "古村落"
+      },
+      "person": {
+        "name": "常琪",
+        "identity": "同传",
+        "partner_name": "寸贝",
+        "partner_identity": "COO",
+        "relation": "师姐妹"
+      },
+      "event": {
+        "type": "娱乐",
+        "action": "游泳",
+        "product": "苹果股票",
+        "quantity": 6970,
+        "price": 8807
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "常琪在清远温泉游泳了苹果股票，数量6970"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "常琪回忆道：当时清远的温泉，常琪（同传）游泳了苹果股票，想趁低价入手，总共6970，单价8807元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "寸贝说常琪在清远那边游泳了苹果股票，大概大概6970的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "困难",
+        "6d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000011",
+      "category": "检索功能测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-05-30 14:41:03",
+        "relative": "昨天",
+        "fuzzy": "昨天",
+        "timestamp": 1780123263
+      },
+      "location": {
+        "city": "石家庄",
+        "place": "外滩",
+        "landmark": "烈士陵园"
+      },
+      "person": {
+        "name": "高建",
+        "identity": "审计",
+        "partner_name": "吴敏",
+        "partner_identity": "总监",
+        "relation": "委托人"
+      },
+      "event": {
+        "type": "居住",
+        "action": "搬家",
+        "product": "脑机接口",
+        "quantity": 1360,
+        "price": 9365
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "高建在石家庄外滩搬家了脑机接口，数量1360"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "高建回忆道：当时石家庄的外滩，高建（审计）搬家了脑机接口，不想错过，总共1360，单价9365元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "吴敏说高建在石家庄那边搬家了脑机接口，听说可能1360的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "困难",
+        "1d"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "高建",
+        "石家庄",
+        "居住",
+        "搬家",
+        "脑机接口"
+      ]
+    },
+    {
+      "memory_id": "MEM000041",
+      "category": "逻辑推理测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2026-05-31 14:41:03",
+        "relative": "刚刚",
+        "fuzzy": "今天",
+        "timestamp": 1780209663
+      },
+      "location": {
+        "city": "济宁",
+        "place": "诊所",
+        "landmark": "体育场馆"
+      },
+      "person": {
+        "name": "宰父",
+        "identity": "大学教授",
+        "partner_name": "赖勇",
+        "partner_identity": "木工",
+        "relation": "患者"
+      },
+      "event": {
+        "type": "交易",
+        "action": "随后",
+        "product": "字节跳动",
+        "quantity": 238,
+        "price": 4642
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "宰父在济宁诊所随后了字节跳动，数量238"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "宰父回忆道：当时济宁的诊所，宰父（大学教授）随后了字节跳动，觉得有必要，总共238，单价4642元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "赖勇说宰父在济宁那边随后了字节跳动，大概差不多238的样子，具体价格不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "困难",
+        "时序"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_temporal_0001",
+      "chain_position": 4,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "logic": {
+        "type": "时序"
+      },
+      "chain_hop": 4,
+      "chain_total": 4,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000040",
       "chain_next": ""
     }
   ],
   "queries": [
     {
       "query_id": "Q0001",
-      "query_text": "微生近期行踪",
+      "query_text": "单丹在5个月前忙什么",
       "query_type": "人物检索",
       "expected_memory_ids": [
-        "MEM000024"
+        "MEM000048"
       ],
-      "expected_answer": "微生在大连美术馆然后了机器人，数量675",
-      "expected_time": "2026-05-23 14:21:16",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0002",
-      "query_text": "楚阳(法官)在金华的得出",
-      "query_type": "组合检索",
-      "expected_memory_ids": [
-        "MEM000042"
-      ],
-      "expected_answer": "楚阳在金华美术馆得出了脉冲神经网络，数量420",
-      "expected_time": "2026-05-27 14:21:16",
+      "expected_answer": "单丹在重庆清真寺否决了海水淡化，数量891",
+      "expected_time": "2025-12-16 14:41:03",
       "difficulty": "中等",
       "search_depth": "中层"
     },
     {
-      "query_id": "Q0003",
-      "query_text": "乐正在6天前忙什么",
-      "query_type": "人物检索",
+      "query_id": "Q0002",
+      "query_text": "查询创业孵化园的相关记忆",
+      "query_type": "地点检索",
       "expected_memory_ids": [
-        "MEM000007"
+        "MEM000019"
       ],
-      "expected_answer": "乐正在聊城来福士退款了光刻光源，数量781",
-      "expected_time": "2026-05-25 14:21:16",
-      "difficulty": "中等",
+      "expected_answer": "东门在上海肯德基投资了二维材料，数量5650",
+      "expected_time": "2026-05-30 14:41:03",
+      "difficulty": "简单",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0003",
+      "query_text": "昨天左右的事情",
+      "query_type": "时间检索",
+      "expected_memory_ids": [
+        "MEM000029"
+      ],
+      "expected_answer": "薛磊在南京大学撤职了仿生材料，数量426",
+      "expected_time": "2026-05-30 14:41:03",
+      "difficulty": "困难",
       "search_depth": "深层"
     },
     {
       "query_id": "Q0004",
-      "query_text": "休息室发生过等位吗",
-      "query_type": "地点检索",
-      "expected_memory_ids": [
-        "MEM000043"
-      ],
-      "expected_answer": "闾丘在惠州休息室等位了波浪发电，数量4220",
-      "expected_time": "2024-07-10 14:21:16",
-      "difficulty": "困难",
-      "search_depth": "中层"
-    },
-    {
-      "query_id": "Q0005",
-      "query_text": "长沙有什么值得关注的事",
-      "query_type": "地点检索",
-      "expected_memory_ids": [
-        "MEM000033"
-      ],
-      "expected_answer": "佘佴在长沙图书馆涵盖了计划，数量1810",
-      "expected_time": "2026-05-26 14:21:16",
-      "difficulty": "中等",
-      "search_depth": "浅层"
-    },
-    {
-      "query_id": "Q0006",
-      "query_text": "微生和司寇的事",
-      "query_type": "人物检索",
-      "expected_memory_ids": [
-        "MEM000023"
-      ],
-      "expected_answer": "微生在大连公园之后了金刚石，数量6810",
-      "expected_time": "2026-05-31 14:21:16",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0007",
-      "query_text": "继承相关的可控核聚变",
-      "query_type": "事件检索",
-      "expected_memory_ids": [
-        "MEM000015"
-      ],
-      "expected_answer": "蔡明在天津大学继承了可控核聚变，数量2100",
-      "expected_time": "2026-05-27 14:21:16",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0008",
-      "query_text": "祠堂的情况",
-      "query_type": "地点检索",
-      "expected_memory_ids": [
-        "MEM000027"
-      ],
-      "expected_answer": "宇文在永州祠堂支持了高温气冷堆，数量451",
-      "expected_time": "2026-05-01 14:21:16",
-      "difficulty": "简单",
-      "search_depth": "浅层"
-    },
-    {
-      "query_id": "Q0009",
-      "query_text": "丽水的记忆",
+      "query_text": "会议中心附近的事件",
       "query_type": "地点检索",
       "expected_memory_ids": [
         "MEM000020"
       ],
-      "expected_answer": "罗欢在丽水公园最终了自愈合材料，数量228",
-      "expected_time": "2026-05-01 14:21:16",
+      "expected_answer": "夹谷在拉萨码头取消了靶向药，数量699",
+      "expected_time": "2026-03-25 14:41:03",
+      "difficulty": "中等",
+      "search_depth": "中层"
+    },
+    {
+      "query_id": "Q0005",
+      "query_text": "网吧附近发生过什么事",
+      "query_type": "地点检索",
+      "expected_memory_ids": [
+        "MEM000054"
+      ],
+      "expected_answer": "郑鹏在六盘水网吧完成了拓扑绝缘体，数量350",
+      "expected_time": "2026-05-04 14:41:03",
+      "difficulty": "简单",
+      "search_depth": "浅层"
+    },
+    {
+      "query_id": "Q0006",
+      "query_text": "平顶山市的4S店",
+      "query_type": "地点检索",
+      "expected_memory_ids": [
+        "MEM000033"
+      ],
+      "expected_answer": "元华在平顶山4S店还款了天然气，数量6070",
+      "expected_time": "2026-05-30 14:41:03",
+      "difficulty": "中等",
+      "search_depth": "浅层"
+    },
+    {
+      "query_id": "Q0007",
+      "query_text": "外滩发生过搬家吗",
+      "query_type": "地点检索",
+      "expected_memory_ids": [
+        "MEM000011"
+      ],
+      "expected_answer": "高建在石家庄外滩搬家了脑机接口，数量1360",
+      "expected_time": "2026-05-30 14:41:03",
+      "difficulty": "困难",
+      "search_depth": "浅层"
+    },
+    {
+      "query_id": "Q0008",
+      "query_text": "1年前有什么重要的事",
+      "query_type": "时间检索",
+      "expected_memory_ids": [
+        "MEM000005"
+      ],
+      "expected_answer": "宰父在贵港全聚德受伤了钍基熔盐堆，数量68",
+      "expected_time": "2024-06-13 14:41:03",
       "difficulty": "困难",
       "search_depth": "深层"
     },
     {
-      "query_id": "Q0010",
-      "query_text": "查询罗欢的算法工程师相关活动",
-      "query_type": "人物检索",
+      "query_id": "Q0009",
+      "query_text": "白银的赞同记录",
+      "query_type": "事件检索",
       "expected_memory_ids": [
-        "MEM000018"
+        "MEM000047"
       ],
-      "expected_answer": "罗欢在丽水太古里收购了二维材料，数量5650",
-      "expected_time": "2026-05-25 14:21:16",
-      "difficulty": "简单",
-      "search_depth": "中层"
+      "expected_answer": "孙杰在重庆洗车店赞同了白银，数量2830",
+      "expected_time": "2025-06-28 14:41:03",
+      "difficulty": "中等",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0010",
+      "query_text": "六盘水的4个月前 郑鹏发生了什么",
+      "query_type": "组合检索",
+      "expected_memory_ids": [
+        "MEM000050"
+      ],
+      "expected_answer": "郑鹏在六盘水派出所覆盖了橡胶，数量2330",
+      "expected_time": "2026-01-20 14:41:03",
+      "difficulty": "困难",
+      "search_depth": "深层"
     },
     {
       "query_id": "Q0011",
-      "query_text": "1个月前左右的事情",
-      "query_type": "时间检索",
+      "query_text": "2025-12-13 14:41:03 贺州 墨哈的退票",
+      "query_type": "组合检索",
       "expected_memory_ids": [
-        "MEM000022"
+        "MEM000065"
       ],
-      "expected_answer": "微生在大连黄山发起了基因编辑，数量9480",
-      "expected_time": "2026-04-08 14:21:16",
+      "expected_answer": "墨哈在贺州酒店退票了神经形态芯片，数量2320",
+      "expected_time": "2025-12-13 14:41:03",
       "difficulty": "中等",
       "search_depth": "中层"
     },
     {
       "query_id": "Q0012",
-      "query_text": "1个月前有什么重要的事",
-      "query_type": "时间检索",
+      "query_text": "亓官有什么新动态",
+      "query_type": "人物检索",
       "expected_memory_ids": [
-        "MEM000011"
+        "MEM000058"
       ],
-      "expected_answer": "汝鄢在上海跳蚤市场乘车了碳复合材料，数量363",
-      "expected_time": "2026-05-01 14:21:16",
+      "expected_answer": "亓官在梧州科技馆得出了二维材料，数量974",
+      "expected_time": "2026-05-11 14:41:03",
       "difficulty": "简单",
       "search_depth": "中层"
     },
     {
       "query_id": "Q0013",
-      "query_text": "查询自由贸易区的相关记忆",
-      "query_type": "地点检索",
+      "query_text": "2026-05-30 14:41:03当天发生了什么",
+      "query_type": "时间检索",
       "expected_memory_ids": [
-        "MEM000002"
+        "MEM000051"
       ],
-      "expected_answer": "宇文在郴州羽毛球馆捐赠了空间站，数量160",
-      "expected_time": "2024-08-25 14:21:16",
-      "difficulty": "困难",
+      "expected_answer": "郑鹏在六盘水大悦城具体了橡胶，数量175",
+      "expected_time": "2026-05-30 14:41:03",
+      "difficulty": "中等",
       "search_depth": "中层"
     },
     {
       "query_id": "Q0014",
-      "query_text": "余涛近期行踪",
+      "query_text": "宰父的娱乐相关记录",
       "query_type": "人物检索",
       "expected_memory_ids": [
-        "MEM000003"
+        "MEM000040"
       ],
-      "expected_answer": "余涛在铜仁跳蚤市场转账了茅台，数量678",
-      "expected_time": "2025-06-01 14:21:16",
-      "difficulty": "困难",
+      "expected_answer": "宰父在济宁4S店开始了碳陶瓷，数量3130",
+      "expected_time": "2026-05-31 14:41:03",
+      "difficulty": "中等",
       "search_depth": "深层"
     },
     {
       "query_id": "Q0015",
-      "query_text": "查询退出相关的记录",
-      "query_type": "事件检索",
+      "query_text": "3个月前的记忆",
+      "query_type": "时间检索",
       "expected_memory_ids": [
         "MEM000032"
       ],
-      "expected_answer": "晁哲在永州4S店退出了天然气，数量6070",
-      "expected_time": "2026-05-15 14:21:16",
-      "difficulty": "简单",
-      "search_depth": "中层"
+      "expected_answer": "戚谢在太原家乐福合并了5G，数量245",
+      "expected_time": "2026-02-04 14:41:03",
+      "difficulty": "中等",
+      "search_depth": "深层"
     },
     {
       "query_id": "Q0016",
-      "query_text": "李明(保姆)在兴义的看电影",
-      "query_type": "组合检索",
+      "query_text": "2026-05-25 14:41:03前后有什么记录",
+      "query_type": "时间检索",
       "expected_memory_ids": [
-        "MEM000013"
+        "MEM000038"
       ],
-      "expected_answer": "李明在兴义西贝莜面村看电影了燃料电池，数量2720",
-      "expected_time": "2026-05-19 14:21:16",
+      "expected_answer": "司马在扬州游乐场导致了高温气冷堆，数量304",
+      "expected_time": "2026-05-25 14:41:03",
       "difficulty": "困难",
       "search_depth": "中层"
     },
     {
       "query_id": "Q0017",
-      "query_text": "社交类别下的事件",
+      "query_text": "关于海底电缆的事件有哪些",
       "query_type": "事件检索",
       "expected_memory_ids": [
-        "MEM000009"
+        "MEM000063"
       ],
-      "expected_answer": "焦强在上海维修站联谊了钾离子电池，数量6880",
-      "expected_time": "2025-12-08 14:21:16",
+      "expected_answer": "令狐在贵港药店就医了海底电缆，数量438",
+      "expected_time": "2025-11-12 14:41:03",
       "difficulty": "简单",
       "search_depth": "浅层"
     },
     {
       "query_id": "Q0018",
-      "query_text": "查询5个月前罗欢在博物馆的旅行事件",
-      "query_type": "组合检索",
+      "query_text": "张伟的居住相关记录",
+      "query_type": "人物检索",
       "expected_memory_ids": [
-        "MEM000019"
+        "MEM000008"
       ],
-      "expected_answer": "罗欢在丽水博物馆最终了二维材料，数量9060",
-      "expected_time": "2025-12-27 14:21:16",
+      "expected_answer": "张伟在凯里蜜雪冰城合租了基因编辑，数量157",
+      "expected_time": "2026-05-27 14:41:03",
       "difficulty": "简单",
       "search_depth": "浅层"
     },
     {
       "query_id": "Q0019",
-      "query_text": "杨勇在2周前忙什么",
-      "query_type": "人物检索",
+      "query_text": "上周期间蒲团在做什么",
+      "query_type": "时间检索",
       "expected_memory_ids": [
-        "MEM000028"
+        "MEM000030"
       ],
-      "expected_answer": "杨勇在永州派出所拒绝了mRNA疫苗，数量853",
-      "expected_time": "2026-05-12 14:21:16",
-      "difficulty": "困难",
+      "expected_answer": "蒲团在银川图书馆受伤了碳封存，数量6850",
+      "expected_time": "2026-05-15 14:41:03",
+      "difficulty": "中等",
       "search_depth": "深层"
     },
     {
       "query_id": "Q0020",
-      "query_text": "上周的事件有哪些",
-      "query_type": "时间检索",
+      "query_text": "李明(司机)在拉萨的续租",
+      "query_type": "组合检索",
       "expected_memory_ids": [
-        "MEM000006"
+        "MEM000024"
       ],
-      "expected_answer": "司徒在洛阳来福士收购了黄金，数量395",
-      "expected_time": "2026-05-08 14:21:16",
-      "difficulty": "中等",
-      "search_depth": "浅层"
+      "expected_answer": "李明在拉萨音乐厅续租了太空旅游，数量568",
+      "expected_time": "2026-03-23 14:41:03",
+      "difficulty": "简单",
+      "search_depth": "中层"
     },
     {
       "query_id": "Q0021",
-      "query_text": "2026-05-27 14:21:16当天发生了什么",
-      "query_type": "时间检索",
+      "query_text": "李明和谯笪在临沂的事",
+      "query_type": "组合检索",
       "expected_memory_ids": [
         "MEM000025"
       ],
-      "expected_answer": "微生在大连花鸟市场之后了富勒烯，数量9080",
-      "expected_time": "2026-05-27 14:21:16",
+      "expected_answer": "李明在临沂医院换货了形状记忆合金，数量8130",
+      "expected_time": "2026-05-28 14:41:03",
+      "difficulty": "中等",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0022",
+      "query_text": "2024-12-09 14:41:03当天发生了什么",
+      "query_type": "时间检索",
+      "expected_memory_ids": [
+        "MEM000066"
+      ],
+      "expected_answer": "戚谢在焦作小学存款了棉花，数量7650",
+      "expected_time": "2024-12-09 14:41:03",
+      "difficulty": "简单",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0023",
+      "query_text": "船闸附近的事件",
+      "query_type": "地点检索",
+      "expected_memory_ids": [
+        "MEM000013"
+      ],
+      "expected_answer": "申然在临沂羽毛球馆上班了脑机接口，数量857",
+      "expected_time": "2026-05-27 14:41:03",
+      "difficulty": "中等",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0024",
+      "query_text": "情感类别下的事件",
+      "query_type": "事件检索",
+      "expected_memory_ids": [
+        "MEM000049"
+      ],
+      "expected_answer": "郑鹏在六盘水花鸟市场规划了项目，数量160",
+      "expected_time": "2026-05-09 14:41:03",
       "difficulty": "困难",
       "search_depth": "浅层"
     },
     {
-      "query_id": "Q0022",
-      "query_text": "李明最近做了什么",
-      "query_type": "人物检索",
-      "expected_memory_ids": [
-        "MEM000012"
-      ],
-      "expected_answer": "李明在济宁IFS国金中心联谊了生物材料，数量2560",
-      "expected_time": "2026-03-11 14:21:16",
-      "difficulty": "中等",
-      "search_depth": "浅层"
-    },
-    {
-      "query_id": "Q0023",
-      "query_text": "和水最近做了什么",
-      "query_type": "人物检索",
-      "expected_memory_ids": [
-        "MEM000004"
-      ],
-      "expected_answer": "和水在连云港棋牌室捐赠了茅台，数量389",
-      "expected_time": "2026-04-21 14:21:16",
-      "difficulty": "中等",
-      "search_depth": "中层"
-    },
-    {
-      "query_id": "Q0024",
-      "query_text": "罗欢近期行踪",
-      "query_type": "人物检索",
-      "expected_memory_ids": [
-        "MEM000016"
-      ],
-      "expected_answer": "罗欢在丽水大润发投资了碳达峰，数量903",
-      "expected_time": "2026-03-03 14:21:16",
-      "difficulty": "中等",
-      "search_depth": "中层"
-    },
-    {
       "query_id": "Q0025",
-      "query_text": "张伟在火星购买茅台",
+      "query_text": "关于比特币购买的事件有哪些",
       "query_type": "负样本",
       "expected_memory_ids": [],
       "expected_answer": "",
@@ -3136,7 +4593,7 @@
     },
     {
       "query_id": "Q0026",
-      "query_text": "周吴郑王最近做了什么",
+      "query_text": "赵钱孙李最近做了什么",
       "query_type": "负样本",
       "expected_memory_ids": [],
       "expected_answer": "",
@@ -3169,7 +4626,7 @@
     },
     {
       "query_id": "Q0029",
-      "query_text": "张伟在火星购买茅台",
+      "query_text": "蒋沈韩杨最近做了什么",
       "query_type": "负样本",
       "expected_memory_ids": [],
       "expected_answer": "",
@@ -3180,7 +4637,7 @@
     },
     {
       "query_id": "Q0030",
-      "query_text": "在火星发生了什么",
+      "query_text": "冯陈褚卫最近做了什么",
       "query_type": "负样本",
       "expected_memory_ids": [],
       "expected_answer": "",

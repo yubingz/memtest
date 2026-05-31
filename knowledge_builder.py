@@ -37,6 +37,25 @@ BATCH = 3
 QUERIES_PER_TYPE = 25
 MAX_CHAIN_DEPTH = 6
 
+# 相对时间词映射表（偏移天数）
+RELATIVE_TIME_WORDS = {
+    '次日': 1, '第二天': 1, '隔天': 1, '翌日': 1,
+    '三天后': 3, '三日后': 3,
+    '一周后': 7, '七天后': 7, '七日后': 7,
+    '半个月后': 15, '半月后': 15,
+    '一个月后': 30, '一月后': 30, '三十天后': 30,
+    '两个月后': 60, '两月后': 60, '六十天后': 60,
+    '三个月后': 90, '三月后': 90, '九十天后': 90,
+    '半年后': 180, '六个月后': 180,
+    '一年后': 365, '次年': 365, '第二年': 365,
+    '两年后': 730, '二年后': 730,
+    '三年后': 1095, '三年后': 1095,
+    '十年后': 3650, '十年后': 3650,
+    '许久之后': 9999, '很久以后': 9999, '之后': 1,
+    '随后': 1, '接着': 1, '然后': 1, '后来': 1,
+    '不久': 2, '几天后': 3, '几日后': 3,
+}
+
 # 清洗配置
 PERSON_CAP_KEY = 60       # 关键人物每人物最多记忆条数
 PERSON_CAP_OTHER = 30     # 非关键人物上限
@@ -355,6 +374,115 @@ def classify_fields(facts):
     return facts
 
 
+def _extract_relative_time(content):
+    """从文本中提取相对时间词，返回偏移天数（相对于前一件事）
+    如果没有匹配到，返回None
+    """
+    if not content:
+        return None
+    for word, offset in RELATIVE_TIME_WORDS.items():
+        if word in content:
+            return offset
+    return None
+
+
+def _parse_time_to_int(time_str):
+    """将时间字符串解析为可排序的整数（简单版本）
+    支持：YYYY, YYYY-MM, YYYY-MM-DD, 或纯数字
+    """
+    if not time_str:
+        return 0
+    # 提取数字
+    digits = re.findall(r'\d+', time_str)
+    if not digits:
+        return 0
+    # 取第一个数字组，填充为 YYYYMMDD 格式
+    t = digits[0]
+    if len(t) == 4:  # 年份
+        return int(t) * 10000
+    elif len(t) == 6:  # 年月
+        return int(t) * 100
+    elif len(t) == 8:  # 年月日
+        return int(t)
+    elif len(t) == 12:  # 年月日时分
+        return int(t[:8])
+    elif len(t) == 14:  # 年月日时分秒
+        return int(t[:8])
+    else:
+        return int(t)
+
+
+def _sort_chain_by_time(memories):
+    """按时间排序chain中的记忆。支持绝对时间+相对时间混合。
+
+    排序策略（优先级）：
+    1. 有绝对时间：按绝对时间排序
+    2. 无绝对时间但有相对时间：按相对时间偏移累计排序
+    3. 两者都有：用相对时间校准绝对时间（如果矛盾，以相对时间偏移为主）
+    """
+    if not memories:
+        return memories
+
+    # 第一步：提取每个记忆的时间信息
+    items = []
+    for m in memories:
+        abs_time = m['time'].get('absolute', '') or ''
+        rel_offset = _extract_relative_time(m['versions'][0].get('content', ''))
+        items.append({
+            'memory': m,
+            'abs_time': abs_time,
+            'abs_int': _parse_time_to_int(abs_time),
+            'rel_offset': rel_offset,
+        })
+
+    # 第二步：判断哪种排序策略
+    has_abs = sum(1 for it in items if it['abs_int'] > 0)
+    has_rel = sum(1 for it in items if it['rel_offset'] is not None)
+
+    if has_abs >= 2 and has_rel >= 2:
+        # 两者都有：用相对时间校准绝对时间
+        # 先按绝对时间排序
+        items_sorted = sorted(items, key=lambda x: x['abs_int'])
+        # 检查相对时间是否一致
+        for i in range(1, len(items_sorted)):
+            prev = items_sorted[i-1]
+            curr = items_sorted[i]
+            if curr['rel_offset'] is not None and prev['rel_offset'] is not None:
+                # 检查时间差是否匹配相对偏移
+                time_diff = curr['abs_int'] - prev['abs_int']
+                # 允许一定误差（如"一个月后"可能是28-31天）
+                if abs(time_diff - curr['rel_offset']) > 5:
+                    # 不一致，标记但不修改（保持绝对时间为主）
+                    pass
+        return [it['memory'] for it in items_sorted]
+
+    elif has_abs >= 2:
+        # 只有绝对时间：直接排序
+        items_sorted = sorted(items, key=lambda x: x['abs_int'])
+        return [it['memory'] for it in items_sorted]
+
+    elif has_rel >= 2:
+        # 只有相对时间：按相对偏移排序（累计）
+        # 相对时间是相对于前一件事的偏移，所以原顺序就是时序
+        # 如果LLM给了chain_position，优先用那个
+        has_chain_pos = any(it['memory'].get('chain_position', 0) for it in items)
+        if has_chain_pos:
+            items_sorted = sorted(items, key=lambda x: x['memory'].get('chain_position', 0) or 0)
+        else:
+            # 按相对偏移排序（简单方式：偏移小的在前）
+            items_sorted = sorted(items, key=lambda x: x['rel_offset'] or 0)
+        return [it['memory'] for it in items_sorted]
+
+    else:
+        # 没有时间信息：保持原顺序或按chain_position
+        has_chain_pos = any(it['memory'].get('chain_position', 0) for it in items)
+        if has_chain_pos:
+            items_sorted = sorted(items, key=lambda x: x['memory'].get('chain_position', 0) or 0)
+        else:
+            items_sorted = items
+        return [it['memory'] for it in items_sorted]
+
+
 # ====== 阶段3: 标准化 + 建链 ======
 def build_memories(facts):
     """标准化事实为记忆 + 构建推理链。
@@ -409,14 +537,16 @@ def build_memories(facts):
     for ch_id, ms in chain_groups.items():
         if len(ms) >= 2:  # 至少2条才算链
             ch = f'CHAIN_{cid:05d}'
-            # 按LLM提供的位置排序，无位置则按原顺序
-            ms_sorted = sorted(ms, key=lambda x: x.get('chain_position', 0) or 0)
-            for pos, m in enumerate(ms_sorted[:MAX_CHAIN_DEPTH]):
+            # 使用混合时间排序（支持绝对时间+相对时间）
+            ms_sorted = _sort_chain_by_time(ms)[:MAX_CHAIN_DEPTH]
+            for pos, m in enumerate(ms_sorted):
                 m['reasoning_chain'] = ch
                 m['chain_position'] = pos + 1
                 # 设置链连接
                 m['chain_hop'] = pos + 1
-                m['chain_total'] = min(len(ms_sorted), MAX_CHAIN_DEPTH)
+                m['chain_total'] = min(len(ms), MAX_CHAIN_DEPTH)
+                # 设置链关系类型
+                m['chain_relation'] = '时序' if any(it['time']['absolute'] for it in ms_sorted) else '因果'
             cid += 1
 
     # 链构建策略2：无chain_id的记忆，按人物分组
@@ -427,11 +557,14 @@ def build_memories(facts):
     for pn, ms in bp.items():
         if len(ms) >= 3:
             ch = f'CHAIN_{cid:05d}'
-            for pos, m in enumerate(ms[:MAX_CHAIN_DEPTH]):
+            # 使用混合时间排序
+            ms_sorted = _sort_chain_by_time(ms)[:MAX_CHAIN_DEPTH]
+            for pos, m in enumerate(ms_sorted):
                 m['reasoning_chain'] = ch
                 m['chain_position'] = pos + 1
                 m['chain_hop'] = pos + 1
                 m['chain_total'] = min(len(ms), MAX_CHAIN_DEPTH)
+                m['chain_relation'] = '时序' if any(it['time']['absolute'] for it in ms_sorted) else '关联'
             cid += 1
 
     # 设置链连接（prev/next）

@@ -15,6 +15,7 @@
 import json, random, os, sys
 from datetime import datetime, timedelta
 from typing import List, Optional, Dict
+from collections import defaultdict
 
 random.seed(42)
 
@@ -611,22 +612,18 @@ class MemoryGenerator:
     def gen_reasoning(self, count: int) -> list:
         """生成逻辑推理测试数据 — 包含5种逻辑关系的链式记忆。
         
-        每种逻辑类型生成一条链，每链3-6跳，跳之间用逻辑关系连接：
-        - 因果：A导致B，B引发C
-        - 时序：A发生，随后B，接着C
-        - 对比：A做X，B相反做Y，A又做Z对比
-        - 包含：A包含B，B涵盖C，C涉及D
-        - 推导：A发现，B因此推断，C得出证明
+        时间链作为逻辑关系的一种：
+        - 有绝对时间时：按绝对时间排序建立时序链
+        - 无绝对时间但有相对时间：按相对时间偏移排序
+        - 两者都有：相对时间校准绝对时间
         """
         result = []
         logic_types = ["因果", "时序", "对比", "包含", "推导"]
         
         for logic_type in logic_types:
-            # 每种逻辑类型生成1条链
             chain_id = f"CHAIN_{logic_type}_{self.memory_id:04d}"
             n_hops = random.randint(3, 6)
             
-            # 选择基础人物和场景作为链的上下文
             base = self._base(random.choice(["7d", "30d", "90d", "1y"]))
             person = base["person1"]
             city = base["city"]
@@ -635,9 +632,7 @@ class MemoryGenerator:
             for hop in range(n_hops):
                 diff = random.choices(["简单", "中等", "困难"], weights=[0.3, 0.4, 0.3])[0]
                 
-                # 根据逻辑类型和跳数调整事件，使链有逻辑连贯性
                 if logic_type == "因果":
-                    # 因果链：动作递进，结果累积
                     if hop == 0:
                         base["action"] = random.choice(["投资", "购买", "决策"])
                     elif hop == 1:
@@ -651,10 +646,18 @@ class MemoryGenerator:
                         base["action"] = random.choice(["最终", "结果", "导致"])
                         
                 elif logic_type == "时序":
-                    # 时序链：时间递进，动作连续
-                    # 时间向前推进（更近）
+                    # 时序链：利用绝对时间字段排序
+                    # 时间向前推进（更近），但时间戳本身已经是绝对时间
+                    # 时序链的核心特征：事件按时间先后发生，time.absolute 递增
                     base["days_ago"] = max(0, base.get("days_ago", 30) - random.randint(3, 14))
                     base["base_time"] = datetime.now() - timedelta(days=base["days_ago"])
+                    # 更新 time 字段为绝对时间
+                    base["time"] = {
+                        "absolute": base["base_time"].strftime("%Y-%m-%d %H:%M:%S"),
+                        "relative": time_desc(base["days_ago"]),
+                        "fuzzy": fuzzy_time(base["days_ago"]),
+                        "era": ""
+                    }
                     if hop == 0:
                         base["action"] = random.choice(["开始", "启动", "发起"])
                     elif hop == n_hops - 1:
@@ -663,24 +666,17 @@ class MemoryGenerator:
                         base["action"] = random.choice(["随后", "接着", "然后", "之后"])
                         
                 elif logic_type == "对比":
-                    # 对比链：人物A做正向动作，人物B做反向动作，交替呈现
-                    # 使用真实动词而非伪动词
                     if hop % 2 == 0:
-                        # 人物A：正向动作
                         base["person1"] = person
                         base["action"] = random.choice(["购买", "投资", "支持", "收购", "赞同", "批准"])
                         base["event_type"] = random.choice(["交易", "情感"])
                     else:
-                        # 人物B：反向动作（不同人物，相反行为）
                         alt_names = [n for n in NAMES if n != person]
                         base["person1"] = random.choice(alt_names)
                         base["action"] = random.choice(["出售", "撤资", "反对", "否决", "拒绝", "退出"])
                         base["event_type"] = random.choice(["交易", "冲突"])
-                    #  hop > 0 时保持真实动作，不覆盖为伪动词
-                    # 对比关系体现在两个人物的相反行为，而非动作本身叫"对比"
                     
                 elif logic_type == "包含":
-                    # 包含链：从整体到部分，范围缩小
                     if hop == 0:
                         base["action"] = random.choice(["规划", "布局", "涵盖"])
                         base["product"] = random.choice(["项目", "计划", "方案"])
@@ -693,7 +689,6 @@ class MemoryGenerator:
                         base["action"] = random.choice(["执行", "实施", "完成"])
                         
                 elif logic_type == "推导":
-                    # 推导链：从观察到结论，层层递进
                     if hop == 0:
                         base["action"] = random.choice(["观察", "发现", "注意到"])
                         base["event_type"] = "发现"
@@ -713,26 +708,29 @@ class MemoryGenerator:
                                chain_position=hop + 1,
                                tags=["推理测试", diff, logic_type])
                 
-                # 添加链式连接元数据
                 m["chain_hop"] = hop + 1
                 m["chain_total"] = n_hops
                 m["chain_relation"] = logic_type
                 
                 chain_mems.append(m)
                 
-                # 为下一跳准备（保持上下文连贯性）
                 if hop < n_hops - 1:
                     next_base = self._base(random.choice(["7d", "30d", "90d", "1y"]))
-                    # 保持人物一致（对比链除外，已在上面处理）
                     if logic_type != "对比":
                         next_base["person1"] = person
                     next_base["city"] = city
-                    # 保持产品或事件类型的部分连续性
                     if logic_type in ["因果", "包含"] and random.random() > 0.5:
                         next_base["product"] = base["product"]
                     if logic_type == "推导":
                         next_base["event_type"] = base["event_type"]
                     base = next_base
+            
+            # 时序链：按时间重新排序（确保时间递增）
+            if logic_type == "时序":
+                chain_mems.sort(key=lambda x: x["time"]["absolute"])
+                for i, m in enumerate(chain_mems):
+                    m["chain_position"] = i + 1
+                    m["chain_hop"] = i + 1
             
             # 设置链连接（prev/next）
             for i, m in enumerate(chain_mems):
@@ -741,6 +739,48 @@ class MemoryGenerator:
                 result.append(m)
         
         return result
+
+    def _build_temporal_chains(self, memories: list) -> list:
+        """后处理：对同一人物的记忆按时间排序建立时序链。
+        
+        时间链作为逻辑关系的一种：
+        - 有绝对时间：按时间戳排序
+        - 无绝对时间：跳过（保持原顺序）
+        """
+        # 按人物分组
+        person_groups = defaultdict(list)
+        for m in memories:
+            pn = m.get("person", {}).get("name", "")
+            if pn and pn != "未知":
+                person_groups[pn].append(m)
+        
+        chain_counter = 1
+        for pn, mems in person_groups.items():
+            # 只处理有绝对时间的记忆
+            with_time = [m for m in mems if m.get("time", {}).get("absolute")]
+            if len(with_time) < 3:
+                continue
+            
+            # 按时间排序
+            with_time.sort(key=lambda x: x["time"]["absolute"])
+            
+            # 建立时序链（最多6条）
+            chain_id = f"CHAIN_temporal_{chain_counter:04d}"
+            for i, m in enumerate(with_time[:6]):
+                m["reasoning_chain"] = chain_id
+                m["chain_position"] = i + 1
+                m["chain_hop"] = i + 1
+                m["chain_total"] = min(len(with_time), 6)
+                m["chain_relation"] = "时序"
+            
+            # 设置链连接
+            for i, m in enumerate(with_time[:6]):
+                m["chain_prev"] = with_time[i-1]["memory_id"] if i > 0 else ""
+                m["chain_next"] = with_time[i+1]["memory_id"] if i < len(with_time[:6]) - 1 else ""
+            
+            chain_counter += 1
+        
+        return memories
 
     def gen_deep(self, count: int) -> list:
         result = []
@@ -765,6 +805,10 @@ def build_database(size: int = 100, use_llm: bool = False, llm=None) -> dict:
     reason = gen.gen_reasoning(max(1, int(size * ratios["reason"])))
     deep = gen.gen_deep(max(1, int(size * ratios["deep"])))
     all_mems = storage + retrieval + org + forget + reason + deep
+    
+    # 后处理：为同一人物的记忆按时间排序建立时序链
+    gen._build_temporal_chains(all_mems)
+    
     random.shuffle(all_mems)
     cats = {}
     for m in all_mems: cats[m["category"]] = cats.get(m["category"], 0) + 1
