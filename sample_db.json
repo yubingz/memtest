@@ -2,16 +2,16 @@
   "database_info": {
     "name": "MemTest Database",
     "version": "2.0.0",
-    "total_count": 50,
+    "total_count": 90,
     "categories": {
-      "逻辑推理测试集": 0,
-      "检索功能测试集": 0,
-      "存储正确性测试集": 0,
-      "长期记忆深度检索测试集": 0,
-      "记忆整理测试集": 0,
-      "遗忘功能测试集": 0
+      "推理测试测试集": 46,
+      "整理测试测试集": 12,
+      "存储测试测试集": 12,
+      "深度检索测试集": 5,
+      "遗忘测试测试集": 5,
+      "检索测试测试集": 10
     },
-    "created_at": "2026-05-31 22:35:04"
+    "created_at": "2026-05-31 22:52:01"
   },
   "memories": [
     {
@@ -53,12 +53,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在北京的中关村创业大街，张伟（创业者）启动了新能源汽车，想趁窗口期推进"
+          "content": "张伟回忆道：当时在北京的中关村创业大街，张伟（创业者）启动了新能源汽车，认为值得全力以赴"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在北京那边启动了新能源汽车，好像差不多有这回事，具体细节不太清楚"
+          "content": "李娜说张伟在北京那边启动了新能源汽车，据说差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -118,7 +118,7 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在北京的三里屯调研中心，张伟（创业者）调研了消费者需求，认为这是正确方向，总共2000"
+          "content": "张伟回忆道：当时在北京的三里屯调研中心，张伟（创业者）调研了消费者需求，觉得是个难得的机会，总共2000"
         },
         {
           "version_id": "v3",
@@ -183,12 +183,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在北京的亦庄开发区，张伟（创业者）完成了原型车，认为值得全力以赴，总共3，单价500000元"
+          "content": "张伟回忆道：当时在北京的亦庄开发区，张伟（创业者）完成了原型车，想趁窗口期推进，总共3，单价500000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在北京那边完成了原型车，好像差不多3，具体细节不太清楚"
+          "content": "李娜说张伟在北京那边完成了原型车，听说左右3，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -248,12 +248,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在北京的国家知识产权局，张伟（创业者）申请了电池技术专利，认为这是正确方向，总共5"
+          "content": "张伟回忆道：当时在北京的国家知识产权局，张伟（创业者）申请了电池技术专利，想趁窗口期推进，总共5"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在北京那边申请了电池技术专利，据说左右5，具体细节不太清楚"
+          "content": "李娜说张伟在北京那边申请了电池技术专利，听说大概5，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -313,12 +313,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在北京的顺义制造基地，张伟（创业者）量产了新能源汽车，认为值得全力以赴，总共500，单价150000元"
+          "content": "张伟回忆道：当时在北京的顺义制造基地，张伟（创业者）量产了新能源汽车，觉得是个难得的机会，总共500，单价150000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在北京那边量产了新能源汽车，好像左右500，具体细节不太清楚"
+          "content": "李娜说张伟在北京那边量产了新能源汽车，听说差不多500，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -378,12 +378,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "李明回忆道：当时在上海的陆家嘴房产中心，李明（金融分析师）购买了公寓，觉得是个难得的机会，单价8500000元"
+          "content": "李明回忆道：当时在上海的陆家嘴房产中心，李明（金融分析师）购买了公寓，认为值得全力以赴，单价8500000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "王芳说李明在上海那边购买了公寓，听说大概有这回事，具体细节不太清楚"
+          "content": "王芳说李明在上海那边购买了公寓，听说差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -443,12 +443,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "李明回忆道：当时在上海的浦东装修市场，李明（金融分析师）装修了房屋，想趁窗口期推进，单价500000元"
+          "content": "李明回忆道：当时在上海的浦东装修市场，李明（金融分析师）装修了房屋，觉得是个难得的机会，单价500000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "王芳说李明在上海那边装修了房屋，听说差不多有这回事，具体细节不太清楚"
+          "content": "王芳说李明在上海那边装修了房屋，据说大概有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -508,12 +508,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "李明回忆道：当时在上海的世纪公园小区，李明（金融分析师）搬入了新居，认为这是正确方向"
+          "content": "李明回忆道：当时在上海的世纪公园小区，李明（金融分析师）搬入了新居，觉得是个难得的机会"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "王芳说李明在上海那边搬入了新居，据说左右有这回事，具体细节不太清楚"
+          "content": "王芳说李明在上海那边搬入了新居，据说大概有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -578,7 +578,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "王芳说李明在上海那边举办了乔迁派对，好像差不多有这回事，具体细节不太清楚"
+          "content": "王芳说李明在上海那边举办了乔迁派对，好像大概有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -643,7 +643,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "王芳说李明在上海那边安装了智能家居，据说差不多20，具体细节不太清楚"
+          "content": "王芳说李明在上海那边安装了智能家居，听说左右20，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -666,6 +666,331 @@
     },
     {
       "memory_id": "MEM000011",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-02-01 08:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1706745600
+      },
+      "location": {
+        "city": "武汉",
+        "place": "协和医院",
+        "landmark": "门诊部"
+      },
+      "person": {
+        "name": "孙强",
+        "identity": "医生",
+        "partner_name": "周梅",
+        "partner_identity": "护士",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "诊断",
+        "action": "诊断",
+        "product": "新型病毒",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙强在武汉协和医院诊断了新型病毒"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙强回忆道：当时在武汉的协和医院，孙强（医生）诊断了新型病毒，想趁窗口期推进"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "周梅说孙强在武汉那边诊断了新型病毒，好像大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "时序"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_时序_0003",
+      "chain_position": 1,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 1,
+      "chain_total": 5,
+      "chain_relation": "时序",
+      "chain_prev": "",
+      "chain_next": "MEM000012"
+    },
+    {
+      "memory_id": "MEM000012",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-02-15 14:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1707976800
+      },
+      "location": {
+        "city": "武汉",
+        "place": "医学实验室",
+        "landmark": "研发中心"
+      },
+      "person": {
+        "name": "孙强",
+        "identity": "医生",
+        "partner_name": "周梅",
+        "partner_identity": "护士",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "研究",
+        "action": "研究",
+        "product": "病毒基因序列",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙强在武汉医学实验室研究了病毒基因序列"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙强回忆道：当时在武汉的医学实验室，孙强（医生）研究了病毒基因序列，想趁窗口期推进"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "周梅说孙强在武汉那边研究了病毒基因序列，好像大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "时序"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_时序_0003",
+      "chain_position": 2,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 2,
+      "chain_total": 5,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000011",
+      "chain_next": "MEM000013"
+    },
+    {
+      "memory_id": "MEM000013",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-03-01 09:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1709254800
+      },
+      "location": {
+        "city": "武汉",
+        "place": "制药公司",
+        "landmark": "生产车间"
+      },
+      "person": {
+        "name": "孙强",
+        "identity": "医生",
+        "partner_name": "周梅",
+        "partner_identity": "护士",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "合作",
+        "action": "合作",
+        "product": "疫苗研发",
+        "quantity": 1,
+        "price": 10000000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙强在武汉制药公司合作了疫苗研发"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙强回忆道：当时在武汉的制药公司，孙强（医生）合作了疫苗研发，认为这是正确方向，单价10000000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "周梅说孙强在武汉那边合作了疫苗研发，好像大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "时序"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_时序_0003",
+      "chain_position": 3,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 3,
+      "chain_total": 5,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000012",
+      "chain_next": "MEM000014"
+    },
+    {
+      "memory_id": "MEM000014",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-03-20 10:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1710900000
+      },
+      "location": {
+        "city": "武汉",
+        "place": "临床试验中心",
+        "landmark": "试验基地"
+      },
+      "person": {
+        "name": "孙强",
+        "identity": "医生",
+        "partner_name": "周梅",
+        "partner_identity": "护士",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "试验",
+        "action": "开展",
+        "product": "临床试验",
+        "quantity": 1000,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙强在武汉临床试验中心开展了临床试验，数量1000"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙强回忆道：当时在武汉的临床试验中心，孙强（医生）开展了临床试验，觉得是个难得的机会，总共1000"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "周梅说孙强在武汉那边开展了临床试验，听说左右1000，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "时序"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_时序_0003",
+      "chain_position": 4,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 4,
+      "chain_total": 5,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000013",
+      "chain_next": "MEM000015"
+    },
+    {
+      "memory_id": "MEM000015",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-04-10 11:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1712718000
+      },
+      "location": {
+        "city": "武汉",
+        "place": "医院注射室",
+        "landmark": "接种中心"
+      },
+      "person": {
+        "name": "孙强",
+        "identity": "医生",
+        "partner_name": "周梅",
+        "partner_identity": "护士",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "接种",
+        "action": "接种",
+        "product": "疫苗",
+        "quantity": 5000,
+        "price": 200
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙强在武汉医院注射室接种了疫苗，数量5000"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙强回忆道：当时在武汉的医院注射室，孙强（医生）接种了疫苗，认为这是正确方向，总共5000，单价200元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "周梅说孙强在武汉那边接种了疫苗，好像大概5000，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "时序"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_时序_0003",
+      "chain_position": 5,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 5,
+      "chain_total": 5,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000014",
+      "chain_next": ""
+    },
+    {
+      "memory_id": "MEM000016",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -703,12 +1028,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "王芳回忆道：当时在深圳的南山科技园，王芳（科技投资人）投资了AI初创公司，认为值得全力以赴，单价5000000元"
+          "content": "王芳回忆道：当时在深圳的南山科技园，王芳（科技投资人）投资了AI初创公司，觉得是个难得的机会，单价5000000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "刘洋说王芳在深圳那边投资了AI初创公司，好像差不多有这回事，具体细节不太清楚"
+          "content": "刘洋说王芳在深圳那边投资了AI初创公司，好像大概有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -727,13 +1052,13 @@
       "chain_total": 5,
       "chain_relation": "因果",
       "chain_prev": "",
-      "chain_next": "MEM000012",
+      "chain_next": "MEM000017",
       "logic": {
         "type": "因果"
       }
     },
     {
-      "memory_id": "MEM000012",
+      "memory_id": "MEM000017",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -794,14 +1119,14 @@
       "chain_hop": 2,
       "chain_total": 5,
       "chain_relation": "因果",
-      "chain_prev": "MEM000011",
-      "chain_next": "MEM000013",
+      "chain_prev": "MEM000016",
+      "chain_next": "MEM000018",
       "logic": {
         "type": "因果"
       }
     },
     {
-      "memory_id": "MEM000013",
+      "memory_id": "MEM000018",
       "category": "推理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -844,7 +1169,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "刘洋说王芳在深圳那边聘请了顶尖工程师，听说大概3，具体细节不太清楚"
+          "content": "刘洋说王芳在深圳那边聘请了顶尖工程师，好像左右3，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -862,14 +1187,14 @@
       "chain_hop": 3,
       "chain_total": 5,
       "chain_relation": "因果",
-      "chain_prev": "MEM000012",
-      "chain_next": "MEM000014",
+      "chain_prev": "MEM000017",
+      "chain_next": "MEM000019",
       "logic": {
         "type": "因果"
       }
     },
     {
-      "memory_id": "MEM000014",
+      "memory_id": "MEM000019",
       "category": "推理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -907,12 +1232,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "王芳回忆道：当时在深圳的研发中心，王芳（科技投资人）突破了核心算法，认为这是正确方向"
+          "content": "王芳回忆道：当时在深圳的研发中心，王芳（科技投资人）突破了核心算法，想趁窗口期推进"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "刘洋说王芳在深圳那边突破了核心算法，好像差不多有这回事，具体细节不太清楚"
+          "content": "刘洋说王芳在深圳那边突破了核心算法，据说大概有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -930,14 +1255,14 @@
       "chain_hop": 4,
       "chain_total": 5,
       "chain_relation": "因果",
-      "chain_prev": "MEM000013",
-      "chain_next": "MEM000015",
+      "chain_prev": "MEM000018",
+      "chain_next": "MEM000020",
       "logic": {
         "type": "因果"
       }
     },
     {
-      "memory_id": "MEM000015",
+      "memory_id": "MEM000020",
       "category": "推理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -975,12 +1300,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "王芳回忆道：当时在深圳的创投大厦，王芳（科技投资人）获得了B轮融资，认为这是正确方向，单价20000000元"
+          "content": "王芳回忆道：当时在深圳的创投大厦，王芳（科技投资人）获得了B轮融资，认为值得全力以赴，单价20000000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "刘洋说王芳在深圳那边获得了B轮融资，好像差不多有这回事，具体细节不太清楚"
+          "content": "刘洋说王芳在深圳那边获得了B轮融资，据说左右有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -998,14 +1323,14 @@
       "chain_hop": 5,
       "chain_total": 5,
       "chain_relation": "因果",
-      "chain_prev": "MEM000014",
+      "chain_prev": "MEM000019",
       "chain_next": "",
       "logic": {
         "type": "因果"
       }
     },
     {
-      "memory_id": "MEM000016",
+      "memory_id": "MEM000021",
       "category": "推理测试测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -1043,12 +1368,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "刘洋回忆道：当时在杭州的西湖区商业街，刘洋（健身教练）开设了健身房，觉得是个难得的机会，单价3000000元"
+          "content": "刘洋回忆道：当时在杭州的西湖区商业街，刘洋（健身教练）开设了健身房，认为值得全力以赴，单价3000000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "陈静说刘洋在杭州那边开设了健身房，据说大概有这回事，具体细节不太清楚"
+          "content": "陈静说刘洋在杭州那边开设了健身房，据说差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1067,13 +1392,13 @@
       "chain_total": 5,
       "chain_relation": "因果",
       "chain_prev": "",
-      "chain_next": "MEM000017",
+      "chain_next": "MEM000022",
       "logic": {
         "type": "因果"
       }
     },
     {
-      "memory_id": "MEM000017",
+      "memory_id": "MEM000022",
       "category": "推理测试测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -1111,12 +1436,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "刘洋回忆道：当时在杭州的社区广场，刘洋（健身教练）吸引了会员，觉得是个难得的机会，总共500，单价2000元"
+          "content": "刘洋回忆道：当时在杭州的社区广场，刘洋（健身教练）吸引了会员，认为值得全力以赴，总共500，单价2000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "陈静说刘洋在杭州那边吸引了会员，听说左右500，具体细节不太清楚"
+          "content": "陈静说刘洋在杭州那边吸引了会员，好像左右500，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1134,14 +1459,14 @@
       "chain_hop": 2,
       "chain_total": 5,
       "chain_relation": "因果",
-      "chain_prev": "MEM000016",
-      "chain_next": "MEM000018",
+      "chain_prev": "MEM000021",
+      "chain_next": "MEM000023",
       "logic": {
         "type": "因果"
       }
     },
     {
-      "memory_id": "MEM000018",
+      "memory_id": "MEM000023",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -1179,7 +1504,7 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "刘洋回忆道：当时在杭州的滨江新城，刘洋（健身教练）开设了分店，认为值得全力以赴，总共2，单价5000000元"
+          "content": "刘洋回忆道：当时在杭州的滨江新城，刘洋（健身教练）开设了分店，认为这是正确方向，总共2，单价5000000元"
         },
         {
           "version_id": "v3",
@@ -1202,14 +1527,14 @@
       "chain_hop": 3,
       "chain_total": 5,
       "chain_relation": "因果",
-      "chain_prev": "MEM000017",
-      "chain_next": "MEM000019",
+      "chain_prev": "MEM000022",
+      "chain_next": "MEM000024",
       "logic": {
         "type": "因果"
       }
     },
     {
-      "memory_id": "MEM000019",
+      "memory_id": "MEM000024",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -1252,7 +1577,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "陈静说刘洋在杭州那边引进了专业教练，听说大概10，具体细节不太清楚"
+          "content": "陈静说刘洋在杭州那边引进了专业教练，据说大概10，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1270,14 +1595,14 @@
       "chain_hop": 4,
       "chain_total": 5,
       "chain_relation": "因果",
-      "chain_prev": "MEM000018",
-      "chain_next": "MEM000020",
+      "chain_prev": "MEM000023",
+      "chain_next": "MEM000025",
       "logic": {
         "type": "因果"
       }
     },
     {
-      "memory_id": "MEM000020",
+      "memory_id": "MEM000025",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -1315,12 +1640,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "刘洋回忆道：当时在杭州的总部办公室，刘洋（健身教练）实现了利润翻倍，想趁窗口期推进"
+          "content": "刘洋回忆道：当时在杭州的总部办公室，刘洋（健身教练）实现了利润翻倍，认为这是正确方向"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "陈静说刘洋在杭州那边实现了利润翻倍，据说差不多有这回事，具体细节不太清楚"
+          "content": "陈静说刘洋在杭州那边实现了利润翻倍，好像差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1338,14 +1663,354 @@
       "chain_hop": 5,
       "chain_total": 5,
       "chain_relation": "因果",
-      "chain_prev": "MEM000019",
+      "chain_prev": "MEM000024",
       "chain_next": "",
       "logic": {
         "type": "因果"
       }
     },
     {
-      "memory_id": "MEM000021",
+      "memory_id": "MEM000026",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-01-10 09:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1704848400
+      },
+      "location": {
+        "city": "西安",
+        "place": "法院",
+        "landmark": "审判庭"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "法官",
+        "partner_name": "吴昊",
+        "partner_identity": "律师",
+        "relation": "合作"
+      },
+      "event": {
+        "type": "立案",
+        "action": "受理",
+        "product": "知识产权案件",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在西安法院受理了知识产权案件"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在西安的法院，郑欣（法官）受理了知识产权案件，想趁窗口期推进"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "吴昊说郑欣在西安那边受理了知识产权案件，好像大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "因果"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_因果_0003",
+      "chain_position": 1,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 1,
+      "chain_total": 5,
+      "chain_relation": "因果",
+      "chain_prev": "",
+      "chain_next": "MEM000027",
+      "logic": {
+        "type": "因果"
+      }
+    },
+    {
+      "memory_id": "MEM000027",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-02-20 14:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1708408800
+      },
+      "location": {
+        "city": "西安",
+        "place": "证据中心",
+        "landmark": "调查部"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "法官",
+        "partner_name": "吴昊",
+        "partner_identity": "律师",
+        "relation": "合作"
+      },
+      "event": {
+        "type": "调查",
+        "action": "调取",
+        "product": "关键证据",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在西安证据中心调取了关键证据"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在西安的证据中心，郑欣（法官）调取了关键证据，认为这是正确方向"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "吴昊说郑欣在西安那边调取了关键证据，听说左右有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "因果"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_因果_0003",
+      "chain_position": 2,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 2,
+      "chain_total": 5,
+      "chain_relation": "因果",
+      "chain_prev": "MEM000026",
+      "chain_next": "MEM000028",
+      "logic": {
+        "type": "因果"
+      }
+    },
+    {
+      "memory_id": "MEM000028",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-03-25 10:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1711332000
+      },
+      "location": {
+        "city": "西安",
+        "place": "律师事务所",
+        "landmark": "会议厅"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "法官",
+        "partner_name": "吴昊",
+        "partner_identity": "律师",
+        "relation": "合作"
+      },
+      "event": {
+        "type": "庭审",
+        "action": "主持",
+        "product": "法庭辩论",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在西安律师事务所主持了法庭辩论"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在西安的律师事务所，郑欣（法官）主持了法庭辩论，认为这是正确方向"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "吴昊说郑欣在西安那边主持了法庭辩论，据说差不多有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "因果"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_因果_0003",
+      "chain_position": 3,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 3,
+      "chain_total": 5,
+      "chain_relation": "因果",
+      "chain_prev": "MEM000027",
+      "chain_next": "MEM000029",
+      "logic": {
+        "type": "因果"
+      }
+    },
+    {
+      "memory_id": "MEM000029",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-04-30 16:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1714464000
+      },
+      "location": {
+        "city": "西安",
+        "place": "司法鉴定中心",
+        "landmark": "专家室"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "法官",
+        "partner_name": "吴昊",
+        "partner_identity": "律师",
+        "relation": "合作"
+      },
+      "event": {
+        "type": "鉴定",
+        "action": "委托",
+        "product": "技术鉴定",
+        "quantity": 1,
+        "price": 50000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在西安司法鉴定中心委托了技术鉴定"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在西安的司法鉴定中心，郑欣（法官）委托了技术鉴定，认为值得全力以赴，单价50000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "吴昊说郑欣在西安那边委托了技术鉴定，好像左右有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "因果"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_因果_0003",
+      "chain_position": 4,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 4,
+      "chain_total": 5,
+      "chain_relation": "因果",
+      "chain_prev": "MEM000028",
+      "chain_next": "MEM000030",
+      "logic": {
+        "type": "因果"
+      }
+    },
+    {
+      "memory_id": "MEM000030",
+      "category": "推理测试测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2024-06-10 11:00:00",
+        "relative": "11个月前",
+        "fuzzy": "去年",
+        "timestamp": 1717988400
+      },
+      "location": {
+        "city": "西安",
+        "place": "法院",
+        "landmark": "宣判庭"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "法官",
+        "partner_name": "吴昊",
+        "partner_identity": "律师",
+        "relation": "合作"
+      },
+      "event": {
+        "type": "判决",
+        "action": "宣判",
+        "product": "赔偿决定",
+        "quantity": 1,
+        "price": 1000000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在西安法院宣判了赔偿决定"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在西安的法院，郑欣（法官）宣判了赔偿决定，认为这是正确方向，单价1000000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "吴昊说郑欣在西安那边宣判了赔偿决定，据说大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "因果"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_因果_0003",
+      "chain_position": 5,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 5,
+      "chain_total": 5,
+      "chain_relation": "因果",
+      "chain_prev": "MEM000029",
+      "chain_next": "",
+      "logic": {
+        "type": "因果"
+      }
+    },
+    {
+      "memory_id": "MEM000031",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -1388,7 +2053,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "赵磊说陈静在成都那边购买了科技股，好像差不多1000，具体细节不太清楚"
+          "content": "赵磊说陈静在成都那边购买了科技股，据说左右1000，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1407,10 +2072,10 @@
       "chain_total": 4,
       "chain_relation": "对比",
       "chain_prev": "",
-      "chain_next": "MEM000022"
+      "chain_next": "MEM000032"
     },
     {
-      "memory_id": "MEM000022",
+      "memory_id": "MEM000032",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -1448,12 +2113,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "赵磊回忆道：当时在成都的证券交易所，赵磊（职业交易员）出售了科技股，觉得是个难得的机会，总共2000，单价148元"
+          "content": "赵磊回忆道：当时在成都的证券交易所，赵磊（职业交易员）出售了科技股，认为值得全力以赴，总共2000，单价148元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "陈静说赵磊在成都那边出售了科技股，好像差不多2000，具体细节不太清楚"
+          "content": "陈静说赵磊在成都那边出售了科技股，据说大概2000，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1471,11 +2136,11 @@
       "chain_hop": 2,
       "chain_total": 4,
       "chain_relation": "对比",
-      "chain_prev": "MEM000021",
-      "chain_next": "MEM000023"
+      "chain_prev": "MEM000031",
+      "chain_next": "MEM000033"
     },
     {
-      "memory_id": "MEM000023",
+      "memory_id": "MEM000033",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -1513,12 +2178,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "陈静回忆道：当时在成都的投资咨询室，陈静（个人投资者）增持了仓位，认为值得全力以赴，总共500，单价160元"
+          "content": "陈静回忆道：当时在成都的投资咨询室，陈静（个人投资者）增持了仓位，认为这是正确方向，总共500，单价160元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "赵磊说陈静在成都那边增持了仓位，好像左右500，具体细节不太清楚"
+          "content": "赵磊说陈静在成都那边增持了仓位，听说差不多500，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1536,11 +2201,11 @@
       "chain_hop": 3,
       "chain_total": 4,
       "chain_relation": "对比",
-      "chain_prev": "MEM000022",
-      "chain_next": "MEM000024"
+      "chain_prev": "MEM000032",
+      "chain_next": "MEM000034"
     },
     {
-      "memory_id": "MEM000024",
+      "memory_id": "MEM000034",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -1578,12 +2243,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "赵磊回忆道：当时在成都的投资咨询室，赵磊（职业交易员）清仓了持仓，觉得是个难得的机会"
+          "content": "赵磊回忆道：当时在成都的投资咨询室，赵磊（职业交易员）清仓了持仓，认为值得全力以赴"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "陈静说赵磊在成都那边清仓了持仓，据说大概有这回事，具体细节不太清楚"
+          "content": "陈静说赵磊在成都那边清仓了持仓，听说左右有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1601,11 +2266,11 @@
       "chain_hop": 4,
       "chain_total": 4,
       "chain_relation": "对比",
-      "chain_prev": "MEM000023",
+      "chain_prev": "MEM000033",
       "chain_next": ""
     },
     {
-      "memory_id": "MEM000025",
+      "memory_id": "MEM000035",
       "category": "推理测试测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -1643,12 +2308,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在北京的市政规划院，张伟（创业者）规划了智慧城市项目，认为值得全力以赴，单价50000000元"
+          "content": "张伟回忆道：当时在北京的市政规划院，张伟（创业者）规划了智慧城市项目，觉得是个难得的机会，单价50000000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在北京那边规划了智慧城市项目，据说大概有这回事，具体细节不太清楚"
+          "content": "李娜说张伟在北京那边规划了智慧城市项目，听说差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1667,10 +2332,10 @@
       "chain_total": 4,
       "chain_relation": "包含",
       "chain_prev": "",
-      "chain_next": "MEM000026"
+      "chain_next": "MEM000036"
     },
     {
-      "memory_id": "MEM000026",
+      "memory_id": "MEM000036",
       "category": "推理测试测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -1708,7 +2373,7 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在北京的交通管理局，张伟（创业者）部署了交通管理系统，认为这是正确方向，单价8000000元"
+          "content": "张伟回忆道：当时在北京的交通管理局，张伟（创业者）部署了交通管理系统，觉得是个难得的机会，单价8000000元"
         },
         {
           "version_id": "v3",
@@ -1731,11 +2396,11 @@
       "chain_hop": 2,
       "chain_total": 4,
       "chain_relation": "包含",
-      "chain_prev": "MEM000025",
-      "chain_next": "MEM000027"
+      "chain_prev": "MEM000035",
+      "chain_next": "MEM000037"
     },
     {
-      "memory_id": "MEM000027",
+      "memory_id": "MEM000037",
       "category": "推理测试测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -1778,7 +2443,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在北京那边建设了数据中心，据说左右有这回事，具体细节不太清楚"
+          "content": "李娜说张伟在北京那边建设了数据中心，好像差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1796,11 +2461,11 @@
       "chain_hop": 3,
       "chain_total": 4,
       "chain_relation": "包含",
-      "chain_prev": "MEM000026",
-      "chain_next": "MEM000028"
+      "chain_prev": "MEM000036",
+      "chain_next": "MEM000038"
     },
     {
-      "memory_id": "MEM000028",
+      "memory_id": "MEM000038",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -1843,7 +2508,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在北京那边安装了监控系统，好像大概500，具体细节不太清楚"
+          "content": "李娜说张伟在北京那边安装了监控系统，好像差不多500，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1861,11 +2526,11 @@
       "chain_hop": 4,
       "chain_total": 4,
       "chain_relation": "包含",
-      "chain_prev": "MEM000027",
+      "chain_prev": "MEM000037",
       "chain_next": ""
     },
     {
-      "memory_id": "MEM000029",
+      "memory_id": "MEM000039",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -1903,12 +2568,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "李明回忆道：当时在上海的教育研究院，李明（金融分析师）观察了在线教育趋势，想趁窗口期推进"
+          "content": "李明回忆道：当时在上海的教育研究院，李明（金融分析师）观察了在线教育趋势，认为这是正确方向"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "王芳说李明在上海那边观察了在线教育趋势，据说左右有这回事，具体细节不太清楚"
+          "content": "王芳说李明在上海那边观察了在线教育趋势，听说左右有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1927,13 +2592,13 @@
       "chain_total": 4,
       "chain_relation": "推导",
       "chain_prev": "",
-      "chain_next": "MEM000030",
+      "chain_next": "MEM000040",
       "logic": {
         "type": "推导"
       }
     },
     {
-      "memory_id": "MEM000030",
+      "memory_id": "MEM000040",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -1971,12 +2636,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "李明回忆道：当时在上海的市场调研公司，李明（金融分析师）分析了市场需求，认为值得全力以赴"
+          "content": "李明回忆道：当时在上海的市场调研公司，李明（金融分析师）分析了市场需求，想趁窗口期推进"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "王芳说李明在上海那边分析了市场需求，听说左右有这回事，具体细节不太清楚"
+          "content": "王芳说李明在上海那边分析了市场需求，好像大概有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -1994,14 +2659,14 @@
       "chain_hop": 2,
       "chain_total": 4,
       "chain_relation": "推导",
-      "chain_prev": "MEM000029",
-      "chain_next": "MEM000031",
+      "chain_prev": "MEM000039",
+      "chain_next": "MEM000041",
       "logic": {
         "type": "推导"
       }
     },
     {
-      "memory_id": "MEM000031",
+      "memory_id": "MEM000041",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -2039,12 +2704,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "李明回忆道：当时在上海的课程设计室，李明（金融分析师）判断了课程方向，觉得是个难得的机会"
+          "content": "李明回忆道：当时在上海的课程设计室，李明（金融分析师）判断了课程方向，认为值得全力以赴"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "王芳说李明在上海那边判断了课程方向，据说大概有这回事，具体细节不太清楚"
+          "content": "王芳说李明在上海那边判断了课程方向，好像左右有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2062,14 +2727,14 @@
       "chain_hop": 3,
       "chain_total": 4,
       "chain_relation": "推导",
-      "chain_prev": "MEM000030",
-      "chain_next": "MEM000032",
+      "chain_prev": "MEM000040",
+      "chain_next": "MEM000042",
       "logic": {
         "type": "推导"
       }
     },
     {
-      "memory_id": "MEM000032",
+      "memory_id": "MEM000042",
       "category": "推理测试测试集",
       "difficulty": "中等",
       "weight": 1.0,
@@ -2107,12 +2772,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "李明回忆道：当时在上海的创业孵化器，李明（金融分析师）验证了商业模式，认为这是正确方向，单价500000元"
+          "content": "李明回忆道：当时在上海的创业孵化器，李明（金融分析师）验证了商业模式，想趁窗口期推进，单价500000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "王芳说李明在上海那边验证了商业模式，听说左右有这回事，具体细节不太清楚"
+          "content": "王芳说李明在上海那边验证了商业模式，好像差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2130,14 +2795,286 @@
       "chain_hop": 4,
       "chain_total": 4,
       "chain_relation": "推导",
-      "chain_prev": "MEM000031",
+      "chain_prev": "MEM000041",
       "chain_next": "",
       "logic": {
         "type": "推导"
       }
     },
     {
-      "memory_id": "MEM000033",
+      "memory_id": "MEM000043",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-02-01 08:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1706745600
+      },
+      "location": {
+        "city": "南京",
+        "place": "教育局",
+        "landmark": "政策研究室"
+      },
+      "person": {
+        "name": "黄丽",
+        "identity": "教师",
+        "partner_name": "林峰",
+        "partner_identity": "校长",
+        "relation": "上下级"
+      },
+      "event": {
+        "type": "观察",
+        "action": "观察",
+        "product": "学生成绩下滑",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "黄丽在南京教育局观察了学生成绩下滑"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "黄丽回忆道：当时在南京的教育局，黄丽（教师）观察了学生成绩下滑，想趁窗口期推进"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "林峰说黄丽在南京那边观察了学生成绩下滑，据说左右有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "简单",
+        "推导"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_推导_0002",
+      "chain_position": 1,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 1,
+      "chain_total": 4,
+      "chain_relation": "推导",
+      "chain_prev": "",
+      "chain_next": "MEM000044",
+      "logic": {
+        "type": "推导"
+      }
+    },
+    {
+      "memory_id": "MEM000044",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-03-01 14:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1709272800
+      },
+      "location": {
+        "city": "南京",
+        "place": "学校",
+        "landmark": "教研组"
+      },
+      "person": {
+        "name": "黄丽",
+        "identity": "教师",
+        "partner_name": "林峰",
+        "partner_identity": "校长",
+        "relation": "上下级"
+      },
+      "event": {
+        "type": "分析",
+        "action": "分析",
+        "product": "教学方法",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "黄丽在南京学校分析了教学方法"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "黄丽回忆道：当时在南京的学校，黄丽（教师）分析了教学方法，觉得是个难得的机会"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "林峰说黄丽在南京那边分析了教学方法，好像大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "简单",
+        "推导"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_推导_0002",
+      "chain_position": 2,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 2,
+      "chain_total": 4,
+      "chain_relation": "推导",
+      "chain_prev": "MEM000043",
+      "chain_next": "MEM000045",
+      "logic": {
+        "type": "推导"
+      }
+    },
+    {
+      "memory_id": "MEM000045",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-04-01 09:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1711933200
+      },
+      "location": {
+        "city": "南京",
+        "place": "培训中心",
+        "landmark": "教师进修"
+      },
+      "person": {
+        "name": "黄丽",
+        "identity": "教师",
+        "partner_name": "林峰",
+        "partner_identity": "校长",
+        "relation": "上下级"
+      },
+      "event": {
+        "type": "判断",
+        "action": "判断",
+        "product": "改革方案",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "黄丽在南京培训中心判断了改革方案"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "黄丽回忆道：当时在南京的培训中心，黄丽（教师）判断了改革方案，觉得是个难得的机会"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "林峰说黄丽在南京那边判断了改革方案，好像差不多有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "简单",
+        "推导"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_推导_0002",
+      "chain_position": 3,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 3,
+      "chain_total": 4,
+      "chain_relation": "推导",
+      "chain_prev": "MEM000044",
+      "chain_next": "MEM000046",
+      "logic": {
+        "type": "推导"
+      }
+    },
+    {
+      "memory_id": "MEM000046",
+      "category": "推理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-05-01 11:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1714532400
+      },
+      "location": {
+        "city": "南京",
+        "place": "学校",
+        "landmark": "实验班"
+      },
+      "person": {
+        "name": "黄丽",
+        "identity": "教师",
+        "partner_name": "林峰",
+        "partner_identity": "校长",
+        "relation": "上下级"
+      },
+      "event": {
+        "type": "验证",
+        "action": "验证",
+        "product": "改革效果",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "黄丽在南京学校验证了改革效果"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "黄丽回忆道：当时在南京的学校，黄丽（教师）验证了改革效果，认为值得全力以赴"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "林峰说黄丽在南京那边验证了改革效果，据说差不多有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "简单",
+        "推导"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": "CHAIN_推导_0002",
+      "chain_position": 4,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "chain_hop": 4,
+      "chain_total": 4,
+      "chain_relation": "推导",
+      "chain_prev": "MEM000045",
+      "chain_next": "",
+      "logic": {
+        "type": "推导"
+      }
+    },
+    {
+      "memory_id": "MEM000047",
       "category": "整理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2175,12 +3112,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在北京的国际会议中心，张伟（创业者）参加了行业峰会，觉得是个难得的机会"
+          "content": "张伟回忆道：当时在北京的国际会议中心，张伟（创业者）参加了行业峰会，认为这是正确方向"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在北京那边参加了行业峰会，听说差不多有这回事，具体细节不太清楚"
+          "content": "李娜说张伟在北京那边参加了行业峰会，好像大概有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2198,7 +3135,7 @@
       }
     },
     {
-      "memory_id": "MEM000034",
+      "memory_id": "MEM000048",
       "category": "整理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2236,12 +3173,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在深圳的签约大厅，张伟（创业者）签署了合作协议，觉得是个难得的机会"
+          "content": "张伟回忆道：当时在深圳的签约大厅，张伟（创业者）签署了合作协议，想趁窗口期推进"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在深圳那边签署了合作协议，听说大概有这回事，具体细节不太清楚"
+          "content": "李娜说张伟在深圳那边签署了合作协议，好像差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2259,7 +3196,7 @@
       }
     },
     {
-      "memory_id": "MEM000035",
+      "memory_id": "MEM000049",
       "category": "整理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2297,12 +3234,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在杭州的电商产业园，张伟（创业者）考察了市场前景，认为这是正确方向"
+          "content": "张伟回忆道：当时在杭州的电商产业园，张伟（创业者）考察了市场前景，认为值得全力以赴"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在杭州那边考察了市场前景，好像左右有这回事，具体细节不太清楚"
+          "content": "李娜说张伟在杭州那边考察了市场前景，据说差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2320,7 +3257,7 @@
       }
     },
     {
-      "memory_id": "MEM000036",
+      "memory_id": "MEM000050",
       "category": "整理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2358,12 +3295,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "王芳回忆道：当时在深圳的三甲医院，王芳（科技投资人）预约了健康体检，觉得是个难得的机会，单价3000元"
+          "content": "王芳回忆道：当时在深圳的三甲医院，王芳（科技投资人）预约了健康体检，认为值得全力以赴，单价3000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "刘洋说王芳在深圳那边预约了健康体检，据说差不多有这回事，具体细节不太清楚"
+          "content": "刘洋说王芳在深圳那边预约了健康体检，听说差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2381,7 +3318,7 @@
       }
     },
     {
-      "memory_id": "MEM000037",
+      "memory_id": "MEM000051",
       "category": "整理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2419,12 +3356,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "刘洋回忆道：当时在杭州的保险公司，刘洋（健身教练）购买了医疗保险，想趁窗口期推进，单价8000元"
+          "content": "刘洋回忆道：当时在杭州的保险公司，刘洋（健身教练）购买了医疗保险，觉得是个难得的机会，单价8000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "陈静说刘洋在杭州那边购买了医疗保险，听说差不多有这回事，具体细节不太清楚"
+          "content": "陈静说刘洋在杭州那边购买了医疗保险，据说差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2442,7 +3379,7 @@
       }
     },
     {
-      "memory_id": "MEM000038",
+      "memory_id": "MEM000052",
       "category": "整理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2480,12 +3417,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "陈静回忆道：当时在成都的专科门诊，陈静（个人投资者）咨询了专家门诊，认为这是正确方向，单价500元"
+          "content": "陈静回忆道：当时在成都的专科门诊，陈静（个人投资者）咨询了专家门诊，认为值得全力以赴，单价500元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "赵磊说陈静在成都那边咨询了专家门诊，据说大概有这回事，具体细节不太清楚"
+          "content": "赵磊说陈静在成都那边咨询了专家门诊，听说左右有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2503,7 +3440,7 @@
       }
     },
     {
-      "memory_id": "MEM000039",
+      "memory_id": "MEM000053",
       "category": "整理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2541,12 +3478,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "李明回忆道：当时在北京的投资大厦，李明（金融分析师）拜访了投资人，认为这是正确方向，总共3"
+          "content": "李明回忆道：当时在北京的投资大厦，李明（金融分析师）拜访了投资人，认为值得全力以赴，总共3"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "王芳说李明在北京那边拜访了投资人，好像差不多3，具体细节不太清楚"
+          "content": "王芳说李明在北京那边拜访了投资人，据说大概3，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2564,7 +3501,7 @@
       }
     },
     {
-      "memory_id": "MEM000040",
+      "memory_id": "MEM000054",
       "category": "整理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2602,12 +3539,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "王芳回忆道：当时在北京的学术报告厅，王芳（科技投资人）出席了学术会议，想趁窗口期推进"
+          "content": "王芳回忆道：当时在北京的学术报告厅，王芳（科技投资人）出席了学术会议，觉得是个难得的机会"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "刘洋说王芳在北京那边出席了学术会议，据说大概有这回事，具体细节不太清楚"
+          "content": "刘洋说王芳在北京那边出席了学术会议，好像差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2625,7 +3562,7 @@
       }
     },
     {
-      "memory_id": "MEM000041",
+      "memory_id": "MEM000055",
       "category": "整理测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2663,12 +3600,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "刘洋回忆道：当时在北京的创业咖啡馆，刘洋（健身教练）参加了创业分享会，认为这是正确方向"
+          "content": "刘洋回忆道：当时在北京的创业咖啡馆，刘洋（健身教练）参加了创业分享会，觉得是个难得的机会"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "陈静说刘洋在北京那边参加了创业分享会，好像左右有这回事，具体细节不太清楚"
+          "content": "陈静说刘洋在北京那边参加了创业分享会，据说大概有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2686,7 +3623,190 @@
       }
     },
     {
-      "memory_id": "MEM000042",
+      "memory_id": "MEM000056",
+      "category": "整理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-03-10 10:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1710036000
+      },
+      "location": {
+        "city": "深圳",
+        "place": "投资大厦",
+        "landmark": "资本中心"
+      },
+      "person": {
+        "name": "李娜",
+        "identity": "天使投资人",
+        "partner_name": "张伟",
+        "partner_identity": "创业者",
+        "relation": "合作伙伴"
+      },
+      "event": {
+        "type": "投资",
+        "action": "投资",
+        "product": "人工智能项目",
+        "quantity": 1,
+        "price": 3000000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "李娜在深圳投资大厦投资了人工智能项目"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "李娜回忆道：当时在深圳的投资大厦，李娜（天使投资人）投资了人工智能项目，想趁窗口期推进，单价3000000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "张伟说李娜在深圳那边投资了人工智能项目，听说差不多有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "简单",
+        "人物",
+        "李娜"
+      ],
+      "cluster_id": "CLUSTER_人物_李娜",
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000057",
+      "category": "整理测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-05-20 14:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1716184800
+      },
+      "location": {
+        "city": "广州",
+        "place": "创业大赛",
+        "landmark": "比赛场馆"
+      },
+      "person": {
+        "name": "李娜",
+        "identity": "天使投资人",
+        "partner_name": "张伟",
+        "partner_identity": "创业者",
+        "relation": "合作伙伴"
+      },
+      "event": {
+        "type": "评审",
+        "action": "评审",
+        "product": "创业项目",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "李娜在广州创业大赛评审了创业项目"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "李娜回忆道：当时在广州的创业大赛，李娜（天使投资人）评审了创业项目，认为值得全力以赴"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "张伟说李娜在广州那边评审了创业项目，听说左右有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "简单",
+        "人物",
+        "李娜"
+      ],
+      "cluster_id": "CLUSTER_人物_李娜",
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000058",
+      "category": "整理测试测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2024-07-15 09:00:00",
+        "relative": "10个月前",
+        "fuzzy": "去年",
+        "timestamp": 1721005200
+      },
+      "location": {
+        "city": "苏州",
+        "place": "科技园区",
+        "landmark": "研发中心"
+      },
+      "person": {
+        "name": "李娜",
+        "identity": "天使投资人",
+        "partner_name": "张伟",
+        "partner_identity": "创业者",
+        "relation": "合作伙伴"
+      },
+      "event": {
+        "type": "考察",
+        "action": "考察",
+        "product": "科技企业",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "李娜在苏州科技园区考察了科技企业"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "李娜回忆道：当时在苏州的科技园区，李娜（天使投资人）考察了科技企业，想趁窗口期推进"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "张伟说李娜在苏州那边考察了科技企业，好像大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "整理测试",
+        "简单",
+        "人物",
+        "李娜"
+      ],
+      "cluster_id": "CLUSTER_人物_李娜",
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      }
+    },
+    {
+      "memory_id": "MEM000059",
       "category": "存储测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2724,12 +3844,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "陈静回忆道：当时在成都的教育中心，陈静（个人投资者）购买了数据分析课程，认为值得全力以赴，单价5000元"
+          "content": "陈静回忆道：当时在成都的教育中心，陈静（个人投资者）购买了数据分析课程，想趁窗口期推进，单价5000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "赵磊说陈静在成都那边购买了数据分析课程，据说左右有这回事，具体细节不太清楚"
+          "content": "赵磊说陈静在成都那边购买了数据分析课程，好像差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2752,7 +3872,7 @@
       ]
     },
     {
-      "memory_id": "MEM000043",
+      "memory_id": "MEM000060",
       "category": "存储测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2790,12 +3910,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "赵磊回忆道：当时在广州的证券公司，赵磊（职业交易员）投资了新能源股票，认为这是正确方向，总共5000，单价50元"
+          "content": "赵磊回忆道：当时在广州的证券公司，赵磊（职业交易员）投资了新能源股票，想趁窗口期推进，总共5000，单价50元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "陈静说赵磊在广州那边投资了新能源股票，好像左右5000，具体细节不太清楚"
+          "content": "陈静说赵磊在广州那边投资了新能源股票，据说差不多5000，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2818,7 +3938,7 @@
       ]
     },
     {
-      "memory_id": "MEM000044",
+      "memory_id": "MEM000061",
       "category": "存储测试测试集",
       "difficulty": "简单",
       "weight": 0.5,
@@ -2856,12 +3976,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "王芳回忆道：当时在深圳的体检中心，王芳（科技投资人）预约了全身体检，觉得是个难得的机会，单价5000元"
+          "content": "王芳回忆道：当时在深圳的体检中心，王芳（科技投资人）预约了全身体检，认为值得全力以赴，单价5000元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "刘洋说王芳在深圳那边预约了全身体检，好像差不多有这回事，具体细节不太清楚"
+          "content": "刘洋说王芳在深圳那边预约了全身体检，据说大概有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -2884,7 +4004,601 @@
       ]
     },
     {
-      "memory_id": "MEM000045",
+      "memory_id": "MEM000071",
+      "category": "存储测试测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2024-09-15 14:00:00",
+        "relative": "8个月前",
+        "fuzzy": "去年",
+        "timestamp": 1726380000
+      },
+      "location": {
+        "city": "杭州",
+        "place": "电商仓库",
+        "landmark": "物流中心"
+      },
+      "person": {
+        "name": "周梅",
+        "identity": "护士",
+        "partner_name": "孙强",
+        "partner_identity": "医生",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "购物",
+        "action": "购买",
+        "product": "医疗用品",
+        "quantity": 50,
+        "price": 200
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "周梅在杭州电商仓库购买了医疗用品，数量50"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "周梅回忆道：当时在杭州的电商仓库，周梅（护士）购买了医疗用品，认为值得全力以赴，总共50，单价200元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "孙强说周梅在杭州那边购买了医疗用品，好像左右50，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "周梅",
+        "杭州",
+        "购物",
+        "购买",
+        "医疗用品"
+      ]
+    },
+    {
+      "memory_id": "MEM000072",
+      "category": "存储测试测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2024-08-20 10:00:00",
+        "relative": "9个月前",
+        "fuzzy": "去年",
+        "timestamp": 1724119200
+      },
+      "location": {
+        "city": "北京",
+        "place": "书店",
+        "landmark": "文化中心"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "法官",
+        "partner_name": "吴昊",
+        "partner_identity": "律师",
+        "relation": "合作"
+      },
+      "event": {
+        "type": "阅读",
+        "action": "购买",
+        "product": "法律书籍",
+        "quantity": 5,
+        "price": 300
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在北京书店购买了法律书籍，数量5"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在北京的书店，郑欣（法官）购买了法律书籍，觉得是个难得的机会，总共5，单价300元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "吴昊说郑欣在北京那边购买了法律书籍，据说差不多5，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "郑欣",
+        "北京",
+        "阅读",
+        "购买",
+        "法律书籍"
+      ]
+    },
+    {
+      "memory_id": "MEM000073",
+      "category": "存储测试测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2024-07-10 09:00:00",
+        "relative": "10个月前",
+        "fuzzy": "去年",
+        "timestamp": 1720573200
+      },
+      "location": {
+        "city": "上海",
+        "place": "健身房",
+        "landmark": "健身中心"
+      },
+      "person": {
+        "name": "刘洋",
+        "identity": "健身教练",
+        "partner_name": "陈静",
+        "partner_identity": "会员经理",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "健身",
+        "action": "购买",
+        "product": "私教课程",
+        "quantity": 10,
+        "price": 5000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "刘洋在上海健身房购买了私教课程，数量10"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "刘洋回忆道：当时在上海的健身房，刘洋（健身教练）购买了私教课程，觉得是个难得的机会，总共10，单价5000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "陈静说刘洋在上海那边购买了私教课程，听说差不多10，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "中等"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "刘洋",
+        "上海",
+        "健身",
+        "购买",
+        "私教课程"
+      ]
+    },
+    {
+      "memory_id": "MEM000074",
+      "category": "存储测试测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2024-06-05 14:00:00",
+        "relative": "12个月前",
+        "fuzzy": "去年",
+        "timestamp": 1717567200
+      },
+      "location": {
+        "city": "南京",
+        "place": "学校",
+        "landmark": "教学楼"
+      },
+      "person": {
+        "name": "黄丽",
+        "identity": "教师",
+        "partner_name": "林峰",
+        "partner_identity": "校长",
+        "relation": "上下级"
+      },
+      "event": {
+        "type": "教学",
+        "action": "购买",
+        "product": "教学设备",
+        "quantity": 20,
+        "price": 10000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "黄丽在南京学校购买了教学设备，数量20"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "黄丽回忆道：当时在南京的学校，黄丽（教师）购买了教学设备，认为这是正确方向，总共20，单价10000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "林峰说黄丽在南京那边购买了教学设备，据说差不多20，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "中等"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "黄丽",
+        "南京",
+        "教学",
+        "购买",
+        "教学设备"
+      ]
+    },
+    {
+      "memory_id": "MEM000081",
+      "category": "存储测试测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2024-06-20 09:00:00",
+        "relative": "11个月前",
+        "fuzzy": "去年",
+        "timestamp": 1718845200
+      },
+      "location": {
+        "city": "深圳",
+        "place": "手机店",
+        "landmark": "数码城"
+      },
+      "person": {
+        "name": "王芳",
+        "identity": "科技投资人",
+        "partner_name": "刘洋",
+        "partner_identity": "技术合伙人",
+        "relation": "合伙人"
+      },
+      "event": {
+        "type": "购物",
+        "action": "购买",
+        "product": "最新款手机",
+        "quantity": 1,
+        "price": 8000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "王芳在深圳手机店购买了最新款手机"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "王芳回忆道：当时在深圳的手机店，王芳（科技投资人）购买了最新款手机，认为值得全力以赴，单价8000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "刘洋说王芳在深圳那边购买了最新款手机，好像差不多有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "王芳",
+        "深圳",
+        "购物",
+        "购买",
+        "最新款手机"
+      ]
+    },
+    {
+      "memory_id": "MEM000082",
+      "category": "存储测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-05-10 14:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1715320800
+      },
+      "location": {
+        "city": "杭州",
+        "place": "电脑城",
+        "landmark": "科技市场"
+      },
+      "person": {
+        "name": "刘洋",
+        "identity": "健身教练",
+        "partner_name": "陈静",
+        "partner_identity": "会员经理",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "购物",
+        "action": "购买",
+        "product": "运动手表",
+        "quantity": 1,
+        "price": 2000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "刘洋在杭州电脑城购买了运动手表"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "刘洋回忆道：当时在杭州的电脑城，刘洋（健身教练）购买了运动手表，想趁窗口期推进，单价2000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "陈静说刘洋在杭州那边购买了运动手表，据说大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "刘洋",
+        "杭州",
+        "购物",
+        "购买",
+        "运动手表"
+      ]
+    },
+    {
+      "memory_id": "MEM000083",
+      "category": "存储测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-04-15 10:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1713146400
+      },
+      "location": {
+        "city": "广州",
+        "place": "家具城",
+        "landmark": "家居中心"
+      },
+      "person": {
+        "name": "陈静",
+        "identity": "个人投资者",
+        "partner_name": "赵磊",
+        "partner_identity": "交易员",
+        "relation": "对手"
+      },
+      "event": {
+        "type": "装修",
+        "action": "购买",
+        "product": "办公桌椅",
+        "quantity": 10,
+        "price": 5000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "陈静在广州家具城购买了办公桌椅，数量10"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "陈静回忆道：当时在广州的家具城，陈静（个人投资者）购买了办公桌椅，想趁窗口期推进，总共10，单价5000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "赵磊说陈静在广州那边购买了办公桌椅，据说差不多10，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "中等"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "陈静",
+        "广州",
+        "装修",
+        "购买",
+        "办公桌椅"
+      ]
+    },
+    {
+      "memory_id": "MEM000084",
+      "category": "存储测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-03-20 08:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1710892800
+      },
+      "location": {
+        "city": "南京",
+        "place": "书店",
+        "landmark": "文化中心"
+      },
+      "person": {
+        "name": "黄丽",
+        "identity": "教师",
+        "partner_name": "林峰",
+        "partner_identity": "校长",
+        "relation": "上下级"
+      },
+      "event": {
+        "type": "采购",
+        "action": "购买",
+        "product": "教学参考书",
+        "quantity": 30,
+        "price": 1500
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "黄丽在南京书店购买了教学参考书，数量30"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "黄丽回忆道：当时在南京的书店，黄丽（教师）购买了教学参考书，认为值得全力以赴，总共30，单价1500元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "林峰说黄丽在南京那边购买了教学参考书，据说差不多30，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "黄丽",
+        "南京",
+        "采购",
+        "购买",
+        "教学参考书"
+      ]
+    },
+    {
+      "memory_id": "MEM000085",
+      "category": "存储测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-02-28 14:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1709100000
+      },
+      "location": {
+        "city": "成都",
+        "place": "超市",
+        "landmark": "购物中心"
+      },
+      "person": {
+        "name": "赵磊",
+        "identity": "职业交易员",
+        "partner_name": "陈静",
+        "partner_identity": "个人投资者",
+        "relation": "对手"
+      },
+      "event": {
+        "type": "购物",
+        "action": "购买",
+        "product": "进口食品",
+        "quantity": 20,
+        "price": 800
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "赵磊在成都超市购买了进口食品，数量20"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "赵磊回忆道：当时在成都的超市，赵磊（职业交易员）购买了进口食品，觉得是个难得的机会，总共20，单价800元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "陈静说赵磊在成都那边购买了进口食品，据说大概20，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "存储测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "赵磊",
+        "成都",
+        "购物",
+        "购买",
+        "进口食品"
+      ]
+    },
+    {
+      "memory_id": "MEM000062",
       "category": "深度检索测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -2922,7 +4636,7 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在北京的清华大学，张伟（学生）研究了神经网络，认为这是正确方向"
+          "content": "张伟回忆道：当时在北京的清华大学，张伟（学生）研究了神经网络，觉得是个难得的机会"
         },
         {
           "version_id": "v3",
@@ -2955,7 +4669,7 @@
       ]
     },
     {
-      "memory_id": "MEM000046",
+      "memory_id": "MEM000063",
       "category": "深度检索测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -2998,7 +4712,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "导师说张伟在北京那边获得了创业项目推荐，好像左右有这回事，具体细节不太清楚"
+          "content": "导师说张伟在北京那边获得了创业项目推荐，好像差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -3026,7 +4740,7 @@
       ]
     },
     {
-      "memory_id": "MEM000047",
+      "memory_id": "MEM000064",
       "category": "深度检索测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -3069,7 +4783,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "李娜说张伟在北京那边获得了天使投资，听说差不多有这回事，具体细节不太清楚"
+          "content": "李娜说张伟在北京那边获得了天使投资，据说差不多有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -3097,7 +4811,149 @@
       ]
     },
     {
-      "memory_id": "MEM000048",
+      "memory_id": "MEM000075",
+      "category": "深度检索测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2021-03-10 09:00:00",
+        "relative": "3年前",
+        "fuzzy": "多年前",
+        "timestamp": 1615338000
+      },
+      "location": {
+        "city": "武汉",
+        "place": "医院",
+        "landmark": "门诊部"
+      },
+      "person": {
+        "name": "孙强",
+        "identity": "实习生",
+        "partner_name": "导师",
+        "partner_identity": "主任医师",
+        "relation": "师生"
+      },
+      "event": {
+        "type": "实习",
+        "action": "学习",
+        "product": "诊断技术",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙强在武汉医院学习了诊断技术"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙强回忆道：当时在武汉的医院，孙强（实习生）学习了诊断技术，认为值得全力以赴"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "导师说孙强在武汉那边学习了诊断技术，好像左右有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "深度检索",
+        "困难"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "depth": {
+        "layers": 5,
+        "associations": 3,
+        "semantic_distance": "远"
+      },
+      "retrieval_keywords": [
+        "孙强",
+        "武汉",
+        "实习",
+        "学习",
+        "诊断技术"
+      ]
+    },
+    {
+      "memory_id": "MEM000076",
+      "category": "深度检索测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2021-06-20 14:00:00",
+        "relative": "2年前",
+        "fuzzy": "多年前",
+        "timestamp": 1624168800
+      },
+      "location": {
+        "city": "武汉",
+        "place": "医学实验室",
+        "landmark": "科研中心"
+      },
+      "person": {
+        "name": "孙强",
+        "identity": "实习生",
+        "partner_name": "导师",
+        "partner_identity": "主任医师",
+        "relation": "师生"
+      },
+      "event": {
+        "type": "实验",
+        "action": "完成",
+        "product": "第一篇论文",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙强在武汉医学实验室完成了第一篇论文"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙强回忆道：当时在武汉的医学实验室，孙强（实习生）完成了第一篇论文，觉得是个难得的机会"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "导师说孙强在武汉那边完成了第一篇论文，好像左右有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "深度检索",
+        "困难"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "depth": {
+        "layers": 4,
+        "associations": 2,
+        "semantic_distance": "中"
+      },
+      "retrieval_keywords": [
+        "孙强",
+        "武汉",
+        "实验",
+        "完成",
+        "第一篇论文"
+      ]
+    },
+    {
+      "memory_id": "MEM000065",
       "category": "遗忘测试测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -3135,12 +4991,12 @@
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "张伟回忆道：当时在武汉的武汉大学，张伟（大学生）参加了创业比赛，想趁窗口期推进"
+          "content": "张伟回忆道：当时在武汉的武汉大学，张伟（大学生）参加了创业比赛，认为值得全力以赴"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "同学说张伟在武汉那边参加了创业比赛，听说大概有这回事，具体细节不太清楚"
+          "content": "同学说张伟在武汉那边参加了创业比赛，据说左右有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -3164,7 +5020,7 @@
       ]
     },
     {
-      "memory_id": "MEM000049",
+      "memory_id": "MEM000066",
       "category": "遗忘测试测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -3207,7 +5063,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "主管说张伟在武汉那边开发了第一个APP，据说差不多有这回事，具体细节不太清楚"
+          "content": "主管说张伟在武汉那边开发了第一个APP，听说左右有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -3231,7 +5087,7 @@
       ]
     },
     {
-      "memory_id": "MEM000050",
+      "memory_id": "MEM000067",
       "category": "遗忘测试测试集",
       "difficulty": "困难",
       "weight": 1.5,
@@ -3274,7 +5130,7 @@
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "同学说张伟在武汉那边结识了技术合伙人，听说大概有这回事，具体细节不太清楚"
+          "content": "同学说张伟在武汉那边结识了技术合伙人，据说左右有这回事，具体细节不太清楚"
         }
       ],
       "tags": [
@@ -3295,6 +5151,800 @@
         "结识",
         "结识",
         "技术合伙人"
+      ]
+    },
+    {
+      "memory_id": "MEM000077",
+      "category": "遗忘测试测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2019-09-01 08:00:00",
+        "relative": "5年前",
+        "fuzzy": "多年前",
+        "timestamp": 1567296000
+      },
+      "location": {
+        "city": "西安",
+        "place": "大学",
+        "landmark": "图书馆"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "学生",
+        "partner_name": "同学",
+        "partner_identity": "学生",
+        "relation": "同学"
+      },
+      "event": {
+        "type": "学习",
+        "action": "准备",
+        "product": "司法考试",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在西安大学准备了司法考试"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在西安的大学，郑欣（学生）准备了司法考试，想趁窗口期推进"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "同学说郑欣在西安那边准备了司法考试，听说大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "遗忘测试",
+        "简单",
+        "低频记忆"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": "低频记忆",
+        "access_count": 2
+      },
+      "retrieval_keywords": [
+        "郑欣",
+        "西安",
+        "学习",
+        "准备",
+        "司法考试"
+      ]
+    },
+    {
+      "memory_id": "MEM000078",
+      "category": "遗忘测试测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2019-12-20 14:00:00",
+        "relative": "5年前",
+        "fuzzy": "多年前",
+        "timestamp": 1576821600
+      },
+      "location": {
+        "city": "西安",
+        "place": "法院",
+        "landmark": "实习基地"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "实习生",
+        "partner_name": "导师",
+        "partner_identity": "法官",
+        "relation": "师生"
+      },
+      "event": {
+        "type": "实习",
+        "action": "观摩",
+        "product": "庭审过程",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在西安法院观摩了庭审过程"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在西安的法院，郑欣（实习生）观摩了庭审过程，想趁窗口期推进"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "导师说郑欣在西安那边观摩了庭审过程，听说差不多有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "遗忘测试",
+        "简单",
+        "低频记忆"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": "低频记忆",
+        "access_count": 1
+      },
+      "retrieval_keywords": [
+        "郑欣",
+        "西安",
+        "实习",
+        "观摩",
+        "庭审过程"
+      ]
+    },
+    {
+      "memory_id": "MEM000068",
+      "category": "检索测试测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2024-06-01 10:00:00",
+        "relative": "12个月前",
+        "fuzzy": "去年",
+        "timestamp": 1717207200
+      },
+      "location": {
+        "city": "广州",
+        "place": "餐厅",
+        "landmark": "美食街"
+      },
+      "person": {
+        "name": "吴昊",
+        "identity": "律师",
+        "partner_name": "郑欣",
+        "partner_identity": "法官",
+        "relation": "合作"
+      },
+      "event": {
+        "type": "聚餐",
+        "action": "组织",
+        "product": "团队聚餐",
+        "quantity": 1,
+        "price": 3000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "吴昊在广州餐厅组织了团队聚餐"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "吴昊回忆道：当时在广州的餐厅，吴昊（律师）组织了团队聚餐，认为这是正确方向，单价3000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "郑欣说吴昊在广州那边组织了团队聚餐，听说大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "中等"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "吴昊",
+        "广州",
+        "聚餐",
+        "组织",
+        "团队聚餐"
+      ]
+    },
+    {
+      "memory_id": "MEM000069",
+      "category": "检索测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-05-15 14:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1715752800
+      },
+      "location": {
+        "city": "西安",
+        "place": "学校",
+        "landmark": "教学楼"
+      },
+      "person": {
+        "name": "黄丽",
+        "identity": "教师",
+        "partner_name": "林峰",
+        "partner_identity": "校长",
+        "relation": "上下级"
+      },
+      "event": {
+        "type": "教学",
+        "action": "开展",
+        "product": "公开课",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "黄丽在西安学校开展了公开课"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "黄丽回忆道：当时在西安的学校，黄丽（教师）开展了公开课，认为值得全力以赴"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "林峰说黄丽在西安那边开展了公开课，好像差不多有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "黄丽",
+        "西安",
+        "教学",
+        "开展",
+        "公开课"
+      ]
+    },
+    {
+      "memory_id": "MEM000070",
+      "category": "检索测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-04-20 09:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1713574800
+      },
+      "location": {
+        "city": "南京",
+        "place": "体育馆",
+        "landmark": "健身中心"
+      },
+      "person": {
+        "name": "李娜",
+        "identity": "天使投资人",
+        "partner_name": "张伟",
+        "partner_identity": "创业者",
+        "relation": "合作伙伴"
+      },
+      "event": {
+        "type": "运动",
+        "action": "参加",
+        "product": "马拉松",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "李娜在南京体育馆参加了马拉松"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "李娜回忆道：当时在南京的体育馆，李娜（天使投资人）参加了马拉松，认为值得全力以赴"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "张伟说李娜在南京那边参加了马拉松，听说差不多有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "中等"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "李娜",
+        "南京",
+        "运动",
+        "参加",
+        "马拉松"
+      ]
+    },
+    {
+      "memory_id": "MEM000079",
+      "category": "检索测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-03-15 10:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1710468000
+      },
+      "location": {
+        "city": "苏州",
+        "place": "园林",
+        "landmark": "景观区"
+      },
+      "person": {
+        "name": "周梅",
+        "identity": "护士",
+        "partner_name": "孙强",
+        "partner_identity": "医生",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "旅游",
+        "action": "游览",
+        "product": "古典园林",
+        "quantity": 1,
+        "price": 100
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "周梅在苏州园林游览了古典园林"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "周梅回忆道：当时在苏州的园林，周梅（护士）游览了古典园林，认为值得全力以赴，单价100元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "孙强说周梅在苏州那边游览了古典园林，据说左右有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "周梅",
+        "苏州",
+        "旅游",
+        "游览",
+        "古典园林"
+      ]
+    },
+    {
+      "memory_id": "MEM000080",
+      "category": "检索测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-02-28 14:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1709100000
+      },
+      "location": {
+        "city": "成都",
+        "place": "茶馆",
+        "landmark": "休闲区"
+      },
+      "person": {
+        "name": "赵磊",
+        "identity": "职业交易员",
+        "partner_name": "陈静",
+        "partner_identity": "个人投资者",
+        "relation": "对手"
+      },
+      "event": {
+        "type": "休闲",
+        "action": "品尝",
+        "product": "成都茶",
+        "quantity": 1,
+        "price": 50
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "赵磊在成都茶馆品尝了成都茶"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "赵磊回忆道：当时在成都的茶馆，赵磊（职业交易员）品尝了成都茶，认为值得全力以赴，单价50元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "陈静说赵磊在成都那边品尝了成都茶，好像左右有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "赵磊",
+        "成都",
+        "休闲",
+        "品尝",
+        "成都茶"
+      ]
+    },
+    {
+      "memory_id": "MEM000086",
+      "category": "检索测试测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2024-07-01 10:00:00",
+        "relative": "11个月前",
+        "fuzzy": "去年",
+        "timestamp": 1719799200
+      },
+      "location": {
+        "city": "北京",
+        "place": "机场",
+        "landmark": "航站楼"
+      },
+      "person": {
+        "name": "张伟",
+        "identity": "创业者",
+        "partner_name": "李娜",
+        "partner_identity": "投资人",
+        "relation": "合作伙伴"
+      },
+      "event": {
+        "type": "出行",
+        "action": "乘坐",
+        "product": "航班",
+        "quantity": 1,
+        "price": 2000
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "张伟在北京机场乘坐了航班"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "张伟回忆道：当时在北京的机场，张伟（创业者）乘坐了航班，认为这是正确方向，单价2000元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "李娜说张伟在北京那边乘坐了航班，好像大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "中等"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "张伟",
+        "北京",
+        "出行",
+        "乘坐",
+        "航班"
+      ]
+    },
+    {
+      "memory_id": "MEM000087",
+      "category": "检索测试测试集",
+      "difficulty": "简单",
+      "weight": 0.5,
+      "time": {
+        "absolute": "2024-06-15 09:00:00",
+        "relative": "11个月前",
+        "fuzzy": "去年",
+        "timestamp": 1718413200
+      },
+      "location": {
+        "city": "上海",
+        "place": "酒店",
+        "landmark": "商务区"
+      },
+      "person": {
+        "name": "李明",
+        "identity": "金融分析师",
+        "partner_name": "王芳",
+        "partner_identity": "房产顾问",
+        "relation": "顾问"
+      },
+      "event": {
+        "type": "住宿",
+        "action": "预订",
+        "product": "商务酒店",
+        "quantity": 1,
+        "price": 800
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "李明在上海酒店预订了商务酒店"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "李明回忆道：当时在上海的酒店，李明（金融分析师）预订了商务酒店，觉得是个难得的机会，单价800元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "王芳说李明在上海那边预订了商务酒店，据说大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "李明",
+        "上海",
+        "住宿",
+        "预订",
+        "商务酒店"
+      ]
+    },
+    {
+      "memory_id": "MEM000088",
+      "category": "检索测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-05-20 14:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1716184800
+      },
+      "location": {
+        "city": "武汉",
+        "place": "博物馆",
+        "landmark": "展览中心"
+      },
+      "person": {
+        "name": "孙强",
+        "identity": "医生",
+        "partner_name": "周梅",
+        "partner_identity": "护士",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "参观",
+        "action": "参观",
+        "product": "历史展览",
+        "quantity": 1,
+        "price": 50
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "孙强在武汉博物馆参观了历史展览"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "孙强回忆道：当时在武汉的博物馆，孙强（医生）参观了历史展览，想趁窗口期推进，单价50元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "周梅说孙强在武汉那边参观了历史展览，听说大概有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "孙强",
+        "武汉",
+        "参观",
+        "参观",
+        "历史展览"
+      ]
+    },
+    {
+      "memory_id": "MEM000089",
+      "category": "检索测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-04-10 08:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1712707200
+      },
+      "location": {
+        "city": "西安",
+        "place": "餐厅",
+        "landmark": "美食街"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "法官",
+        "partner_name": "吴昊",
+        "partner_identity": "律师",
+        "relation": "合作"
+      },
+      "event": {
+        "type": "用餐",
+        "action": "品尝",
+        "product": "陕西面食",
+        "quantity": 1,
+        "price": 30
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在西安餐厅品尝了陕西面食"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在西安的餐厅，郑欣（法官）品尝了陕西面食，认为值得全力以赴，单价30元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "吴昊说郑欣在西安那边品尝了陕西面食，据说差不多有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "郑欣",
+        "西安",
+        "用餐",
+        "品尝",
+        "陕西面食"
+      ]
+    },
+    {
+      "memory_id": "MEM000090",
+      "category": "检索测试测试集",
+      "difficulty": "中等",
+      "weight": 1.0,
+      "time": {
+        "absolute": "2024-03-05 10:00:00",
+        "relative": "1年前",
+        "fuzzy": "前年",
+        "timestamp": 1709604000
+      },
+      "location": {
+        "city": "苏州",
+        "place": "园林",
+        "landmark": "景观区"
+      },
+      "person": {
+        "name": "周梅",
+        "identity": "护士",
+        "partner_name": "孙强",
+        "partner_identity": "医生",
+        "relation": "同事"
+      },
+      "event": {
+        "type": "旅游",
+        "action": "游览",
+        "product": "拙政园",
+        "quantity": 1,
+        "price": 80
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "周梅在苏州园林游览了拙政园"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "周梅回忆道：当时在苏州的园林，周梅（护士）游览了拙政园，认为值得全力以赴，单价80元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "孙强说周梅在苏州那边游览了拙政园，好像左右有这回事，具体细节不太清楚"
+        }
+      ],
+      "tags": [
+        "检索测试",
+        "简单"
+      ],
+      "cluster_id": null,
+      "reasoning_chain": null,
+      "chain_position": null,
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "周梅",
+        "苏州",
+        "旅游",
+        "游览",
+        "拙政园"
       ]
     }
   ],
@@ -3339,9 +5989,9 @@
     },
     {
       "query_id": "Q0003",
-      "query_text": "因为王芳在深圳投资了AI初创公司，后续导致了哪些事件？",
-      "query_type": "因果推理链",
-      "test_dimension": "因果推理",
+      "query_text": "孙强在武汉诊断了新型病毒，后续事件依次是什么？",
+      "query_type": "时序推理链",
+      "test_dimension": "时序推理",
       "expected_memory_ids": [
         "MEM000011",
         "MEM000012",
@@ -3349,16 +5999,16 @@
         "MEM000014",
         "MEM000015"
       ],
-      "expected_answer_text": "王芳在深圳投资了AI初创公司 → 王芳在深圳遭遇了算法优化难题 → 王芳在深圳聘请了顶尖工程师 → 王芳在深圳突破了核心算法 → 王芳在深圳获得了B轮融资",
+      "expected_answer_text": "孙强在武汉诊断了新型病毒 → 孙强在武汉研究了病毒基因序列 → 孙强在武汉合作了疫苗研发 → 孙强在武汉开展了临床试验 → 孙强在武汉接种了疫苗",
       "acceptable_answers": [
-        "王芳在深圳投资了AI初创公司 → 王芳在深圳遭遇了算法优化难题 → 王芳在深圳聘请了顶尖工程师 → 王芳在深圳突破了核心算法 → 王芳在深圳获得了B轮融资"
+        "孙强在武汉诊断了新型病毒 → 孙强在武汉研究了病毒基因序列 → 孙强在武汉合作了疫苗研发 → 孙强在武汉开展了临床试验 → 孙强在武汉接种了疫苗"
       ],
       "is_negative": false,
       "difficulty": "中等"
     },
     {
       "query_id": "Q0004",
-      "query_text": "因为刘洋在杭州开设了健身房，后续导致了哪些事件？",
+      "query_text": "因为王芳在深圳投资了AI初创公司，后续导致了哪些事件？",
       "query_type": "因果推理链",
       "test_dimension": "因果推理",
       "expected_memory_ids": [
@@ -3368,6 +6018,25 @@
         "MEM000019",
         "MEM000020"
       ],
+      "expected_answer_text": "王芳在深圳投资了AI初创公司 → 王芳在深圳遭遇了算法优化难题 → 王芳在深圳聘请了顶尖工程师 → 王芳在深圳突破了核心算法 → 王芳在深圳获得了B轮融资",
+      "acceptable_answers": [
+        "王芳在深圳投资了AI初创公司 → 王芳在深圳遭遇了算法优化难题 → 王芳在深圳聘请了顶尖工程师 → 王芳在深圳突破了核心算法 → 王芳在深圳获得了B轮融资"
+      ],
+      "is_negative": false,
+      "difficulty": "中等"
+    },
+    {
+      "query_id": "Q0005",
+      "query_text": "因为刘洋在杭州开设了健身房，后续导致了哪些事件？",
+      "query_type": "因果推理链",
+      "test_dimension": "因果推理",
+      "expected_memory_ids": [
+        "MEM000021",
+        "MEM000022",
+        "MEM000023",
+        "MEM000024",
+        "MEM000025"
+      ],
       "expected_answer_text": "刘洋在杭州开设了健身房 → 刘洋在杭州吸引了会员 → 刘洋在杭州开设了分店 → 刘洋在杭州引进了专业教练 → 刘洋在杭州实现了利润翻倍",
       "acceptable_answers": [
         "刘洋在杭州开设了健身房 → 刘洋在杭州吸引了会员 → 刘洋在杭州开设了分店 → 刘洋在杭州引进了专业教练 → 刘洋在杭州实现了利润翻倍"
@@ -3376,15 +6045,34 @@
       "difficulty": "中等"
     },
     {
-      "query_id": "Q0005",
+      "query_id": "Q0006",
+      "query_text": "因为郑欣在西安受理了知识产权案件，后续导致了哪些事件？",
+      "query_type": "因果推理链",
+      "test_dimension": "因果推理",
+      "expected_memory_ids": [
+        "MEM000026",
+        "MEM000027",
+        "MEM000028",
+        "MEM000029",
+        "MEM000030"
+      ],
+      "expected_answer_text": "郑欣在西安受理了知识产权案件 → 郑欣在西安调取了关键证据 → 郑欣在西安主持了法庭辩论 → 郑欣在西安委托了技术鉴定 → 郑欣在西安宣判了赔偿决定",
+      "acceptable_answers": [
+        "郑欣在西安受理了知识产权案件 → 郑欣在西安调取了关键证据 → 郑欣在西安主持了法庭辩论 → 郑欣在西安委托了技术鉴定 → 郑欣在西安宣判了赔偿决定"
+      ],
+      "is_negative": false,
+      "difficulty": "中等"
+    },
+    {
+      "query_id": "Q0007",
       "query_text": "陈静在成都购买了科技股，和赵磊的做法有什么不同？",
       "query_type": "对比推理链",
       "test_dimension": "对比推理",
       "expected_memory_ids": [
-        "MEM000021",
-        "MEM000022",
-        "MEM000023",
-        "MEM000024"
+        "MEM000031",
+        "MEM000032",
+        "MEM000033",
+        "MEM000034"
       ],
       "expected_answer_text": "陈静在成都购买了科技股 → 赵磊在成都出售了科技股 → 陈静在成都增持了仓位 → 赵磊在成都清仓了持仓",
       "acceptable_answers": [
@@ -3394,15 +6082,15 @@
       "difficulty": "中等"
     },
     {
-      "query_id": "Q0006",
+      "query_id": "Q0008",
       "query_text": "张伟在北京规划了智慧城市项目，这件事包含了哪些子事件？",
       "query_type": "包含推理链",
       "test_dimension": "包含推理",
       "expected_memory_ids": [
-        "MEM000025",
-        "MEM000026",
-        "MEM000027",
-        "MEM000028"
+        "MEM000035",
+        "MEM000036",
+        "MEM000037",
+        "MEM000038"
       ],
       "expected_answer_text": "张伟在北京规划了智慧城市项目 → 张伟在北京部署了交通管理系统 → 张伟在北京建设了数据中心 → 张伟在北京安装了监控系统",
       "acceptable_answers": [
@@ -3412,15 +6100,15 @@
       "difficulty": "中等"
     },
     {
-      "query_id": "Q0007",
+      "query_id": "Q0009",
       "query_text": "从李明在上海观察了在线教育趋势出发，能推导出什么？",
       "query_type": "推导推理链",
       "test_dimension": "推导推理",
       "expected_memory_ids": [
-        "MEM000029",
-        "MEM000030",
-        "MEM000031",
-        "MEM000032"
+        "MEM000039",
+        "MEM000040",
+        "MEM000041",
+        "MEM000042"
       ],
       "expected_answer_text": "李明在上海观察了在线教育趋势 → 李明在上海分析了市场需求 → 李明在上海判断了课程方向 → 李明在上海验证了商业模式",
       "acceptable_answers": [
@@ -3430,14 +6118,32 @@
       "difficulty": "中等"
     },
     {
-      "query_id": "Q0008",
+      "query_id": "Q0010",
+      "query_text": "从黄丽在南京观察了学生成绩下滑出发，能推导出什么？",
+      "query_type": "推导推理链",
+      "test_dimension": "推导推理",
+      "expected_memory_ids": [
+        "MEM000043",
+        "MEM000044",
+        "MEM000045",
+        "MEM000046"
+      ],
+      "expected_answer_text": "黄丽在南京观察了学生成绩下滑 → 黄丽在南京分析了教学方法 → 黄丽在南京判断了改革方案 → 黄丽在南京验证了改革效果",
+      "acceptable_answers": [
+        "黄丽在南京观察了学生成绩下滑 → 黄丽在南京分析了教学方法 → 黄丽在南京判断了改革方案 → 黄丽在南京验证了改革效果"
+      ],
+      "is_negative": false,
+      "difficulty": "中等"
+    },
+    {
+      "query_id": "Q0011",
       "query_text": "张伟的活动记录有哪些",
       "query_type": "聚类检索",
       "test_dimension": "聚类检索",
       "expected_memory_ids": [
-        "MEM000033",
-        "MEM000034",
-        "MEM000035"
+        "MEM000047",
+        "MEM000048",
+        "MEM000049"
       ],
       "expected_answer_text": "张伟在北京参加了行业峰会；张伟在深圳签署了合作协议；张伟在杭州考察了市场前景",
       "acceptable_answers": [
@@ -3447,14 +6153,14 @@
       "difficulty": "简单"
     },
     {
-      "query_id": "Q0009",
+      "query_id": "Q0012",
       "query_text": "关于体检的事件有哪些",
       "query_type": "聚类检索",
       "test_dimension": "聚类检索",
       "expected_memory_ids": [
-        "MEM000036",
-        "MEM000037",
-        "MEM000038"
+        "MEM000050",
+        "MEM000051",
+        "MEM000052"
       ],
       "expected_answer_text": "王芳在深圳预约了健康体检；刘洋在杭州购买了医疗保险；陈静在成都咨询了专家门诊",
       "acceptable_answers": [
@@ -3464,14 +6170,14 @@
       "difficulty": "简单"
     },
     {
-      "query_id": "Q0010",
+      "query_id": "Q0013",
       "query_text": "在北京发生的事件有哪些",
       "query_type": "聚类检索",
       "test_dimension": "聚类检索",
       "expected_memory_ids": [
-        "MEM000039",
-        "MEM000040",
-        "MEM000041"
+        "MEM000053",
+        "MEM000054",
+        "MEM000055"
       ],
       "expected_answer_text": "李明在北京拜访了投资人；王芳在北京出席了学术会议；刘洋在北京参加了创业分享会",
       "acceptable_answers": [
@@ -3481,29 +6187,46 @@
       "difficulty": "简单"
     },
     {
-      "query_id": "Q0011",
-      "query_text": "关于陈静在成都购买了数据分析课程的详情，多说点",
-      "query_type": "跨版本",
-      "test_dimension": "跨版本",
+      "query_id": "Q0014",
+      "query_text": "李娜的活动记录有哪些",
+      "query_type": "聚类检索",
+      "test_dimension": "聚类检索",
       "expected_memory_ids": [
-        "MEM000042"
+        "MEM000056",
+        "MEM000057",
+        "MEM000058"
       ],
-      "expected_answer_text": "陈静在成都购买了数据分析课程",
+      "expected_answer_text": "李娜在深圳投资了人工智能项目；李娜在广州评审了创业项目；李娜在苏州考察了科技企业",
       "acceptable_answers": [
-        "陈静在成都教育中心购买了数据分析课程",
-        "陈静回忆道：当时在成都的教育中心，陈静（个人投资者）购买了数据分析课程，认为值得全力以赴，单价5000元",
-        "赵磊说陈静在成都那边购买了数据分析课程，据说左右有这回事，具体细节不太清楚"
+        "李娜在深圳投资了人工智能项目；李娜在广州评审了创业项目；李娜在苏州考察了科技企业"
       ],
       "is_negative": false,
       "difficulty": "简单"
     },
     {
-      "query_id": "Q0012",
+      "query_id": "Q0015",
+      "query_text": "关于陈静在成都购买了数据分析课程的详情，多说点",
+      "query_type": "跨版本",
+      "test_dimension": "跨版本",
+      "expected_memory_ids": [
+        "MEM000059"
+      ],
+      "expected_answer_text": "陈静在成都购买了数据分析课程",
+      "acceptable_answers": [
+        "陈静在成都教育中心购买了数据分析课程",
+        "陈静回忆道：当时在成都的教育中心，陈静（个人投资者）购买了数据分析课程，想趁窗口期推进，单价5000元",
+        "赵磊说陈静在成都那边购买了数据分析课程，好像差不多有这回事，具体细节不太清楚"
+      ],
+      "is_negative": false,
+      "difficulty": "简单"
+    },
+    {
+      "query_id": "Q0016",
       "query_text": "张伟的早期经历对后续发展有什么影响",
       "query_type": "深度推理",
       "test_dimension": "深度检索",
       "expected_memory_ids": [
-        "MEM000045"
+        "MEM000062"
       ],
       "expected_answer_text": "张伟在北京研究了神经网络",
       "acceptable_answers": [
@@ -3513,12 +6236,12 @@
       "difficulty": "困难"
     },
     {
-      "query_id": "Q0013",
+      "query_id": "Q0017",
       "query_text": "张伟在武汉期间有什么经历",
       "query_type": "遗忘",
       "test_dimension": "遗忘功能",
       "expected_memory_ids": [
-        "MEM000048"
+        "MEM000065"
       ],
       "expected_answer_text": "张伟在武汉参加了创业比赛",
       "acceptable_answers": [
@@ -3528,7 +6251,52 @@
       "difficulty": "困难"
     },
     {
-      "query_id": "Q0014",
+      "query_id": "Q0018",
+      "query_text": "吴昊做了什么",
+      "query_type": "人物检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000068"
+      ],
+      "expected_answer_text": "吴昊在广州组织了团队聚餐",
+      "acceptable_answers": [
+        "吴昊在广州组织了团队聚餐"
+      ],
+      "is_negative": false,
+      "difficulty": "简单"
+    },
+    {
+      "query_id": "Q0019",
+      "query_text": "在西安发生过什么",
+      "query_type": "地点检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000069"
+      ],
+      "expected_answer_text": "黄丽在西安开展了公开课",
+      "acceptable_answers": [
+        "黄丽在西安开展了公开课"
+      ],
+      "is_negative": false,
+      "difficulty": "中等"
+    },
+    {
+      "query_id": "Q0020",
+      "query_text": "关于马拉松的事件有哪些",
+      "query_type": "事件检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000070"
+      ],
+      "expected_answer_text": "李娜在南京参加了马拉松",
+      "acceptable_answers": [
+        "李娜在南京参加了马拉松"
+      ],
+      "is_negative": false,
+      "difficulty": "中等"
+    },
+    {
+      "query_id": "Q0021",
       "query_text": "张伟做了什么",
       "query_type": "人物检索",
       "test_dimension": "精确检索",
@@ -3543,7 +6311,7 @@
       "difficulty": "中等"
     },
     {
-      "query_id": "Q0015",
+      "query_id": "Q0022",
       "query_text": "在北京发生过什么",
       "query_type": "地点检索",
       "test_dimension": "精确检索",
@@ -3558,7 +6326,7 @@
       "difficulty": "中等"
     },
     {
-      "query_id": "Q0016",
+      "query_id": "Q0023",
       "query_text": "关于新能源汽车的事件有哪些",
       "query_type": "事件检索",
       "test_dimension": "精确检索",
@@ -3573,7 +6341,7 @@
       "difficulty": "中等"
     },
     {
-      "query_id": "Q0017",
+      "query_id": "Q0024",
       "query_text": "张伟在北京的启动记录",
       "query_type": "组合检索",
       "test_dimension": "组合检索",
@@ -3588,7 +6356,7 @@
       "difficulty": "中等"
     },
     {
-      "query_id": "Q0018",
+      "query_id": "Q0025",
       "query_text": "张三在火星购买了房产",
       "query_type": "负样本",
       "test_dimension": "负样本",
@@ -3599,7 +6367,7 @@
       "difficulty": "简单"
     },
     {
-      "query_id": "Q0019",
+      "query_id": "Q0026",
       "query_text": "李四在月球开设了餐厅",
       "query_type": "负样本",
       "test_dimension": "负样本",
@@ -3610,8 +6378,41 @@
       "difficulty": "简单"
     },
     {
-      "query_id": "Q0020",
+      "query_id": "Q0027",
       "query_text": "王五在木星投资了股票",
+      "query_type": "负样本",
+      "test_dimension": "负样本",
+      "expected_memory_ids": [],
+      "expected_answer_text": "",
+      "acceptable_answers": [],
+      "is_negative": true,
+      "difficulty": "简单"
+    },
+    {
+      "query_id": "Q0028",
+      "query_text": "孙悟空在北京参加了行业峰会",
+      "query_type": "负样本",
+      "test_dimension": "负样本",
+      "expected_memory_ids": [],
+      "expected_answer_text": "",
+      "acceptable_answers": [],
+      "is_negative": true,
+      "difficulty": "简单"
+    },
+    {
+      "query_id": "Q0029",
+      "query_text": "张伟在成都会见了外星人",
+      "query_type": "负样本",
+      "test_dimension": "负样本",
+      "expected_memory_ids": [],
+      "expected_answer_text": "",
+      "acceptable_answers": [],
+      "is_negative": true,
+      "difficulty": "简单"
+    },
+    {
+      "query_id": "Q0030",
+      "query_text": "李明在2028年购买了房产",
       "query_type": "负样本",
       "test_dimension": "负样本",
       "expected_memory_ids": [],
