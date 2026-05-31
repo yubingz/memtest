@@ -520,7 +520,7 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                         p_product = first_mem["event"]["product"]
                         
                         if dim_name == "时序推理":
-                            qtext = f'{p_name}的{p_action}链后续事件依次是什么？'
+                            qtext = f'{p_name}的后续事件依次是什么？'
                         elif dim_name == "因果推理":
                             qtext = f'因为{p_name}{p_action}了{p_product}，导致了哪些后续事件？'
                         elif dim_name == "对比推理":
@@ -1264,8 +1264,9 @@ if __name__ == "__main__":
             print(f"[警告] LLM初始化失败: {e}，回退到程序化模式")
             use_llm = False
 
-    # 重新生成数据
-    db = build_database(100, domain="daily", time_distribution="recent")
-    with open("sample_db.json", "w", encoding="utf-8") as f:
+    db = build_database(size, use_llm=use_llm, llm=llm, domain=domain, time_distribution=time_distribution)
+    db_file = f"test_db_{size}.json" if full or size > 100 else "sample_db.json"
+    with open(db_file, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
-    print(f"Generated sample_db.json: {len(db['memories'])} memories, {len(db['queries'])} queries")
+    print(f"Generated {db_file}: {len(db['memories'])} memories, {len(db['queries'])} queries")
+    print(f"Domain: {domain}, Time distribution: {time_distribution}")
