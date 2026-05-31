@@ -371,52 +371,57 @@ TEST_DIMENSIONS = {
     "负样本": {"description": "不相关查询过滤", "ratio": 0.20, "query_types": ["负样本"]},
 }
 
-def _get_memory_dimension(m: dict) -> str:
-    """根据记忆特征判断其最适合的评测维度。"""
+def _get_memory_dimensions(m: dict) -> list:
+    """返回记忆适用的所有维度列表。记忆可以同时拥有多个属性。"""
+    dims = []
     if m.get("chain_relation") == "时序":
-        return "时序推理"
+        dims.append("时序推理")
     elif m.get("chain_relation") == "因果":
-        return "因果推理"
+        dims.append("因果推理")
     elif m.get("chain_relation") == "对比":
-        return "对比推理"
+        dims.append("对比推理")
     elif m.get("chain_relation") == "包含":
-        return "包含推理"
+        dims.append("包含推理")
     elif m.get("chain_relation") == "推导":
-        return "推导推理"
-    elif m.get("cluster_id"):
-        return "聚类检索"
-    elif m.get("category") == "存储正确性测试集":
-        return "精确检索"
+        dims.append("推导推理")
+    
+    if m.get("cluster_id"):
+        dims.append("聚类检索")
+    
+    if m.get("category") == "存储正确性测试集":
+        dims.append("精确检索")
     elif m.get("category") == "长期记忆深度检索测试集":
-        return "跨版本"
-    else:
-        return "组合检索"
+        dims.append("跨版本")
+    
+    if not dims:
+        dims.append("组合检索")
+    
+    return dims
+
 
 def _allocate_queries_by_dimension(memories: list, count: int) -> dict:
-    """按评测维度分配查询配额，返回 dimension -> [memories] 映射。"""
+    """按评测维度分配查询配额。一条记忆可以分配到多个维度。"""
     allocations = {}
     for dim_name, dim_cfg in TEST_DIMENSIONS.items():
         n = max(1, int(count * dim_cfg["ratio"]))
         allocations[dim_name] = n
     
-    # 按维度分组记忆
+    # 按维度分组记忆（一条记忆可以出现在多个维度）
     dim_memories = defaultdict(list)
     for m in memories:
-        dim = _get_memory_dimension(m)
-        dim_memories[dim].append(m)
+        dims = _get_memory_dimensions(m)
+        for d in dims:
+            dim_memories[d].append(m)
     
-    # 分配查询到记忆
+    # 分配查询到记忆（每个维度独立选择）
     result = defaultdict(list)
-    used_mems = set()
     
     for dim_name, target_count in allocations.items():
-        available = [m for m in dim_memories[dim_name] if m["memory_id"] not in used_mems]
+        available = dim_memories[dim_name]
         if not available:
             continue
         n = min(target_count, len(available))
         selected = random.sample(available, n)
-        for m in selected:
-            used_mems.add(m["memory_id"])
         result[dim_name] = selected
     
     return dict(result)
@@ -447,6 +452,7 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
     dim_allocations = _allocate_queries_by_dimension(memories, count)
     
     # 生成各维度查询
+    used_texts = set()  # 避免查询文本重复
     used_chains = set()  # 每条链只生成一个查询
     for dim_name, mems in dim_allocations.items():
         if dim_name == "负样本":
@@ -464,12 +470,71 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                 elif qtype == "组合检索":
                     qtext = f'{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
                 elif qtype == "聚类检索":
-                    # 使用记忆的产品名或标签中的真实关键词，避免代码变量名
-                    theme = m.get("event", {}).get("product", "")
-                    if not theme or theme in ["event_type", "location", "memory_id"]:
-                        tags = m.get("tags", [])
-                        theme = tags[0] if tags else "相关"
-                    qtext = f'关于{theme}的记录有哪些'
+                    # 找到同一 cluster 的所有记忆
+                    cid = m.get("cluster_id", "")
+                    cluster_mems = [x for x in memories if x.get("cluster_id") == cid] if cid else [m]
+                    
+                    # 从 cluster 标签提取共同维度（person/product/location）
+                    tags = m.get("tags", [])
+                    if len(tags) >= 4 and tags[2] in ["person", "product", "location"]:
+                        dim_type = tags[2]
+                        dim_value = tags[3]
+                        theme = dim_value  # 用于答案文本
+                        if dim_type == "person":
+                            qtext = f'{dim_value}的活动记录有哪些'
+                        elif dim_type == "product":
+                            qtext = f'关于{dim_value}的记录有哪些'
+                        elif dim_type == "location":
+                            qtext = f'在{dim_value}的记录有哪些'
+                        else:
+                            qtext = f'关于{dim_value}的记录有哪些'
+                    else:
+                        theme = m.get("event", {}).get("product", "相关")
+                        qtext = f'关于{theme}的记录有哪些'
+                    
+                    # 聚类查询指向同一 cluster 的所有记忆
+                    expected_mem_ids = [x["memory_id"] for x in cluster_mems]
+                    
+                    # 聚类答案：汇总所有成员
+                    cluster_summary = []
+                    for cm in cluster_mems:
+                        cluster_summary.append(f'{cm["person"]["name"]}在{cm["location"]["city"]}{cm["event"]["action"]}了{cm["event"]["product"]}')
+                    cluster_text = "；".join(cluster_summary)
+                    
+                    structured_answer = {
+                        "cluster_id": cid,
+                        "members": [
+                            {
+                                "person": cm["person"]["name"],
+                                "location": cm["location"]["city"],
+                                "action": cm["event"]["action"],
+                                "product": cm["event"]["product"],
+                                "time": cm["time"]["absolute"]
+                            }
+                            for cm in cluster_mems
+                        ]
+                    }
+                    answer_text = f'聚类{theme}：{cluster_text}'
+                    
+                    # 检查查询文本是否重复
+                    if qtext in used_texts:
+                        continue
+                    used_texts.add(qtext)
+                    
+                    queries.append({
+                        "query_id": f"Q{len(queries)+1:04d}",
+                        "query_text": qtext,
+                        "query_type": qtype,
+                        "test_dimension": dim_name,
+                        "expected_memory_ids": expected_mem_ids,
+                        "expected_answer": structured_answer,
+                        "expected_answer_text": answer_text,
+                        "acceptable_answers": [cluster_text],
+                        "expected_time": m["time"]["absolute"],
+                        "difficulty": m["difficulty"],
+                        "search_depth": "中层"
+                    })
+                    continue  # 跳过默认处理
                 elif qtype == "跨版本":
                     # 自然语言提问，不指定风格
                     qtext = f'关于{m["person"]["name"]}在{m["location"]["city"]}{m["event"]["action"]}的详情，多说点'
@@ -483,6 +548,11 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                 # 结构化答案
                 structured_answer = _format_answer_structured(m)
                 answer_text = _format_answer_text(m)
+                
+                # 检查查询文本是否重复
+                if qtext in used_texts:
+                    continue
+                used_texts.add(qtext)
                 
                 queries.append({
                     "query_id": f"Q{len(queries)+1:04d}",
@@ -519,6 +589,11 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                         p_action = first_mem["event"]["action"]
                         p_product = first_mem["event"]["product"]
                         p_city = first_mem["location"]["city"]
+                        
+                        # 避免时间虚词作为动作（"之后了"语法错误）
+                        time_words = {"之后", "然后", "接着", "随后"}
+                        if p_action in time_words:
+                            p_action = "进行"
                         
                         if dim_name == "时序推理":
                             qtext = f'{p_name}在{p_city}{p_action}了{p_product}，后续事件依次是什么？'
@@ -557,6 +632,11 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                         # expected_memory_ids = 链中所有成员
                         expected_mem_ids = [cm["memory_id"] for cm in chain_mems]
                         
+                        # 检查查询文本是否重复
+                        if qtext in used_texts:
+                            continue
+                        used_texts.add(qtext)
+                        
                         queries.append({
                             "query_id": f"Q{len(queries)+1:04d}",
                             "query_text": qtext,
@@ -580,6 +660,11 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                 # 结构化答案
                 structured_answer = _format_answer_structured(m)
                 answer_text = _format_answer_text(m)
+                
+                # 检查查询文本是否重复
+                if qtext in used_texts:
+                    continue
+                used_texts.add(qtext)
                 
                 queries.append({
                     "query_id": f"Q{len(queries)+1:04d}",
@@ -1032,12 +1117,12 @@ class MemoryGenerator:
                             next_base["event_type"] = base["event_type"]
                         base = next_base
                 
-                # 时序链：按时间重新排序（确保时间递增）
-                if logic_type == "时序":
-                    chain_mems.sort(key=lambda x: x["time"]["absolute"])
-                    for i, m in enumerate(chain_mems):
-                        m["chain_position"] = i + 1
-                        m["chain_hop"] = i + 1
+                # 时序链：保持 hop 顺序作为逻辑顺序（hop 0 时间最早，days_ago 递减）
+                # 不再按时间重新排序，因为 days_ago 递减已经确保时间顺序
+                # 如果 days_ago 达到 0，排序不稳定会导致 chain_position 错乱
+                for i, m in enumerate(chain_mems):
+                    m["chain_position"] = i + 1
+                    m["chain_hop"] = i + 1
                 
                 # 设置链连接（prev/next）
                 for i, m in enumerate(chain_mems):
@@ -1048,11 +1133,10 @@ class MemoryGenerator:
         return result
 
     def _build_temporal_chains(self, memories: list) -> list:
-        """后处理：对同一人物的记忆按时间排序建立时序链。
+        """后处理：对没有 chain_relation 的同一人物记忆按时间排序建立时序链。
         
-        时间链作为逻辑关系的一种：
-        - 有绝对时间：按时间戳排序
-        - 无绝对时间：跳过（保持原顺序）
+        注意：只处理没有 chain_relation 的记忆（包括有 cluster_id 的）。
+        已有 chain 的记忆（如 gen_reasoning 生成的因果/对比/推导/包含链）保持原样。
         """
         # 按人物分组
         person_groups = defaultdict(list)
@@ -1063,8 +1147,8 @@ class MemoryGenerator:
         
         chain_counter = 1
         for pn, mems in person_groups.items():
-            # 只处理没有已有非时序链关系的记忆（保护 gen_reasoning 生成的因果/对比/推导/包含链）
-            eligible = [m for m in mems if not m.get("chain_relation") or m.get("chain_relation") == "时序"]
+            # 只处理没有 chain 的记忆（可以已有 cluster_id）
+            eligible = [m for m in mems if not m.get("chain_relation")]
             # 只处理有绝对时间的记忆
             with_time = [m for m in eligible if m.get("time", {}).get("absolute")]
             if len(with_time) < 3:

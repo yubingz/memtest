@@ -11,7 +11,7 @@
       "检索功能测试集": 17,
       "遗忘功能测试集": 17
     },
-    "created_at": "2026-05-31 20:16:04"
+    "created_at": "2026-05-31 21:23:36"
   },
   "memories": [
     {
@@ -20,10 +20,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "沈阳",
@@ -85,10 +85,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-04-01 20:16:04",
+        "absolute": "2025-04-01 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1743509764
+        "timestamp": 1743513816
       },
       "location": {
         "city": "杭州",
@@ -149,10 +149,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-06-25 20:16:04",
+        "absolute": "2025-06-25 21:23:36",
         "relative": "11个月前",
         "fuzzy": "半年前",
-        "timestamp": 1750853764
+        "timestamp": 1750857816
       },
       "location": {
         "city": "上海",
@@ -198,72 +198,72 @@
       ],
       "cluster_id": "CLUSTER0001",
       "reasoning_chain": "CHAIN_temporal_0001",
-      "chain_position": 5,
+      "chain_position": 4,
       "decay": {
         "level": null,
         "access_count": 0
       },
-      "chain_hop": 5,
+      "chain_hop": 4,
       "chain_total": 6,
       "chain_relation": "时序",
-      "chain_prev": "MEM000094",
-      "chain_next": "MEM000096"
+      "chain_prev": "MEM000134",
+      "chain_next": "MEM000147"
     },
     {
-      "memory_id": "MEM000094",
+      "memory_id": "MEM000093",
       "category": "逻辑推理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
+      "difficulty": "困难",
+      "weight": 1.5,
       "time": {
-        "absolute": "2025-06-24 20:16:04",
-        "relative": "11个月前",
-        "fuzzy": "半年前",
-        "timestamp": 1750767364
+        "absolute": "2026-05-31 21:23:36",
+        "relative": "刚刚",
+        "fuzzy": "今天",
+        "timestamp": 1780233816
       },
       "location": {
         "city": "大连",
-        "place": "幼儿园",
-        "landmark": "非遗街区"
+        "place": "大悦城",
+        "landmark": "机场航站楼"
       },
       "person": {
         "name": "韩十八",
-        "identity": "检验师",
-        "partner_name": "陶三十四",
-        "partner_identity": "家政",
-        "relation": "二房东"
+        "identity": "司机",
+        "partner_name": "金三十二",
+        "partner_identity": "仲裁员",
+        "relation": "兄弟"
       },
       "event": {
-        "type": "参加会议",
-        "action": "之后",
-        "product": "保险",
-        "quantity": 598,
-        "price": 838
+        "type": "庆祝生日",
+        "action": "启动",
+        "product": "家具",
+        "quantity": 8850,
+        "price": 4077
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "韩十八在大连幼儿园之后了保险，数量598"
+          "content": "韩十八在大连大悦城启动了家具，数量8850"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "韩十八回忆道：当时大连的幼儿园，韩十八（检验师）之后了保险，想趁低价入手，总共598，单价838元"
+          "content": "韩十八回忆道：当时大连的大悦城，韩十八（司机）启动了家具，认为值得投入，总共8850，单价4077元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "陶三十四说韩十八在大连那边之后了保险，应该大概598的样子，具体价格不太清楚"
+          "content": "金三十二说韩十八在大连那边启动了家具，听说差不多8850的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "简单",
+        "困难",
         "时序"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0001",
-      "chain_position": 4,
+      "reasoning_chain": "CHAIN_时序_0092",
+      "chain_position": 1,
       "decay": {
         "level": null,
         "access_count": 0
@@ -271,11 +271,11 @@
       "logic": {
         "type": "时序"
       },
-      "chain_hop": 4,
-      "chain_total": 6,
+      "chain_hop": 1,
+      "chain_total": 5,
       "chain_relation": "时序",
-      "chain_prev": "MEM000134",
-      "chain_next": "MEM000037"
+      "chain_prev": "",
+      "chain_next": "MEM000094"
     },
     {
       "memory_id": "MEM000071",
@@ -283,10 +283,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-04-09 20:16:04",
+        "absolute": "2026-04-09 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1775736964
+        "timestamp": 1775741016
       },
       "location": {
         "city": "南昌",
@@ -351,10 +351,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-08 20:16:04",
+        "absolute": "2026-05-08 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778242564
+        "timestamp": 1778246616
       },
       "location": {
         "city": "昆明",
@@ -419,10 +419,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-02-15 20:16:04",
+        "absolute": "2026-02-15 21:23:36",
         "relative": "3个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1771157764
+        "timestamp": 1771161816
       },
       "location": {
         "city": "长春",
@@ -466,8 +466,8 @@
         "时序"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0007",
-      "chain_position": 6,
+      "reasoning_chain": "CHAIN_时序_0081",
+      "chain_position": 2,
       "decay": {
         "level": null,
         "access_count": 0
@@ -475,11 +475,11 @@
       "logic": {
         "type": "时序"
       },
-      "chain_hop": 6,
-      "chain_total": 6,
+      "chain_hop": 2,
+      "chain_total": 5,
       "chain_relation": "时序",
-      "chain_prev": "MEM000017",
-      "chain_next": ""
+      "chain_prev": "MEM000082",
+      "chain_next": "MEM000084"
     },
     {
       "memory_id": "MEM000123",
@@ -487,10 +487,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-01-18 20:16:04",
+        "absolute": "2026-01-18 21:23:36",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1768738564
+        "timestamp": 1768742616
       },
       "location": {
         "city": "重庆",
@@ -555,10 +555,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-11-22 20:16:04",
+        "absolute": "2025-11-22 21:23:36",
         "relative": "6个月前",
         "fuzzy": "半年前",
-        "timestamp": 1763813764
+        "timestamp": 1763817816
       },
       "location": {
         "city": "沈阳",
@@ -622,10 +622,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-23 20:16:04",
+        "absolute": "2026-05-23 21:23:36",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779538564
+        "timestamp": 1779542616
       },
       "location": {
         "city": "杭州",
@@ -669,7 +669,7 @@
         "低频记忆"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0019",
+      "reasoning_chain": "CHAIN_temporal_0018",
       "chain_position": 3,
       "decay": {
         "level": "低频记忆",
@@ -682,55 +682,55 @@
       "chain_next": ""
     },
     {
-      "memory_id": "MEM000095",
+      "memory_id": "MEM000097",
       "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
+      "difficulty": "困难",
+      "weight": 1.5,
       "time": {
-        "absolute": "2026-05-31 20:16:04",
-        "relative": "刚刚",
-        "fuzzy": "今天",
-        "timestamp": 1780229764
+        "absolute": "2026-05-24 21:23:36",
+        "relative": "1周前",
+        "fuzzy": "上周",
+        "timestamp": 1779629016
       },
       "location": {
         "city": "大连",
-        "place": "小学",
-        "landmark": "地铁站"
+        "place": "植物园",
+        "landmark": "灯塔"
       },
       "person": {
         "name": "韩十八",
-        "identity": "经销商",
-        "partner_name": "杨十九",
-        "partner_identity": "石匠",
-        "relation": "狱友"
+        "identity": "快递员",
+        "partner_name": "何二十四",
+        "partner_identity": "外卖员",
+        "relation": "乙方"
       },
       "event": {
-        "type": "参加面试",
-        "action": "然后",
-        "product": "运动器材",
-        "quantity": 296,
-        "price": 8271
+        "type": "拜访客户",
+        "action": "结束",
+        "product": "手机",
+        "quantity": 378,
+        "price": 1805
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "韩十八在大连小学然后了运动器材，数量296"
+          "content": "韩十八在大连植物园结束了手机，数量378"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "韩十八回忆道：当时大连的小学，韩十八（经销商）然后了运动器材，认为价格合适，总共296，单价8271元"
+          "content": "韩十八回忆道：当时大连的植物园，韩十八（快递员）结束了手机，觉得是个机会，总共378，单价1805元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "杨十九说韩十八在大连那边然后了运动器材，听说大概296的样子，具体价格不太清楚"
+          "content": "何二十四说韩十八在大连那边结束了手机，应该可能378的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "中等",
+        "困难",
         "时序"
       ],
       "cluster_id": null,
@@ -746,7 +746,7 @@
       "chain_hop": 5,
       "chain_total": 5,
       "chain_relation": "时序",
-      "chain_prev": "MEM000093",
+      "chain_prev": "MEM000096",
       "chain_next": ""
     },
     {
@@ -755,10 +755,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-03-06 20:16:04",
+        "absolute": "2026-03-06 21:23:36",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1772799364
+        "timestamp": 1772803416
       },
       "location": {
         "city": "深圳",
@@ -823,10 +823,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-14 20:16:04",
+        "absolute": "2026-05-14 21:23:36",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1778760964
+        "timestamp": 1778765016
       },
       "location": {
         "city": "南昌",
@@ -870,7 +870,7 @@
         "低频记忆"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0017",
+      "reasoning_chain": "CHAIN_temporal_0016",
       "chain_position": 3,
       "decay": {
         "level": "低频记忆",
@@ -888,10 +888,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-03-19 20:16:04",
+        "absolute": "2026-03-19 21:23:36",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1773922564
+        "timestamp": 1773926616
       },
       "location": {
         "city": "济南",
@@ -955,10 +955,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-12-06 20:16:04",
+        "absolute": "2025-12-06 21:23:36",
         "relative": "5个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1765023364
+        "timestamp": 1765027416
       },
       "location": {
         "city": "上海",
@@ -1023,10 +1023,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-02 20:16:04",
+        "absolute": "2026-05-02 21:23:36",
         "relative": "4周前",
         "fuzzy": "上周",
-        "timestamp": 1777724164
+        "timestamp": 1777728216
       },
       "location": {
         "city": "青岛",
@@ -1071,7 +1071,7 @@
         "李明"
       ],
       "cluster_id": "CLUSTER0005",
-      "reasoning_chain": "CHAIN_temporal_0015",
+      "reasoning_chain": "CHAIN_temporal_0014",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -1089,10 +1089,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-01 20:16:04",
+        "absolute": "2026-05-01 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1777637764
+        "timestamp": 1777641816
       },
       "location": {
         "city": "昆明",
@@ -1157,10 +1157,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-09 20:16:04",
+        "absolute": "2026-05-09 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778328964
+        "timestamp": 1778333016
       },
       "location": {
         "city": "南京",
@@ -1205,7 +1205,7 @@
         "张伟"
       ],
       "cluster_id": "CLUSTER0006",
-      "reasoning_chain": "CHAIN_temporal_0016",
+      "reasoning_chain": "CHAIN_temporal_0015",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -1223,10 +1223,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-04 20:16:04",
+        "absolute": "2026-05-04 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1777896964
+        "timestamp": 1777901016
       },
       "location": {
         "city": "哈尔滨",
@@ -1291,10 +1291,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-09-18 20:16:04",
+        "absolute": "2025-09-18 21:23:36",
         "relative": "8个月前",
         "fuzzy": "半年前",
-        "timestamp": 1758197764
+        "timestamp": 1758201816
       },
       "location": {
         "city": "上海",
@@ -1357,10 +1357,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-04-05 20:16:04",
+        "absolute": "2026-04-05 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1775391364
+        "timestamp": 1775395416
       },
       "location": {
         "city": "昆明",
@@ -1425,10 +1425,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-05-11 20:16:04",
+        "absolute": "2025-05-11 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1746965764
+        "timestamp": 1746969816
       },
       "location": {
         "city": "重庆",
@@ -1492,10 +1492,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-04-01 20:16:04",
+        "absolute": "2025-04-01 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1743509764
+        "timestamp": 1743513816
       },
       "location": {
         "city": "重庆",
@@ -1553,7 +1553,7 @@
       "chain_total": 6,
       "chain_relation": "时序",
       "chain_prev": "MEM000021",
-      "chain_next": "MEM000094"
+      "chain_next": "MEM000037"
     },
     {
       "memory_id": "MEM000142",
@@ -1561,10 +1561,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-11-07 20:16:04",
+        "absolute": "2025-11-07 21:23:36",
         "relative": "6个月前",
         "fuzzy": "半年前",
-        "timestamp": 1762517764
+        "timestamp": 1762521816
       },
       "location": {
         "city": "武汉",
@@ -1625,10 +1625,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-04-09 20:16:04",
+        "absolute": "2026-04-09 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1775736964
+        "timestamp": 1775741016
       },
       "location": {
         "city": "长沙",
@@ -1672,7 +1672,7 @@
         "52d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0006",
+      "reasoning_chain": "CHAIN_temporal_0005",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -1697,10 +1697,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-08-28 20:16:04",
+        "absolute": "2025-08-28 21:23:36",
         "relative": "9个月前",
         "fuzzy": "半年前",
-        "timestamp": 1756383364
+        "timestamp": 1756387416
       },
       "location": {
         "city": "南京",
@@ -1765,10 +1765,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-18 20:16:04",
+        "absolute": "2026-05-18 21:23:36",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779106564
+        "timestamp": 1779110616
       },
       "location": {
         "city": "昆明",
@@ -1833,10 +1833,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-09-20 20:16:04",
+        "absolute": "2025-09-20 21:23:36",
         "relative": "8个月前",
         "fuzzy": "半年前",
-        "timestamp": 1758370564
+        "timestamp": 1758374616
       },
       "location": {
         "city": "哈尔滨",
@@ -1901,10 +1901,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-27 20:16:04",
+        "absolute": "2026-05-27 21:23:36",
         "relative": "4天前",
         "fuzzy": "前几天",
-        "timestamp": 1779884164
+        "timestamp": 1779888216
       },
       "location": {
         "city": "哈尔滨",
@@ -1969,10 +1969,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2024-09-02 20:16:04",
+        "absolute": "2024-09-02 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1725279364
+        "timestamp": 1725283416
       },
       "location": {
         "city": "南宁",
@@ -2016,7 +2016,7 @@
         "636d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0010",
+      "reasoning_chain": "CHAIN_temporal_0009",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -2036,59 +2036,59 @@
       "chain_next": "MEM000140"
     },
     {
-      "memory_id": "MEM000091",
+      "memory_id": "MEM000090",
       "category": "逻辑推理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
+      "difficulty": "中等",
+      "weight": 1.0,
       "time": {
-        "absolute": "2026-04-29 20:16:04",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1777464964
+        "absolute": "2025-07-18 21:23:36",
+        "relative": "10个月前",
+        "fuzzy": "半年前",
+        "timestamp": 1752845016
       },
       "location": {
         "city": "苏州",
-        "place": "盒马鲜生",
-        "landmark": "烈士陵园"
+        "place": "网球场",
+        "landmark": "大学城"
       },
       "person": {
         "name": "朱二十",
-        "identity": "保洁",
-        "partner_name": "周八",
-        "partner_identity": "主播",
-        "relation": "供应商"
+        "identity": "演员",
+        "partner_name": "钱十一",
+        "partner_identity": "服务员",
+        "relation": "学员"
       },
       "event": {
-        "type": "处理投诉",
-        "action": "之后",
-        "product": "手机",
-        "quantity": 84,
-        "price": 9459
+        "type": "完成项目",
+        "action": "然后",
+        "product": "食品",
+        "quantity": 169,
+        "price": 3704
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "朱二十在苏州盒马鲜生之后了手机，数量84"
+          "content": "朱二十在苏州网球场然后了食品，数量169"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "朱二十回忆道：当时苏州的盒马鲜生，朱二十（保洁）之后了手机，觉得是个机会，总共84，单价9459元"
+          "content": "朱二十回忆道：当时苏州的网球场，朱二十（演员）然后了食品，认为价格合适，总共169，单价3704元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "周八说朱二十在苏州那边之后了手机，据说左右84的样子，具体价格不太清楚"
+          "content": "钱十一说朱二十在苏州那边然后了食品，大概差不多169的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "简单",
+        "中等",
         "时序"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0004",
+      "reasoning_chain": "CHAIN_时序_0086",
       "chain_position": 4,
       "decay": {
         "level": null,
@@ -2100,8 +2100,8 @@
       "chain_hop": 4,
       "chain_total": 6,
       "chain_relation": "时序",
-      "chain_prev": "MEM000092",
-      "chain_next": "MEM000089"
+      "chain_prev": "MEM000089",
+      "chain_next": "MEM000091"
     },
     {
       "memory_id": "MEM000041",
@@ -2109,10 +2109,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-08 20:16:04",
+        "absolute": "2026-05-08 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778242564
+        "timestamp": 1778246616
       },
       "location": {
         "city": "上海",
@@ -2157,7 +2157,7 @@
         "上海"
       ],
       "cluster_id": "CLUSTER0003",
-      "reasoning_chain": "CHAIN_temporal_0012",
+      "reasoning_chain": "CHAIN_temporal_0011",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -2175,10 +2175,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-02-14 20:16:04",
+        "absolute": "2026-02-14 21:23:36",
         "relative": "3个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1771071364
+        "timestamp": 1771075416
       },
       "location": {
         "city": "昆明",
@@ -2243,10 +2243,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-07-15 20:16:04",
+        "absolute": "2025-07-15 21:23:36",
         "relative": "10个月前",
         "fuzzy": "半年前",
-        "timestamp": 1752581764
+        "timestamp": 1752585816
       },
       "location": {
         "city": "上海",
@@ -2291,7 +2291,7 @@
         "上海"
       ],
       "cluster_id": "CLUSTER0003",
-      "reasoning_chain": "CHAIN_temporal_0014",
+      "reasoning_chain": "CHAIN_temporal_0013",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -2304,55 +2304,55 @@
       "chain_next": "MEM000045"
     },
     {
-      "memory_id": "MEM000088",
+      "memory_id": "MEM000092",
       "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
+      "difficulty": "中等",
+      "weight": 1.0,
       "time": {
-        "absolute": "2026-05-31 20:16:04",
-        "relative": "刚刚",
-        "fuzzy": "今天",
-        "timestamp": 1780229764
+        "absolute": "2026-04-15 21:23:36",
+        "relative": "1个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1776259416
       },
       "location": {
         "city": "苏州",
-        "place": "音乐厅",
-        "landmark": "森林公园入口"
+        "place": "来福士",
+        "landmark": "古镇入口"
       },
       "person": {
         "name": "朱二十",
-        "identity": "列车长",
-        "partner_name": "褚十四",
-        "partner_identity": "律师",
-        "relation": "客户"
+        "identity": "护士",
+        "partner_name": "孔二十八",
+        "partner_identity": "保安",
+        "relation": "租客"
       },
       "event": {
-        "type": "体检就医",
-        "action": "接着",
-        "product": "食品",
-        "quantity": 872,
-        "price": 2862
+        "type": "购买商品",
+        "action": "结束",
+        "product": "乐器",
+        "quantity": 209,
+        "price": 2363
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "朱二十在苏州音乐厅接着了食品，数量872"
+          "content": "朱二十在苏州来福士结束了乐器，数量209"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "朱二十回忆道：当时苏州的音乐厅，朱二十（列车长）接着了食品，认为价格合适，总共872，单价2862元"
+          "content": "朱二十回忆道：当时苏州的来福士，朱二十（护士）结束了乐器，认为值得投入，总共209，单价2363元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "褚十四说朱二十在苏州那边接着了食品，听说差不多872的样子，具体价格不太清楚"
+          "content": "孔二十八说朱二十在苏州那边结束了乐器，据说差不多209的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "困难",
+        "中等",
         "时序"
       ],
       "cluster_id": null,
@@ -2368,7 +2368,7 @@
       "chain_hop": 6,
       "chain_total": 6,
       "chain_relation": "时序",
-      "chain_prev": "MEM000089",
+      "chain_prev": "MEM000091",
       "chain_next": ""
     },
     {
@@ -2377,10 +2377,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-02-17 20:16:04",
+        "absolute": "2025-02-17 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1739794564
+        "timestamp": 1739798616
       },
       "location": {
         "city": "太原",
@@ -2423,7 +2423,7 @@
         "困难"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0019",
+      "reasoning_chain": "CHAIN_temporal_0018",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -2446,10 +2446,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-01-07 20:16:04",
+        "absolute": "2026-01-07 21:23:36",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1767788164
+        "timestamp": 1767792216
       },
       "location": {
         "city": "苏州",
@@ -2494,7 +2494,7 @@
         "茅台"
       ],
       "cluster_id": "CLUSTER0001",
-      "reasoning_chain": "CHAIN_temporal_0011",
+      "reasoning_chain": "CHAIN_temporal_0010",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -2512,10 +2512,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-11-05 20:16:04",
+        "absolute": "2025-11-05 21:23:36",
         "relative": "6个月前",
         "fuzzy": "半年前",
-        "timestamp": 1762344964
+        "timestamp": 1762349016
       },
       "location": {
         "city": "上海",
@@ -2559,7 +2559,7 @@
         "低频记忆"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0017",
+      "reasoning_chain": "CHAIN_temporal_0016",
       "chain_position": 1,
       "decay": {
         "level": "低频记忆",
@@ -2572,59 +2572,59 @@
       "chain_next": "MEM000054"
     },
     {
-      "memory_id": "MEM000089",
+      "memory_id": "MEM000091",
       "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
+      "difficulty": "简单",
+      "weight": 0.5,
       "time": {
-        "absolute": "2026-05-18 20:16:04",
-        "relative": "1周前",
-        "fuzzy": "上周",
-        "timestamp": 1779106564
+        "absolute": "2026-04-29 21:23:36",
+        "relative": "1个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1777469016
       },
       "location": {
         "city": "苏州",
-        "place": "酒吧",
-        "landmark": "高铁站"
+        "place": "盒马鲜生",
+        "landmark": "烈士陵园"
       },
       "person": {
         "name": "朱二十",
-        "identity": "零售商",
-        "partner_name": "施二十六",
-        "partner_identity": "门卫",
-        "relation": "客户"
+        "identity": "保洁",
+        "partner_name": "周八",
+        "partner_identity": "主播",
+        "relation": "供应商"
       },
       "event": {
-        "type": "体检就医",
-        "action": "随后",
-        "product": "家具",
-        "quantity": 7350,
-        "price": 8622
+        "type": "处理投诉",
+        "action": "之后",
+        "product": "手机",
+        "quantity": 84,
+        "price": 9459
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "朱二十在苏州酒吧随后了家具，数量7350"
+          "content": "朱二十在苏州盒马鲜生之后了手机，数量84"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "朱二十回忆道：当时苏州的酒吧，朱二十（零售商）随后了家具，想试试运气，总共7350，单价8622元"
+          "content": "朱二十回忆道：当时苏州的盒马鲜生，朱二十（保洁）之后了手机，觉得是个机会，总共84，单价9459元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "施二十六说朱二十在苏州那边随后了家具，大概大概7350的样子，具体价格不太清楚"
+          "content": "周八说朱二十在苏州那边之后了手机，据说左右84的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "中等",
+        "简单",
         "时序"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0004",
+      "reasoning_chain": "CHAIN_时序_0086",
       "chain_position": 5,
       "decay": {
         "level": null,
@@ -2636,8 +2636,8 @@
       "chain_hop": 5,
       "chain_total": 6,
       "chain_relation": "时序",
-      "chain_prev": "MEM000091",
-      "chain_next": "MEM000004"
+      "chain_prev": "MEM000090",
+      "chain_next": "MEM000092"
     },
     {
       "memory_id": "MEM000057",
@@ -2645,10 +2645,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-21 20:16:04",
+        "absolute": "2026-05-21 21:23:36",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779365764
+        "timestamp": 1779369816
       },
       "location": {
         "city": "青岛",
@@ -2705,10 +2705,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-15 20:16:04",
+        "absolute": "2026-05-15 21:23:36",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1778847364
+        "timestamp": 1778851416
       },
       "location": {
         "city": "青岛",
@@ -2773,10 +2773,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-06-18 20:16:04",
+        "absolute": "2025-06-18 21:23:36",
         "relative": "11个月前",
         "fuzzy": "半年前",
-        "timestamp": 1750248964
+        "timestamp": 1750253016
       },
       "location": {
         "city": "青岛",
@@ -2841,10 +2841,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-26 20:16:04",
+        "absolute": "2026-05-26 21:23:36",
         "relative": "5天前",
         "fuzzy": "前几天",
-        "timestamp": 1779797764
+        "timestamp": 1779801816
       },
       "location": {
         "city": "昆明",
@@ -2909,10 +2909,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-12-19 20:16:04",
+        "absolute": "2025-12-19 21:23:36",
         "relative": "5个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1766146564
+        "timestamp": 1766150616
       },
       "location": {
         "city": "郑州",
@@ -2955,8 +2955,8 @@
         "困难"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0007",
-      "chain_position": 4,
+      "reasoning_chain": "CHAIN_temporal_0006",
+      "chain_position": 3,
       "decay": {
         "level": null,
         "access_count": 0
@@ -2966,10 +2966,10 @@
         "associations": 2,
         "semantic_distance": "近"
       },
-      "chain_hop": 4,
-      "chain_total": 6,
+      "chain_hop": 3,
+      "chain_total": 5,
       "chain_relation": "时序",
-      "chain_prev": "MEM000084",
+      "chain_prev": "MEM000145",
       "chain_next": "MEM000017"
     },
     {
@@ -2978,10 +2978,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-08 20:16:04",
+        "absolute": "2026-05-08 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778242564
+        "timestamp": 1778246616
       },
       "location": {
         "city": "广州",
@@ -3046,10 +3046,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-25 20:16:04",
+        "absolute": "2026-05-25 21:23:36",
         "relative": "6天前",
         "fuzzy": "前几天",
-        "timestamp": 1779711364
+        "timestamp": 1779715416
       },
       "location": {
         "city": "兰州",
@@ -3106,10 +3106,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-12 20:16:04",
+        "absolute": "2026-05-12 21:23:36",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1778588164
+        "timestamp": 1778592216
       },
       "location": {
         "city": "上海",
@@ -3174,10 +3174,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "成都",
@@ -3221,7 +3221,7 @@
         "1d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0006",
+      "reasoning_chain": "CHAIN_temporal_0005",
       "chain_position": 4,
       "decay": {
         "level": null,
@@ -3239,10 +3239,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-08-05 20:16:04",
+        "absolute": "2025-08-05 21:23:36",
         "relative": "9个月前",
         "fuzzy": "半年前",
-        "timestamp": 1754396164
+        "timestamp": 1754400216
       },
       "location": {
         "city": "南京",
@@ -3307,10 +3307,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2024-06-13 20:16:04",
+        "absolute": "2024-06-13 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1718280964
+        "timestamp": 1718285016
       },
       "location": {
         "city": "广州",
@@ -3367,10 +3367,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "天津",
@@ -3414,7 +3414,7 @@
         "1d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0010",
+      "reasoning_chain": "CHAIN_temporal_0009",
       "chain_position": 4,
       "decay": {
         "level": null,
@@ -3432,10 +3432,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-01-27 20:16:04",
+        "absolute": "2026-01-27 21:23:36",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1769516164
+        "timestamp": 1769520216
       },
       "location": {
         "city": "南昌",
@@ -3500,10 +3500,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-01-05 20:16:04",
+        "absolute": "2025-01-05 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1736079364
+        "timestamp": 1736083416
       },
       "location": {
         "city": "成都",
@@ -3567,59 +3567,59 @@
       "chain_next": "MEM000021"
     },
     {
-      "memory_id": "MEM000090",
+      "memory_id": "MEM000087",
       "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
+      "difficulty": "简单",
+      "weight": 0.5,
       "time": {
-        "absolute": "2025-07-18 20:16:04",
-        "relative": "10个月前",
-        "fuzzy": "半年前",
-        "timestamp": 1752840964
+        "absolute": "2026-04-02 21:23:36",
+        "relative": "1个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1775136216
       },
       "location": {
         "city": "苏州",
-        "place": "网球场",
-        "landmark": "大学城"
+        "place": "保险公司",
+        "landmark": "码头"
       },
       "person": {
         "name": "朱二十",
-        "identity": "演员",
-        "partner_name": "钱十一",
-        "partner_identity": "服务员",
-        "relation": "学员"
+        "identity": "飞行员",
+        "partner_name": "韩十八",
+        "partner_identity": "财务主管",
+        "relation": "中介人"
       },
       "event": {
-        "type": "完成项目",
-        "action": "然后",
-        "product": "食品",
-        "quantity": 169,
-        "price": 3704
+        "type": "学习课程",
+        "action": "启动",
+        "product": "服装",
+        "quantity": 794,
+        "price": 7321
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "朱二十在苏州网球场然后了食品，数量169"
+          "content": "朱二十在苏州保险公司启动了服装，数量794"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "朱二十回忆道：当时苏州的网球场，朱二十（演员）然后了食品，认为价格合适，总共169，单价3704元"
+          "content": "朱二十回忆道：当时苏州的保险公司，朱二十（飞行员）启动了服装，不想错过，总共794，单价7321元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "钱十一说朱二十在苏州那边然后了食品，大概差不多169的样子，具体价格不太清楚"
+          "content": "韩十八说朱二十在苏州那边启动了服装，听说大概794的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "中等",
+        "简单",
         "时序"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0004",
+      "reasoning_chain": "CHAIN_时序_0086",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -3632,7 +3632,7 @@
       "chain_total": 6,
       "chain_relation": "时序",
       "chain_prev": "",
-      "chain_next": "MEM000087"
+      "chain_next": "MEM000088"
     },
     {
       "memory_id": "MEM000062",
@@ -3640,10 +3640,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-03-19 20:16:04",
+        "absolute": "2026-03-19 21:23:36",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1773922564
+        "timestamp": 1773926616
       },
       "location": {
         "city": "成都",
@@ -3687,7 +3687,7 @@
         "低频记忆"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0008",
+      "reasoning_chain": "CHAIN_temporal_0007",
       "chain_position": 2,
       "decay": {
         "level": "低频记忆",
@@ -3705,10 +3705,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-16 20:16:04",
+        "absolute": "2026-05-16 21:23:36",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1778933764
+        "timestamp": 1778937816
       },
       "location": {
         "city": "南京",
@@ -3768,59 +3768,59 @@
       "chain_next": ""
     },
     {
-      "memory_id": "MEM000087",
+      "memory_id": "MEM000088",
       "category": "逻辑推理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
+      "difficulty": "困难",
+      "weight": 1.5,
       "time": {
-        "absolute": "2026-04-02 20:16:04",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1775132164
+        "absolute": "2026-05-31 21:23:36",
+        "relative": "刚刚",
+        "fuzzy": "今天",
+        "timestamp": 1780233816
       },
       "location": {
         "city": "苏州",
-        "place": "保险公司",
-        "landmark": "码头"
+        "place": "音乐厅",
+        "landmark": "森林公园入口"
       },
       "person": {
         "name": "朱二十",
-        "identity": "飞行员",
-        "partner_name": "韩十八",
-        "partner_identity": "财务主管",
-        "relation": "中介人"
+        "identity": "列车长",
+        "partner_name": "褚十四",
+        "partner_identity": "律师",
+        "relation": "客户"
       },
       "event": {
-        "type": "学习课程",
-        "action": "启动",
-        "product": "服装",
-        "quantity": 794,
-        "price": 7321
+        "type": "体检就医",
+        "action": "接着",
+        "product": "食品",
+        "quantity": 872,
+        "price": 2862
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "朱二十在苏州保险公司启动了服装，数量794"
+          "content": "朱二十在苏州音乐厅接着了食品，数量872"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "朱二十回忆道：当时苏州的保险公司，朱二十（飞行员）启动了服装，不想错过，总共794，单价7321元"
+          "content": "朱二十回忆道：当时苏州的音乐厅，朱二十（列车长）接着了食品，认为价格合适，总共872，单价2862元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "韩十八说朱二十在苏州那边启动了服装，听说大概794的样子，具体价格不太清楚"
+          "content": "褚十四说朱二十在苏州那边接着了食品，听说差不多872的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "简单",
+        "困难",
         "时序"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0004",
+      "reasoning_chain": "CHAIN_时序_0086",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -3832,8 +3832,8 @@
       "chain_hop": 2,
       "chain_total": 6,
       "chain_relation": "时序",
-      "chain_prev": "MEM000090",
-      "chain_next": "MEM000092"
+      "chain_prev": "MEM000087",
+      "chain_next": "MEM000089"
     },
     {
       "memory_id": "MEM000139",
@@ -3841,10 +3841,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2024-10-12 20:16:04",
+        "absolute": "2024-10-12 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1728735364
+        "timestamp": 1728739416
       },
       "location": {
         "city": "厦门",
@@ -3887,7 +3887,7 @@
         "中等"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0007",
+      "reasoning_chain": "CHAIN_temporal_0006",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -3899,7 +3899,7 @@
         "semantic_distance": "近"
       },
       "chain_hop": 1,
-      "chain_total": 6,
+      "chain_total": 5,
       "chain_relation": "时序",
       "chain_prev": "",
       "chain_next": "MEM000145"
@@ -3910,10 +3910,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-02 20:16:04",
+        "absolute": "2026-05-02 21:23:36",
         "relative": "4周前",
         "fuzzy": "上周",
-        "timestamp": 1777724164
+        "timestamp": 1777728216
       },
       "location": {
         "city": "深圳",
@@ -3978,10 +3978,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-06-20 20:16:04",
+        "absolute": "2025-06-20 21:23:36",
         "relative": "11个月前",
         "fuzzy": "半年前",
-        "timestamp": 1750421764
+        "timestamp": 1750425816
       },
       "location": {
         "city": "合肥",
@@ -4024,7 +4024,7 @@
         "中等"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0007",
+      "reasoning_chain": "CHAIN_temporal_0006",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -4036,10 +4036,10 @@
         "semantic_distance": "远"
       },
       "chain_hop": 2,
-      "chain_total": 6,
+      "chain_total": 5,
       "chain_relation": "时序",
       "chain_prev": "MEM000139",
-      "chain_next": "MEM000084"
+      "chain_next": "MEM000143"
     },
     {
       "memory_id": "MEM000121",
@@ -4047,10 +4047,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-03-05 20:16:04",
+        "absolute": "2026-03-05 21:23:36",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1772712964
+        "timestamp": 1772717016
       },
       "location": {
         "city": "重庆",
@@ -4115,10 +4115,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-03-13 20:16:04",
+        "absolute": "2025-03-13 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1741868164
+        "timestamp": 1741872216
       },
       "location": {
         "city": "苏州",
@@ -4187,10 +4187,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-25 20:16:04",
+        "absolute": "2026-05-25 21:23:36",
         "relative": "6天前",
         "fuzzy": "前几天",
-        "timestamp": 1779711364
+        "timestamp": 1779715416
       },
       "location": {
         "city": "太原",
@@ -4234,7 +4234,7 @@
         "中等频率"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0008",
+      "reasoning_chain": "CHAIN_temporal_0007",
       "chain_position": 3,
       "decay": {
         "level": "中等频率",
@@ -4252,10 +4252,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-28 20:16:04",
+        "absolute": "2026-05-28 21:23:36",
         "relative": "3天前",
         "fuzzy": "前几天",
-        "timestamp": 1779970564
+        "timestamp": 1779974616
       },
       "location": {
         "city": "长沙",
@@ -4299,7 +4299,7 @@
         "3d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0008",
+      "reasoning_chain": "CHAIN_temporal_0007",
       "chain_position": 4,
       "decay": {
         "level": null,
@@ -4324,10 +4324,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-10-15 20:16:04",
+        "absolute": "2025-10-15 21:23:36",
         "relative": "7个月前",
         "fuzzy": "半年前",
-        "timestamp": 1760530564
+        "timestamp": 1760534616
       },
       "location": {
         "city": "长沙",
@@ -4372,7 +4372,7 @@
         "王芳"
       ],
       "cluster_id": "CLUSTER0002",
-      "reasoning_chain": "CHAIN_temporal_0013",
+      "reasoning_chain": "CHAIN_temporal_0012",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -4390,10 +4390,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-01-07 20:16:04",
+        "absolute": "2026-01-07 21:23:36",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1767788164
+        "timestamp": 1767792216
       },
       "location": {
         "city": "上海",
@@ -4458,10 +4458,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-01-10 20:16:04",
+        "absolute": "2026-01-10 21:23:36",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1768047364
+        "timestamp": 1768051416
       },
       "location": {
         "city": "石家庄",
@@ -4505,17 +4505,17 @@
         "141d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0007",
-      "chain_position": 5,
+      "reasoning_chain": "CHAIN_temporal_0006",
+      "chain_position": 4,
       "decay": {
         "level": null,
         "access_count": 0
       },
-      "chain_hop": 5,
-      "chain_total": 6,
+      "chain_hop": 4,
+      "chain_total": 5,
       "chain_relation": "时序",
       "chain_prev": "MEM000143",
-      "chain_next": "MEM000083"
+      "chain_next": "MEM000011"
     },
     {
       "memory_id": "MEM000056",
@@ -4523,10 +4523,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-09 20:16:04",
+        "absolute": "2026-05-09 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778328964
+        "timestamp": 1778333016
       },
       "location": {
         "city": "重庆",
@@ -4570,7 +4570,7 @@
         "高频记忆"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0018",
+      "reasoning_chain": "CHAIN_temporal_0017",
       "chain_position": 4,
       "decay": {
         "level": "高频记忆",
@@ -4588,10 +4588,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-31 20:16:04",
+        "absolute": "2026-05-31 21:23:36",
         "relative": "刚刚",
         "fuzzy": "今天",
-        "timestamp": 1780229764
+        "timestamp": 1780233816
       },
       "location": {
         "city": "长春",
@@ -4647,7 +4647,7 @@
       "chain_hop": 5,
       "chain_total": 5,
       "chain_relation": "时序",
-      "chain_prev": "MEM000082",
+      "chain_prev": "MEM000085",
       "chain_next": ""
     },
     {
@@ -4656,10 +4656,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-11-20 20:16:04",
+        "absolute": "2025-11-20 21:23:36",
         "relative": "6个月前",
         "fuzzy": "半年前",
-        "timestamp": 1763640964
+        "timestamp": 1763645016
       },
       "location": {
         "city": "南宁",
@@ -4703,7 +4703,7 @@
         "192d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0006",
+      "reasoning_chain": "CHAIN_temporal_0005",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -4721,10 +4721,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-01-20 20:16:04",
+        "absolute": "2026-01-20 21:23:36",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1768911364
+        "timestamp": 1768915416
       },
       "location": {
         "city": "广州",
@@ -4769,7 +4769,7 @@
         "张伟"
       ],
       "cluster_id": "CLUSTER0006",
-      "reasoning_chain": "CHAIN_temporal_0016",
+      "reasoning_chain": "CHAIN_temporal_0015",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -4787,10 +4787,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-09-18 20:16:04",
+        "absolute": "2025-09-18 21:23:36",
         "relative": "8个月前",
         "fuzzy": "半年前",
-        "timestamp": 1758197764
+        "timestamp": 1758201816
       },
       "location": {
         "city": "昆明",
@@ -4833,7 +4833,7 @@
         "中等"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0018",
+      "reasoning_chain": "CHAIN_temporal_0017",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -4856,10 +4856,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-29 20:16:04",
+        "absolute": "2026-05-29 21:23:36",
         "relative": "2天前",
         "fuzzy": "昨天",
-        "timestamp": 1780056964
+        "timestamp": 1780061016
       },
       "location": {
         "city": "太原",
@@ -4903,7 +4903,7 @@
         "高频记忆"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0014",
+      "reasoning_chain": "CHAIN_temporal_0013",
       "chain_position": 3,
       "decay": {
         "level": "高频记忆",
@@ -4921,10 +4921,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-27 20:16:04",
+        "absolute": "2026-05-27 21:23:36",
         "relative": "4天前",
         "fuzzy": "前几天",
-        "timestamp": 1779884164
+        "timestamp": 1779888216
       },
       "location": {
         "city": "杭州",
@@ -4981,10 +4981,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-03-09 20:16:04",
+        "absolute": "2026-03-09 21:23:36",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1773058564
+        "timestamp": 1773062616
       },
       "location": {
         "city": "哈尔滨",
@@ -5049,10 +5049,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "大连",
@@ -5096,12 +5096,17 @@
         "1d"
       ],
       "cluster_id": null,
-      "reasoning_chain": null,
-      "chain_position": null,
+      "reasoning_chain": "CHAIN_temporal_0006",
+      "chain_position": 5,
       "decay": {
         "level": null,
         "access_count": 0
-      }
+      },
+      "chain_hop": 5,
+      "chain_total": 5,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000017",
+      "chain_next": ""
     },
     {
       "memory_id": "MEM000059",
@@ -5109,10 +5114,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-24 20:16:04",
+        "absolute": "2026-05-24 21:23:36",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779624964
+        "timestamp": 1779629016
       },
       "location": {
         "city": "南昌",
@@ -5169,10 +5174,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-07-15 20:16:04",
+        "absolute": "2025-07-15 21:23:36",
         "relative": "10个月前",
         "fuzzy": "半年前",
-        "timestamp": 1752581764
+        "timestamp": 1752585816
       },
       "location": {
         "city": "武汉",
@@ -5238,10 +5243,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-17 20:16:04",
+        "absolute": "2026-05-17 21:23:36",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1779020164
+        "timestamp": 1779024216
       },
       "location": {
         "city": "哈尔滨",
@@ -5306,10 +5311,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-01-18 20:16:04",
+        "absolute": "2026-01-18 21:23:36",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1768738564
+        "timestamp": 1768742616
       },
       "location": {
         "city": "成都",
@@ -5366,10 +5371,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-27 20:16:04",
+        "absolute": "2026-05-27 21:23:36",
         "relative": "4天前",
         "fuzzy": "前几天",
-        "timestamp": 1779884164
+        "timestamp": 1779888216
       },
       "location": {
         "city": "广州",
@@ -5434,10 +5439,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2024-10-09 20:16:04",
+        "absolute": "2024-10-09 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1728476164
+        "timestamp": 1728480216
       },
       "location": {
         "city": "宁波",
@@ -5481,7 +5486,7 @@
         "599d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0005",
+      "reasoning_chain": "CHAIN_temporal_0004",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -5499,10 +5504,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-01-14 20:16:04",
+        "absolute": "2025-01-14 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1736856964
+        "timestamp": 1736861016
       },
       "location": {
         "city": "乌鲁木齐",
@@ -5545,7 +5550,7 @@
         "困难"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0010",
+      "reasoning_chain": "CHAIN_temporal_0009",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -5568,10 +5573,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-10 20:16:04",
+        "absolute": "2026-05-10 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778415364
+        "timestamp": 1778419416
       },
       "location": {
         "city": "沈阳",
@@ -5616,7 +5621,7 @@
         "茅台"
       ],
       "cluster_id": "CLUSTER0001",
-      "reasoning_chain": "CHAIN_temporal_0012",
+      "reasoning_chain": "CHAIN_temporal_0011",
       "chain_position": 4,
       "decay": {
         "level": null,
@@ -5634,10 +5639,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "西安",
@@ -5681,7 +5686,7 @@
         "1d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0011",
+      "reasoning_chain": "CHAIN_temporal_0010",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -5706,10 +5711,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-01 20:16:04",
+        "absolute": "2026-05-01 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1777637764
+        "timestamp": 1777641816
       },
       "location": {
         "city": "哈尔滨",
@@ -5771,10 +5776,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "兰州",
@@ -5818,7 +5823,7 @@
         "中等频率"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0011",
+      "reasoning_chain": "CHAIN_temporal_0010",
       "chain_position": 3,
       "decay": {
         "level": "中等频率",
@@ -5836,10 +5841,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-03-26 20:16:04",
+        "absolute": "2026-03-26 21:23:36",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1774527364
+        "timestamp": 1774531416
       },
       "location": {
         "city": "南昌",
@@ -5883,7 +5888,7 @@
         "低频记忆"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0017",
+      "reasoning_chain": "CHAIN_temporal_0016",
       "chain_position": 2,
       "decay": {
         "level": "低频记忆",
@@ -5901,10 +5906,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-08-11 20:16:04",
+        "absolute": "2025-08-11 21:23:36",
         "relative": "9个月前",
         "fuzzy": "半年前",
-        "timestamp": 1754914564
+        "timestamp": 1754918616
       },
       "location": {
         "city": "重庆",
@@ -5947,7 +5952,7 @@
         "简单"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0018",
+      "reasoning_chain": "CHAIN_temporal_0017",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -5970,10 +5975,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-06-26 20:16:04",
+        "absolute": "2025-06-26 21:23:36",
         "relative": "11个月前",
         "fuzzy": "半年前",
-        "timestamp": 1750940164
+        "timestamp": 1750944216
       },
       "location": {
         "city": "深圳",
@@ -6017,7 +6022,7 @@
         "高频记忆"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0006",
+      "reasoning_chain": "CHAIN_temporal_0005",
       "chain_position": 1,
       "decay": {
         "level": "高频记忆",
@@ -6035,10 +6040,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-03-31 20:16:04",
+        "absolute": "2026-03-31 21:23:36",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1774959364
+        "timestamp": 1774963416
       },
       "location": {
         "city": "南京",
@@ -6082,7 +6087,7 @@
         "61d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0009",
+      "reasoning_chain": "CHAIN_temporal_0008",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -6107,10 +6112,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2024-12-21 20:16:04",
+        "absolute": "2024-12-21 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1734783364
+        "timestamp": 1734787416
       },
       "location": {
         "city": "济南",
@@ -6153,7 +6158,7 @@
         "中等"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0019",
+      "reasoning_chain": "CHAIN_temporal_0018",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -6176,10 +6181,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-28 20:16:04",
+        "absolute": "2026-05-28 21:23:36",
         "relative": "3天前",
         "fuzzy": "前几天",
-        "timestamp": 1779970564
+        "timestamp": 1779974616
       },
       "location": {
         "city": "杭州",
@@ -6224,7 +6229,7 @@
         "王芳"
       ],
       "cluster_id": "CLUSTER0002",
-      "reasoning_chain": "CHAIN_temporal_0013",
+      "reasoning_chain": "CHAIN_temporal_0012",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -6242,10 +6247,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-08-25 20:16:04",
+        "absolute": "2025-08-25 21:23:36",
         "relative": "9个月前",
         "fuzzy": "半年前",
-        "timestamp": 1756124164
+        "timestamp": 1756128216
       },
       "location": {
         "city": "深圳",
@@ -6310,10 +6315,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-29 20:16:04",
+        "absolute": "2026-05-29 21:23:36",
         "relative": "2天前",
         "fuzzy": "昨天",
-        "timestamp": 1780056964
+        "timestamp": 1780061016
       },
       "location": {
         "city": "上海",
@@ -6378,10 +6383,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-05-31 20:16:04",
+        "absolute": "2025-05-31 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1748693764
+        "timestamp": 1748697816
       },
       "location": {
         "city": "沈阳",
@@ -6426,7 +6431,7 @@
         "李明"
       ],
       "cluster_id": "CLUSTER0005",
-      "reasoning_chain": "CHAIN_temporal_0015",
+      "reasoning_chain": "CHAIN_temporal_0014",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -6439,55 +6444,55 @@
       "chain_next": "MEM000047"
     },
     {
-      "memory_id": "MEM000082",
+      "memory_id": "MEM000085",
       "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
+      "difficulty": "简单",
+      "weight": 0.5,
       "time": {
-        "absolute": "2026-05-31 20:16:04",
-        "relative": "刚刚",
-        "fuzzy": "今天",
-        "timestamp": 1780229764
+        "absolute": "2026-04-02 21:23:36",
+        "relative": "1个月前",
+        "fuzzy": "上个月",
+        "timestamp": 1775136216
       },
       "location": {
         "city": "长春",
-        "place": "IFS国金中心",
-        "landmark": "金融中心"
+        "place": "火车站",
+        "landmark": "古镇入口"
       },
       "person": {
         "name": "孙七",
-        "identity": "解说员",
-        "partner_name": "吕二十五",
-        "partner_identity": "工程师",
-        "relation": "债权人"
+        "identity": "乘务员",
+        "partner_name": "尤二十二",
+        "partner_identity": "交传",
+        "relation": "闺蜜"
       },
       "event": {
-        "type": "体检就医",
-        "action": "发起",
-        "product": "医疗服务",
-        "quantity": 1800,
-        "price": 7622
+        "type": "签订合同",
+        "action": "之后",
+        "product": "教育课程",
+        "quantity": 446,
+        "price": 949
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "孙七在长春IFS国金中心发起了医疗服务，数量1800"
+          "content": "孙七在长春火车站之后了教育课程，数量446"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "孙七回忆道：当时长春的IFS国金中心，孙七（解说员）发起了医疗服务，想试试运气，总共1800，单价7622元"
+          "content": "孙七回忆道：当时长春的火车站，孙七（乘务员）之后了教育课程，认为值得投入，总共446，单价949元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "吕二十五说孙七在长春那边发起了医疗服务，听说大概1800的样子，具体价格不太清楚"
+          "content": "尤二十二说孙七在长春那边之后了教育课程，应该差不多446的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "困难",
+        "简单",
         "时序"
       ],
       "cluster_id": null,
@@ -6503,7 +6508,7 @@
       "chain_hop": 4,
       "chain_total": 5,
       "chain_relation": "时序",
-      "chain_prev": "MEM000085",
+      "chain_prev": "MEM000084",
       "chain_next": "MEM000086"
     },
     {
@@ -6512,10 +6517,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-27 20:16:04",
+        "absolute": "2026-05-27 21:23:36",
         "relative": "4天前",
         "fuzzy": "前几天",
-        "timestamp": 1779884164
+        "timestamp": 1779888216
       },
       "location": {
         "city": "哈尔滨",
@@ -6580,10 +6585,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-16 20:16:04",
+        "absolute": "2026-05-16 21:23:36",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1778933764
+        "timestamp": 1778937816
       },
       "location": {
         "city": "上海",
@@ -6628,7 +6633,7 @@
         "上海"
       ],
       "cluster_id": "CLUSTER0003",
-      "reasoning_chain": "CHAIN_temporal_0005",
+      "reasoning_chain": "CHAIN_temporal_0004",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -6646,10 +6651,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2024-08-25 20:16:04",
+        "absolute": "2024-08-25 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1724588164
+        "timestamp": 1724592216
       },
       "location": {
         "city": "北京",
@@ -6706,50 +6711,50 @@
       "chain_next": "MEM000030"
     },
     {
-      "memory_id": "MEM000092",
+      "memory_id": "MEM000089",
       "category": "逻辑推理测试集",
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-04-15 20:16:04",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1776255364
+        "absolute": "2026-05-18 21:23:36",
+        "relative": "1周前",
+        "fuzzy": "上周",
+        "timestamp": 1779110616
       },
       "location": {
         "city": "苏州",
-        "place": "来福士",
-        "landmark": "古镇入口"
+        "place": "酒吧",
+        "landmark": "高铁站"
       },
       "person": {
         "name": "朱二十",
-        "identity": "护士",
-        "partner_name": "孔二十八",
-        "partner_identity": "保安",
-        "relation": "租客"
+        "identity": "零售商",
+        "partner_name": "施二十六",
+        "partner_identity": "门卫",
+        "relation": "客户"
       },
       "event": {
-        "type": "购买商品",
-        "action": "结束",
-        "product": "乐器",
-        "quantity": 209,
-        "price": 2363
+        "type": "体检就医",
+        "action": "随后",
+        "product": "家具",
+        "quantity": 7350,
+        "price": 8622
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "朱二十在苏州来福士结束了乐器，数量209"
+          "content": "朱二十在苏州酒吧随后了家具，数量7350"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "朱二十回忆道：当时苏州的来福士，朱二十（护士）结束了乐器，认为值得投入，总共209，单价2363元"
+          "content": "朱二十回忆道：当时苏州的酒吧，朱二十（零售商）随后了家具，想试试运气，总共7350，单价8622元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "孔二十八说朱二十在苏州那边结束了乐器，据说差不多209的样子，具体价格不太清楚"
+          "content": "施二十六说朱二十在苏州那边随后了家具，大概大概7350的样子，具体价格不太清楚"
         }
       ],
       "tags": [
@@ -6758,7 +6763,7 @@
         "时序"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0004",
+      "reasoning_chain": "CHAIN_时序_0086",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -6770,64 +6775,64 @@
       "chain_hop": 3,
       "chain_total": 6,
       "chain_relation": "时序",
-      "chain_prev": "MEM000087",
-      "chain_next": "MEM000091"
+      "chain_prev": "MEM000088",
+      "chain_next": "MEM000090"
     },
     {
-      "memory_id": "MEM000084",
+      "memory_id": "MEM000082",
       "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
+      "difficulty": "困难",
+      "weight": 1.5,
       "time": {
-        "absolute": "2025-08-15 20:16:04",
-        "relative": "9个月前",
-        "fuzzy": "半年前",
-        "timestamp": 1755260164
+        "absolute": "2026-05-31 21:23:36",
+        "relative": "刚刚",
+        "fuzzy": "今天",
+        "timestamp": 1780233816
       },
       "location": {
         "city": "长春",
-        "place": "港口",
-        "landmark": "博览中心"
+        "place": "IFS国金中心",
+        "landmark": "金融中心"
       },
       "person": {
         "name": "孙七",
-        "identity": "统计",
-        "partner_name": "张二十七",
-        "partner_identity": "歌手",
-        "relation": "学员"
+        "identity": "解说员",
+        "partner_name": "吕二十五",
+        "partner_identity": "工程师",
+        "relation": "债权人"
       },
       "event": {
-        "type": "庆祝生日",
-        "action": "然后",
-        "product": "汽车",
-        "quantity": 745,
-        "price": 7065
+        "type": "体检就医",
+        "action": "发起",
+        "product": "医疗服务",
+        "quantity": 1800,
+        "price": 7622
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "孙七在长春港口然后了汽车，数量745"
+          "content": "孙七在长春IFS国金中心发起了医疗服务，数量1800"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "孙七回忆道：当时长春的港口，孙七（统计）然后了汽车，认为值得投入，总共745，单价7065元"
+          "content": "孙七回忆道：当时长春的IFS国金中心，孙七（解说员）发起了医疗服务，想试试运气，总共1800，单价7622元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "张二十七说孙七在长春那边然后了汽车，好像大概745的样子，具体价格不太清楚"
+          "content": "吕二十五说孙七在长春那边发起了医疗服务，听说大概1800的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "中等",
+        "困难",
         "时序"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0007",
-      "chain_position": 3,
+      "reasoning_chain": "CHAIN_时序_0081",
+      "chain_position": 1,
       "decay": {
         "level": null,
         "access_count": 0
@@ -6835,11 +6840,11 @@
       "logic": {
         "type": "时序"
       },
-      "chain_hop": 3,
-      "chain_total": 6,
+      "chain_hop": 1,
+      "chain_total": 5,
       "chain_relation": "时序",
-      "chain_prev": "MEM000145",
-      "chain_next": "MEM000143"
+      "chain_prev": "",
+      "chain_next": "MEM000083"
     },
     {
       "memory_id": "MEM000045",
@@ -6847,10 +6852,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-01-15 20:16:04",
+        "absolute": "2026-01-15 21:23:36",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1768479364
+        "timestamp": 1768483416
       },
       "location": {
         "city": "南京",
@@ -6895,7 +6900,7 @@
         "交易"
       ],
       "cluster_id": "CLUSTER0004",
-      "reasoning_chain": "CHAIN_temporal_0014",
+      "reasoning_chain": "CHAIN_temporal_0013",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -6913,10 +6918,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-15 20:16:04",
+        "absolute": "2026-05-15 21:23:36",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1778847364
+        "timestamp": 1778851416
       },
       "location": {
         "city": "深圳",
@@ -6981,10 +6986,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-24 20:16:04",
+        "absolute": "2026-05-24 21:23:36",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779624964
+        "timestamp": 1779629016
       },
       "location": {
         "city": "北京",
@@ -7053,10 +7058,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "石家庄",
@@ -7100,17 +7105,12 @@
         "1d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0004",
-      "chain_position": 6,
+      "reasoning_chain": null,
+      "chain_position": null,
       "decay": {
         "level": null,
         "access_count": 0
-      },
-      "chain_hop": 6,
-      "chain_total": 6,
-      "chain_relation": "时序",
-      "chain_prev": "MEM000089",
-      "chain_next": ""
+      }
     },
     {
       "memory_id": "MEM000053",
@@ -7118,10 +7118,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-10 20:16:04",
+        "absolute": "2026-05-10 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778415364
+        "timestamp": 1778419416
       },
       "location": {
         "city": "天津",
@@ -7183,10 +7183,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "成都",
@@ -7230,12 +7230,17 @@
         "1d"
       ],
       "cluster_id": null,
-      "reasoning_chain": null,
-      "chain_position": null,
+      "reasoning_chain": "CHAIN_temporal_0001",
+      "chain_position": 6,
       "decay": {
         "level": null,
         "access_count": 0
-      }
+      },
+      "chain_hop": 6,
+      "chain_total": 6,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000147",
+      "chain_next": ""
     },
     {
       "memory_id": "MEM000149",
@@ -7243,10 +7248,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-11-06 20:16:04",
+        "absolute": "2025-11-06 21:23:36",
         "relative": "6个月前",
         "fuzzy": "半年前",
-        "timestamp": 1762431364
+        "timestamp": 1762435416
       },
       "location": {
         "city": "海口",
@@ -7307,10 +7312,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-26 20:16:04",
+        "absolute": "2026-05-26 21:23:36",
         "relative": "5天前",
         "fuzzy": "前几天",
-        "timestamp": 1779797764
+        "timestamp": 1779801816
       },
       "location": {
         "city": "重庆",
@@ -7375,10 +7380,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-23 20:16:04",
+        "absolute": "2026-05-23 21:23:36",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779538564
+        "timestamp": 1779542616
       },
       "location": {
         "city": "合肥",
@@ -7443,10 +7448,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-01 20:16:04",
+        "absolute": "2026-05-01 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1777637764
+        "timestamp": 1777641816
       },
       "location": {
         "city": "合肥",
@@ -7511,10 +7516,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-08-29 20:16:04",
+        "absolute": "2025-08-29 21:23:36",
         "relative": "9个月前",
         "fuzzy": "半年前",
-        "timestamp": 1756469764
+        "timestamp": 1756473816
       },
       "location": {
         "city": "南昌",
@@ -7574,60 +7579,60 @@
       "chain_next": "MEM000071"
     },
     {
-      "memory_id": "MEM000096",
+      "memory_id": "MEM000094",
       "category": "逻辑推理测试集",
-      "difficulty": "中等",
-      "weight": 1.0,
+      "difficulty": "简单",
+      "weight": 0.5,
       "time": {
-        "absolute": "2025-08-28 20:16:04",
-        "relative": "9个月前",
+        "absolute": "2025-06-24 21:23:36",
+        "relative": "11个月前",
         "fuzzy": "半年前",
-        "timestamp": 1756383364
+        "timestamp": 1750771416
       },
       "location": {
         "city": "大连",
-        "place": "信托公司",
-        "landmark": "金融中心"
+        "place": "幼儿园",
+        "landmark": "非遗街区"
       },
       "person": {
         "name": "韩十八",
-        "identity": "保洁",
-        "partner_name": "施二十六",
-        "partner_identity": "书法家",
-        "relation": "闺蜜"
+        "identity": "检验师",
+        "partner_name": "陶三十四",
+        "partner_identity": "家政",
+        "relation": "二房东"
       },
       "event": {
-        "type": "处理投诉",
-        "action": "接着",
-        "product": "股票",
-        "quantity": 731,
-        "price": 7771
+        "type": "参加会议",
+        "action": "之后",
+        "product": "保险",
+        "quantity": 598,
+        "price": 838
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "韩十八在大连信托公司接着了股票，数量731"
+          "content": "韩十八在大连幼儿园之后了保险，数量598"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "韩十八回忆道：当时大连的信托公司，韩十八（保洁）接着了股票，认为值得投入，总共731，单价7771元"
+          "content": "韩十八回忆道：当时大连的幼儿园，韩十八（检验师）之后了保险，想趁低价入手，总共598，单价838元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "施二十六说韩十八在大连那边接着了股票，应该左右731的样子，具体价格不太清楚"
+          "content": "陶三十四说韩十八在大连那边之后了保险，应该大概598的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "中等",
+        "简单",
         "时序"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0001",
-      "chain_position": 6,
+      "reasoning_chain": "CHAIN_时序_0092",
+      "chain_position": 2,
       "decay": {
         "level": null,
         "access_count": 0
@@ -7635,11 +7640,11 @@
       "logic": {
         "type": "时序"
       },
-      "chain_hop": 6,
-      "chain_total": 6,
+      "chain_hop": 2,
+      "chain_total": 5,
       "chain_relation": "时序",
-      "chain_prev": "MEM000037",
-      "chain_next": ""
+      "chain_prev": "MEM000093",
+      "chain_next": "MEM000095"
     },
     {
       "memory_id": "MEM000026",
@@ -7647,10 +7652,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2024-07-11 20:16:04",
+        "absolute": "2024-07-11 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1720700164
+        "timestamp": 1720704216
       },
       "location": {
         "city": "长沙",
@@ -7714,10 +7719,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-03-27 20:16:04",
+        "absolute": "2026-03-27 21:23:36",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1774613764
+        "timestamp": 1774617816
       },
       "location": {
         "city": "合肥",
@@ -7782,10 +7787,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-06-19 20:16:04",
+        "absolute": "2025-06-19 21:23:36",
         "relative": "11个月前",
         "fuzzy": "半年前",
-        "timestamp": 1750335364
+        "timestamp": 1750339416
       },
       "location": {
         "city": "合肥",
@@ -7850,10 +7855,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "长春",
@@ -7897,7 +7902,7 @@
         "低频记忆"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0008",
+      "reasoning_chain": "CHAIN_temporal_0007",
       "chain_position": 6,
       "decay": {
         "level": "低频记忆",
@@ -7915,10 +7920,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-18 20:16:04",
+        "absolute": "2026-05-18 21:23:36",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779106564
+        "timestamp": 1779110616
       },
       "location": {
         "city": "南京",
@@ -7983,10 +7988,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-10 20:16:04",
+        "absolute": "2026-05-10 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778415364
+        "timestamp": 1778419416
       },
       "location": {
         "city": "西安",
@@ -8031,7 +8036,7 @@
         "李明"
       ],
       "cluster_id": "CLUSTER0005",
-      "reasoning_chain": "CHAIN_temporal_0015",
+      "reasoning_chain": "CHAIN_temporal_0014",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -8049,10 +8054,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "北京",
@@ -8109,10 +8114,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-12 20:16:04",
+        "absolute": "2026-05-12 21:23:36",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1778588164
+        "timestamp": 1778592216
       },
       "location": {
         "city": "合肥",
@@ -8156,7 +8161,7 @@
         "19d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0010",
+      "reasoning_chain": "CHAIN_temporal_0009",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -8181,10 +8186,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2024-10-13 20:16:04",
+        "absolute": "2024-10-13 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1728821764
+        "timestamp": 1728825816
       },
       "location": {
         "city": "长沙",
@@ -8245,10 +8250,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-07-08 20:16:04",
+        "absolute": "2025-07-08 21:23:36",
         "relative": "10个月前",
         "fuzzy": "半年前",
-        "timestamp": 1751976964
+        "timestamp": 1751981016
       },
       "location": {
         "city": "哈尔滨",
@@ -8313,10 +8318,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-04-20 20:16:04",
+        "absolute": "2026-04-20 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1776687364
+        "timestamp": 1776691416
       },
       "location": {
         "city": "深圳",
@@ -8361,7 +8366,7 @@
         "王芳"
       ],
       "cluster_id": "CLUSTER0002",
-      "reasoning_chain": "CHAIN_temporal_0013",
+      "reasoning_chain": "CHAIN_temporal_0012",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -8379,10 +8384,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-04-29 20:16:04",
+        "absolute": "2026-04-29 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1777464964
+        "timestamp": 1777469016
       },
       "location": {
         "city": "合肥",
@@ -8447,10 +8452,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-05-31 20:16:04",
+        "absolute": "2025-05-31 21:23:36",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1748693764
+        "timestamp": 1748697816
       },
       "location": {
         "city": "武汉",
@@ -8493,7 +8498,7 @@
         "简单"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0018",
+      "reasoning_chain": "CHAIN_temporal_0017",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -8516,10 +8521,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-04-12 20:16:04",
+        "absolute": "2026-04-12 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1775996164
+        "timestamp": 1776000216
       },
       "location": {
         "city": "南京",
@@ -8584,10 +8589,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "贵阳",
@@ -8632,7 +8637,7 @@
         "张伟"
       ],
       "cluster_id": "CLUSTER0006",
-      "reasoning_chain": "CHAIN_temporal_0016",
+      "reasoning_chain": "CHAIN_temporal_0015",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -8645,55 +8650,55 @@
       "chain_next": ""
     },
     {
-      "memory_id": "MEM000097",
+      "memory_id": "MEM000095",
       "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
+      "difficulty": "中等",
+      "weight": 1.0,
       "time": {
-        "absolute": "2026-05-24 20:16:04",
-        "relative": "1周前",
-        "fuzzy": "上周",
-        "timestamp": 1779624964
+        "absolute": "2026-05-31 21:23:36",
+        "relative": "刚刚",
+        "fuzzy": "今天",
+        "timestamp": 1780233816
       },
       "location": {
         "city": "大连",
-        "place": "植物园",
-        "landmark": "灯塔"
+        "place": "小学",
+        "landmark": "地铁站"
       },
       "person": {
         "name": "韩十八",
-        "identity": "快递员",
-        "partner_name": "何二十四",
-        "partner_identity": "外卖员",
-        "relation": "乙方"
+        "identity": "经销商",
+        "partner_name": "杨十九",
+        "partner_identity": "石匠",
+        "relation": "狱友"
       },
       "event": {
-        "type": "拜访客户",
-        "action": "结束",
-        "product": "手机",
-        "quantity": 378,
-        "price": 1805
+        "type": "参加面试",
+        "action": "然后",
+        "product": "运动器材",
+        "quantity": 296,
+        "price": 8271
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "韩十八在大连植物园结束了手机，数量378"
+          "content": "韩十八在大连小学然后了运动器材，数量296"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "韩十八回忆道：当时大连的植物园，韩十八（快递员）结束了手机，觉得是个机会，总共378，单价1805元"
+          "content": "韩十八回忆道：当时大连的小学，韩十八（经销商）然后了运动器材，认为价格合适，总共296，单价8271元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "何二十四说韩十八在大连那边结束了手机，应该可能378的样子，具体价格不太清楚"
+          "content": "杨十九说韩十八在大连那边然后了运动器材，听说大概296的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "困难",
+        "中等",
         "时序"
       ],
       "cluster_id": null,
@@ -8709,8 +8714,8 @@
       "chain_hop": 3,
       "chain_total": 5,
       "chain_relation": "时序",
-      "chain_prev": "MEM000096",
-      "chain_next": "MEM000093"
+      "chain_prev": "MEM000094",
+      "chain_next": "MEM000096"
     },
     {
       "memory_id": "MEM000003",
@@ -8718,10 +8723,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-05 20:16:04",
+        "absolute": "2026-05-05 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1777983364
+        "timestamp": 1777987416
       },
       "location": {
         "city": "合肥",
@@ -8783,10 +8788,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-07-10 20:16:04",
+        "absolute": "2025-07-10 21:23:36",
         "relative": "10个月前",
         "fuzzy": "半年前",
-        "timestamp": 1752149764
+        "timestamp": 1752153816
       },
       "location": {
         "city": "昆明",
@@ -8851,10 +8856,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-19 20:16:04",
+        "absolute": "2026-05-19 21:23:36",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779192964
+        "timestamp": 1779197016
       },
       "location": {
         "city": "沈阳",
@@ -8918,55 +8923,55 @@
       "chain_next": ""
     },
     {
-      "memory_id": "MEM000085",
+      "memory_id": "MEM000084",
       "category": "逻辑推理测试集",
-      "difficulty": "简单",
-      "weight": 0.5,
+      "difficulty": "中等",
+      "weight": 1.0,
       "time": {
-        "absolute": "2026-04-02 20:16:04",
-        "relative": "1个月前",
-        "fuzzy": "上个月",
-        "timestamp": 1775132164
+        "absolute": "2025-08-15 21:23:36",
+        "relative": "9个月前",
+        "fuzzy": "半年前",
+        "timestamp": 1755264216
       },
       "location": {
         "city": "长春",
-        "place": "火车站",
-        "landmark": "古镇入口"
+        "place": "港口",
+        "landmark": "博览中心"
       },
       "person": {
         "name": "孙七",
-        "identity": "乘务员",
-        "partner_name": "尤二十二",
-        "partner_identity": "交传",
-        "relation": "闺蜜"
+        "identity": "统计",
+        "partner_name": "张二十七",
+        "partner_identity": "歌手",
+        "relation": "学员"
       },
       "event": {
-        "type": "签订合同",
-        "action": "之后",
-        "product": "教育课程",
-        "quantity": 446,
-        "price": 949
+        "type": "庆祝生日",
+        "action": "然后",
+        "product": "汽车",
+        "quantity": 745,
+        "price": 7065
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "孙七在长春火车站之后了教育课程，数量446"
+          "content": "孙七在长春港口然后了汽车，数量745"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "孙七回忆道：当时长春的火车站，孙七（乘务员）之后了教育课程，认为值得投入，总共446，单价949元"
+          "content": "孙七回忆道：当时长春的港口，孙七（统计）然后了汽车，认为值得投入，总共745，单价7065元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "尤二十二说孙七在长春那边之后了教育课程，应该差不多446的样子，具体价格不太清楚"
+          "content": "张二十七说孙七在长春那边然后了汽车，好像大概745的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "简单",
+        "中等",
         "时序"
       ],
       "cluster_id": null,
@@ -8983,7 +8988,7 @@
       "chain_total": 5,
       "chain_relation": "时序",
       "chain_prev": "MEM000083",
-      "chain_next": "MEM000082"
+      "chain_next": "MEM000085"
     },
     {
       "memory_id": "MEM000080",
@@ -8991,10 +8996,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "青岛",
@@ -9059,10 +9064,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-11-26 20:16:04",
+        "absolute": "2025-11-26 21:23:36",
         "relative": "6个月前",
         "fuzzy": "半年前",
-        "timestamp": 1764159364
+        "timestamp": 1764163416
       },
       "location": {
         "city": "南昌",
@@ -9127,10 +9132,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-08-20 20:16:04",
+        "absolute": "2025-08-20 21:23:36",
         "relative": "9个月前",
         "fuzzy": "半年前",
-        "timestamp": 1755692164
+        "timestamp": 1755696216
       },
       "location": {
         "city": "昆明",
@@ -9195,10 +9200,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-09-30 20:16:04",
+        "absolute": "2025-09-30 21:23:36",
         "relative": "8个月前",
         "fuzzy": "半年前",
-        "timestamp": 1759234564
+        "timestamp": 1759238616
       },
       "location": {
         "city": "南京",
@@ -9242,7 +9247,7 @@
         "243d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0008",
+      "reasoning_chain": "CHAIN_temporal_0007",
       "chain_position": 1,
       "decay": {
         "level": null,
@@ -9267,10 +9272,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-07 20:16:04",
+        "absolute": "2026-05-07 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778156164
+        "timestamp": 1778160216
       },
       "location": {
         "city": "广州",
@@ -9335,10 +9340,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-30 20:16:04",
+        "absolute": "2026-05-30 21:23:36",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780143364
+        "timestamp": 1780147416
       },
       "location": {
         "city": "兰州",
@@ -9382,7 +9387,7 @@
         "1d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0008",
+      "reasoning_chain": "CHAIN_temporal_0007",
       "chain_position": 5,
       "decay": {
         "level": null,
@@ -9400,10 +9405,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-10 20:16:04",
+        "absolute": "2026-05-10 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778415364
+        "timestamp": 1778419416
       },
       "location": {
         "city": "哈尔滨",
@@ -9468,10 +9473,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-12-23 20:16:04",
+        "absolute": "2025-12-23 21:23:36",
         "relative": "5个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1766492164
+        "timestamp": 1766496216
       },
       "location": {
         "city": "重庆",
@@ -9515,7 +9520,7 @@
         "高频记忆"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0012",
+      "reasoning_chain": "CHAIN_temporal_0011",
       "chain_position": 1,
       "decay": {
         "level": "高频记忆",
@@ -9533,10 +9538,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-04-24 20:16:04",
+        "absolute": "2026-04-24 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1777032964
+        "timestamp": 1777037016
       },
       "location": {
         "city": "长沙",
@@ -9581,7 +9586,7 @@
         "交易"
       ],
       "cluster_id": "CLUSTER0004",
-      "reasoning_chain": "CHAIN_temporal_0009",
+      "reasoning_chain": "CHAIN_temporal_0008",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -9599,10 +9604,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-24 20:16:04",
+        "absolute": "2026-05-24 21:23:36",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779624964
+        "timestamp": 1779629016
       },
       "location": {
         "city": "合肥",
@@ -9646,7 +9651,7 @@
         "7d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0009",
+      "reasoning_chain": "CHAIN_temporal_0008",
       "chain_position": 3,
       "decay": {
         "level": null,
@@ -9664,10 +9669,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-03-18 20:16:04",
+        "absolute": "2026-03-18 21:23:36",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1773836164
+        "timestamp": 1773840216
       },
       "location": {
         "city": "哈尔滨",
@@ -9732,10 +9737,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-04-30 20:16:04",
+        "absolute": "2026-04-30 21:23:36",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1777551364
+        "timestamp": 1777555416
       },
       "location": {
         "city": "兰州",
@@ -9779,7 +9784,7 @@
         "31d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0012",
+      "reasoning_chain": "CHAIN_temporal_0011",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -9799,55 +9804,55 @@
       "chain_next": "MEM000041"
     },
     {
-      "memory_id": "MEM000093",
+      "memory_id": "MEM000096",
       "category": "逻辑推理测试集",
-      "difficulty": "困难",
-      "weight": 1.5,
+      "difficulty": "中等",
+      "weight": 1.0,
       "time": {
-        "absolute": "2026-05-31 20:16:04",
-        "relative": "刚刚",
-        "fuzzy": "今天",
-        "timestamp": 1780229764
+        "absolute": "2025-08-28 21:23:36",
+        "relative": "9个月前",
+        "fuzzy": "半年前",
+        "timestamp": 1756387416
       },
       "location": {
         "city": "大连",
-        "place": "大悦城",
-        "landmark": "机场航站楼"
+        "place": "信托公司",
+        "landmark": "金融中心"
       },
       "person": {
         "name": "韩十八",
-        "identity": "司机",
-        "partner_name": "金三十二",
-        "partner_identity": "仲裁员",
-        "relation": "兄弟"
+        "identity": "保洁",
+        "partner_name": "施二十六",
+        "partner_identity": "书法家",
+        "relation": "闺蜜"
       },
       "event": {
-        "type": "庆祝生日",
-        "action": "启动",
-        "product": "家具",
-        "quantity": 8850,
-        "price": 4077
+        "type": "处理投诉",
+        "action": "接着",
+        "product": "股票",
+        "quantity": 731,
+        "price": 7771
       },
       "versions": [
         {
           "version_id": "v1",
           "style": "客观叙述",
-          "content": "韩十八在大连大悦城启动了家具，数量8850"
+          "content": "韩十八在大连信托公司接着了股票，数量731"
         },
         {
           "version_id": "v2",
           "style": "主观视角",
-          "content": "韩十八回忆道：当时大连的大悦城，韩十八（司机）启动了家具，认为值得投入，总共8850，单价4077元"
+          "content": "韩十八回忆道：当时大连的信托公司，韩十八（保洁）接着了股票，认为值得投入，总共731，单价7771元"
         },
         {
           "version_id": "v3",
           "style": "第三方转述",
-          "content": "金三十二说韩十八在大连那边启动了家具，听说差不多8850的样子，具体价格不太清楚"
+          "content": "施二十六说韩十八在大连那边接着了股票，应该左右731的样子，具体价格不太清楚"
         }
       ],
       "tags": [
         "推理测试",
-        "困难",
+        "中等",
         "时序"
       ],
       "cluster_id": null,
@@ -9863,8 +9868,8 @@
       "chain_hop": 4,
       "chain_total": 5,
       "chain_relation": "时序",
-      "chain_prev": "MEM000097",
-      "chain_next": "MEM000095"
+      "chain_prev": "MEM000095",
+      "chain_next": "MEM000097"
     },
     {
       "memory_id": "MEM000147",
@@ -9872,10 +9877,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-02-01 20:16:04",
+        "absolute": "2026-02-01 21:23:36",
         "relative": "3个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1769948164
+        "timestamp": 1769952216
       },
       "location": {
         "city": "深圳",
@@ -9918,8 +9923,8 @@
         "困难"
       ],
       "cluster_id": null,
-      "reasoning_chain": null,
-      "chain_position": null,
+      "reasoning_chain": "CHAIN_temporal_0001",
+      "chain_position": 5,
       "decay": {
         "level": null,
         "access_count": 0
@@ -9928,7 +9933,12 @@
         "layers": 4,
         "associations": 5,
         "semantic_distance": "中"
-      }
+      },
+      "chain_hop": 5,
+      "chain_total": 6,
+      "chain_relation": "时序",
+      "chain_prev": "MEM000037",
+      "chain_next": "MEM000001"
     },
     {
       "memory_id": "MEM000020",
@@ -9936,10 +9946,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-06 20:16:04",
+        "absolute": "2026-05-06 21:23:36",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778069764
+        "timestamp": 1778073816
       },
       "location": {
         "city": "太原",
@@ -9983,7 +9993,7 @@
         "25d"
       ],
       "cluster_id": null,
-      "reasoning_chain": "CHAIN_temporal_0005",
+      "reasoning_chain": "CHAIN_temporal_0004",
       "chain_position": 2,
       "decay": {
         "level": null,
@@ -10006,35 +10016,8 @@
   "queries": [
     {
       "query_id": "Q0001",
-      "query_text": "陈十三做了什么",
-      "query_type": "人物检索",
-      "test_dimension": "精确检索",
-      "expected_memory_ids": [
-        "MEM000007"
-      ],
-      "expected_answer": {
-        "person": "陈十三",
-        "location": "兰州检察院",
-        "action": "进行完成项目",
-        "product": "法律服务",
-        "quantity": 9070,
-        "price": 4381,
-        "time": "2026-05-25 20:16:04"
-      },
-      "expected_answer_text": "人物：陈十三，地点：兰州检察院，动作：进行完成项目，对象：法律服务，数量：9070，时间：2026-05-25 20:16:04",
-      "acceptable_answers": [
-        "陈十三在兰州检察院进行完成项目了法律服务，数量9070",
-        "陈十三回忆道：当时兰州的检察院，陈十三（COO）进行完成项目了法律服务，认为值得投入，总共9070，单价4381元",
-        "严三十说陈十三在兰州那边进行完成项目了法律服务，好像左右9070的样子，具体价格不太清楚"
-      ],
-      "expected_time": "2026-05-25 20:16:04",
-      "difficulty": "困难",
-      "search_depth": "中层"
-    },
-    {
-      "query_id": "Q0002",
-      "query_text": "沈十七做了什么",
-      "query_type": "人物检索",
+      "query_text": "关于汽车的事件有哪些",
+      "query_type": "事件检索",
       "test_dimension": "精确检索",
       "expected_memory_ids": [
         "MEM000005"
@@ -10046,20 +10029,101 @@
         "product": "汽车",
         "quantity": 2170,
         "price": 9302,
-        "time": "2024-06-13 20:16:04"
+        "time": "2024-06-13 21:23:36"
       },
-      "expected_answer_text": "人物：沈十七，地点：广州羽毛球馆，动作：进行健身运动，对象：汽车，数量：2170，时间：2024-06-13 20:16:04",
+      "expected_answer_text": "人物：沈十七，地点：广州羽毛球馆，动作：进行健身运动，对象：汽车，数量：2170，时间：2024-06-13 21:23:36",
       "acceptable_answers": [
         "沈十七在广州羽毛球馆进行健身运动了汽车，数量2170",
         "沈十七回忆道：当时广州的羽毛球馆，沈十七（CTO）进行健身运动了汽车，认为值得投入，总共2170，单价9302元",
         "许二十三说沈十七在广州那边进行健身运动了汽车，听说可能2170的样子，具体价格不太清楚"
       ],
-      "expected_time": "2024-06-13 20:16:04",
+      "expected_time": "2024-06-13 21:23:36",
       "difficulty": "简单",
-      "search_depth": "浅层"
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0002",
+      "query_text": "许二十三做了什么",
+      "query_type": "人物检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000015"
+      ],
+      "expected_answer": {
+        "person": "许二十三",
+        "location": "天津西贝莜面村",
+        "action": "进行拜访客户",
+        "product": "汽车",
+        "quantity": 610,
+        "price": 3863,
+        "time": "2026-05-30 21:23:36"
+      },
+      "expected_answer_text": "人物：许二十三，地点：天津西贝莜面村，动作：进行拜访客户，对象：汽车，数量：610，时间：2026-05-30 21:23:36",
+      "acceptable_answers": [
+        "许二十三在天津西贝莜面村进行拜访客户了汽车，数量610",
+        "许二十三回忆道：当时天津的西贝莜面村，许二十三（测试工程师）进行拜访客户了汽车，考虑再三后决定，总共610，单价3863元",
+        "赵六说许二十三在天津那边进行拜访客户了汽车，好像差不多610的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2026-05-30 21:23:36",
+      "difficulty": "简单",
+      "search_depth": "深层"
     },
     {
       "query_id": "Q0003",
+      "query_text": "在兰州发生过什么",
+      "query_type": "地点检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000007"
+      ],
+      "expected_answer": {
+        "person": "陈十三",
+        "location": "兰州检察院",
+        "action": "进行完成项目",
+        "product": "法律服务",
+        "quantity": 9070,
+        "price": 4381,
+        "time": "2026-05-25 21:23:36"
+      },
+      "expected_answer_text": "人物：陈十三，地点：兰州检察院，动作：进行完成项目，对象：法律服务，数量：9070，时间：2026-05-25 21:23:36",
+      "acceptable_answers": [
+        "陈十三在兰州检察院进行完成项目了法律服务，数量9070",
+        "陈十三回忆道：当时兰州的检察院，陈十三（COO）进行完成项目了法律服务，认为值得投入，总共9070，单价4381元",
+        "严三十说陈十三在兰州那边进行完成项目了法律服务，好像左右9070的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2026-05-25 21:23:36",
+      "difficulty": "困难",
+      "search_depth": "中层"
+    },
+    {
+      "query_id": "Q0004",
+      "query_text": "在沈阳发生过什么",
+      "query_type": "地点检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000016"
+      ],
+      "expected_answer": {
+        "person": "曹二十九",
+        "location": "沈阳颐和园",
+        "action": "进行参加活动",
+        "product": "法律服务",
+        "quantity": 661,
+        "price": 5190,
+        "time": "2026-05-30 21:23:36"
+      },
+      "expected_answer_text": "人物：曹二十九，地点：沈阳颐和园，动作：进行参加活动，对象：法律服务，数量：661，时间：2026-05-30 21:23:36",
+      "acceptable_answers": [
+        "曹二十九在沈阳颐和园进行参加活动了法律服务，数量661",
+        "曹二十九回忆道：当时沈阳的颐和园，曹二十九（律师）进行参加活动了法律服务，认为价格合适，总共661，单价5190元",
+        "许二十三说曹二十九在沈阳那边进行参加活动了法律服务，好像可能661的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2026-05-30 21:23:36",
+      "difficulty": "中等",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0005",
       "query_text": "在成都发生过什么",
       "query_type": "地点检索",
       "test_dimension": "精确检索",
@@ -10073,101 +10137,128 @@
         "product": "汽车",
         "quantity": 224,
         "price": 9873,
-        "time": "2026-05-30 20:16:04"
+        "time": "2026-05-30 21:23:36"
       },
-      "expected_answer_text": "人物：韩十八，地点：成都度假村，动作：进行参加活动，对象：汽车，数量：224，时间：2026-05-30 20:16:04",
+      "expected_answer_text": "人物：韩十八，地点：成都度假村，动作：进行参加活动，对象：汽车，数量：224，时间：2026-05-30 21:23:36",
       "acceptable_answers": [
         "韩十八在成都度假村进行参加活动了汽车，数量224",
         "韩十八回忆道：当时成都的度假村，韩十八（保安）进行参加活动了汽车，觉得是个机会，总共224，单价9873元",
         "沈十七说韩十八在成都那边进行参加活动了汽车，应该差不多224的样子，具体价格不太清楚"
       ],
-      "expected_time": "2026-05-30 20:16:04",
-      "difficulty": "中等",
-      "search_depth": "中层"
-    },
-    {
-      "query_id": "Q0004",
-      "query_text": "在杭州发生过什么",
-      "query_type": "地点检索",
-      "test_dimension": "精确检索",
-      "expected_memory_ids": [
-        "MEM000013"
-      ],
-      "expected_answer": {
-        "person": "褚十四",
-        "location": "杭州医院",
-        "action": "进行健身运动",
-        "product": "医疗服务",
-        "quantity": 5540,
-        "price": 1538,
-        "time": "2026-05-27 20:16:04"
-      },
-      "expected_answer_text": "人物：褚十四，地点：杭州医院，动作：进行健身运动，对象：医疗服务，数量：5540，时间：2026-05-27 20:16:04",
-      "acceptable_answers": [
-        "褚十四在杭州医院进行健身运动了医疗服务，数量5540",
-        "褚十四回忆道：当时杭州的医院，褚十四（警卫）进行健身运动了医疗服务，觉得有必要，总共5540，单价1538元",
-        "朱二十说褚十四在杭州那边进行健身运动了医疗服务，听说可能5540的样子，具体价格不太清楚"
-      ],
-      "expected_time": "2026-05-27 20:16:04",
+      "expected_time": "2026-05-30 21:23:36",
       "difficulty": "中等",
       "search_depth": "浅层"
     },
     {
-      "query_id": "Q0005",
-      "query_text": "孙七做了什么",
+      "query_id": "Q0006",
+      "query_text": "孔二十八做了什么",
       "query_type": "人物检索",
       "test_dimension": "精确检索",
       "expected_memory_ids": [
-        "MEM000011"
+        "MEM000014"
       ],
       "expected_answer": {
-        "person": "孙七",
-        "location": "大连外滩",
-        "action": "进行拜访客户",
-        "product": "运动器材",
-        "quantity": 1360,
-        "price": 9365,
-        "time": "2026-05-30 20:16:04"
+        "person": "孔二十八",
+        "location": "合肥泰山",
+        "action": "进行参加会议",
+        "product": "玩具",
+        "quantity": 7140,
+        "price": 9115,
+        "time": "2026-05-24 21:23:36"
       },
-      "expected_answer_text": "人物：孙七，地点：大连外滩，动作：进行拜访客户，对象：运动器材，数量：1360，时间：2026-05-30 20:16:04",
+      "expected_answer_text": "人物：孔二十八，地点：合肥泰山，动作：进行参加会议，对象：玩具，数量：7140，时间：2026-05-24 21:23:36",
       "acceptable_answers": [
-        "孙七在大连外滩进行拜访客户了运动器材，数量1360",
-        "孙七回忆道：当时大连的外滩，孙七（审计）进行拜访客户了运动器材，不想错过，总共1360，单价9365元",
-        "王五说孙七在大连那边进行拜访客户了运动器材，听说可能1360的样子，具体价格不太清楚"
+        "孔二十八在合肥泰山进行参加会议了玩具，数量7140",
+        "孔二十八回忆道：当时合肥的泰山，孔二十八（编辑）进行参加会议了玩具，不想错过，总共7140，单价9115元",
+        "赵六说孔二十八在合肥那边进行参加会议了玩具，听说差不多7140的样子，具体价格不太清楚"
       ],
-      "expected_time": "2026-05-30 20:16:04",
-      "difficulty": "困难",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0006",
-      "query_text": "沈十七在青岛的进行聚餐聚会记录",
-      "query_type": "组合检索",
-      "test_dimension": "组合检索",
-      "expected_memory_ids": [
-        "MEM000057"
-      ],
-      "expected_answer": {
-        "person": "沈十七",
-        "location": "青岛桌游吧",
-        "action": "进行聚餐聚会",
-        "product": "医疗服务",
-        "quantity": 419,
-        "price": 752,
-        "time": "2026-05-21 20:16:04"
-      },
-      "expected_answer_text": "人物：沈十七，地点：青岛桌游吧，动作：进行聚餐聚会，对象：医疗服务，数量：419，时间：2026-05-21 20:16:04",
-      "acceptable_answers": [
-        "沈十七在青岛桌游吧进行聚餐聚会了医疗服务，数量419",
-        "沈十七回忆道：当时青岛的桌游吧，沈十七（财务主管）进行聚餐聚会了医疗服务，不想错过，总共419，单价752元",
-        "魏三十三说沈十七在青岛那边进行聚餐聚会了医疗服务，好像大概419的样子，具体价格不太清楚"
-      ],
-      "expected_time": "2026-05-21 20:16:04",
-      "difficulty": "困难",
-      "search_depth": "深层"
+      "expected_time": "2026-05-24 21:23:36",
+      "difficulty": "中等",
+      "search_depth": "中层"
     },
     {
       "query_id": "Q0007",
+      "query_text": "曹二十九做了什么",
+      "query_type": "人物检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000002"
+      ],
+      "expected_answer": {
+        "person": "曹二十九",
+        "location": "北京清真寺",
+        "action": "进行体检就医",
+        "product": "药品",
+        "quantity": 285,
+        "price": 5524,
+        "time": "2024-08-25 21:23:36"
+      },
+      "expected_answer_text": "人物：曹二十九，地点：北京清真寺，动作：进行体检就医，对象：药品，数量：285，时间：2024-08-25 21:23:36",
+      "acceptable_answers": [
+        "曹二十九在北京清真寺进行体检就医了药品，数量285",
+        "曹二十九回忆道：当时北京的清真寺，曹二十九（乘务员）进行体检就医了药品，认为价格合适，总共285，单价5524元",
+        "沈十七说曹二十九在北京那边进行体检就医了药品，好像可能285的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2024-08-25 21:23:36",
+      "difficulty": "困难",
+      "search_depth": "中层"
+    },
+    {
+      "query_id": "Q0008",
+      "query_text": "尤二十二做了什么",
+      "query_type": "人物检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000010"
+      ],
+      "expected_answer": {
+        "person": "尤二十二",
+        "location": "南宁万象城",
+        "action": "进行聚餐聚会",
+        "product": "药品",
+        "quantity": 220,
+        "price": 3780,
+        "time": "2025-11-20 21:23:36"
+      },
+      "expected_answer_text": "人物：尤二十二，地点：南宁万象城，动作：进行聚餐聚会，对象：药品，数量：220，时间：2025-11-20 21:23:36",
+      "acceptable_answers": [
+        "尤二十二在南宁万象城进行聚餐聚会了药品，数量220",
+        "尤二十二回忆道：当时南宁的万象城，尤二十二（批发商）进行聚餐聚会了药品，觉得有必要，总共220，单价3780元",
+        "孔二十八说尤二十二在南宁那边进行聚餐聚会了药品，好像大概220的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2025-11-20 21:23:36",
+      "difficulty": "困难",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0009",
+      "query_text": "关于食品的事件有哪些",
+      "query_type": "事件检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000017"
+      ],
+      "expected_answer": {
+        "person": "孙七",
+        "location": "石家庄大集",
+        "action": "进行签订合同",
+        "product": "食品",
+        "quantity": 162,
+        "price": 8910,
+        "time": "2026-01-10 21:23:36"
+      },
+      "expected_answer_text": "人物：孙七，地点：石家庄大集，动作：进行签订合同，对象：食品，数量：162，时间：2026-01-10 21:23:36",
+      "acceptable_answers": [
+        "孙七在石家庄大集进行签订合同了食品，数量162",
+        "孙七回忆道：当时石家庄的大集，孙七（快递员）进行签订合同了食品，想趁低价入手，总共162，单价8910元",
+        "蒋十六说孙七在石家庄那边进行签订合同了食品，应该大概162的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2026-01-10 21:23:36",
+      "difficulty": "中等",
+      "search_depth": "浅层"
+    },
+    {
+      "query_id": "Q0010",
       "query_text": "褚十四在济南的进行出行旅行记录",
       "query_type": "组合检索",
       "test_dimension": "组合检索",
@@ -10181,96 +10272,15 @@
         "product": "乐器",
         "quantity": 4530,
         "price": 8385,
-        "time": "2026-03-19 20:16:04"
+        "time": "2026-03-19 21:23:36"
       },
-      "expected_answer_text": "人物：褚十四，地点：济南沃尔玛，动作：进行出行旅行，对象：乐器，数量：4530，时间：2026-03-19 20:16:04",
+      "expected_answer_text": "人物：褚十四，地点：济南沃尔玛，动作：进行出行旅行，对象：乐器，数量：4530，时间：2026-03-19 21:23:36",
       "acceptable_answers": [
         "褚十四在济南沃尔玛进行出行旅行了乐器，数量4530",
         "褚十四回忆道：当时济南的沃尔玛，褚十四（石匠）进行出行旅行了乐器，不想错过，总共4530，单价8385元",
         "尤二十二说褚十四在济南那边进行出行旅行了乐器，听说大概4530的样子，具体价格不太清楚"
       ],
-      "expected_time": "2026-03-19 20:16:04",
-      "difficulty": "中等",
-      "search_depth": "中层"
-    },
-    {
-      "query_id": "Q0008",
-      "query_text": "何二十四在长沙的进行提交报告记录",
-      "query_type": "组合检索",
-      "test_dimension": "组合检索",
-      "expected_memory_ids": [
-        "MEM000026"
-      ],
-      "expected_answer": {
-        "person": "何二十四",
-        "location": "长沙大悦城",
-        "action": "进行提交报告",
-        "product": "珠宝",
-        "quantity": 6260,
-        "price": 1203,
-        "time": "2024-07-11 20:16:04"
-      },
-      "expected_answer_text": "人物：何二十四，地点：长沙大悦城，动作：进行提交报告，对象：珠宝，数量：6260，时间：2024-07-11 20:16:04",
-      "acceptable_answers": [
-        "何二十四在长沙大悦城进行提交报告了珠宝，数量6260",
-        "何二十四回忆道：当时长沙的大悦城，何二十四（评论员）进行提交报告了珠宝，不想错过，总共6260，单价1203元",
-        "周八说何二十四在长沙那边进行提交报告了珠宝，据说差不多6260的样子，具体价格不太清楚"
-      ],
-      "expected_time": "2024-07-11 20:16:04",
-      "difficulty": "简单",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0009",
-      "query_text": "蒋十六在北京的进行体检就医记录",
-      "query_type": "组合检索",
-      "test_dimension": "组合检索",
-      "expected_memory_ids": [
-        "MEM000060"
-      ],
-      "expected_answer": {
-        "person": "蒋十六",
-        "location": "北京外滩",
-        "action": "进行体检就医",
-        "product": "基金",
-        "quantity": 1130,
-        "price": 432,
-        "time": "2026-05-30 20:16:04"
-      },
-      "expected_answer_text": "人物：蒋十六，地点：北京外滩，动作：进行体检就医，对象：基金，数量：1130，时间：2026-05-30 20:16:04",
-      "acceptable_answers": [
-        "蒋十六在北京外滩进行体检就医了基金，数量1130",
-        "蒋十六回忆道：当时北京的外滩，蒋十六（审计）进行体检就医了基金，认为值得投入，总共1130，单价432元",
-        "沈十七说蒋十六在北京那边进行体检就医了基金，听说左右1130的样子，具体价格不太清楚"
-      ],
-      "expected_time": "2026-05-30 20:16:04",
-      "difficulty": "困难",
-      "search_depth": "浅层"
-    },
-    {
-      "query_id": "Q0010",
-      "query_text": "李四在重庆的进行处理投诉记录",
-      "query_type": "组合检索",
-      "test_dimension": "组合检索",
-      "expected_memory_ids": [
-        "MEM000033"
-      ],
-      "expected_answer": {
-        "person": "李四",
-        "location": "重庆颐和园",
-        "action": "进行处理投诉",
-        "product": "旅游服务",
-        "quantity": 971,
-        "price": 4208,
-        "time": "2025-05-11 20:16:04"
-      },
-      "expected_answer_text": "人物：李四，地点：重庆颐和园，动作：进行处理投诉，对象：旅游服务，数量：971，时间：2025-05-11 20:16:04",
-      "acceptable_answers": [
-        "李四在重庆颐和园进行处理投诉了旅游服务，数量971",
-        "李四回忆道：当时重庆的颐和园，李四（雕塑家）进行处理投诉了旅游服务，认为值得投入，总共971，单价4208元",
-        "韩十八说李四在重庆那边进行处理投诉了旅游服务，听说大概971的样子，具体价格不太清楚"
-      ],
-      "expected_time": "2025-05-11 20:16:04",
+      "expected_time": "2026-03-19 21:23:36",
       "difficulty": "中等",
       "search_depth": "中层"
     },
@@ -10289,20 +10299,74 @@
         "product": "汽车",
         "quantity": 679,
         "price": 9793,
-        "time": "2026-05-24 20:16:04"
+        "time": "2026-05-24 21:23:36"
       },
-      "expected_answer_text": "人物：施二十六，地点：南昌外滩，动作：进行参加会议，对象：汽车，数量：679，时间：2026-05-24 20:16:04",
+      "expected_answer_text": "人物：施二十六，地点：南昌外滩，动作：进行参加会议，对象：汽车，数量：679，时间：2026-05-24 21:23:36",
       "acceptable_answers": [
         "施二十六在南昌外滩进行参加会议了汽车，数量679",
         "施二十六回忆道：当时南昌的外滩，施二十六（零售商）进行参加会议了汽车，认为值得投入，总共679，单价9793元",
         "吴九说施二十六在南昌那边进行参加会议了汽车，听说差不多679的样子，具体价格不太清楚"
       ],
-      "expected_time": "2026-05-24 20:16:04",
+      "expected_time": "2026-05-24 21:23:36",
       "difficulty": "中等",
-      "search_depth": "浅层"
+      "search_depth": "中层"
     },
     {
       "query_id": "Q0012",
+      "query_text": "何二十四在长沙的进行提交报告记录",
+      "query_type": "组合检索",
+      "test_dimension": "组合检索",
+      "expected_memory_ids": [
+        "MEM000026"
+      ],
+      "expected_answer": {
+        "person": "何二十四",
+        "location": "长沙大悦城",
+        "action": "进行提交报告",
+        "product": "珠宝",
+        "quantity": 6260,
+        "price": 1203,
+        "time": "2024-07-11 21:23:36"
+      },
+      "expected_answer_text": "人物：何二十四，地点：长沙大悦城，动作：进行提交报告，对象：珠宝，数量：6260，时间：2024-07-11 21:23:36",
+      "acceptable_answers": [
+        "何二十四在长沙大悦城进行提交报告了珠宝，数量6260",
+        "何二十四回忆道：当时长沙的大悦城，何二十四（评论员）进行提交报告了珠宝，不想错过，总共6260，单价1203元",
+        "周八说何二十四在长沙那边进行提交报告了珠宝，据说差不多6260的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2024-07-11 21:23:36",
+      "difficulty": "简单",
+      "search_depth": "中层"
+    },
+    {
+      "query_id": "Q0013",
+      "query_text": "李四在重庆的进行处理投诉记录",
+      "query_type": "组合检索",
+      "test_dimension": "组合检索",
+      "expected_memory_ids": [
+        "MEM000033"
+      ],
+      "expected_answer": {
+        "person": "李四",
+        "location": "重庆颐和园",
+        "action": "进行处理投诉",
+        "product": "旅游服务",
+        "quantity": 971,
+        "price": 4208,
+        "time": "2025-05-11 21:23:36"
+      },
+      "expected_answer_text": "人物：李四，地点：重庆颐和园，动作：进行处理投诉，对象：旅游服务，数量：971，时间：2025-05-11 21:23:36",
+      "acceptable_answers": [
+        "李四在重庆颐和园进行处理投诉了旅游服务，数量971",
+        "李四回忆道：当时重庆的颐和园，李四（雕塑家）进行处理投诉了旅游服务，认为值得投入，总共971，单价4208元",
+        "韩十八说李四在重庆那边进行处理投诉了旅游服务，听说大概971的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2025-05-11 21:23:36",
+      "difficulty": "中等",
+      "search_depth": "中层"
+    },
+    {
+      "query_id": "Q0014",
       "query_text": "施二十六在沈阳的进行处理投诉记录",
       "query_type": "组合检索",
       "test_dimension": "组合检索",
@@ -10316,26 +10380,210 @@
         "product": "法律服务",
         "quantity": 419,
         "price": 4854,
-        "time": "2025-11-22 20:16:04"
+        "time": "2025-11-22 21:23:36"
       },
-      "expected_answer_text": "人物：施二十六，地点：沈阳剧院，动作：进行处理投诉，对象：法律服务，数量：419，时间：2025-11-22 20:16:04",
+      "expected_answer_text": "人物：施二十六，地点：沈阳剧院，动作：进行处理投诉，对象：法律服务，数量：419，时间：2025-11-22 21:23:36",
       "acceptable_answers": [
         "施二十六在沈阳剧院进行处理投诉了法律服务，数量419",
         "施二十六回忆道：当时沈阳的剧院，施二十六（CFO）进行处理投诉了法律服务，想试试运气，总共419，单价4854元",
         "严三十说施二十六在沈阳那边进行处理投诉了法律服务，听说可能419的样子，具体价格不太清楚"
       ],
-      "expected_time": "2025-11-22 20:16:04",
+      "expected_time": "2025-11-22 21:23:36",
       "difficulty": "中等",
       "search_depth": "浅层"
     },
     {
-      "query_id": "Q0013",
-      "query_text": "孙七在长春之后了教育课程，后续事件依次是什么？",
+      "query_id": "Q0015",
+      "query_text": "沈十七在青岛的进行聚餐聚会记录",
+      "query_type": "组合检索",
+      "test_dimension": "组合检索",
+      "expected_memory_ids": [
+        "MEM000057"
+      ],
+      "expected_answer": {
+        "person": "沈十七",
+        "location": "青岛桌游吧",
+        "action": "进行聚餐聚会",
+        "product": "医疗服务",
+        "quantity": 419,
+        "price": 752,
+        "time": "2026-05-21 21:23:36"
+      },
+      "expected_answer_text": "人物：沈十七，地点：青岛桌游吧，动作：进行聚餐聚会，对象：医疗服务，数量：419，时间：2026-05-21 21:23:36",
+      "acceptable_answers": [
+        "沈十七在青岛桌游吧进行聚餐聚会了医疗服务，数量419",
+        "沈十七回忆道：当时青岛的桌游吧，沈十七（财务主管）进行聚餐聚会了医疗服务，不想错过，总共419，单价752元",
+        "魏三十三说沈十七在青岛那边进行聚餐聚会了医疗服务，好像大概419的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2026-05-21 21:23:36",
+      "difficulty": "困难",
+      "search_depth": "中层"
+    },
+    {
+      "query_id": "Q0016",
+      "query_text": "赵六在成都的进行参加活动记录",
+      "query_type": "组合检索",
+      "test_dimension": "组合检索",
+      "expected_memory_ids": [
+        "MEM000067"
+      ],
+      "expected_answer": {
+        "person": "赵六",
+        "location": "成都兵马俑",
+        "action": "进行参加活动",
+        "product": "教育课程",
+        "quantity": 453,
+        "price": 3541,
+        "time": "2026-01-18 21:23:36"
+      },
+      "expected_answer_text": "人物：赵六，地点：成都兵马俑，动作：进行参加活动，对象：教育课程，数量：453，时间：2026-01-18 21:23:36",
+      "acceptable_answers": [
+        "赵六在成都兵马俑进行参加活动了教育课程，数量453",
+        "赵六回忆道：当时成都的兵马俑，赵六（木工）进行参加活动了教育课程，考虑再三后决定，总共453，单价3541元",
+        "冯十二说赵六在成都那边进行参加活动了教育课程，好像左右453的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2026-01-18 21:23:36",
+      "difficulty": "困难",
+      "search_depth": "浅层"
+    },
+    {
+      "query_id": "Q0017",
+      "query_text": "朱二十在苏州启动了服装，后续事件依次是什么？",
       "query_type": "时序推理链",
       "test_dimension": "时序推理",
       "expected_memory_ids": [
-        "MEM000085",
+        "MEM000087",
+        "MEM000088",
+        "MEM000089",
+        "MEM000090",
+        "MEM000091",
+        "MEM000092"
+      ],
+      "expected_answer": {
+        "chain_type": "时序推理",
+        "members": [
+          {
+            "person": "朱二十",
+            "location": "苏州",
+            "action": "启动",
+            "product": "服装",
+            "time": "2026-04-02 21:23:36"
+          },
+          {
+            "person": "朱二十",
+            "location": "苏州",
+            "action": "接着",
+            "product": "食品",
+            "time": "2026-05-31 21:23:36"
+          },
+          {
+            "person": "朱二十",
+            "location": "苏州",
+            "action": "随后",
+            "product": "家具",
+            "time": "2026-05-18 21:23:36"
+          },
+          {
+            "person": "朱二十",
+            "location": "苏州",
+            "action": "然后",
+            "product": "食品",
+            "time": "2025-07-18 21:23:36"
+          },
+          {
+            "person": "朱二十",
+            "location": "苏州",
+            "action": "之后",
+            "product": "手机",
+            "time": "2026-04-29 21:23:36"
+          },
+          {
+            "person": "朱二十",
+            "location": "苏州",
+            "action": "结束",
+            "product": "乐器",
+            "time": "2026-04-15 21:23:36"
+          }
+        ]
+      },
+      "expected_answer_text": "链式时序推理：朱二十在苏州启动了服装 → 朱二十在苏州接着了食品 → 朱二十在苏州随后了家具 → 朱二十在苏州然后了食品 → 朱二十在苏州之后了手机 → 朱二十在苏州结束了乐器",
+      "acceptable_answers": [
+        "朱二十在苏州启动了服装 → 朱二十在苏州接着了食品 → 朱二十在苏州随后了家具 → 朱二十在苏州然后了食品 → 朱二十在苏州之后了手机 → 朱二十在苏州结束了乐器"
+      ],
+      "expected_time": "2026-04-02 21:23:36",
+      "difficulty": "简单",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0018",
+      "query_text": "韩十八在大连启动了家具，后续事件依次是什么？",
+      "query_type": "时序推理链",
+      "test_dimension": "时序推理",
+      "expected_memory_ids": [
+        "MEM000093",
+        "MEM000094",
+        "MEM000095",
+        "MEM000096",
+        "MEM000097"
+      ],
+      "expected_answer": {
+        "chain_type": "时序推理",
+        "members": [
+          {
+            "person": "韩十八",
+            "location": "大连",
+            "action": "启动",
+            "product": "家具",
+            "time": "2026-05-31 21:23:36"
+          },
+          {
+            "person": "韩十八",
+            "location": "大连",
+            "action": "之后",
+            "product": "保险",
+            "time": "2025-06-24 21:23:36"
+          },
+          {
+            "person": "韩十八",
+            "location": "大连",
+            "action": "然后",
+            "product": "运动器材",
+            "time": "2026-05-31 21:23:36"
+          },
+          {
+            "person": "韩十八",
+            "location": "大连",
+            "action": "接着",
+            "product": "股票",
+            "time": "2025-08-28 21:23:36"
+          },
+          {
+            "person": "韩十八",
+            "location": "大连",
+            "action": "结束",
+            "product": "手机",
+            "time": "2026-05-24 21:23:36"
+          }
+        ]
+      },
+      "expected_answer_text": "链式时序推理：韩十八在大连启动了家具 → 韩十八在大连之后了保险 → 韩十八在大连然后了运动器材 → 韩十八在大连接着了股票 → 韩十八在大连结束了手机",
+      "acceptable_answers": [
+        "韩十八在大连启动了家具 → 韩十八在大连之后了保险 → 韩十八在大连然后了运动器材 → 韩十八在大连接着了股票 → 韩十八在大连结束了手机"
+      ],
+      "expected_time": "2026-05-31 21:23:36",
+      "difficulty": "中等",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0019",
+      "query_text": "孙七在长春发起了医疗服务，后续事件依次是什么？",
+      "query_type": "时序推理链",
+      "test_dimension": "时序推理",
+      "expected_memory_ids": [
         "MEM000082",
+        "MEM000083",
+        "MEM000084",
+        "MEM000085",
         "MEM000086"
       ],
       "expected_answer": {
@@ -10344,148 +10592,102 @@
           {
             "person": "孙七",
             "location": "长春",
-            "action": "之后",
-            "product": "教育课程",
-            "time": "2026-04-02 20:16:04"
+            "action": "发起",
+            "product": "医疗服务",
+            "time": "2026-05-31 21:23:36"
           },
           {
             "person": "孙七",
             "location": "长春",
-            "action": "发起",
-            "product": "医疗服务",
-            "time": "2026-05-31 20:16:04"
+            "action": "然后",
+            "product": "运动器材",
+            "time": "2026-02-15 21:23:36"
+          },
+          {
+            "person": "孙七",
+            "location": "长春",
+            "action": "然后",
+            "product": "汽车",
+            "time": "2025-08-15 21:23:36"
+          },
+          {
+            "person": "孙七",
+            "location": "长春",
+            "action": "之后",
+            "product": "教育课程",
+            "time": "2026-04-02 21:23:36"
           },
           {
             "person": "孙七",
             "location": "长春",
             "action": "收尾",
             "product": "法律服务",
-            "time": "2026-05-31 20:16:04"
+            "time": "2026-05-31 21:23:36"
           }
         ]
       },
-      "expected_answer_text": "链式时序推理：孙七在长春之后了教育课程 → 孙七在长春发起了医疗服务 → 孙七在长春收尾了法律服务",
+      "expected_answer_text": "链式时序推理：孙七在长春发起了医疗服务 → 孙七在长春然后了运动器材 → 孙七在长春然后了汽车 → 孙七在长春之后了教育课程 → 孙七在长春收尾了法律服务",
       "acceptable_answers": [
-        "孙七在长春之后了教育课程 → 孙七在长春发起了医疗服务 → 孙七在长春收尾了法律服务"
+        "孙七在长春发起了医疗服务 → 孙七在长春然后了运动器材 → 孙七在长春然后了汽车 → 孙七在长春之后了教育课程 → 孙七在长春收尾了法律服务"
       ],
-      "expected_time": "2026-04-02 20:16:04",
+      "expected_time": "2026-05-31 21:23:36",
       "difficulty": "简单",
       "search_depth": "深层"
     },
     {
-      "query_id": "Q0014",
-      "query_text": "吴九在南京进行聚餐聚会了食品，后续事件依次是什么？",
+      "query_id": "Q0020",
+      "query_text": "尤二十二在深圳进行处理投诉了股票，后续事件依次是什么？",
       "query_type": "时序推理链",
       "test_dimension": "时序推理",
       "expected_memory_ids": [
-        "MEM000018",
-        "MEM000062",
-        "MEM000055",
-        "MEM000034",
-        "MEM000012",
-        "MEM000064"
+        "MEM000068",
+        "MEM000010",
+        "MEM000022",
+        "MEM000009"
       ],
       "expected_answer": {
         "chain_type": "时序推理",
         "members": [
           {
-            "person": "吴九",
-            "location": "南京",
-            "action": "进行聚餐聚会",
-            "product": "食品",
-            "time": "2025-09-30 20:16:04"
+            "person": "尤二十二",
+            "location": "深圳",
+            "action": "进行处理投诉",
+            "product": "股票",
+            "time": "2025-06-26 21:23:36"
           },
           {
-            "person": "吴九",
+            "person": "尤二十二",
+            "location": "南宁",
+            "action": "进行聚餐聚会",
+            "product": "药品",
+            "time": "2025-11-20 21:23:36"
+          },
+          {
+            "person": "尤二十二",
+            "location": "长沙",
+            "action": "进行参加活动",
+            "product": "服装",
+            "time": "2026-04-09 21:23:36"
+          },
+          {
+            "person": "尤二十二",
             "location": "成都",
             "action": "进行聚餐聚会",
-            "product": "股票",
-            "time": "2026-03-19 20:16:04"
-          },
-          {
-            "person": "吴九",
-            "location": "太原",
-            "action": "进行参加会议",
-            "product": "药品",
-            "time": "2026-05-25 20:16:04"
-          },
-          {
-            "person": "吴九",
-            "location": "长沙",
-            "action": "进行完成项目",
-            "product": "食品",
-            "time": "2026-05-28 20:16:04"
-          },
-          {
-            "person": "吴九",
-            "location": "兰州",
-            "action": "进行完成项目",
-            "product": "电脑",
-            "time": "2026-05-30 20:16:04"
-          },
-          {
-            "person": "吴九",
-            "location": "长春",
-            "action": "进行处理投诉",
-            "product": "法律服务",
-            "time": "2026-05-30 20:16:04"
+            "product": "运动器材",
+            "time": "2026-05-30 21:23:36"
           }
         ]
       },
-      "expected_answer_text": "链式时序推理：吴九在南京进行聚餐聚会了食品 → 吴九在成都进行聚餐聚会了股票 → 吴九在太原进行参加会议了药品 → 吴九在长沙进行完成项目了食品 → 吴九在兰州进行完成项目了电脑 → 吴九在长春进行处理投诉了法律服务",
+      "expected_answer_text": "链式时序推理：尤二十二在深圳进行处理投诉了股票 → 尤二十二在南宁进行聚餐聚会了药品 → 尤二十二在长沙进行参加活动了服装 → 尤二十二在成都进行聚餐聚会了运动器材",
       "acceptable_answers": [
-        "吴九在南京进行聚餐聚会了食品 → 吴九在成都进行聚餐聚会了股票 → 吴九在太原进行参加会议了药品 → 吴九在长沙进行完成项目了食品 → 吴九在兰州进行完成项目了电脑 → 吴九在长春进行处理投诉了法律服务"
+        "尤二十二在深圳进行处理投诉了股票 → 尤二十二在南宁进行聚餐聚会了药品 → 尤二十二在长沙进行参加活动了服装 → 尤二十二在成都进行聚餐聚会了运动器材"
       ],
-      "expected_time": "2025-09-30 20:16:04",
-      "difficulty": "中等",
+      "expected_time": "2025-06-26 21:23:36",
+      "difficulty": "简单",
       "search_depth": "深层"
     },
     {
-      "query_id": "Q0015",
-      "query_text": "王芳在长沙进行学习课程了保险，后续事件依次是什么？",
-      "query_type": "时序推理链",
-      "test_dimension": "时序推理",
-      "expected_memory_ids": [
-        "MEM000038",
-        "MEM000039",
-        "MEM000040"
-      ],
-      "expected_answer": {
-        "chain_type": "时序推理",
-        "members": [
-          {
-            "person": "王芳",
-            "location": "长沙",
-            "action": "进行学习课程",
-            "product": "保险",
-            "time": "2025-10-15 20:16:04"
-          },
-          {
-            "person": "王芳",
-            "location": "深圳",
-            "action": "进行参加会议",
-            "product": "房屋",
-            "time": "2026-04-20 20:16:04"
-          },
-          {
-            "person": "王芳",
-            "location": "杭州",
-            "action": "进行庆祝生日",
-            "product": "股票",
-            "time": "2026-05-28 20:16:04"
-          }
-        ]
-      },
-      "expected_answer_text": "链式时序推理：王芳在长沙进行学习课程了保险 → 王芳在深圳进行参加会议了房屋 → 王芳在杭州进行庆祝生日了股票",
-      "acceptable_answers": [
-        "王芳在长沙进行学习课程了保险 → 王芳在深圳进行参加会议了房屋 → 王芳在杭州进行庆祝生日了股票"
-      ],
-      "expected_time": "2025-10-15 20:16:04",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0016",
+      "query_id": "Q0021",
       "query_text": "杨十九在武汉进行健身运动了旅游服务，后续事件依次是什么？",
       "query_type": "时序推理链",
       "test_dimension": "时序推理",
@@ -10505,42 +10707,42 @@
             "location": "武汉",
             "action": "进行健身运动",
             "product": "旅游服务",
-            "time": "2025-07-15 20:16:04"
+            "time": "2025-07-15 21:23:36"
           },
           {
             "person": "杨十九",
             "location": "上海",
             "action": "退款",
             "product": "基金",
-            "time": "2025-09-18 20:16:04"
+            "time": "2025-09-18 21:23:36"
           },
           {
             "person": "杨十九",
             "location": "哈尔滨",
             "action": "进行健身运动",
             "product": "股票",
-            "time": "2026-05-01 20:16:04"
+            "time": "2026-05-01 21:23:36"
           },
           {
             "person": "杨十九",
             "location": "合肥",
             "action": "进行聚餐聚会",
             "product": "旅游服务",
-            "time": "2026-05-05 20:16:04"
+            "time": "2026-05-05 21:23:36"
           },
           {
             "person": "杨十九",
             "location": "天津",
             "action": "进行参加活动",
             "product": "医疗服务",
-            "time": "2026-05-10 20:16:04"
+            "time": "2026-05-10 21:23:36"
           },
           {
             "person": "杨十九",
             "location": "沈阳",
             "action": "进行参加面试",
             "product": "家具",
-            "time": "2026-05-19 20:16:04"
+            "time": "2026-05-19 21:23:36"
           }
         ]
       },
@@ -10548,220 +10750,12 @@
       "acceptable_answers": [
         "杨十九在武汉进行健身运动了旅游服务 → 杨十九在上海退款了基金 → 杨十九在哈尔滨进行健身运动了股票 → 杨十九在合肥进行聚餐聚会了旅游服务 → 杨十九在天津进行参加活动了医疗服务 → 杨十九在沈阳进行参加面试了家具"
       ],
-      "expected_time": "2025-07-15 20:16:04",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0017",
-      "query_text": "韩十八在成都进行聚餐聚会了股票，后续事件依次是什么？",
-      "query_type": "时序推理链",
-      "test_dimension": "时序推理",
-      "expected_memory_ids": [
-        "MEM000029",
-        "MEM000021",
-        "MEM000134",
-        "MEM000094",
-        "MEM000037",
-        "MEM000096"
-      ],
-      "expected_answer": {
-        "chain_type": "时序推理",
-        "members": [
-          {
-            "person": "韩十八",
-            "location": "成都",
-            "action": "进行聚餐聚会",
-            "product": "股票",
-            "time": "2025-01-05 20:16:04"
-          },
-          {
-            "person": "韩十八",
-            "location": "苏州",
-            "action": "进行参加会议",
-            "product": "服装",
-            "time": "2025-03-13 20:16:04"
-          },
-          {
-            "person": "韩十八",
-            "location": "重庆",
-            "action": "进行参加面试",
-            "product": "旅游服务",
-            "time": "2025-04-01 20:16:04"
-          },
-          {
-            "person": "韩十八",
-            "location": "大连",
-            "action": "之后",
-            "product": "保险",
-            "time": "2025-06-24 20:16:04"
-          },
-          {
-            "person": "韩十八",
-            "location": "上海",
-            "action": "轮班",
-            "product": "茅台",
-            "time": "2025-06-25 20:16:04"
-          },
-          {
-            "person": "韩十八",
-            "location": "大连",
-            "action": "接着",
-            "product": "股票",
-            "time": "2025-08-28 20:16:04"
-          }
-        ]
-      },
-      "expected_answer_text": "链式时序推理：韩十八在成都进行聚餐聚会了股票 → 韩十八在苏州进行参加会议了服装 → 韩十八在重庆进行参加面试了旅游服务 → 韩十八在大连之后了保险 → 韩十八在上海轮班了茅台 → 韩十八在大连接着了股票",
-      "acceptable_answers": [
-        "韩十八在成都进行聚餐聚会了股票 → 韩十八在苏州进行参加会议了服装 → 韩十八在重庆进行参加面试了旅游服务 → 韩十八在大连之后了保险 → 韩十八在上海轮班了茅台 → 韩十八在大连接着了股票"
-      ],
-      "expected_time": "2025-01-05 20:16:04",
-      "difficulty": "简单",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0018",
-      "query_text": "张伟在广州进行健身运动了书籍，后续事件依次是什么？",
-      "query_type": "时序推理链",
-      "test_dimension": "时序推理",
-      "expected_memory_ids": [
-        "MEM000051",
-        "MEM000050",
-        "MEM000052"
-      ],
-      "expected_answer": {
-        "chain_type": "时序推理",
-        "members": [
-          {
-            "person": "张伟",
-            "location": "广州",
-            "action": "进行健身运动",
-            "product": "书籍",
-            "time": "2026-01-20 20:16:04"
-          },
-          {
-            "person": "张伟",
-            "location": "南京",
-            "action": "进行健身运动",
-            "product": "手机",
-            "time": "2026-05-09 20:16:04"
-          },
-          {
-            "person": "张伟",
-            "location": "贵阳",
-            "action": "进行参加面试",
-            "product": "基金",
-            "time": "2026-05-30 20:16:04"
-          }
-        ]
-      },
-      "expected_answer_text": "链式时序推理：张伟在广州进行健身运动了书籍 → 张伟在南京进行健身运动了手机 → 张伟在贵阳进行参加面试了基金",
-      "acceptable_answers": [
-        "张伟在广州进行健身运动了书籍 → 张伟在南京进行健身运动了手机 → 张伟在贵阳进行参加面试了基金"
-      ],
-      "expected_time": "2026-01-20 20:16:04",
+      "expected_time": "2025-07-15 21:23:36",
       "difficulty": "困难",
       "search_depth": "深层"
     },
     {
-      "query_id": "Q0019",
-      "query_text": "因为施二十六在青岛投资了股票，后续导致了哪些事件？",
-      "query_type": "因果推理链",
-      "test_dimension": "因果推理",
-      "expected_memory_ids": [
-        "MEM000079",
-        "MEM000080",
-        "MEM000081"
-      ],
-      "expected_answer": {
-        "chain_type": "因果推理",
-        "members": [
-          {
-            "person": "施二十六",
-            "location": "青岛",
-            "action": "投资",
-            "product": "股票",
-            "time": "2025-06-18 20:16:04"
-          },
-          {
-            "person": "施二十六",
-            "location": "青岛",
-            "action": "引发",
-            "product": "基因数据库",
-            "time": "2026-05-30 20:16:04"
-          },
-          {
-            "person": "施二十六",
-            "location": "青岛",
-            "action": "仲裁",
-            "product": "基因数据库",
-            "time": "2026-05-15 20:16:04"
-          }
-        ]
-      },
-      "expected_answer_text": "链式因果推理：施二十六在青岛投资了股票 → 施二十六在青岛引发了基因数据库 → 施二十六在青岛仲裁了基因数据库",
-      "acceptable_answers": [
-        "施二十六在青岛投资了股票 → 施二十六在青岛引发了基因数据库 → 施二十六在青岛仲裁了基因数据库"
-      ],
-      "expected_time": "2025-06-18 20:16:04",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0020",
-      "query_text": "因为周八在南昌决策了药品，后续导致了哪些事件？",
-      "query_type": "因果推理链",
-      "test_dimension": "因果推理",
-      "expected_memory_ids": [
-        "MEM000070",
-        "MEM000071",
-        "MEM000072",
-        "MEM000073"
-      ],
-      "expected_answer": {
-        "chain_type": "因果推理",
-        "members": [
-          {
-            "person": "周八",
-            "location": "南昌",
-            "action": "决策",
-            "product": "药品",
-            "time": "2025-08-29 20:16:04"
-          },
-          {
-            "person": "周八",
-            "location": "南昌",
-            "action": "造成",
-            "product": "MXene",
-            "time": "2026-04-09 20:16:04"
-          },
-          {
-            "person": "周八",
-            "location": "南昌",
-            "action": "辞职",
-            "product": "MXene",
-            "time": "2026-01-27 20:16:04"
-          },
-          {
-            "person": "周八",
-            "location": "南昌",
-            "action": "导致",
-            "product": "MXene",
-            "time": "2025-11-26 20:16:04"
-          }
-        ]
-      },
-      "expected_answer_text": "链式因果推理：周八在南昌决策了药品 → 周八在南昌造成了MXene → 周八在南昌辞职了MXene → 周八在南昌导致了MXene",
-      "acceptable_answers": [
-        "周八在南昌决策了药品 → 周八在南昌造成了MXene → 周八在南昌辞职了MXene → 周八在南昌导致了MXene"
-      ],
-      "expected_time": "2025-08-29 20:16:04",
-      "difficulty": "简单",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0021",
+      "query_id": "Q0022",
       "query_text": "因为何二十四在南京购买了服装，后续导致了哪些事件？",
       "query_type": "因果推理链",
       "test_dimension": "因果推理",
@@ -10780,35 +10774,35 @@
             "location": "南京",
             "action": "购买",
             "product": "服装",
-            "time": "2025-08-05 20:16:04"
+            "time": "2025-08-05 21:23:36"
           },
           {
             "person": "何二十四",
             "location": "南京",
             "action": "造成",
             "product": "碳税",
-            "time": "2026-04-12 20:16:04"
+            "time": "2026-04-12 21:23:36"
           },
           {
             "person": "何二十四",
             "location": "南京",
             "action": "辞职",
             "product": "碳税",
-            "time": "2026-05-18 20:16:04"
+            "time": "2026-05-18 21:23:36"
           },
           {
             "person": "何二十四",
             "location": "南京",
             "action": "结果",
             "product": "电器",
-            "time": "2025-08-28 20:16:04"
+            "time": "2025-08-28 21:23:36"
           },
           {
             "person": "何二十四",
             "location": "南京",
             "action": "结果",
             "product": "乐器",
-            "time": "2026-05-16 20:16:04"
+            "time": "2026-05-16 21:23:36"
           }
         ]
       },
@@ -10816,12 +10810,108 @@
       "acceptable_answers": [
         "何二十四在南京购买了服装 → 何二十四在南京造成了碳税 → 何二十四在南京辞职了碳税 → 何二十四在南京结果了电器 → 何二十四在南京结果了乐器"
       ],
-      "expected_time": "2025-08-05 20:16:04",
+      "expected_time": "2025-08-05 21:23:36",
       "difficulty": "简单",
       "search_depth": "深层"
     },
     {
-      "query_id": "Q0022",
+      "query_id": "Q0023",
+      "query_text": "因为周八在南昌决策了药品，后续导致了哪些事件？",
+      "query_type": "因果推理链",
+      "test_dimension": "因果推理",
+      "expected_memory_ids": [
+        "MEM000070",
+        "MEM000071",
+        "MEM000072",
+        "MEM000073"
+      ],
+      "expected_answer": {
+        "chain_type": "因果推理",
+        "members": [
+          {
+            "person": "周八",
+            "location": "南昌",
+            "action": "决策",
+            "product": "药品",
+            "time": "2025-08-29 21:23:36"
+          },
+          {
+            "person": "周八",
+            "location": "南昌",
+            "action": "造成",
+            "product": "MXene",
+            "time": "2026-04-09 21:23:36"
+          },
+          {
+            "person": "周八",
+            "location": "南昌",
+            "action": "辞职",
+            "product": "MXene",
+            "time": "2026-01-27 21:23:36"
+          },
+          {
+            "person": "周八",
+            "location": "南昌",
+            "action": "导致",
+            "product": "MXene",
+            "time": "2025-11-26 21:23:36"
+          }
+        ]
+      },
+      "expected_answer_text": "链式因果推理：周八在南昌决策了药品 → 周八在南昌造成了MXene → 周八在南昌辞职了MXene → 周八在南昌导致了MXene",
+      "acceptable_answers": [
+        "周八在南昌决策了药品 → 周八在南昌造成了MXene → 周八在南昌辞职了MXene → 周八在南昌导致了MXene"
+      ],
+      "expected_time": "2025-08-29 21:23:36",
+      "difficulty": "中等",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0024",
+      "query_text": "因为施二十六在青岛投资了股票，后续导致了哪些事件？",
+      "query_type": "因果推理链",
+      "test_dimension": "因果推理",
+      "expected_memory_ids": [
+        "MEM000079",
+        "MEM000080",
+        "MEM000081"
+      ],
+      "expected_answer": {
+        "chain_type": "因果推理",
+        "members": [
+          {
+            "person": "施二十六",
+            "location": "青岛",
+            "action": "投资",
+            "product": "股票",
+            "time": "2025-06-18 21:23:36"
+          },
+          {
+            "person": "施二十六",
+            "location": "青岛",
+            "action": "引发",
+            "product": "基因数据库",
+            "time": "2026-05-30 21:23:36"
+          },
+          {
+            "person": "施二十六",
+            "location": "青岛",
+            "action": "仲裁",
+            "product": "基因数据库",
+            "time": "2026-05-15 21:23:36"
+          }
+        ]
+      },
+      "expected_answer_text": "链式因果推理：施二十六在青岛投资了股票 → 施二十六在青岛引发了基因数据库 → 施二十六在青岛仲裁了基因数据库",
+      "acceptable_answers": [
+        "施二十六在青岛投资了股票 → 施二十六在青岛引发了基因数据库 → 施二十六在青岛仲裁了基因数据库"
+      ],
+      "expected_time": "2025-06-18 21:23:36",
+      "difficulty": "困难",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0025",
       "query_text": "赵六在合肥支持了旅游服务，和言福的做法有什么不同？",
       "query_type": "对比推理链",
       "test_dimension": "对比推理",
@@ -10840,35 +10930,35 @@
             "location": "合肥",
             "action": "支持",
             "product": "旅游服务",
-            "time": "2026-05-01 20:16:04"
+            "time": "2026-05-01 21:23:36"
           },
           {
             "person": "言福",
             "location": "合肥",
             "action": "退出",
             "product": "基金",
-            "time": "2025-06-19 20:16:04"
+            "time": "2025-06-19 21:23:36"
           },
           {
             "person": "赵六",
             "location": "合肥",
             "action": "赞同",
             "product": "珠宝",
-            "time": "2026-03-27 20:16:04"
+            "time": "2026-03-27 21:23:36"
           },
           {
             "person": "缑亢",
             "location": "合肥",
             "action": "退出",
             "product": "运动器材",
-            "time": "2026-04-29 20:16:04"
+            "time": "2026-04-29 21:23:36"
           },
           {
             "person": "赵六",
             "location": "合肥",
             "action": "投资",
             "product": "医疗服务",
-            "time": "2026-05-23 20:16:04"
+            "time": "2026-05-23 21:23:36"
           }
         ]
       },
@@ -10876,12 +10966,12 @@
       "acceptable_answers": [
         "赵六在合肥支持了旅游服务 → 言福在合肥退出了基金 → 赵六在合肥赞同了珠宝 → 缑亢在合肥退出了运动器材 → 赵六在合肥投资了医疗服务"
       ],
-      "expected_time": "2026-05-01 20:16:04",
-      "difficulty": "中等",
+      "expected_time": "2026-05-01 21:23:36",
+      "difficulty": "简单",
       "search_depth": "深层"
     },
     {
-      "query_id": "Q0023",
+      "query_id": "Q0026",
       "query_text": "王五在广州购买了食品，和洪峰的做法有什么不同？",
       "query_type": "对比推理链",
       "test_dimension": "对比推理",
@@ -10898,21 +10988,21 @@
             "location": "广州",
             "action": "购买",
             "product": "食品",
-            "time": "2026-05-07 20:16:04"
+            "time": "2026-05-07 21:23:36"
           },
           {
             "person": "洪峰",
             "location": "广州",
             "action": "撤资",
             "product": "手机",
-            "time": "2026-05-08 20:16:04"
+            "time": "2026-05-08 21:23:36"
           },
           {
             "person": "王五",
             "location": "广州",
             "action": "批准",
             "product": "乐器",
-            "time": "2026-05-27 20:16:04"
+            "time": "2026-05-27 21:23:36"
           }
         ]
       },
@@ -10920,12 +11010,12 @@
       "acceptable_answers": [
         "王五在广州购买了食品 → 洪峰在广州撤资了手机 → 王五在广州批准了乐器"
       ],
-      "expected_time": "2026-05-07 20:16:04",
+      "expected_time": "2026-05-07 21:23:36",
       "difficulty": "中等",
       "search_depth": "深层"
     },
     {
-      "query_id": "Q0024",
+      "query_id": "Q0027",
       "query_text": "尤二十二在哈尔滨收购了教育课程，和尉迟的做法有什么不同？",
       "query_type": "对比推理链",
       "test_dimension": "对比推理",
@@ -10942,21 +11032,21 @@
             "location": "哈尔滨",
             "action": "收购",
             "product": "教育课程",
-            "time": "2026-05-27 20:16:04"
+            "time": "2026-05-27 21:23:36"
           },
           {
             "person": "尉迟",
             "location": "哈尔滨",
             "action": "出售",
             "product": "旅游服务",
-            "time": "2026-05-17 20:16:04"
+            "time": "2026-05-17 21:23:36"
           },
           {
             "person": "尤二十二",
             "location": "哈尔滨",
             "action": "购买",
             "product": "家具",
-            "time": "2026-05-27 20:16:04"
+            "time": "2026-05-27 21:23:36"
           }
         ]
       },
@@ -10964,12 +11054,12 @@
       "acceptable_answers": [
         "尤二十二在哈尔滨收购了教育课程 → 尉迟在哈尔滨出售了旅游服务 → 尤二十二在哈尔滨购买了家具"
       ],
-      "expected_time": "2026-05-27 20:16:04",
+      "expected_time": "2026-05-27 21:23:36",
       "difficulty": "中等",
       "search_depth": "深层"
     },
     {
-      "query_id": "Q0025",
+      "query_id": "Q0028",
       "query_text": "王五在昆明涵盖了方案，这件事包含了哪些子事件？",
       "query_type": "包含推理链",
       "test_dimension": "包含推理",
@@ -10988,35 +11078,35 @@
             "location": "昆明",
             "action": "涵盖",
             "product": "方案",
-            "time": "2026-04-05 20:16:04"
+            "time": "2026-04-05 21:23:36"
           },
           {
             "person": "王五",
             "location": "昆明",
             "action": "覆盖",
             "product": "量子通信",
-            "time": "2025-07-10 20:16:04"
+            "time": "2025-07-10 21:23:36"
           },
           {
             "person": "王五",
             "location": "昆明",
             "action": "落实",
             "product": "量子通信",
-            "time": "2026-05-08 20:16:04"
+            "time": "2026-05-08 21:23:36"
           },
           {
             "person": "王五",
             "location": "昆明",
             "action": "实施",
             "product": "电器",
-            "time": "2026-05-26 20:16:04"
+            "time": "2026-05-26 21:23:36"
           },
           {
             "person": "王五",
             "location": "昆明",
             "action": "完成",
             "product": "电器",
-            "time": "2025-08-20 20:16:04"
+            "time": "2025-08-20 21:23:36"
           }
         ]
       },
@@ -11024,12 +11114,12 @@
       "acceptable_answers": [
         "王五在昆明涵盖了方案 → 王五在昆明覆盖了量子通信 → 王五在昆明落实了量子通信 → 王五在昆明实施了电器 → 王五在昆明完成了电器"
       ],
-      "expected_time": "2026-04-05 20:16:04",
-      "difficulty": "简单",
+      "expected_time": "2026-04-05 21:23:36",
+      "difficulty": "中等",
       "search_depth": "深层"
     },
     {
-      "query_id": "Q0026",
+      "query_id": "Q0029",
       "query_text": "秦二十一在昆明布局了项目，这件事包含了哪些子事件？",
       "query_type": "包含推理链",
       "test_dimension": "包含推理",
@@ -11046,21 +11136,21 @@
             "location": "昆明",
             "action": "布局",
             "product": "项目",
-            "time": "2026-02-14 20:16:04"
+            "time": "2026-02-14 21:23:36"
           },
           {
             "person": "秦二十一",
             "location": "昆明",
             "action": "包含",
             "product": "字节跳动",
-            "time": "2026-05-01 20:16:04"
+            "time": "2026-05-01 21:23:36"
           },
           {
             "person": "秦二十一",
             "location": "昆明",
             "action": "具体",
             "product": "乐器",
-            "time": "2026-05-18 20:16:04"
+            "time": "2026-05-18 21:23:36"
           }
         ]
       },
@@ -11068,180 +11158,8 @@
       "acceptable_answers": [
         "秦二十一在昆明布局了项目 → 秦二十一在昆明包含了字节跳动 → 秦二十一在昆明具体了乐器"
       ],
-      "expected_time": "2026-02-14 20:16:04",
+      "expected_time": "2026-02-14 21:23:36",
       "difficulty": "困难",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0027",
-      "query_text": "冯十二在深圳涵盖了计划，这件事包含了哪些子事件？",
-      "query_type": "包含推理链",
-      "test_dimension": "包含推理",
-      "expected_memory_ids": [
-        "MEM000112",
-        "MEM000113",
-        "MEM000114",
-        "MEM000115"
-      ],
-      "expected_answer": {
-        "chain_type": "包含推理",
-        "members": [
-          {
-            "person": "冯十二",
-            "location": "深圳",
-            "action": "涵盖",
-            "product": "计划",
-            "time": "2026-03-06 20:16:04"
-          },
-          {
-            "person": "冯十二",
-            "location": "深圳",
-            "action": "包含",
-            "product": "核聚变",
-            "time": "2026-05-15 20:16:04"
-          },
-          {
-            "person": "冯十二",
-            "location": "深圳",
-            "action": "具体",
-            "product": "珠宝",
-            "time": "2025-08-25 20:16:04"
-          },
-          {
-            "person": "冯十二",
-            "location": "深圳",
-            "action": "完成",
-            "product": "服装",
-            "time": "2026-05-02 20:16:04"
-          }
-        ]
-      },
-      "expected_answer_text": "链式包含推理：冯十二在深圳涵盖了计划 → 冯十二在深圳包含了核聚变 → 冯十二在深圳具体了珠宝 → 冯十二在深圳完成了服装",
-      "acceptable_answers": [
-        "冯十二在深圳涵盖了计划 → 冯十二在深圳包含了核聚变 → 冯十二在深圳具体了珠宝 → 冯十二在深圳完成了服装"
-      ],
-      "expected_time": "2026-03-06 20:16:04",
-      "difficulty": "简单",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0028",
-      "query_text": "从孙七在哈尔滨发现了家具出发，能推导出什么？",
-      "query_type": "推导推理链",
-      "test_dimension": "推导推理",
-      "expected_memory_ids": [
-        "MEM000128",
-        "MEM000129",
-        "MEM000130",
-        "MEM000131",
-        "MEM000132",
-        "MEM000133"
-      ],
-      "expected_answer": {
-        "chain_type": "推导推理",
-        "members": [
-          {
-            "person": "孙七",
-            "location": "哈尔滨",
-            "action": "发现",
-            "product": "家具",
-            "time": "2026-03-09 20:16:04"
-          },
-          {
-            "person": "孙七",
-            "location": "哈尔滨",
-            "action": "推测",
-            "product": "玩具",
-            "time": "2026-03-18 20:16:04"
-          },
-          {
-            "person": "孙七",
-            "location": "哈尔滨",
-            "action": "判断",
-            "product": "电器",
-            "time": "2025-07-08 20:16:04"
-          },
-          {
-            "person": "孙七",
-            "location": "哈尔滨",
-            "action": "证明",
-            "product": "化妆品",
-            "time": "2025-09-20 20:16:04"
-          },
-          {
-            "person": "孙七",
-            "location": "哈尔滨",
-            "action": "得出",
-            "product": "服装",
-            "time": "2026-05-04 20:16:04"
-          },
-          {
-            "person": "孙七",
-            "location": "哈尔滨",
-            "action": "得出",
-            "product": "电器",
-            "time": "2026-05-10 20:16:04"
-          }
-        ]
-      },
-      "expected_answer_text": "链式推导推理：孙七在哈尔滨发现了家具 → 孙七在哈尔滨推测了玩具 → 孙七在哈尔滨判断了电器 → 孙七在哈尔滨证明了化妆品 → 孙七在哈尔滨得出了服装 → 孙七在哈尔滨得出了电器",
-      "acceptable_answers": [
-        "孙七在哈尔滨发现了家具 → 孙七在哈尔滨推测了玩具 → 孙七在哈尔滨判断了电器 → 孙七在哈尔滨证明了化妆品 → 孙七在哈尔滨得出了服装 → 孙七在哈尔滨得出了电器"
-      ],
-      "expected_time": "2026-03-09 20:16:04",
-      "difficulty": "困难",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0029",
-      "query_text": "从严三十在上海注意到了家具出发，能推导出什么？",
-      "query_type": "推导推理链",
-      "test_dimension": "推导推理",
-      "expected_memory_ids": [
-        "MEM000124",
-        "MEM000125",
-        "MEM000126",
-        "MEM000127"
-      ],
-      "expected_answer": {
-        "chain_type": "推导推理",
-        "members": [
-          {
-            "person": "严三十",
-            "location": "上海",
-            "action": "注意到",
-            "product": "家具",
-            "time": "2026-05-29 20:16:04"
-          },
-          {
-            "person": "严三十",
-            "location": "上海",
-            "action": "分析",
-            "product": "玩具",
-            "time": "2025-12-06 20:16:04"
-          },
-          {
-            "person": "严三十",
-            "location": "上海",
-            "action": "判断",
-            "product": "玩具",
-            "time": "2026-01-07 20:16:04"
-          },
-          {
-            "person": "严三十",
-            "location": "上海",
-            "action": "结论",
-            "product": "房屋",
-            "time": "2026-05-12 20:16:04"
-          }
-        ]
-      },
-      "expected_answer_text": "链式推导推理：严三十在上海注意到了家具 → 严三十在上海分析了玩具 → 严三十在上海判断了玩具 → 严三十在上海结论了房屋",
-      "acceptable_answers": [
-        "严三十在上海注意到了家具 → 严三十在上海分析了玩具 → 严三十在上海判断了玩具 → 严三十在上海结论了房屋"
-      ],
-      "expected_time": "2026-05-29 20:16:04",
-      "difficulty": "简单",
       "search_depth": "深层"
     },
     {
@@ -11262,21 +11180,21 @@
             "location": "重庆",
             "action": "发现",
             "product": "食品",
-            "time": "2026-03-05 20:16:04"
+            "time": "2026-03-05 21:23:36"
           },
           {
             "person": "王五",
             "location": "重庆",
             "action": "研究",
             "product": "手机",
-            "time": "2026-05-26 20:16:04"
+            "time": "2026-05-26 21:23:36"
           },
           {
             "person": "王五",
             "location": "重庆",
             "action": "判断",
             "product": "药品",
-            "time": "2026-01-18 20:16:04"
+            "time": "2026-01-18 21:23:36"
           }
         ]
       },
@@ -11284,67 +11202,319 @@
       "acceptable_answers": [
         "王五在重庆发现了食品 → 王五在重庆研究了手机 → 王五在重庆判断了药品"
       ],
-      "expected_time": "2026-03-05 20:16:04",
+      "expected_time": "2026-03-05 21:23:36",
       "difficulty": "困难",
       "search_depth": "深层"
     },
     {
       "query_id": "Q0031",
-      "query_text": "关于赵六在长沙进行签订合同的详情，多说点",
-      "query_type": "跨版本",
-      "test_dimension": "跨版本",
+      "query_text": "从孙七在哈尔滨发现了家具出发，能推导出什么？",
+      "query_type": "推导推理链",
+      "test_dimension": "推导推理",
       "expected_memory_ids": [
-        "MEM000135"
+        "MEM000128",
+        "MEM000129",
+        "MEM000130",
+        "MEM000131",
+        "MEM000132",
+        "MEM000133"
       ],
       "expected_answer": {
-        "person": "赵六",
-        "location": "长沙篮球馆",
-        "action": "进行签订合同",
-        "product": "玩具",
-        "quantity": 702,
-        "price": 7282,
-        "time": "2024-10-13 20:16:04"
+        "chain_type": "推导推理",
+        "members": [
+          {
+            "person": "孙七",
+            "location": "哈尔滨",
+            "action": "发现",
+            "product": "家具",
+            "time": "2026-03-09 21:23:36"
+          },
+          {
+            "person": "孙七",
+            "location": "哈尔滨",
+            "action": "推测",
+            "product": "玩具",
+            "time": "2026-03-18 21:23:36"
+          },
+          {
+            "person": "孙七",
+            "location": "哈尔滨",
+            "action": "判断",
+            "product": "电器",
+            "time": "2025-07-08 21:23:36"
+          },
+          {
+            "person": "孙七",
+            "location": "哈尔滨",
+            "action": "证明",
+            "product": "化妆品",
+            "time": "2025-09-20 21:23:36"
+          },
+          {
+            "person": "孙七",
+            "location": "哈尔滨",
+            "action": "得出",
+            "product": "服装",
+            "time": "2026-05-04 21:23:36"
+          },
+          {
+            "person": "孙七",
+            "location": "哈尔滨",
+            "action": "得出",
+            "product": "电器",
+            "time": "2026-05-10 21:23:36"
+          }
+        ]
       },
-      "expected_answer_text": "人物：赵六，地点：长沙篮球馆，动作：进行签订合同，对象：玩具，数量：702，时间：2024-10-13 20:16:04",
+      "expected_answer_text": "链式推导推理：孙七在哈尔滨发现了家具 → 孙七在哈尔滨推测了玩具 → 孙七在哈尔滨判断了电器 → 孙七在哈尔滨证明了化妆品 → 孙七在哈尔滨得出了服装 → 孙七在哈尔滨得出了电器",
       "acceptable_answers": [
-        "赵六在长沙篮球馆进行签订合同了玩具，数量702",
-        "赵六回忆道：当时长沙的篮球馆，赵六（产品经理）进行签订合同了玩具，觉得是个机会，总共702，单价7282元",
-        "吕二十五说赵六在长沙那边进行签订合同了玩具，听说左右702的样子，具体价格不太清楚"
+        "孙七在哈尔滨发现了家具 → 孙七在哈尔滨推测了玩具 → 孙七在哈尔滨判断了电器 → 孙七在哈尔滨证明了化妆品 → 孙七在哈尔滨得出了服装 → 孙七在哈尔滨得出了电器"
       ],
-      "expected_time": "2024-10-13 20:16:04",
-      "difficulty": "简单",
+      "expected_time": "2026-03-09 21:23:36",
+      "difficulty": "中等",
       "search_depth": "深层"
     },
     {
       "query_id": "Q0032",
-      "query_text": "关于韩十八在深圳进行庆祝生日的详情，多说点",
-      "query_type": "跨版本",
-      "test_dimension": "跨版本",
+      "query_text": "从严三十在上海注意到了家具出发，能推导出什么？",
+      "query_type": "推导推理链",
+      "test_dimension": "推导推理",
       "expected_memory_ids": [
-        "MEM000147"
+        "MEM000124",
+        "MEM000125",
+        "MEM000126",
+        "MEM000127"
       ],
       "expected_answer": {
-        "person": "韩十八",
-        "location": "深圳会议室B",
-        "action": "进行庆祝生日",
-        "product": "手机",
-        "quantity": 725,
-        "price": 195,
-        "time": "2026-02-01 20:16:04"
+        "chain_type": "推导推理",
+        "members": [
+          {
+            "person": "严三十",
+            "location": "上海",
+            "action": "注意到",
+            "product": "家具",
+            "time": "2026-05-29 21:23:36"
+          },
+          {
+            "person": "严三十",
+            "location": "上海",
+            "action": "分析",
+            "product": "玩具",
+            "time": "2025-12-06 21:23:36"
+          },
+          {
+            "person": "严三十",
+            "location": "上海",
+            "action": "判断",
+            "product": "玩具",
+            "time": "2026-01-07 21:23:36"
+          },
+          {
+            "person": "严三十",
+            "location": "上海",
+            "action": "结论",
+            "product": "房屋",
+            "time": "2026-05-12 21:23:36"
+          }
+        ]
       },
-      "expected_answer_text": "人物：韩十八，地点：深圳会议室B，动作：进行庆祝生日，对象：手机，数量：725，时间：2026-02-01 20:16:04",
+      "expected_answer_text": "链式推导推理：严三十在上海注意到了家具 → 严三十在上海分析了玩具 → 严三十在上海判断了玩具 → 严三十在上海结论了房屋",
       "acceptable_answers": [
-        "韩十八在深圳会议室B进行庆祝生日了手机，数量725",
-        "韩十八回忆道：当时深圳的会议室B，韩十八（船长）进行庆祝生日了手机，想趁低价入手，总共725，单价195元",
-        "周八说韩十八在深圳那边进行庆祝生日了手机，听说左右725的样子，具体价格不太清楚"
+        "严三十在上海注意到了家具 → 严三十在上海分析了玩具 → 严三十在上海判断了玩具 → 严三十在上海结论了房屋"
       ],
-      "expected_time": "2026-02-01 20:16:04",
+      "expected_time": "2026-05-29 21:23:36",
+      "difficulty": "困难",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0033",
+      "query_text": "张伟的活动记录有哪些",
+      "query_type": "聚类检索",
+      "test_dimension": "聚类检索",
+      "expected_memory_ids": [
+        "MEM000050",
+        "MEM000051",
+        "MEM000052"
+      ],
+      "expected_answer": {
+        "cluster_id": "CLUSTER0006",
+        "members": [
+          {
+            "person": "张伟",
+            "location": "南京",
+            "action": "进行健身运动",
+            "product": "手机",
+            "time": "2026-05-09 21:23:36"
+          },
+          {
+            "person": "张伟",
+            "location": "广州",
+            "action": "进行健身运动",
+            "product": "书籍",
+            "time": "2026-01-20 21:23:36"
+          },
+          {
+            "person": "张伟",
+            "location": "贵阳",
+            "action": "进行参加面试",
+            "product": "基金",
+            "time": "2026-05-30 21:23:36"
+          }
+        ]
+      },
+      "expected_answer_text": "聚类张伟：张伟在南京进行健身运动了手机；张伟在广州进行健身运动了书籍；张伟在贵阳进行参加面试了基金",
+      "acceptable_answers": [
+        "张伟在南京进行健身运动了手机；张伟在广州进行健身运动了书籍；张伟在贵阳进行参加面试了基金"
+      ],
+      "expected_time": "2026-01-20 21:23:36",
+      "difficulty": "中等",
+      "search_depth": "中层"
+    },
+    {
+      "query_id": "Q0034",
+      "query_text": "李明的活动记录有哪些",
+      "query_type": "聚类检索",
+      "test_dimension": "聚类检索",
+      "expected_memory_ids": [
+        "MEM000047",
+        "MEM000049",
+        "MEM000048"
+      ],
+      "expected_answer": {
+        "cluster_id": "CLUSTER0005",
+        "members": [
+          {
+            "person": "李明",
+            "location": "青岛",
+            "action": "进行购买商品",
+            "product": "医疗服务",
+            "time": "2026-05-02 21:23:36"
+          },
+          {
+            "person": "李明",
+            "location": "沈阳",
+            "action": "进行庆祝生日",
+            "product": "书籍",
+            "time": "2025-05-31 21:23:36"
+          },
+          {
+            "person": "李明",
+            "location": "西安",
+            "action": "进行学习课程",
+            "product": "药品",
+            "time": "2026-05-10 21:23:36"
+          }
+        ]
+      },
+      "expected_answer_text": "聚类李明：李明在青岛进行购买商品了医疗服务；李明在沈阳进行庆祝生日了书籍；李明在西安进行学习课程了药品",
+      "acceptable_answers": [
+        "李明在青岛进行购买商品了医疗服务；李明在沈阳进行庆祝生日了书籍；李明在西安进行学习课程了药品"
+      ],
+      "expected_time": "2026-05-10 21:23:36",
       "difficulty": "困难",
       "search_depth": "中层"
     },
     {
+      "query_id": "Q0035",
+      "query_text": "在上海的记录有哪些",
+      "query_type": "聚类检索",
+      "test_dimension": "聚类检索",
+      "expected_memory_ids": [
+        "MEM000041",
+        "MEM000042",
+        "MEM000043"
+      ],
+      "expected_answer": {
+        "cluster_id": "CLUSTER0003",
+        "members": [
+          {
+            "person": "张二十七",
+            "location": "上海",
+            "action": "进行健身运动",
+            "product": "保险",
+            "time": "2026-05-08 21:23:36"
+          },
+          {
+            "person": "魏三十三",
+            "location": "上海",
+            "action": "进行出行旅行",
+            "product": "服装",
+            "time": "2025-07-15 21:23:36"
+          },
+          {
+            "person": "冯十二",
+            "location": "上海",
+            "action": "进行体检就医",
+            "product": "房屋",
+            "time": "2026-05-16 21:23:36"
+          }
+        ]
+      },
+      "expected_answer_text": "聚类上海：张二十七在上海进行健身运动了保险；魏三十三在上海进行出行旅行了服装；冯十二在上海进行体检就医了房屋",
+      "acceptable_answers": [
+        "张二十七在上海进行健身运动了保险；魏三十三在上海进行出行旅行了服装；冯十二在上海进行体检就医了房屋"
+      ],
+      "expected_time": "2026-05-08 21:23:36",
+      "difficulty": "中等",
+      "search_depth": "中层"
+    },
+    {
+      "query_id": "Q0036",
+      "query_text": "关于韩十八在重庆进行参加面试的详情，多说点",
+      "query_type": "跨版本",
+      "test_dimension": "跨版本",
+      "expected_memory_ids": [
+        "MEM000134"
+      ],
+      "expected_answer": {
+        "person": "韩十八",
+        "location": "重庆基金公司",
+        "action": "进行参加面试",
+        "product": "旅游服务",
+        "quantity": 393,
+        "price": 7983,
+        "time": "2025-04-01 21:23:36"
+      },
+      "expected_answer_text": "人物：韩十八，地点：重庆基金公司，动作：进行参加面试，对象：旅游服务，数量：393，时间：2025-04-01 21:23:36",
+      "acceptable_answers": [
+        "韩十八在重庆基金公司进行参加面试了旅游服务，数量393",
+        "韩十八回忆道：当时重庆的基金公司，韩十八（飞行员）进行参加面试了旅游服务，想试试运气，总共393，单价7983元",
+        "尤二十二说韩十八在重庆那边进行参加面试了旅游服务，据说左右393的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2025-04-01 21:23:36",
+      "difficulty": "中等",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0037",
+      "query_text": "关于许二十三在乌鲁木齐进行处理投诉的详情，多说点",
+      "query_type": "跨版本",
+      "test_dimension": "跨版本",
+      "expected_memory_ids": [
+        "MEM000140"
+      ],
+      "expected_answer": {
+        "person": "许二十三",
+        "location": "乌鲁木齐宗祠",
+        "action": "进行处理投诉",
+        "product": "房屋",
+        "quantity": 6420,
+        "price": 7539,
+        "time": "2025-01-14 21:23:36"
+      },
+      "expected_answer_text": "人物：许二十三，地点：乌鲁木齐宗祠，动作：进行处理投诉，对象：房屋，数量：6420，时间：2025-01-14 21:23:36",
+      "acceptable_answers": [
+        "许二十三在乌鲁木齐宗祠进行处理投诉了房屋，数量6420",
+        "许二十三回忆道：当时乌鲁木齐的宗祠，许二十三（统计）进行处理投诉了房屋，不想错过，总共6420，单价7539元",
+        "秦二十一说许二十三在乌鲁木齐那边进行处理投诉了房屋，据说大概6420的样子，具体价格不太清楚"
+      ],
+      "expected_time": "2025-01-14 21:23:36",
+      "difficulty": "困难",
+      "search_depth": "浅层"
+    },
+    {
       "query_id": "NEG0001",
-      "query_text": "孙七在杭州滑雪",
+      "query_text": "吴九在木星购买了茅台",
       "query_type": "负样本",
       "test_dimension": "负样本",
       "expected_memory_ids": [],
@@ -11356,7 +11526,7 @@
     },
     {
       "query_id": "NEG0002",
-      "query_text": "孙七在宁波画画",
+      "query_text": "吴九在武汉打篮球",
       "query_type": "负样本",
       "test_dimension": "负样本",
       "expected_memory_ids": [],
@@ -11368,7 +11538,7 @@
     },
     {
       "query_id": "NEG0003",
-      "query_text": "孙七在青岛游泳",
+      "query_text": "吴九在火星购买了项目",
       "query_type": "负样本",
       "test_dimension": "负样本",
       "expected_memory_ids": [],
@@ -11380,7 +11550,7 @@
     },
     {
       "query_id": "NEG0004",
-      "query_text": "孙七在南宁钓鱼",
+      "query_text": "吴九在沈阳游泳",
       "query_type": "负样本",
       "test_dimension": "负样本",
       "expected_memory_ids": [],
@@ -11404,7 +11574,7 @@
     },
     {
       "query_id": "NEG0006",
-      "query_text": "孙七在月球购买了珠宝",
+      "query_text": "吴九在北京唱歌",
       "query_type": "负样本",
       "test_dimension": "负样本",
       "expected_memory_ids": [],
@@ -11416,7 +11586,7 @@
     },
     {
       "query_id": "NEG0007",
-      "query_text": "孙七在大连下棋",
+      "query_text": "吴九在火星购买了化妆品",
       "query_type": "负样本",
       "test_dimension": "负样本",
       "expected_memory_ids": [],
@@ -11428,7 +11598,19 @@
     },
     {
       "query_id": "NEG0008",
-      "query_text": "孙七在乌鲁木齐游泳",
+      "query_text": "吴九在乌鲁木齐滑雪",
+      "query_type": "负样本",
+      "test_dimension": "负样本",
+      "expected_memory_ids": [],
+      "expected_answer": "",
+      "expected_time": null,
+      "difficulty": "困难",
+      "search_depth": "浅层",
+      "is_negative": true
+    },
+    {
+      "query_id": "NEG0009",
+      "query_text": "吴九在太原滑雪",
       "query_type": "负样本",
       "test_dimension": "负样本",
       "expected_memory_ids": [],
