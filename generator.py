@@ -513,29 +513,30 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                             chain_summary.append(f'{cm["person"]["name"]}在{cm["location"]["city"]}{cm["event"]["action"]}了{cm["event"]["product"]}')
                         chain_text = " → ".join(chain_summary)
                         
-                        # 用链中的第一个动作作为查询引子
+                        # 用链中的第一个记忆作为查询引子（包含完整内容）
                         first_mem = chain_mems[0]
                         p_name = first_mem["person"]["name"]
                         p_action = first_mem["event"]["action"]
                         p_product = first_mem["event"]["product"]
+                        p_city = first_mem["location"]["city"]
                         
                         if dim_name == "时序推理":
-                            qtext = f'{p_name}的后续事件依次是什么？'
+                            qtext = f'{p_name}在{p_city}{p_action}了{p_product}，后续事件依次是什么？'
                         elif dim_name == "因果推理":
-                            qtext = f'因为{p_name}{p_action}了{p_product}，导致了哪些后续事件？'
+                            qtext = f'因为{p_name}在{p_city}{p_action}了{p_product}，后续导致了哪些事件？'
                         elif dim_name == "对比推理":
                             # 对比链：需要链中两个不同人物或不同动作
                             if len(chain_mems) >= 2:
-                                qtext = f'{p_name}和{chain_mems[1]["person"]["name"]}在{p_action}了{p_product}方面有什么不同？'
+                                qtext = f'{p_name}在{p_city}{p_action}了{p_product}，和{chain_mems[1]["person"]["name"]}的做法有什么不同？'
                             else:
-                                qtext = f'和{p_name}{p_action}了{p_product}相比，有什么变化？'
+                                qtext = f'{p_name}在{p_city}{p_action}了{p_product}，之后有什么变化？'
                         elif dim_name == "包含推理":
-                            qtext = f'{p_name}{p_action}了{p_product}，这件事里包含了哪些子事件？'
+                            qtext = f'{p_name}在{p_city}{p_action}了{p_product}，这件事包含了哪些子事件？'
                         elif dim_name == "推导推理":
                             # 推导链：前提 = 第一个记忆的实际内容，确保匹配
-                            qtext = f'从{p_name}在{p_action}了{p_product}出发，能推导出什么？'
+                            qtext = f'从{p_name}在{p_city}{p_action}了{p_product}出发，能推导出什么？'
                         else:
-                            qtext = f'{p_name}的{p_action}链后续事件依次是什么？'
+                            qtext = f'{p_name}在{p_city}{p_action}了{p_product}，后续事件依次是什么？'
                         
                         # 答案：整条链的摘要
                         structured_answer = {
