@@ -800,123 +800,127 @@ class MemoryGenerator:
         result = []
         logic_types = ["因果", "时序", "对比", "包含", "推导"]
         
+        # 每种类型生成 count // 5 条链，确保总量充足
+        chains_per_type = max(3, count // 5)
+        
         for logic_type in logic_types:
-            chain_id = f"CHAIN_{logic_type}_{self.memory_id:04d}"
-            n_hops = random.randint(3, 6)
-            
-            base = self._base(random.choice(["7d", "30d", "90d", "1y"]))
-            person = base["person1"]
-            city = base["city"]
-            
-            chain_mems = []
-            for hop in range(n_hops):
-                diff = random.choices(["简单", "中等", "困难"], weights=[0.3, 0.4, 0.3])[0]
+            for chain_idx in range(chains_per_type):
+                chain_id = f"CHAIN_{logic_type}_{self.memory_id:04d}"
+                n_hops = random.randint(3, 6)
                 
-                if logic_type == "因果":
-                    if hop == 0:
-                        base["action"] = random.choice(["投资", "购买", "决策"])
-                    elif hop == 1:
-                        base["action"] = random.choice(["导致", "引发", "造成"])
-                        base["product"] = random.choice(PRODUCTS)
-                    elif hop == 2:
-                        base["action"] = random.choice(["产生", "带来", "造成"])
-                        base["event_type"] = random.choice(["交易", "冲突", "转折"])
-                        base["action"] = random.choice(EVENT_TYPES[base["event_type"]])
-                    else:
-                        base["action"] = random.choice(["最终", "结果", "导致"])
-                        
-                elif logic_type == "时序":
-                    # 时序链：利用绝对时间字段排序
-                    # 时间向前推进（更近），但时间戳本身已经是绝对时间
-                    # 时序链的核心特征：事件按时间先后发生，time.absolute 递增
-                    base["days_ago"] = max(0, base.get("days_ago", 30) - random.randint(3, 14))
-                    base["base_time"] = datetime.now() - timedelta(days=base["days_ago"])
-                    # 更新 time 字段为绝对时间
-                    base["time"] = {
-                        "absolute": base["base_time"].strftime("%Y-%m-%d %H:%M:%S"),
-                        "relative": time_desc(base["days_ago"]),
-                        "fuzzy": fuzzy_time(base["days_ago"]),
-                        "era": ""
-                    }
-                    if hop == 0:
-                        base["action"] = random.choice(["开始", "启动", "发起"])
-                    elif hop == n_hops - 1:
-                        base["action"] = random.choice(["完成", "结束", "收尾"])
-                    else:
-                        base["action"] = random.choice(["随后", "接着", "然后", "之后"])
-                        
-                elif logic_type == "对比":
-                    if hop % 2 == 0:
-                        base["person1"] = person
-                        base["action"] = random.choice(["购买", "投资", "支持", "收购", "赞同", "批准"])
-                        base["event_type"] = random.choice(["交易", "情感"])
-                    else:
-                        alt_names = [n for n in NAMES if n != person]
-                        base["person1"] = random.choice(alt_names)
-                        base["action"] = random.choice(["出售", "撤资", "反对", "否决", "拒绝", "退出"])
-                        base["event_type"] = random.choice(["交易", "冲突"])
+                base = self._base(random.choice(["7d", "30d", "90d", "1y"]))
+                person = base["person1"]
+                city = base["city"]
+                
+                chain_mems = []
+                for hop in range(n_hops):
+                    diff = random.choices(["简单", "中等", "困难"], weights=[0.3, 0.4, 0.3])[0]
                     
-                elif logic_type == "包含":
-                    if hop == 0:
-                        base["action"] = random.choice(["规划", "布局", "涵盖"])
-                        base["product"] = random.choice(["项目", "计划", "方案"])
-                    elif hop == 1:
-                        base["action"] = random.choice(["包含", "涉及", "覆盖"])
-                        base["product"] = random.choice(PRODUCTS)
-                    elif hop == 2:
-                        base["action"] = random.choice(["具体", "细化", "落实"])
-                    else:
-                        base["action"] = random.choice(["执行", "实施", "完成"])
+                    if logic_type == "因果":
+                        if hop == 0:
+                            base["action"] = random.choice(["投资", "购买", "决策"])
+                        elif hop == 1:
+                            base["action"] = random.choice(["导致", "引发", "造成"])
+                            base["product"] = random.choice(PRODUCTS)
+                        elif hop == 2:
+                            base["action"] = random.choice(["产生", "带来", "造成"])
+                            base["event_type"] = random.choice(["交易", "冲突", "转折"])
+                            base["action"] = random.choice(EVENT_TYPES[base["event_type"]])
+                        else:
+                            base["action"] = random.choice(["最终", "结果", "导致"])
+                            
+                    elif logic_type == "时序":
+                        # 时序链：利用绝对时间字段排序
+                        # 时间向前推进（更近），但时间戳本身已经是绝对时间
+                        # 时序链的核心特征：事件按时间先后发生，time.absolute 递增
+                        base["days_ago"] = max(0, base.get("days_ago", 30) - random.randint(3, 14))
+                        base["base_time"] = datetime.now() - timedelta(days=base["days_ago"])
+                        # 更新 time 字段为绝对时间
+                        base["time"] = {
+                            "absolute": base["base_time"].strftime("%Y-%m-%d %H:%M:%S"),
+                            "relative": time_desc(base["days_ago"]),
+                            "fuzzy": fuzzy_time(base["days_ago"]),
+                            "era": ""
+                        }
+                        if hop == 0:
+                            base["action"] = random.choice(["开始", "启动", "发起"])
+                        elif hop == n_hops - 1:
+                            base["action"] = random.choice(["完成", "结束", "收尾"])
+                        else:
+                            base["action"] = random.choice(["随后", "接着", "然后", "之后"])
+                            
+                    elif logic_type == "对比":
+                        if hop % 2 == 0:
+                            base["person1"] = person
+                            base["action"] = random.choice(["购买", "投资", "支持", "收购", "赞同", "批准"])
+                            base["event_type"] = random.choice(["交易", "情感"])
+                        else:
+                            alt_names = [n for n in NAMES if n != person]
+                            base["person1"] = random.choice(alt_names)
+                            base["action"] = random.choice(["出售", "撤资", "反对", "否决", "拒绝", "退出"])
+                            base["event_type"] = random.choice(["交易", "冲突"])
                         
-                elif logic_type == "推导":
-                    if hop == 0:
-                        base["action"] = random.choice(["观察", "发现", "注意到"])
-                        base["event_type"] = "发现"
-                    elif hop == 1:
-                        base["action"] = random.choice(["分析", "研究", "推测"])
-                        base["event_type"] = "分析"
-                    elif hop == 2:
-                        base["action"] = random.choice(["推断", "判断", "预测"])
-                        base["event_type"] = "推导"
-                    else:
-                        base["action"] = random.choice(["结论", "证明", "得出"])
-                        base["event_type"] = "决策"
+                    elif logic_type == "包含":
+                        if hop == 0:
+                            base["action"] = random.choice(["规划", "布局", "涵盖"])
+                            base["product"] = random.choice(["项目", "计划", "方案"])
+                        elif hop == 1:
+                            base["action"] = random.choice(["包含", "涉及", "覆盖"])
+                            base["product"] = random.choice(PRODUCTS)
+                        elif hop == 2:
+                            base["action"] = random.choice(["具体", "细化", "落实"])
+                        else:
+                            base["action"] = random.choice(["执行", "实施", "完成"])
+                            
+                    elif logic_type == "推导":
+                        if hop == 0:
+                            base["action"] = random.choice(["观察", "发现", "注意到"])
+                            base["event_type"] = "发现"
+                        elif hop == 1:
+                            base["action"] = random.choice(["分析", "研究", "推测"])
+                            base["event_type"] = "分析"
+                        elif hop == 2:
+                            base["action"] = random.choice(["推断", "判断", "预测"])
+                            base["event_type"] = "推导"
+                        else:
+                            base["action"] = random.choice(["结论", "证明", "得出"])
+                            base["event_type"] = "决策"
+                    
+                    m = self._build("逻辑推理测试集", diff, base,
+                                   logic={"type": logic_type},
+                                   reasoning_chain=chain_id,
+                                   chain_position=hop + 1,
+                                   tags=["推理测试", diff, logic_type])
+                    
+                    m["chain_hop"] = hop + 1
+                    m["chain_total"] = n_hops
+                    m["chain_relation"] = logic_type
+                    
+                    chain_mems.append(m)
+                    
+                    if hop < n_hops - 1:
+                        next_base = self._base(random.choice(["7d", "30d", "90d", "1y"]))
+                        if logic_type != "对比":
+                            next_base["person1"] = person
+                        next_base["city"] = city
+                        if logic_type in ["因果", "包含"] and random.random() > 0.5:
+                            next_base["product"] = base["product"]
+                        if logic_type == "推导":
+                            next_base["event_type"] = base["event_type"]
+                        base = next_base
                 
-                m = self._build("逻辑推理测试集", diff, base,
-                               logic={"type": logic_type},
-                               reasoning_chain=chain_id,
-                               chain_position=hop + 1,
-                               tags=["推理测试", diff, logic_type])
+                # 时序链：按时间重新排序（确保时间递增）
+                if logic_type == "时序":
+                    chain_mems.sort(key=lambda x: x["time"]["absolute"])
+                    for i, m in enumerate(chain_mems):
+                        m["chain_position"] = i + 1
+                        m["chain_hop"] = i + 1
                 
-                m["chain_hop"] = hop + 1
-                m["chain_total"] = n_hops
-                m["chain_relation"] = logic_type
-                
-                chain_mems.append(m)
-                
-                if hop < n_hops - 1:
-                    next_base = self._base(random.choice(["7d", "30d", "90d", "1y"]))
-                    if logic_type != "对比":
-                        next_base["person1"] = person
-                    next_base["city"] = city
-                    if logic_type in ["因果", "包含"] and random.random() > 0.5:
-                        next_base["product"] = base["product"]
-                    if logic_type == "推导":
-                        next_base["event_type"] = base["event_type"]
-                    base = next_base
-            
-            # 时序链：按时间重新排序（确保时间递增）
-            if logic_type == "时序":
-                chain_mems.sort(key=lambda x: x["time"]["absolute"])
+                # 设置链连接（prev/next）
                 for i, m in enumerate(chain_mems):
-                    m["chain_position"] = i + 1
-                    m["chain_hop"] = i + 1
-            
-            # 设置链连接（prev/next）
-            for i, m in enumerate(chain_mems):
-                m["chain_prev"] = chain_mems[i-1]["memory_id"] if i > 0 else ""
-                m["chain_next"] = chain_mems[i+1]["memory_id"] if i < len(chain_mems) - 1 else ""
-                result.append(m)
+                    m["chain_prev"] = chain_mems[i-1]["memory_id"] if i > 0 else ""
+                    m["chain_next"] = chain_mems[i+1]["memory_id"] if i < len(chain_mems) - 1 else ""
+                    result.append(m)
         
         return result
 
@@ -936,8 +940,10 @@ class MemoryGenerator:
         
         chain_counter = 1
         for pn, mems in person_groups.items():
+            # 只处理没有已有非时序链关系的记忆（保护 gen_reasoning 生成的因果/对比/推导/包含链）
+            eligible = [m for m in mems if not m.get("chain_relation") or m.get("chain_relation") == "时序"]
             # 只处理有绝对时间的记忆
-            with_time = [m for m in mems if m.get("time", {}).get("absolute")]
+            with_time = [m for m in eligible if m.get("time", {}).get("absolute")]
             if len(with_time) < 3:
                 continue
             
