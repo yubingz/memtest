@@ -440,20 +440,9 @@ def _sort_chain_by_time(memories):
     has_rel = sum(1 for it in items if it['rel_offset'] is not None)
 
     if has_abs >= 2 and has_rel >= 2:
-        # 两者都有：用相对时间校准绝对时间
-        # 先按绝对时间排序
+        # 两者都有：以绝对时间为主排序，相对时间保留但不干预排序
+        # 矛盾检测由被测记忆系统自行判断
         items_sorted = sorted(items, key=lambda x: x['abs_int'])
-        # 检查相对时间是否一致
-        for i in range(1, len(items_sorted)):
-            prev = items_sorted[i-1]
-            curr = items_sorted[i]
-            if curr['rel_offset'] is not None and prev['rel_offset'] is not None:
-                # 检查时间差是否匹配相对偏移
-                time_diff = curr['abs_int'] - prev['abs_int']
-                # 允许一定误差（如"一个月后"可能是28-31天）
-                if abs(time_diff - curr['rel_offset']) > 5:
-                    # 不一致，标记但不修改（保持绝对时间为主）
-                    pass
         return [it['memory'] for it in items_sorted]
 
     elif has_abs >= 2:
