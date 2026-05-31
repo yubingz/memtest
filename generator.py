@@ -374,6 +374,7 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
             "query_type": qtype,
             "expected_memory_ids": [m["memory_id"]],
             "expected_answer": m["versions"][0]["content"],
+            "expected_time": m["time"]["absolute"],
             "difficulty": m["difficulty"],
             "search_depth": random.choice(["浅层","中层","深层"])
         })
@@ -405,6 +406,7 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
             "query_type": "负样本",
             "expected_memory_ids": [],  # 空列表 = 无正确答案
             "expected_answer": "",
+            "expected_time": None,
             "difficulty": "困难",
             "search_depth": "浅层",
             "is_negative": True  # 标记为负样本
@@ -439,6 +441,7 @@ def generate_queries_llm(memories: list, count: int = 100, llm=None) -> list:
                 "query_type": qtype,
                 "expected_memory_ids": [m["memory_id"]],
                 "expected_answer": m["versions"][0]["content"],
+                "expected_time": m["time"]["absolute"],
                 "difficulty": m["difficulty"],
                 "search_depth": random.choice(["浅层","中层","深层"])
             })
@@ -451,6 +454,7 @@ def generate_queries_llm(memories: list, count: int = 100, llm=None) -> list:
                 "query_type": q.get("query_type", "组合检索"),
                 "expected_memory_ids": [m["memory_id"]],
                 "expected_answer": m["versions"][0]["content"],
+                "expected_time": m["time"]["absolute"],
                 "difficulty": q.get("difficulty", "中等"),
                 "search_depth": random.choice(["浅层","中层","深层"])
             })

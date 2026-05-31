@@ -110,7 +110,8 @@ class MemoryAdapter:
   "query_text": "张伟在北京的购买记录",
   "query_type": "组合检索",
   "expected_memory_ids": ["MEM000001"],
-  "expected_answer": "...",
+  "expected_answer": "张伟在北京星巴克购买了茅台，数量100",
+  "expected_time": "2026-05-26 14:30:00",
   "difficulty": "中等",
   "search_depth": "中层",
   "is_negative": false
