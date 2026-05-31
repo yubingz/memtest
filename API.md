@@ -32,6 +32,9 @@ class MemoryAdapter:
                 "cluster_id": "CLUSTER0001",  # 整理类测试用
                 "reasoning_chain": "CHAIN_0001",  # 推理链用
                 "chain_position": 1,
+                "chain_relation": "因果",  # 时序/因果/对比/包含/推导
+                "chain_prev": "MEM000001",  # 前一条记忆ID
+                "chain_next": "MEM000003",  # 下一条记忆ID
                 "weight": 1.0,
                 "decay_level": "高频记忆",  # 遗忘类测试用
                 "access_count": 50,
@@ -98,6 +101,9 @@ class MemoryAdapter:
   "cluster_id": null,
   "reasoning_chain": null,
   "chain_position": null,
+  "chain_relation": null,
+  "chain_prev": null,
+  "chain_next": null,
   "decay": {"level": null, "access_count": 0}
 }
 ```
@@ -129,3 +135,51 @@ class MemoryAdapter:
 | 遗忘合理性 | 高频记忆保留率 > 低频 | forgetting_ratio_valid |
 | 逻辑推理 | 组合查询链推理准确率 | logic_accuracy / chain_accuracy |
 | 深度检索 | 按语义距离分层召回 | near / mid / far |
+
+## 时间链与逻辑关系
+
+### 时间作为逻辑关系的一种
+
+`chain_relation` 字段标记链的逻辑关系类型：
+- `时序`：事件按时间先后排列
+- `因果`：A导致B，B引发C
+- `对比`：A做X，B相反做Y
+- `包含`：A包含B，B涵盖C
+- `推导`：从观察到结论的递进
+
+### 时间排序策略
+
+| 场景 | 排序依据 | 相对时间处理 |
+|------|---------|------------|
+| 有绝对时间 | 按 `time.absolute` 时间戳排序 | 保留在字段中，但不干预排序 |
+| 无绝对时间，有相对时间 | 按相对偏移排序 | 直接用于排序 |
+| 两者都有 | 绝对时间排序为主 | 保留，矛盾由被测记忆系统自行判断 |
+
+当同一chain内的记忆同时包含绝对时间和相对时间词（如"次日"、"一个月后"），以绝对时间为准建立排序，相对时间信息保留供被测系统判断一致性。评测工具不负责检测矛盾。
+
+### 链连接字段
+
+- `chain_prev`：前一条记忆在链中的 `memory_id`
+- `chain_next`：下一条记忆在链中的 `memory_id`
+- `chain_position`：当前记忆在链中的位置（1-based）
+
+时序链按 `time.absolute` 排序后重新计算 `chain_position`，确保位置与时间顺序一致。
+
+## 查询评测维度（test_dimension）
+
+每个查询带有 `test_dimension` 字段，标明该查询测试的具体能力维度：
+
+| 维度 | 比例 | 说明 |
+|------|------|------|
+| 精确检索 | 20% | 单维度精确匹配（人物/地点/事件） |
+| 组合检索 | 15% | 多维度组合查询 |
+| 时序推理 | 12% | 时间先后链推理 |
+| 因果推理 | 12% | 因果关系链推理 |
+| 对比推理 | 8% | 对比关系识别 |
+| 包含推理 | 8% | 层级包含关系 |
+| 推导推理 | 8% | 逻辑推导链 |
+| 聚类检索 | 7% | 主题聚类检索 |
+| 跨版本 | 5% | 同一记忆不同表述匹配 |
+| 负样本 | 20% | 不相关查询过滤 |
+
+生成查询时按上述比例平衡分配，确保评测覆盖全面。链式推理查询引用链中相邻记忆（如"在A之后发生了什么"），释放多跳推理评测价值。

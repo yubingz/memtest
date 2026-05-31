@@ -146,6 +146,9 @@ Every memory in the test database follows this structure:
 | `cluster_id` | string? | Cluster ID for organization tests (e.g. `CLUSTER0001`) |
 | `reasoning_chain` | string? | Chain ID for reasoning tests |
 | `chain_position` | int? | Position within a reasoning chain (1-6) |
+| `chain_relation` | string? | Logic relation type: `temporal` / `causal` / `contrast` / `inclusive` / `deductive`. Time is treated as a logic relation — when absolute time exists, chains are sorted by timestamp; when only relative time exists, sorted by offset. When both exist, absolute time is canonical and relative time is preserved for the system under test to judge consistency. |
+| `chain_prev` | string? | Previous memory ID in chain |
+| `chain_next` | string? | Next memory ID in chain |
 | `decay.level` | string? | `高频记忆` / `中等频率` / `低频记忆` / `偶发事件` |
 | `decay.access_count` | int | Simulated access frequency (0-100) |
 | `depth.layers` | int? | Conceptual depth (3-7), deep retrieval only |
@@ -183,10 +186,13 @@ All 3 versions are stored (via `adapter.store()`). A robust retrieval system sho
 | `query_id` | string | Unique query identifier |
 | `query_text` | string | The actual query string |
 | `query_type` | string | `时间检索` / `地点检索` / `人物检索` / `事件检索` / `组合检索` / `组合推理` |
+| `test_dimension` | string | Evaluation dimension label: `精确检索` / `组合检索` / `时序推理` / `因果推理` / `对比推理` / `包含推理` / `推导推理` / `聚类检索` / `跨版本` / `负样本`. Each query is tagged so evaluation results map directly to specific capability gaps. |
 | `expected_memory_ids` | array | Ground truth — which memories should be retrieved |
 | `expected_answer` | string | The correct answer text |
+| `expected_time` | string? | Absolute timestamp for time-aware validation (null for negative queries) |
 | `difficulty` | string | `简单` / `中等` / `困难` |
 | `search_depth` | string | `浅层` / `中层` / `深层` |
+| `is_negative` | bool | `true` if this is a negative sample query (no correct answer exists) |
 
 ---
 
@@ -335,6 +341,57 @@ mid_recall  = mid_hits / mid_total
 far_recall  = far_hits / far_total
 ```
 
+### 4.7 Temporal Chain Reasoning
+
+**What it tests**: Can the system reason across time-ordered chains? When events are linked by temporal sequence, can the system answer "what happened next?" or "what led to this?"
+
+**How it works**:
+1. Temporal chains (`chain_relation = "时序"`) are built by sorting memories of the same person by `time.absolute`
+2. Each chain contains 3-6 memories with `chain_prev` and `chain_next` linking adjacent entries
+3. Queries reference chain neighbors: "After [previous event], what happened?"
+4. The system must retrieve the correct next memory in the sequence
+
+**Time handling strategy**:
+
+| Scenario | Sort key | Relative time role |
+|----------|----------|-------------------|
+| Absolute time exists | `time.absolute` timestamp | Preserved but does not affect sorting |
+| No absolute time, relative time exists | Relative offset (e.g., "次日"=1 day) | Used directly for ordering |
+| Both exist | Absolute time is canonical | Relative time preserved for the system under test to judge consistency |
+| Neither exists | Original order or `chain_position` | No temporal inference possible |
+
+**Why this matters**: Human memory retrieval often follows temporal sequences ("and then..."). A system that cannot traverse time-ordered chains will fail at narrative reconstruction.
+
+**Scoring**:
+```
+temporal_chain_accuracy = correct_next_memory / total_temporal_chain_queries
+```
+
+### 4.8 Query Dimension Balance
+
+**What it tests**: Nothing directly — this is a meta-design principle ensuring the test suite covers all capability dimensions proportionally.
+
+**Design rationale**: A test suite with 90% single-hop retrieval queries and only 10% chain-reasoning queries cannot diagnose whether a memory system fails at multi-hop inference. Balance ensures each dimension gets enough samples for statistical significance.
+
+**Target distribution**:
+
+| Dimension | Target Ratio | Query Examples |
+|-----------|-------------|----------------|
+| 精确检索 (Precise retrieval) | 20% | "张伟做了什么", "在北京发生了什么" |
+| 组合检索 (Composite retrieval) | 15% | "张伟在北京的购买记录" |
+| 时序推理 (Temporal reasoning) | 12% | "在投资字节跳动之后，发生了什么？" |
+| 因果推理 (Causal reasoning) | 12% | "为什么项目失败了？" |
+| 对比推理 (Contrastive reasoning) | 8% | "A和B的做法有什么不同？" |
+| 包含推理 (Inclusion reasoning) | 8% | "这个计划包含哪些具体措施？" |
+| 推导推理 (Deductive reasoning) | 8% | "从观察到结论的推导过程" |
+| 聚类检索 (Cluster retrieval) | 7% | "关于这个主题的所有记录" |
+| 跨版本 (Cross-version) | 5% | 用不同风格描述同一事件 |
+| 负样本 (Negative samples) | 20% | "张伟在火星购买茅台" |
+
+**Implementation**: Each query carries a `test_dimension` field. The generator allocates queries by dimension using `_allocate_queries_by_dimension()`, which maps memories to their most relevant dimension and samples proportionally.
+
+**Chain-aware query generation**: For chain-related dimensions (temporal/causal/contrast/inclusive/deductive), queries reference adjacent chain memories rather than isolated single memories. This turns chain data into actual multi-hop test cases instead of leaving it unused.
+
 ---
 
 ## 5. Data Generation
@@ -381,7 +438,27 @@ python generator.py --size 500   # Custom size
    }
    ```
 
-6. **Reproducibility**: `random.seed(42)` — same run always produces same data
+6. **Temporal chain building**: After all memories are generated, a post-processing step (`_build_temporal_chains`) groups memories by person and sorts those with absolute timestamps into temporal chains. This ensures time-ordered sequences are available for temporal reasoning tests.
+
+7. **Reproducibility**: `random.seed(42)` — same run always produces same data
+
+### Chain Generation Details
+
+**Logic chains** (`gen_reasoning`): 5 types of reasoning chains are generated, each with 3-6 hops:
+- **Causal**: A invests → B causes → C produces result
+- **Temporal**: Events sorted by `time.absolute`, with "after X happened, what next?" queries
+- **Contrast**: Person A does positive action, Person B does opposite
+- **Inclusive**: Whole → part → detail hierarchy
+- **Deductive**: Observation → analysis → inference → conclusion
+
+**Temporal chain post-processing** (`_build_temporal_chains`):
+1. Group all memories by person name
+2. Filter to those with `time.absolute`
+3. Sort by timestamp (ascending)
+4. Assign `chain_relation = "时序"`, `chain_position` recalculated, `chain_prev`/`chain_next` linked
+5. Maximum 6 memories per temporal chain
+
+**Query generation with dimension balance**: Queries are not generated randomly — they are allocated by `test_dimension` with target ratios. Chain-related dimensions generate multi-hop queries that reference adjacent chain memories, turning chain data into actual reasoning test cases.
 
 ### Output Format
 
@@ -436,10 +513,14 @@ python knowledge_builder.py ./my_books/ output.json --merge  # Incremental
 - Is "丞相府" a location or a concept? (Borderline — classified as concept)
 - Splits compound time expressions ("383年，东晋" → time="383年", dynasty="东晋")
 
-**Stage 3 — Memory Building**: Rules-based structuring:
+**Stage 3 — Memory Building**: Rules-based structuring with mixed temporal sorting:
 - Assigns `MEM######` IDs starting from MEM010000
 - Creates 3 versions (formal/detailed/colloquial)
-- Builds reasoning chains: if a person appears in ≥3 memories, link them as a chain (up to 6 deep)
+- Builds reasoning chains with mixed time sorting:
+  - If LLM provides `chain_id`: group by chain_id, sort by `chain_position` or mixed time
+  - If no `chain_id`: group by person (≥3 memories), sort by `time.absolute` when available
+  - Time sorting strategy: absolute time is canonical; relative time words (e.g., "次日", "三个月后") are preserved for the system under test to judge consistency
+  - Chain type (`chain_relation`) is auto-tagged: `时序` when absolute time exists, `因果`/`关联` otherwise
 
 **Stage 4 — Query Generation**: Same templates as procedural generator, but applied to real extracted data
 
