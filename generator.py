@@ -540,13 +540,133 @@ class MemoryGenerator:
         return result
 
     def gen_reasoning(self, count: int) -> list:
+        """生成逻辑推理测试数据 — 包含5种逻辑关系的链式记忆。
+        
+        每种逻辑类型生成一条链，每链3-6跳，跳之间用逻辑关系连接：
+        - 因果：A导致B，B引发C
+        - 时序：A发生，随后B，接着C
+        - 对比：A做X，B相反做Y，A又做Z对比
+        - 包含：A包含B，B涵盖C，C涉及D
+        - 推导：A发现，B因此推断，C得出证明
+        """
         result = []
-        for _ in range(count):
-            diff = random.choices(["简单","中等","困难"], weights=[0.3,0.4,0.3])[0]
-            base = self._base(random.choice(["7d","30d","90d","1y"]))
-            logic_type = random.choice(["因果","时序","对比","包含","推导"])
-            result.append(self._build("逻辑推理测试集", diff, base, logic={"type": logic_type},
-                                      tags=["推理测试", diff, logic_type]))
+        logic_types = ["因果", "时序", "对比", "包含", "推导"]
+        
+        for logic_type in logic_types:
+            # 每种逻辑类型生成1条链
+            chain_id = f"CHAIN_{logic_type}_{self.memory_id:04d}"
+            n_hops = random.randint(3, 6)
+            
+            # 选择基础人物和场景作为链的上下文
+            base = self._base(random.choice(["7d", "30d", "90d", "1y"]))
+            person = base["person1"]
+            city = base["city"]
+            
+            chain_mems = []
+            for hop in range(n_hops):
+                diff = random.choices(["简单", "中等", "困难"], weights=[0.3, 0.4, 0.3])[0]
+                
+                # 根据逻辑类型和跳数调整事件，使链有逻辑连贯性
+                if logic_type == "因果":
+                    # 因果链：动作递进，结果累积
+                    if hop == 0:
+                        base["action"] = random.choice(["投资", "购买", "决策"])
+                    elif hop == 1:
+                        base["action"] = random.choice(["导致", "引发", "造成"])
+                        base["product"] = random.choice(PRODUCTS)
+                    elif hop == 2:
+                        base["action"] = random.choice(["产生", "带来", "造成"])
+                        base["event_type"] = random.choice(["交易", "冲突", "转折"])
+                        base["action"] = random.choice(EVENT_TYPES[base["event_type"]])
+                    else:
+                        base["action"] = random.choice(["最终", "结果", "导致"])
+                        
+                elif logic_type == "时序":
+                    # 时序链：时间递进，动作连续
+                    # 时间向前推进（更近）
+                    base["days_ago"] = max(0, base.get("days_ago", 30) - random.randint(3, 14))
+                    base["base_time"] = datetime.now() - timedelta(days=base["days_ago"])
+                    if hop == 0:
+                        base["action"] = random.choice(["开始", "启动", "发起"])
+                    elif hop == n_hops - 1:
+                        base["action"] = random.choice(["完成", "结束", "收尾"])
+                    else:
+                        base["action"] = random.choice(["随后", "接着", "然后", "之后"])
+                        
+                elif logic_type == "对比":
+                    # 对比链：交替展示不同人物或相反动作
+                    if hop % 2 == 0:
+                        # 主视角
+                        base["person1"] = person
+                        base["action"] = random.choice(["支持", "赞同", "购买", "投资"])
+                    else:
+                        # 对比视角：不同人物，相反动作
+                        alt_names = [n for n in NAMES if n != person]
+                        base["person1"] = random.choice(alt_names)
+                        base["action"] = random.choice(["反对", "否决", "出售", "撤资"])
+                    base["action"] = random.choice(["对比", "相反", "不同于"]) if hop > 0 else base["action"]
+                    
+                elif logic_type == "包含":
+                    # 包含链：从整体到部分，范围缩小
+                    if hop == 0:
+                        base["action"] = random.choice(["规划", "布局", "涵盖"])
+                        base["product"] = random.choice(["项目", "计划", "方案"])
+                    elif hop == 1:
+                        base["action"] = random.choice(["包含", "涉及", "覆盖"])
+                        base["product"] = random.choice(PRODUCTS)
+                    elif hop == 2:
+                        base["action"] = random.choice(["具体", "细化", "落实"])
+                    else:
+                        base["action"] = random.choice(["执行", "实施", "完成"])
+                        
+                elif logic_type == "推导":
+                    # 推导链：从观察到结论，层层递进
+                    if hop == 0:
+                        base["action"] = random.choice(["观察", "发现", "注意到"])
+                        base["event_type"] = "发现"
+                    elif hop == 1:
+                        base["action"] = random.choice(["分析", "研究", "推测"])
+                        base["event_type"] = "分析"
+                    elif hop == 2:
+                        base["action"] = random.choice(["推断", "判断", "预测"])
+                        base["event_type"] = "推导"
+                    else:
+                        base["action"] = random.choice(["结论", "证明", "得出"])
+                        base["event_type"] = "决策"
+                
+                m = self._build("逻辑推理测试集", diff, base,
+                               logic={"type": logic_type},
+                               reasoning_chain=chain_id,
+                               chain_position=hop + 1,
+                               tags=["推理测试", diff, logic_type])
+                
+                # 添加链式连接元数据
+                m["chain_hop"] = hop + 1
+                m["chain_total"] = n_hops
+                m["chain_relation"] = logic_type
+                
+                chain_mems.append(m)
+                
+                # 为下一跳准备（保持上下文连贯性）
+                if hop < n_hops - 1:
+                    next_base = self._base(random.choice(["7d", "30d", "90d", "1y"]))
+                    # 保持人物一致（对比链除外，已在上面处理）
+                    if logic_type != "对比":
+                        next_base["person1"] = person
+                    next_base["city"] = city
+                    # 保持产品或事件类型的部分连续性
+                    if logic_type in ["因果", "包含"] and random.random() > 0.5:
+                        next_base["product"] = base["product"]
+                    if logic_type == "推导":
+                        next_base["event_type"] = base["event_type"]
+                    base = next_base
+            
+            # 设置链连接（prev/next）
+            for i, m in enumerate(chain_mems):
+                m["chain_prev"] = chain_mems[i-1]["memory_id"] if i > 0 else ""
+                m["chain_next"] = chain_mems[i+1]["memory_id"] if i < len(chain_mems) - 1 else ""
+                result.append(m)
+        
         return result
 
     def gen_deep(self, count: int) -> list:
