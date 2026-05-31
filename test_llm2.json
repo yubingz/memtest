@@ -1,0 +1,453 @@
+开始生成 5 条记忆...
+  生成 时序 链: 郑欣 @ 上海...
+  批量生成独立记忆 1/1（2条）...
+  生成查询...
+Warning: 查询生成失败。响应: [
+  {
+    "query_id": "Q0001",
+    "query_text": "郑欣在上海受理了什么案件？",
+    "query_type": "精确检索",
+    "test_dimension": "精确检索",
+    "expected_memory_ids": ["MEM000001"],
+    "expected_answer_text": "郑欣在上海受理
+  查询生成失败，回退到规则生成
+{
+  "database_info": {
+    "name": "MemTest Database (LLM Generated)",
+    "version": "3.0.0",
+    "total_count": 5,
+    "categories": {
+      "推理测试测试集": 5
+    },
+    "generated_by": "llm",
+    "model": "deepseek-chat",
+    "created_at": "2026-05-31 23:38:36"
+  },
+  "memories": [
+    {
+      "memory_id": "MEM000001",
+      "category": "推理测试测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2023-01-13 00:00:00",
+        "relative": "2年前",
+        "fuzzy": "去年",
+        "timestamp": 1673539200
+      },
+      "location": {
+        "city": "上海",
+        "place": "上海",
+        "landmark": "上海市第一中级人民法院"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "法官",
+        "partner_name": "",
+        "partner_identity": "",
+        "relation": ""
+      },
+      "event": {
+        "type": "立案",
+        "action": "受理",
+        "product": "金融借款合同纠纷案",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在上海上海受理了金融借款合同纠纷案"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在上海的上海，作为法官的郑欣受理了金融借款合同纠纷案"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "据知情人士透露，郑欣在上海那边受理了金融借款合同纠纷案，具体情况还在核实中"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "时序"
+      ],
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "reasoning_chain": "CHAIN_时序_0001",
+      "chain_position": 1,
+      "chain_total": 3,
+      "chain_hop": 1,
+      "chain_prev": "",
+      "chain_next": "MEM000002",
+      "chain_relation": "时序"
+    },
+    {
+      "memory_id": "MEM000002",
+      "category": "推理测试测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2023-01-27 00:00:00",
+        "relative": "2年前",
+        "fuzzy": "去年",
+        "timestamp": 1674748800
+      },
+      "location": {
+        "city": "上海",
+        "place": "上海",
+        "landmark": "法官办公室"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "法官",
+        "partner_name": "",
+        "partner_identity": "",
+        "relation": ""
+      },
+      "event": {
+        "type": "审前准备",
+        "action": "查阅",
+        "product": "案卷材料与证据清单",
+        "quantity": 3,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在上海上海查阅了案卷材料与证据清单，数量3"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在上海的上海，作为法官的郑欣查阅了案卷材料与证据清单，总共3"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "据知情人士透露，郑欣在上海那边查阅了案卷材料与证据清单，具体情况还在核实中"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "时序"
+      ],
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "reasoning_chain": "CHAIN_时序_0001",
+      "chain_position": 2,
+      "chain_total": 3,
+      "chain_hop": 2,
+      "chain_prev": "MEM000001",
+      "chain_next": "MEM000003",
+      "chain_relation": "时序"
+    },
+    {
+      "memory_id": "MEM000003",
+      "category": "推理测试测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2023-02-27 00:00:00",
+        "relative": "2年前",
+        "fuzzy": "去年",
+        "timestamp": 1677427200
+      },
+      "location": {
+        "city": "上海",
+        "place": "上海",
+        "landmark": "上海市第一中级人民法院"
+      },
+      "person": {
+        "name": "郑欣",
+        "identity": "法官",
+        "partner_name": "",
+        "partner_identity": "",
+        "relation": ""
+      },
+      "event": {
+        "type": "判决",
+        "action": "作出",
+        "product": "一审判决书",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "郑欣在上海上海作出了一审判决书"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "郑欣回忆道：当时在上海的上海，作为法官的郑欣作出了一审判决书"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "据知情人士透露，郑欣在上海那边作出了一审判决书，具体情况还在核实中"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等",
+        "时序"
+      ],
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "reasoning_chain": "CHAIN_时序_0001",
+      "chain_position": 3,
+      "chain_total": 3,
+      "chain_hop": 3,
+      "chain_prev": "MEM000002",
+      "chain_next": "",
+      "chain_relation": "时序"
+    },
+    {
+      "memory_id": "MEM000004",
+      "category": "推理测试测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2021-08-20 14:00:00",
+        "relative": "3年前",
+        "fuzzy": "去年",
+        "timestamp": 1629439200
+      },
+      "location": {
+        "city": "深圳",
+        "place": "南山区科技园",
+        "landmark": "深圳湾创业广场"
+      },
+      "person": {
+        "name": "王芳",
+        "identity": "科技投资人",
+        "partner_name": "",
+        "partner_identity": "",
+        "relation": ""
+      },
+      "event": {
+        "type": "参观",
+        "action": "参观",
+        "product": "人工智能芯片研发实验室",
+        "quantity": 1,
+        "price": 0
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "王芳在深圳南山区科技园参观了人工智能芯片研发实验室"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "王芳回忆道：当时在深圳的南山区科技园，作为科技投资人的王芳参观了人工智能芯片研发实验室"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "据知情人士透露，王芳在深圳那边参观了人工智能芯片研发实验室，具体情况还在核实中"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等"
+      ],
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "王芳",
+        "深圳",
+        "参观",
+        "参观",
+        "人工智能芯片研发实验室"
+      ]
+    },
+    {
+      "memory_id": "MEM000005",
+      "category": "推理测试测试集",
+      "difficulty": "困难",
+      "weight": 1.5,
+      "time": {
+        "absolute": "2023-03-10 10:15:00",
+        "relative": "2年前",
+        "fuzzy": "去年",
+        "timestamp": 1678414500
+      },
+      "location": {
+        "city": "上海",
+        "place": "浦东新区陆家嘴",
+        "landmark": "上海证券交易所"
+      },
+      "person": {
+        "name": "赵磊",
+        "identity": "职业交易员",
+        "partner_name": "",
+        "partner_identity": "",
+        "relation": ""
+      },
+      "event": {
+        "type": "购买",
+        "action": "购买",
+        "product": "科创板新能源上市公司股票",
+        "quantity": 20000,
+        "price": 58.5
+      },
+      "versions": [
+        {
+          "version_id": "v1",
+          "style": "客观叙述",
+          "content": "赵磊在上海浦东新区陆家嘴购买了科创板新能源上市公司股票，数量20000"
+        },
+        {
+          "version_id": "v2",
+          "style": "主观视角",
+          "content": "赵磊回忆道：当时在上海的浦东新区陆家嘴，作为职业交易员的赵磊购买了科创板新能源上市公司股票，总共20000，花费58.5元"
+        },
+        {
+          "version_id": "v3",
+          "style": "第三方转述",
+          "content": "据知情人士透露，赵磊在上海那边购买了科创板新能源上市公司股票，具体情况还在核实中"
+        }
+      ],
+      "tags": [
+        "推理测试",
+        "中等"
+      ],
+      "decay": {
+        "level": null,
+        "access_count": 0
+      },
+      "retrieval_keywords": [
+        "赵磊",
+        "上海",
+        "购买",
+        "购买",
+        "科创板新能源上市公司股票"
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "query_id": "Q0001",
+      "query_text": "郑欣在上海受理了金融借款合同纠纷案，后续事件依次是什么？",
+      "query_type": "时序推理链",
+      "test_dimension": "时序推理",
+      "expected_memory_ids": [
+        "MEM000001",
+        "MEM000002",
+        "MEM000003"
+      ],
+      "expected_answer_text": "郑欣在上海受理了金融借款合同纠纷案 → 郑欣在上海查阅了案卷材料与证据清单 → 郑欣在上海作出了一审判决书",
+      "acceptable_answers": [
+        "郑欣在上海受理了金融借款合同纠纷案 → 郑欣在上海查阅了案卷材料与证据清单 → 郑欣在上海作出了一审判决书"
+      ],
+      "is_negative": false,
+      "difficulty": "中等"
+    },
+    {
+      "query_id": "Q0002",
+      "query_text": "郑欣在上海做了什么？",
+      "query_type": "精确检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000001"
+      ],
+      "expected_answer_text": "郑欣在上海受理了金融借款合同纠纷案",
+      "acceptable_answers": [
+        "郑欣在上海受理了金融借款合同纠纷案"
+      ],
+      "is_negative": false,
+      "difficulty": "简单"
+    },
+    {
+      "query_id": "Q0003",
+      "query_text": "郑欣在上海做了什么？",
+      "query_type": "精确检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000002"
+      ],
+      "expected_answer_text": "郑欣在上海查阅了案卷材料与证据清单",
+      "acceptable_answers": [
+        "郑欣在上海查阅了案卷材料与证据清单"
+      ],
+      "is_negative": false,
+      "difficulty": "简单"
+    },
+    {
+      "query_id": "Q0004",
+      "query_text": "郑欣在上海做了什么？",
+      "query_type": "精确检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000003"
+      ],
+      "expected_answer_text": "郑欣在上海作出了一审判决书",
+      "acceptable_answers": [
+        "郑欣在上海作出了一审判决书"
+      ],
+      "is_negative": false,
+      "difficulty": "简单"
+    },
+    {
+      "query_id": "Q0005",
+      "query_text": "王芳在深圳做了什么？",
+      "query_type": "精确检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000004"
+      ],
+      "expected_answer_text": "王芳在深圳参观了人工智能芯片研发实验室",
+      "acceptable_answers": [
+        "王芳在深圳参观了人工智能芯片研发实验室"
+      ],
+      "is_negative": false,
+      "difficulty": "简单"
+    },
+    {
+      "query_id": "Q0006",
+      "query_text": "赵磊在上海做了什么？",
+      "query_type": "精确检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000005"
+      ],
+      "expected_answer_text": "赵磊在上海购买了科创板新能源上市公司股票",
+      "acceptable_answers": [
+        "赵磊在上海购买了科创板新能源上市公司股票"
+      ],
+      "is_negative": false,
+      "difficulty": "简单"
+    },
+    {
+      "query_id": "Q0007",
+      "query_text": "孙悟空在火星购买了房产",
+      "query_type": "负样本",
+      "test_dimension": "负样本",
+      "expected_memory_ids": [],
+      "expected_answer_text": "",
+      "acceptable_answers": [],
+      "is_negative": true,
+      "difficulty": "简单"
+    }
+  ]
+}
+生成完成: 5 条记忆, 7 条查询
+
