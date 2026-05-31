@@ -34,7 +34,7 @@ python generator.py --size=500   # custom scale
 python generator.py --full       # 10,000 memories
 ```
 
-Output: `sample_db_100.json` (standard MemTest format)
+Output: `sample_db.json` (standard MemTest format)
 
 ### 2. LLM-Enhanced Generation (more natural)
 
@@ -62,7 +62,7 @@ Output: Standard database with facts + chains + queries
 ### 4. Quality Validation
 
 ```bash
-python quality_check.py sample_db_100.json
+python quality_check.py sample_db.json
 ```
 
 Output: 10-item automated check report covering chain/cluster/negative-sample integrity.

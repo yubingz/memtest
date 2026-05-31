@@ -38,7 +38,7 @@ class MyAdapter(MemoryAdapter):
         return self.db.query(query, limit=top_k)
 
 # 2. 加载评测数据 & 跑评测
-db = load_test_db("sample_db_100.json")
+db = load_test_db("sample_db.json")
 suite = MemoryTestSuite(MyAdapter())
 report = suite.run(db)
 print(report.summary())
@@ -61,7 +61,7 @@ print(report.summary())
 
 | 数据集 | 来源 | 规模 | 获取方式 |
 |--------|------|------|----------|
-| `sample_db_100.json` | 程序合成 | 153 条记忆，57 条查询 | 仓库自带 |
+| `sample_db.json` | 程序合成 | 153 条记忆，57 条查询 | 仓库自带 |
 | `hp_benchmark_db.json` | 哈利波特系列（英文） | 1,626 条记忆，133 条查询（清洗自 5,925 条） | 仓库自带 |
 | `four_novels_db.json` | 中国四大名著（中文） | 四大名著语料，用 `knowledge_builder.py` 处理 | 仓库自带 |
 | `test_db_10000.json` | `generator.py` 生成 | 13,909 条记忆，5,560 条查询 | `python generator.py --full` |
@@ -80,7 +80,7 @@ python generator.py --llm        # LLM增强生成（记忆文本更自然，需
 
 **质量校验**：
 ```bash
-python quality_check.py sample_db_100.json
+python quality_check.py sample_db.json
 ```
 输出 10 项自动检查：ID 唯一性、查询有效性、负样本比例、链式/聚类完整性、版本长度合理性等。
 
@@ -272,7 +272,7 @@ memtest/
 │   ├── four_novels_db.json        # 四大名著（中文）
 │   ├── hp_benchmark_db.json       # 哈利波特（英文，1,626 条记忆）
 │   └── tianlongbabu_db.json       # 天龙八部（中文，48 条记忆）
-├── sample_db_100.json       # 样例数据库（约 150 条记忆）
+├── sample_db.json       # 样例数据库（约 150 条记忆）
 └── .env.example             # API 密钥配置模板
 ```
 

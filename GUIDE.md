@@ -564,7 +564,7 @@ class MyAdapter(MemoryAdapter):
         results = self.db.search(query, limit=top_k)
         return [{"memory_id": r.id, "score": r.score, "content": r.text} for r in results]
 
-db = load_test_db("sample_db_100.json")
+db = load_test_db("sample_db.json")
 suite = MemoryTestSuite(MyAdapter())
 report = suite.run(db)
 
@@ -595,7 +595,7 @@ from runner import JsonMemoryAdapter, MemoryTestSuite, load_test_db
 
 adapter = JsonMemoryAdapter()  # In-memory keyword matcher
 suite = MemoryTestSuite(adapter)
-report = suite.run(load_test_db("sample_db_100.json"))
+report = suite.run(load_test_db("sample_db.json"))
 ```
 
 This adapter does simple keyword matching — useful for verifying that test data is structurally valid, but **not** a meaningful memory system evaluation.
