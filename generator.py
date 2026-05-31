@@ -872,7 +872,7 @@ class MemoryGenerator:
         etype = random.choice(events) if events else random.choice(list(EVENT_TYPES.keys()))
         actions = EVENT_TYPES.get(etype, ["进行" + etype])
         
-        return {
+        base = {
             "base_time": base_time, "days_ago": days_ago,
             "city": random.choice(cities) if cities else random.choice(CITIES),
             "place": random.choice(PLACES),
@@ -884,6 +884,62 @@ class MemoryGenerator:
             "quantity": random.randint(1, 1000) * (10 if random.random() > 0.5 else 1),
             "price": random.randint(10, 10000)
         }
+        
+        # LLM模式：修正动作和产品的搭配，确保语法正确
+        if self.use_llm and self.llm:
+            base = self._llm_enhance_base(base)
+        
+        return base
+
+    def _llm_enhance_base(self, base: dict) -> dict:
+        """用LLM修正动作和产品的搭配，确保中文语法正确。"""
+        try:
+            prompt = f"""请修正以下中文事件描述，使其语法正确、自然流畅。
+
+原始信息：
+- 人物：{base['person1']}（{base['identity1']}）
+- 地点：{base['city']}{base['place']}
+- 事件类型：{base['event_type']}
+- 动作：{base['action']}
+- 对象：{base['product']}
+- 数量：{base['quantity']}
+
+当前描述："{base['person1']}在{base['city']}{base['place']}{base['action']}了{base['product']}"
+
+要求：
+1. 修正"{base['action']}了{base['product']}"中的语法错误
+2. 确保动词和宾语搭配自然（如"购买了汽车"而不是"结果了电器"）
+3. 时间虚词（如"随后"、"然后"）不能单独作动词，应改为真实动词（如"进行"、"处理"）
+4. 名词（如"结果"、"结论"、"具体"）不能作动词
+5. 事件类型和动作要匹配（如"健身运动"不应搭配"旅游服务"）
+6. 如果搭配已经合理，保持原样
+
+输出格式：JSON，包含以下字段：
+{{
+  "action": "修正后的动词（只返回动词本身，不要带'了'）",
+  "product": "修正后的宾语（如果原宾语合理则保持原样）",
+  "natural_description": "完整自然的事件描述（一句通顺的中文）"
+}}
+
+只输出JSON，不要其他文字。"""
+            
+            import json as jsonlib
+            result_text = self.llm.generate(prompt, max_tokens=300, temperature=0.3)
+            
+            # 提取JSON
+            text = result_text.strip()
+            start = text.find('{')
+            end = text.rfind('}')
+            if start >= 0 and end > start:
+                result = jsonlib.loads(text[start:end+1])
+                if "action" in result:
+                    base["action"] = result["action"]
+                if "product" in result:
+                    base["product"] = result["product"]
+        except Exception:
+            pass  # LLM失败，保持程序化结果
+        
+        return base
 
     def _make_versions(self, base: dict) -> list:
         if self.use_llm and self.llm:
@@ -997,13 +1053,98 @@ class MemoryGenerator:
                                       tags=["遗忘测试", diff, decay_level]))
         return result
 
+    def _generate_chain_actions_llm(self, logic_type: str, person: str, city: str, product: str, n_hops: int) -> list:
+        """用 LLM 生成连贯的动词序列。返回 [action_0, action_1, ..., action_n-1]。"""
+        if not self.use_llm or not self.llm:
+            return None
+        
+        prompts = {
+            "因果": f"""请生成{n_hops}个连贯的中文动词，描述{person}在{city}与{product}相关的事件因果链。
+
+要求：
+- 每个词都必须是真实的中文动词（如"投资"、"购买"、"导致"）
+- 严禁使用名词（如"结果"）、形容词（如"具体"）、时间虚词（如"随后"、"然后"）
+- 动作之间要有明确的因果逻辑关系
+- 格式：纯JSON数组，如["投资", "导致", "产生", "带来", "完成"]
+- 只输出JSON数组，不要其他文字""",
+            
+            "时序": f"""请生成{n_hops}个连贯的中文动词，描述{person}在{city}与{product}相关的事件时序链。
+
+要求：
+- 每个词都必须是真实的中文动词
+- 第1个表示开始（如"启动"、"发起"）
+- 最后1个表示结束（如"完成"、"收尾"）
+- 中间是过程动词（如"进行"、"处理"、"推进"、"实施"）
+- 严禁使用时间虚词（如"随后"、"然后"、"接着"、"之后"）
+- 格式：纯JSON数组，如["启动", "进行", "处理", "推进", "完成"]
+- 只输出JSON数组，不要其他文字""",
+            
+            "对比": f"""请生成{n_hops}个连贯的中文动词，描述{person}在{city}与{product}相关的对比/对比链。
+
+要求：
+- 奇数位置（1,3,5...）用正面动词（如"购买"、"投资"、"支持"）
+- 偶数位置（2,4,6...）用反面动词（如"出售"、"撤资"、"反对"）
+- 每个词都必须是真实的中文动词
+- 严禁使用名词、形容词、时间虚词
+- 格式：纯JSON数组
+- 只输出JSON数组，不要其他文字""",
+            
+            "包含": f"""请生成{n_hops}个连贯的中文动词，描述{person}在{city}从{product}出发的包含关系链。
+
+要求：
+- 体现从整体到具体、从规划到执行的层次关系
+- 动词如："规划"、"布局"、"包含"、"细化"、"落实"、"执行"、"完成"
+- 每个词都必须是真实的中文动词
+- 严禁使用名词（如"具体"）、形容词、时间虚词
+- 格式：纯JSON数组
+- 只输出JSON数组，不要其他文字""",
+            
+            "推导": f"""请生成{n_hops}个连贯的中文动词，描述{person}在{city}基于{product}的推导链。
+
+要求：
+- 体现从观察到结论的推理过程
+- 动词如："观察"、"发现"、"分析"、"研究"、"推断"、"判断"、"证明"、"得出"
+- 每个词都必须是真实的中文动词
+- 严禁使用名词（如"结论"）、形容词、时间虚词
+- 格式：纯JSON数组
+- 只输出JSON数组，不要其他文字"""
+        }
+        
+        prompt = prompts.get(logic_type, prompts["因果"])
+        
+        try:
+            result = self.llm.generate(prompt, max_tokens=200, temperature=0.5)
+            # 提取JSON数组
+            import json as jsonlib
+            # 尝试从文本中提取JSON
+            text = result.strip()
+            # 找到方括号包裹的内容
+            start = text.find('[')
+            end = text.rfind(']')
+            if start >= 0 and end > start:
+                actions = jsonlib.loads(text[start:end+1])
+                if isinstance(actions, list) and len(actions) == n_hops:
+                    # 验证每个词都是动词（不是时间虚词、名词）
+                    forbidden = {"之后", "然后", "接着", "随后", "结果", "具体", "结论", "最终", "涵盖"}
+                    clean_actions = []
+                    for a in actions:
+                        if a in forbidden:
+                            # 替换为安全动词
+                            clean_actions.append(random.choice(["进行", "处理", "推进", "实施"]))
+                        else:
+                            clean_actions.append(a)
+                    return clean_actions
+        except Exception as e:
+            pass
+        
+        return None  # LLM失败，回退到程序化
+
+
     def gen_reasoning(self, count: int) -> list:
         """生成逻辑推理测试数据 — 包含5种逻辑关系的链式记忆。
         
-        时间链作为逻辑关系的一种：
-        - 有绝对时间时：按绝对时间排序建立时序链
-        - 无绝对时间但有相对时间：按相对时间偏移排序
-        - 两者都有：相对时间校准绝对时间
+        LLM模式：用LLM生成连贯的动词序列。
+        程序化模式：使用清理后的动词池（已删除名词、形容词、时间虚词）。
         """
         result = []
         logic_types = ["因果", "时序", "对比", "包含", "推导"]
@@ -1019,80 +1160,88 @@ class MemoryGenerator:
                 base = self._base(random.choice(["7d", "30d", "90d", "1y"]))
                 person = base["person1"]
                 city = base["city"]
+                product = base["product"]
+                
+                # LLM模式：生成连贯动词序列
+                llm_actions = None
+                if self.use_llm and self.llm:
+                    llm_actions = self._generate_chain_actions_llm(logic_type, person, city, product, n_hops)
                 
                 chain_mems = []
                 for hop in range(n_hops):
                     diff = random.choices(["简单", "中等", "困难"], weights=[0.3, 0.4, 0.3])[0]
                     
-                    if logic_type == "因果":
-                        if hop == 0:
-                            base["action"] = random.choice(["投资", "购买", "决策"])
-                        elif hop == 1:
-                            base["action"] = random.choice(["导致", "引发", "造成"])
-                            base["product"] = random.choice(PRODUCTS)
-                        elif hop == 2:
-                            base["action"] = random.choice(["产生", "带来", "造成"])
-                            base["event_type"] = random.choice(["交易", "冲突", "转折"])
-                            base["action"] = random.choice(EVENT_TYPES[base["event_type"]])
-                        else:
-                            base["action"] = random.choice(["最终", "结果", "导致"])
-                            
-                    elif logic_type == "时序":
-                        # 时序链：利用绝对时间字段排序
-                        # 时间向前推进（更近），但时间戳本身已经是绝对时间
-                        # 时序链的核心特征：事件按时间先后发生，time.absolute 递增
-                        base["days_ago"] = max(0, base.get("days_ago", 30) - random.randint(3, 14))
-                        base["base_time"] = datetime.now() - timedelta(days=base["days_ago"])
-                        # 更新 time 字段为绝对时间
-                        base["time"] = {
-                            "absolute": base["base_time"].strftime("%Y-%m-%d %H:%M:%S"),
-                            "relative": time_desc(base["days_ago"]),
-                            "fuzzy": fuzzy_time(base["days_ago"]),
-                            "era": ""
-                        }
-                        if hop == 0:
-                            base["action"] = random.choice(["开始", "启动", "发起"])
-                        elif hop == n_hops - 1:
-                            base["action"] = random.choice(["完成", "结束", "收尾"])
-                        else:
-                            base["action"] = random.choice(["随后", "接着", "然后", "之后"])
-                            
-                    elif logic_type == "对比":
-                        if hop % 2 == 0:
-                            base["person1"] = person
-                            base["action"] = random.choice(["购买", "投资", "支持", "收购", "赞同", "批准"])
-                            base["event_type"] = random.choice(["交易", "情感"])
-                        else:
-                            alt_names = [n for n in NAMES if n != person]
-                            base["person1"] = random.choice(alt_names)
-                            base["action"] = random.choice(["出售", "撤资", "反对", "否决", "拒绝", "退出"])
-                            base["event_type"] = random.choice(["交易", "冲突"])
+                    # 优先使用LLM生成的动作
+                    if llm_actions and hop < len(llm_actions):
+                        base["action"] = llm_actions[hop]
+                    else:
+                        # 程序化模式：使用清理后的动词池
+                        if logic_type == "因果":
+                            if hop == 0:
+                                base["action"] = random.choice(["投资", "购买", "决策", "启动"])
+                            elif hop == 1:
+                                base["action"] = random.choice(["导致", "引发", "造成", "触发"])
+                                base["product"] = random.choice(PRODUCTS)
+                            elif hop == 2:
+                                base["action"] = random.choice(["产生", "带来", "造成", "形成"])
+                                base["event_type"] = random.choice(["交易", "冲突", "转折"])
+                                base["action"] = random.choice(EVENT_TYPES[base["event_type"]])
+                            else:
+                                base["action"] = random.choice(["引发", "导致", "产生"])
+                                
+                        elif logic_type == "时序":
+                            base["days_ago"] = max(0, base.get("days_ago", 30) - random.randint(3, 14))
+                            base["base_time"] = datetime.now() - timedelta(days=base["days_ago"])
+                            base["time"] = {
+                                "absolute": base["base_time"].strftime("%Y-%m-%d %H:%M:%S"),
+                                "relative": time_desc(base["days_ago"]),
+                                "fuzzy": fuzzy_time(base["days_ago"]),
+                                "era": ""
+                            }
+                            if hop == 0:
+                                base["action"] = random.choice(["开始", "启动", "发起"])
+                            elif hop == n_hops - 1:
+                                base["action"] = random.choice(["完成", "结束", "收尾"])
+                            else:
+                                # 中间节点：用过程动词，不用时间虚词
+                                base["action"] = random.choice(["进行", "处理", "推进", "实施", "开展", "继续"])
+                                
+                        elif logic_type == "对比":
+                            if hop % 2 == 0:
+                                base["person1"] = person
+                                base["action"] = random.choice(["购买", "投资", "支持", "收购", "赞同", "批准"])
+                                base["event_type"] = random.choice(["交易", "情感"])
+                            else:
+                                alt_names = [n for n in NAMES if n != person]
+                                base["person1"] = random.choice(alt_names)
+                                base["action"] = random.choice(["出售", "撤资", "反对", "否决", "拒绝", "退出"])
+                                base["event_type"] = random.choice(["交易", "冲突"])
                         
-                    elif logic_type == "包含":
-                        if hop == 0:
-                            base["action"] = random.choice(["规划", "布局", "涵盖"])
-                            base["product"] = random.choice(["项目", "计划", "方案"])
-                        elif hop == 1:
-                            base["action"] = random.choice(["包含", "涉及", "覆盖"])
-                            base["product"] = random.choice(PRODUCTS)
-                        elif hop == 2:
-                            base["action"] = random.choice(["具体", "细化", "落实"])
-                        else:
-                            base["action"] = random.choice(["执行", "实施", "完成"])
-                            
-                    elif logic_type == "推导":
-                        if hop == 0:
-                            base["action"] = random.choice(["观察", "发现", "注意到"])
-                            base["event_type"] = "发现"
-                        elif hop == 1:
-                            base["action"] = random.choice(["分析", "研究", "推测"])
-                            base["event_type"] = "分析"
-                        elif hop == 2:
-                            base["action"] = random.choice(["推断", "判断", "预测"])
-                            base["event_type"] = "推导"
-                        else:
-                            base["action"] = random.choice(["结论", "证明", "得出"])
-                            base["event_type"] = "决策"
+                        elif logic_type == "包含":
+                            if hop == 0:
+                                base["action"] = random.choice(["规划", "布局", "制定"])
+                                base["product"] = random.choice(["项目", "计划", "方案"])
+                            elif hop == 1:
+                                base["action"] = random.choice(["包含", "涉及", "覆盖"])
+                                base["product"] = random.choice(PRODUCTS)
+                            elif hop == 2:
+                                base["action"] = random.choice(["细化", "落实", "分解"])
+                            else:
+                                base["action"] = random.choice(["执行", "实施", "完成"])
+                                
+                        elif logic_type == "推导":
+                            if hop == 0:
+                                base["action"] = random.choice(["观察", "发现", "注意到"])
+                                base["event_type"] = "发现"
+                            elif hop == 1:
+                                base["action"] = random.choice(["分析", "研究", "推测"])
+                                base["event_type"] = "分析"
+                            elif hop == 2:
+                                base["action"] = random.choice(["推断", "判断", "预测"])
+                                base["event_type"] = "推导"
+                            else:
+                                base["action"] = random.choice(["证明", "得出", "验证"])
+                                base["event_type"] = "决策"
                     
                     m = self._build("逻辑推理测试集", diff, base,
                                    logic={"type": logic_type},
