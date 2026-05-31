@@ -11,7 +11,7 @@
       "存储正确性测试集": 8,
       "检索功能测试集": 8
     },
-    "created_at": "2026-05-31 14:41:03"
+    "created_at": "2026-05-31 14:55:35"
   },
   "memories": [
     {
@@ -20,10 +20,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-28 14:41:03",
+        "absolute": "2026-05-28 14:55:35",
         "relative": "3天前",
         "fuzzy": "前几天",
-        "timestamp": 1779950463
+        "timestamp": 1779951335
       },
       "location": {
         "city": "上海",
@@ -80,10 +80,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-11 14:41:03",
+        "absolute": "2026-05-11 14:55:35",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1778481663
+        "timestamp": 1778482535
       },
       "location": {
         "city": "梧州",
@@ -148,10 +148,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "上海",
@@ -209,10 +209,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-04-17 14:41:03",
+        "absolute": "2026-04-17 14:55:35",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1776408063
+        "timestamp": 1776408935
       },
       "location": {
         "city": "扬州",
@@ -277,10 +277,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-19 14:41:03",
+        "absolute": "2026-05-19 14:55:35",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779172863
+        "timestamp": 1779173735
       },
       "location": {
         "city": "桂林",
@@ -338,10 +338,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-03-23 14:41:03",
+        "absolute": "2026-03-23 14:55:35",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1774248063
+        "timestamp": 1774248935
       },
       "location": {
         "city": "拉萨",
@@ -404,10 +404,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2024-12-09 14:41:03",
+        "absolute": "2024-12-09 14:55:35",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1733726463
+        "timestamp": 1733727335
       },
       "location": {
         "city": "焦作",
@@ -468,10 +468,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-01-20 14:41:03",
+        "absolute": "2026-01-20 14:55:35",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1768891263
+        "timestamp": 1768892135
       },
       "location": {
         "city": "六盘水",
@@ -536,10 +536,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2024-08-25 14:41:03",
+        "absolute": "2024-08-25 14:55:35",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1724568063
+        "timestamp": 1724568935
       },
       "location": {
         "city": "郴州",
@@ -596,10 +596,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-12-16 14:41:03",
+        "absolute": "2025-12-16 14:55:35",
         "relative": "5个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1765867263
+        "timestamp": 1765868135
       },
       "location": {
         "city": "重庆",
@@ -664,10 +664,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-31 14:41:03",
+        "absolute": "2026-05-31 14:55:35",
         "relative": "刚刚",
         "fuzzy": "今天",
-        "timestamp": 1780209663
+        "timestamp": 1780210535
       },
       "location": {
         "city": "济宁",
@@ -732,10 +732,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-05 14:41:03",
+        "absolute": "2026-05-05 14:55:35",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1777963263
+        "timestamp": 1777964135
       },
       "location": {
         "city": "银川",
@@ -792,10 +792,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-09-04 14:41:03",
+        "absolute": "2025-09-04 14:55:35",
         "relative": "8个月前",
         "fuzzy": "半年前",
-        "timestamp": 1756968063
+        "timestamp": 1756968935
       },
       "location": {
         "city": "烟台",
@@ -853,10 +853,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "潍坊",
@@ -920,10 +920,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-10-12 14:41:03",
+        "absolute": "2025-10-12 14:55:35",
         "relative": "7个月前",
         "fuzzy": "半年前",
-        "timestamp": 1760251263
+        "timestamp": 1760252135
       },
       "location": {
         "city": "焦作",
@@ -984,10 +984,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-27 14:41:03",
+        "absolute": "2026-05-27 14:55:35",
         "relative": "4天前",
         "fuzzy": "前几天",
-        "timestamp": 1779864063
+        "timestamp": 1779864935
       },
       "location": {
         "city": "临沂",
@@ -1051,10 +1051,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-01-29 14:41:03",
+        "absolute": "2026-01-29 14:55:35",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1769668863
+        "timestamp": 1769669735
       },
       "location": {
         "city": "长沙",
@@ -1115,10 +1115,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-04 14:41:03",
+        "absolute": "2026-05-04 14:55:35",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1777876863
+        "timestamp": 1777877735
       },
       "location": {
         "city": "梧州",
@@ -1183,10 +1183,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-06-28 14:41:03",
+        "absolute": "2025-06-28 14:55:35",
         "relative": "11个月前",
         "fuzzy": "半年前",
-        "timestamp": 1751092863
+        "timestamp": 1751093735
       },
       "location": {
         "city": "重庆",
@@ -1251,10 +1251,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-10-27 14:41:03",
+        "absolute": "2025-10-27 14:55:35",
         "relative": "7个月前",
         "fuzzy": "半年前",
-        "timestamp": 1761547263
+        "timestamp": 1761548135
       },
       "location": {
         "city": "焦作",
@@ -1318,10 +1318,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "六盘水",
@@ -1386,10 +1386,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "重庆",
@@ -1454,10 +1454,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2024-06-14 14:41:03",
+        "absolute": "2024-06-14 14:55:35",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1718347263
+        "timestamp": 1718348135
       },
       "location": {
         "city": "中山",
@@ -1518,10 +1518,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-15 14:41:03",
+        "absolute": "2026-05-15 14:55:35",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1778827263
+        "timestamp": 1778828135
       },
       "location": {
         "city": "银川",
@@ -1578,10 +1578,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "天津",
@@ -1645,10 +1645,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-04 14:41:03",
+        "absolute": "2026-05-04 14:55:35",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1777876863
+        "timestamp": 1777877735
       },
       "location": {
         "city": "六盘水",
@@ -1713,10 +1713,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2024-06-13 14:41:03",
+        "absolute": "2024-06-13 14:55:35",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1718260863
+        "timestamp": 1718261735
       },
       "location": {
         "city": "贵港",
@@ -1778,10 +1778,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-28 14:41:03",
+        "absolute": "2026-05-28 14:55:35",
         "relative": "3天前",
         "fuzzy": "前几天",
-        "timestamp": 1779950463
+        "timestamp": 1779951335
       },
       "location": {
         "city": "临沂",
@@ -1844,10 +1844,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-02-17 14:41:03",
+        "absolute": "2026-02-17 14:55:35",
         "relative": "3个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1771310463
+        "timestamp": 1771311335
       },
       "location": {
         "city": "沈阳",
@@ -1904,10 +1904,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-11-12 14:41:03",
+        "absolute": "2025-11-12 14:55:35",
         "relative": "6个月前",
         "fuzzy": "半年前",
-        "timestamp": 1762929663
+        "timestamp": 1762930535
       },
       "location": {
         "city": "贵港",
@@ -1968,10 +1968,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-07-24 14:41:03",
+        "absolute": "2025-07-24 14:55:35",
         "relative": "10个月前",
         "fuzzy": "半年前",
-        "timestamp": 1753339263
+        "timestamp": 1753340135
       },
       "location": {
         "city": "盐城",
@@ -2032,10 +2032,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "重庆",
@@ -2092,10 +2092,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2025-02-23 14:41:03",
+        "absolute": "2025-02-23 14:55:35",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1740292863
+        "timestamp": 1740293735
       },
       "location": {
         "city": "深圳",
@@ -2156,10 +2156,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-03 14:41:03",
+        "absolute": "2026-05-03 14:55:35",
         "relative": "4周前",
         "fuzzy": "上周",
-        "timestamp": 1777790463
+        "timestamp": 1777791335
       },
       "location": {
         "city": "成都",
@@ -2222,10 +2222,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "都匀",
@@ -2289,10 +2289,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-05 14:41:03",
+        "absolute": "2026-05-05 14:55:35",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1777963263
+        "timestamp": 1777964135
       },
       "location": {
         "city": "天津",
@@ -2349,10 +2349,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-03-25 14:41:03",
+        "absolute": "2026-03-25 14:55:35",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1774420863
+        "timestamp": 1774421735
       },
       "location": {
         "city": "拉萨",
@@ -2410,10 +2410,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-02-09 14:41:03",
+        "absolute": "2026-02-09 14:55:35",
         "relative": "3个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1770619263
+        "timestamp": 1770620135
       },
       "location": {
         "city": "衢州",
@@ -2470,10 +2470,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-10 14:41:03",
+        "absolute": "2026-05-10 14:55:35",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778395263
+        "timestamp": 1778396135
       },
       "location": {
         "city": "六盘水",
@@ -2538,10 +2538,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-25 14:41:03",
+        "absolute": "2026-05-25 14:55:35",
         "relative": "6天前",
         "fuzzy": "前几天",
-        "timestamp": 1779691263
+        "timestamp": 1779692135
       },
       "location": {
         "city": "扬州",
@@ -2606,10 +2606,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "上海",
@@ -2667,10 +2667,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-04-24 14:41:03",
+        "absolute": "2026-04-24 14:55:35",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1777012863
+        "timestamp": 1777013735
       },
       "location": {
         "city": "重庆",
@@ -2735,10 +2735,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-12 14:41:03",
+        "absolute": "2026-05-12 14:55:35",
         "relative": "2周前",
         "fuzzy": "上周",
-        "timestamp": 1778568063
+        "timestamp": 1778568935
       },
       "location": {
         "city": "六盘水",
@@ -2803,10 +2803,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-04-29 14:41:03",
+        "absolute": "2026-04-29 14:55:35",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1777444863
+        "timestamp": 1777445735
       },
       "location": {
         "city": "聊城",
@@ -2869,10 +2869,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-27 14:41:03",
+        "absolute": "2026-05-27 14:55:35",
         "relative": "4天前",
         "fuzzy": "前几天",
-        "timestamp": 1779864063
+        "timestamp": 1779864935
       },
       "location": {
         "city": "凯里",
@@ -2934,10 +2934,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "平顶山",
@@ -2994,10 +2994,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-24 14:41:03",
+        "absolute": "2026-05-24 14:55:35",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779604863
+        "timestamp": 1779605735
       },
       "location": {
         "city": "潮州",
@@ -3061,10 +3061,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-24 14:41:03",
+        "absolute": "2026-05-24 14:55:35",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779604863
+        "timestamp": 1779605735
       },
       "location": {
         "city": "梧州",
@@ -3129,10 +3129,10 @@
       "difficulty": "简单",
       "weight": 0.5,
       "time": {
-        "absolute": "2026-05-24 14:41:03",
+        "absolute": "2026-05-24 14:55:35",
         "relative": "1周前",
         "fuzzy": "上周",
-        "timestamp": 1779604863
+        "timestamp": 1779605735
       },
       "location": {
         "city": "日照",
@@ -3195,10 +3195,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-03-29 14:41:03",
+        "absolute": "2026-03-29 14:55:35",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1774766463
+        "timestamp": 1774767335
       },
       "location": {
         "city": "梧州",
@@ -3263,10 +3263,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-04 14:41:03",
+        "absolute": "2026-05-04 14:55:35",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1777876863
+        "timestamp": 1777877735
       },
       "location": {
         "city": "扬州",
@@ -3331,10 +3331,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-02-04 14:41:03",
+        "absolute": "2026-02-04 14:55:35",
         "relative": "3个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1770187263
+        "timestamp": 1770188135
       },
       "location": {
         "city": "太原",
@@ -3391,10 +3391,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-12-11 14:41:03",
+        "absolute": "2025-12-11 14:55:35",
         "relative": "5个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1765435263
+        "timestamp": 1765436135
       },
       "location": {
         "city": "永州",
@@ -3457,10 +3457,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-05-26 14:41:03",
+        "absolute": "2026-05-26 14:55:35",
         "relative": "5天前",
         "fuzzy": "前几天",
-        "timestamp": 1779777663
+        "timestamp": 1779778535
       },
       "location": {
         "city": "重庆",
@@ -3525,10 +3525,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "南京",
@@ -3585,10 +3585,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-03-03 14:41:03",
+        "absolute": "2026-03-03 14:55:35",
         "relative": "2个月前",
         "fuzzy": "上个月",
-        "timestamp": 1772520063
+        "timestamp": 1772520935
       },
       "location": {
         "city": "上海",
@@ -3646,10 +3646,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2024-10-09 14:41:03",
+        "absolute": "2024-10-09 14:55:35",
         "relative": "1年前",
         "fuzzy": "去年",
-        "timestamp": 1728456063
+        "timestamp": 1728456935
       },
       "location": {
         "city": "丽水",
@@ -3706,10 +3706,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-01-15 14:41:03",
+        "absolute": "2026-01-15 14:55:35",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1768459263
+        "timestamp": 1768460135
       },
       "location": {
         "city": "重庆",
@@ -3774,10 +3774,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-04-14 14:41:03",
+        "absolute": "2026-04-14 14:55:35",
         "relative": "1个月前",
         "fuzzy": "上个月",
-        "timestamp": 1776148863
+        "timestamp": 1776149735
       },
       "location": {
         "city": "湛江",
@@ -3834,10 +3834,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2026-01-10 14:41:03",
+        "absolute": "2026-01-10 14:55:35",
         "relative": "4个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1768027263
+        "timestamp": 1768028135
       },
       "location": {
         "city": "济宁",
@@ -3902,10 +3902,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-09 14:41:03",
+        "absolute": "2026-05-09 14:55:35",
         "relative": "3周前",
         "fuzzy": "上周",
-        "timestamp": 1778308863
+        "timestamp": 1778309735
       },
       "location": {
         "city": "六盘水",
@@ -3970,10 +3970,10 @@
       "difficulty": "中等",
       "weight": 1.0,
       "time": {
-        "absolute": "2025-12-13 14:41:03",
+        "absolute": "2025-12-13 14:55:35",
         "relative": "5个月前",
         "fuzzy": "三个月前",
-        "timestamp": 1765608063
+        "timestamp": 1765608935
       },
       "location": {
         "city": "贺州",
@@ -4034,10 +4034,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2025-11-20 14:41:03",
+        "absolute": "2025-11-20 14:55:35",
         "relative": "6个月前",
         "fuzzy": "半年前",
-        "timestamp": 1763620863
+        "timestamp": 1763621735
       },
       "location": {
         "city": "济宁",
@@ -4101,10 +4101,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-25 14:41:03",
+        "absolute": "2026-05-25 14:55:35",
         "relative": "6天前",
         "fuzzy": "前几天",
-        "timestamp": 1779691263
+        "timestamp": 1779692135
       },
       "location": {
         "city": "清远",
@@ -4161,10 +4161,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-30 14:41:03",
+        "absolute": "2026-05-30 14:55:35",
         "relative": "昨天",
         "fuzzy": "昨天",
-        "timestamp": 1780123263
+        "timestamp": 1780124135
       },
       "location": {
         "city": "石家庄",
@@ -4228,10 +4228,10 @@
       "difficulty": "困难",
       "weight": 1.5,
       "time": {
-        "absolute": "2026-05-31 14:41:03",
+        "absolute": "2026-05-31 14:55:35",
         "relative": "刚刚",
         "fuzzy": "今天",
-        "timestamp": 1780209663
+        "timestamp": 1780210535
       },
       "location": {
         "city": "济宁",
@@ -4294,296 +4294,243 @@
   "queries": [
     {
       "query_id": "Q0001",
-      "query_text": "单丹在5个月前忙什么",
-      "query_type": "人物检索",
+      "query_text": "在郴州发生过什么",
+      "query_type": "地点检索",
+      "test_dimension": "精确检索",
       "expected_memory_ids": [
-        "MEM000048"
+        "MEM000002"
       ],
-      "expected_answer": "单丹在重庆清真寺否决了海水淡化，数量891",
-      "expected_time": "2025-12-16 14:41:03",
-      "difficulty": "中等",
-      "search_depth": "中层"
+      "expected_answer": "宇文在郴州羽毛球馆捐赠了空间站，数量160",
+      "expected_time": "2024-08-25 14:55:35",
+      "difficulty": "困难",
+      "search_depth": "浅层"
     },
     {
       "query_id": "Q0002",
-      "query_text": "查询创业孵化园的相关记忆",
-      "query_type": "地点检索",
+      "query_text": "焦强做了什么",
+      "query_type": "人物检索",
+      "test_dimension": "精确检索",
       "expected_memory_ids": [
-        "MEM000019"
+        "MEM000003"
       ],
-      "expected_answer": "东门在上海肯德基投资了二维材料，数量5650",
-      "expected_time": "2026-05-30 14:41:03",
+      "expected_answer": "焦强在天津税务局滑雪了Web3，数量722",
+      "expected_time": "2026-05-05 14:55:35",
       "difficulty": "简单",
-      "search_depth": "深层"
+      "search_depth": "中层"
     },
     {
       "query_id": "Q0003",
-      "query_text": "昨天左右的事情",
-      "query_type": "时间检索",
+      "query_text": "关于钾离子电池的事件有哪些",
+      "query_type": "事件检索",
+      "test_dimension": "精确检索",
       "expected_memory_ids": [
-        "MEM000029"
+        "MEM000006"
       ],
-      "expected_answer": "薛磊在南京大学撤职了仿生材料，数量426",
-      "expected_time": "2026-05-30 14:41:03",
-      "difficulty": "困难",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0004",
-      "query_text": "会议中心附近的事件",
-      "query_type": "地点检索",
-      "expected_memory_ids": [
-        "MEM000020"
-      ],
-      "expected_answer": "夹谷在拉萨码头取消了靶向药，数量699",
-      "expected_time": "2026-03-25 14:41:03",
+      "expected_answer": "姜丽在丽水泰山展会了钾离子电池，数量371",
+      "expected_time": "2024-10-09 14:55:35",
       "difficulty": "中等",
       "search_depth": "中层"
     },
     {
-      "query_id": "Q0005",
-      "query_text": "网吧附近发生过什么事",
-      "query_type": "地点检索",
+      "query_id": "Q0004",
+      "query_text": "关于机器人的事件有哪些",
+      "query_type": "事件检索",
+      "test_dimension": "精确检索",
       "expected_memory_ids": [
-        "MEM000054"
+        "MEM000004"
       ],
-      "expected_answer": "郑鹏在六盘水网吧完成了拓扑绝缘体，数量350",
-      "expected_time": "2026-05-04 14:41:03",
-      "difficulty": "简单",
+      "expected_answer": "孙叔在湛江沃尔玛到达了机器人，数量5470",
+      "expected_time": "2026-04-14 14:55:35",
+      "difficulty": "困难",
       "search_depth": "浅层"
+    },
+    {
+      "query_id": "Q0005",
+      "query_text": "在重庆发生过什么",
+      "query_type": "地点检索",
+      "test_dimension": "精确检索",
+      "expected_memory_ids": [
+        "MEM000001"
+      ],
+      "expected_answer": "楚雷在重庆度假村聚会了棉花，数量224",
+      "expected_time": "2026-05-30 14:55:35",
+      "difficulty": "中等",
+      "search_depth": "中层"
     },
     {
       "query_id": "Q0006",
-      "query_text": "平顶山市的4S店",
-      "query_type": "地点检索",
+      "query_text": "关于苹果股票的事件有哪些",
+      "query_type": "事件检索",
+      "test_dimension": "精确检索",
       "expected_memory_ids": [
-        "MEM000033"
+        "MEM000007"
       ],
-      "expected_answer": "元华在平顶山4S店还款了天然气，数量6070",
-      "expected_time": "2026-05-30 14:41:03",
-      "difficulty": "中等",
-      "search_depth": "浅层"
+      "expected_answer": "常琪在清远温泉游泳了苹果股票，数量6970",
+      "expected_time": "2026-05-25 14:55:35",
+      "difficulty": "困难",
+      "search_depth": "中层"
     },
     {
       "query_id": "Q0007",
-      "query_text": "外滩发生过搬家吗",
-      "query_type": "地点检索",
+      "query_text": "栾朵在衢州的调休记录",
+      "query_type": "组合检索",
+      "test_dimension": "组合检索",
       "expected_memory_ids": [
-        "MEM000011"
+        "MEM000034"
       ],
-      "expected_answer": "高建在石家庄外滩搬家了脑机接口，数量1360",
-      "expected_time": "2026-05-30 14:41:03",
+      "expected_answer": "栾朵在衢州桌游吧调休了光刻机，数量109",
+      "expected_time": "2026-02-09 14:55:35",
+      "difficulty": "困难",
+      "search_depth": "中层"
+    },
+    {
+      "query_id": "Q0008",
+      "query_text": "乐正在银川的理财记录",
+      "query_type": "组合检索",
+      "test_dimension": "组合检索",
+      "expected_memory_ids": [
+        "MEM000035"
+      ],
+      "expected_answer": "乐正在银川休息室理财了黑磷，数量2500",
+      "expected_time": "2026-05-05 14:55:35",
       "difficulty": "困难",
       "search_depth": "浅层"
     },
     {
-      "query_id": "Q0008",
-      "query_text": "1年前有什么重要的事",
-      "query_type": "时间检索",
-      "expected_memory_ids": [
-        "MEM000005"
-      ],
-      "expected_answer": "宰父在贵港全聚德受伤了钍基熔盐堆，数量68",
-      "expected_time": "2024-06-13 14:41:03",
-      "difficulty": "困难",
-      "search_depth": "深层"
-    },
-    {
       "query_id": "Q0009",
-      "query_text": "白银的赞同记录",
-      "query_type": "事件检索",
+      "query_text": "哈丹在天津的取款记录",
+      "query_type": "组合检索",
+      "test_dimension": "组合检索",
       "expected_memory_ids": [
-        "MEM000047"
+        "MEM000009"
       ],
-      "expected_answer": "孙杰在重庆洗车店赞同了白银，数量2830",
-      "expected_time": "2025-06-28 14:41:03",
+      "expected_answer": "哈丹在天津奈雪的茶取款了基因芯片，数量785",
+      "expected_time": "2026-05-30 14:55:35",
       "difficulty": "中等",
       "search_depth": "深层"
     },
     {
       "query_id": "Q0010",
-      "query_text": "六盘水的4个月前 郑鹏发生了什么",
+      "query_text": "储勇在上海的相亲记录",
       "query_type": "组合检索",
+      "test_dimension": "组合检索",
       "expected_memory_ids": [
-        "MEM000050"
+        "MEM000036"
       ],
-      "expected_answer": "郑鹏在六盘水派出所覆盖了橡胶，数量2330",
-      "expected_time": "2026-01-20 14:41:03",
-      "difficulty": "困难",
-      "search_depth": "深层"
+      "expected_answer": "储勇在上海法院相亲了石墨烯，数量5010",
+      "expected_time": "2026-05-28 14:55:35",
+      "difficulty": "简单",
+      "search_depth": "中层"
     },
     {
       "query_id": "Q0011",
-      "query_text": "2025-12-13 14:41:03 贺州 墨哈的退票",
-      "query_type": "组合检索",
+      "query_text": "在李明在聊城KTV康复了脉冲神经网络，数量195之后，发生了什么？",
+      "query_type": "时序推理链",
+      "test_dimension": "时序推理",
       "expected_memory_ids": [
-        "MEM000065"
+        "MEM000025"
       ],
-      "expected_answer": "墨哈在贺州酒店退票了神经形态芯片，数量2320",
-      "expected_time": "2025-12-13 14:41:03",
+      "expected_answer": "李明在临沂医院换货了形状记忆合金，数量8130",
+      "expected_time": "2026-05-28 14:55:35",
       "difficulty": "中等",
       "search_depth": "中层"
     },
     {
       "query_id": "Q0012",
-      "query_text": "亓官有什么新动态",
-      "query_type": "人物检索",
+      "query_text": "在亓官在梧州公司办公室注意到了仿生材料，数量987之后，发生了什么？",
+      "query_type": "时序推理链",
+      "test_dimension": "时序推理",
       "expected_memory_ids": [
-        "MEM000058"
+        "MEM000057"
       ],
-      "expected_answer": "亓官在梧州科技馆得出了二维材料，数量974",
-      "expected_time": "2026-05-11 14:41:03",
+      "expected_answer": "亓官在梧州IFS国金中心判断了光刻掩膜，数量119",
+      "expected_time": "2026-05-04 14:55:35",
       "difficulty": "简单",
-      "search_depth": "中层"
+      "search_depth": "深层"
     },
     {
       "query_id": "Q0013",
-      "query_text": "2026-05-30 14:41:03当天发生了什么",
-      "query_type": "时间检索",
-      "expected_memory_ids": [
-        "MEM000051"
-      ],
-      "expected_answer": "郑鹏在六盘水大悦城具体了橡胶，数量175",
-      "expected_time": "2026-05-30 14:41:03",
-      "difficulty": "中等",
-      "search_depth": "中层"
-    },
-    {
-      "query_id": "Q0014",
-      "query_text": "宰父的娱乐相关记录",
-      "query_type": "人物检索",
-      "expected_memory_ids": [
-        "MEM000040"
-      ],
-      "expected_answer": "宰父在济宁4S店开始了碳陶瓷，数量3130",
-      "expected_time": "2026-05-31 14:41:03",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0015",
-      "query_text": "3个月前的记忆",
-      "query_type": "时间检索",
-      "expected_memory_ids": [
-        "MEM000032"
-      ],
-      "expected_answer": "戚谢在太原家乐福合并了5G，数量245",
-      "expected_time": "2026-02-04 14:41:03",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0016",
-      "query_text": "2026-05-25 14:41:03前后有什么记录",
-      "query_type": "时间检索",
-      "expected_memory_ids": [
-        "MEM000038"
-      ],
-      "expected_answer": "司马在扬州游乐场导致了高温气冷堆，数量304",
-      "expected_time": "2026-05-25 14:41:03",
-      "difficulty": "困难",
-      "search_depth": "中层"
-    },
-    {
-      "query_id": "Q0017",
-      "query_text": "关于海底电缆的事件有哪些",
-      "query_type": "事件检索",
-      "expected_memory_ids": [
-        "MEM000063"
-      ],
-      "expected_answer": "令狐在贵港药店就医了海底电缆，数量438",
-      "expected_time": "2025-11-12 14:41:03",
-      "difficulty": "简单",
-      "search_depth": "浅层"
-    },
-    {
-      "query_id": "Q0018",
-      "query_text": "张伟的居住相关记录",
-      "query_type": "人物检索",
-      "expected_memory_ids": [
-        "MEM000008"
-      ],
-      "expected_answer": "张伟在凯里蜜雪冰城合租了基因编辑，数量157",
-      "expected_time": "2026-05-27 14:41:03",
-      "difficulty": "简单",
-      "search_depth": "浅层"
-    },
-    {
-      "query_id": "Q0019",
-      "query_text": "上周期间蒲团在做什么",
-      "query_type": "时间检索",
-      "expected_memory_ids": [
-        "MEM000030"
-      ],
-      "expected_answer": "蒲团在银川图书馆受伤了碳封存，数量6850",
-      "expected_time": "2026-05-15 14:41:03",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0020",
-      "query_text": "李明(司机)在拉萨的续租",
-      "query_type": "组合检索",
-      "expected_memory_ids": [
-        "MEM000024"
-      ],
-      "expected_answer": "李明在拉萨音乐厅续租了太空旅游，数量568",
-      "expected_time": "2026-03-23 14:41:03",
-      "difficulty": "简单",
-      "search_depth": "中层"
-    },
-    {
-      "query_id": "Q0021",
-      "query_text": "李明和谯笪在临沂的事",
-      "query_type": "组合检索",
-      "expected_memory_ids": [
-        "MEM000025"
-      ],
-      "expected_answer": "李明在临沂医院换货了形状记忆合金，数量8130",
-      "expected_time": "2026-05-28 14:41:03",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0022",
-      "query_text": "2024-12-09 14:41:03当天发生了什么",
-      "query_type": "时间检索",
-      "expected_memory_ids": [
-        "MEM000066"
-      ],
-      "expected_answer": "戚谢在焦作小学存款了棉花，数量7650",
-      "expected_time": "2024-12-09 14:41:03",
-      "difficulty": "简单",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0023",
-      "query_text": "船闸附近的事件",
-      "query_type": "地点检索",
-      "expected_memory_ids": [
-        "MEM000013"
-      ],
-      "expected_answer": "申然在临沂羽毛球馆上班了脑机接口，数量857",
-      "expected_time": "2026-05-27 14:41:03",
-      "difficulty": "中等",
-      "search_depth": "深层"
-    },
-    {
-      "query_id": "Q0024",
-      "query_text": "情感类别下的事件",
-      "query_type": "事件检索",
+      "query_text": "在郑鹏在六盘水网吧完成了拓扑绝缘体，数量350之后，发生了什么？",
+      "query_type": "时序推理链",
+      "test_dimension": "时序推理",
       "expected_memory_ids": [
         "MEM000049"
       ],
       "expected_answer": "郑鹏在六盘水花鸟市场规划了项目，数量160",
-      "expected_time": "2026-05-09 14:41:03",
+      "expected_time": "2026-05-09 14:55:35",
+      "difficulty": "困难",
+      "search_depth": "深层"
+    },
+    {
+      "query_id": "Q0014",
+      "query_text": "在夹谷在重庆蜜雪冰城出售了光刻掩膜，数量2960之后，发生了什么？",
+      "query_type": "对比推理链",
+      "test_dimension": "对比推理",
+      "expected_memory_ids": [
+        "MEM000044"
+      ],
+      "expected_answer": "夹谷在重庆蜜雪冰城出售了光刻掩膜，数量2960",
+      "expected_time": "2026-01-15 14:55:35",
       "difficulty": "困难",
       "search_depth": "浅层"
     },
     {
-      "query_id": "Q0025",
-      "query_text": "关于比特币购买的事件有哪些",
+      "query_id": "Q0015",
+      "query_text": "伯赏的撤资后续如何？",
+      "query_type": "对比推理链",
+      "test_dimension": "对比推理",
+      "expected_memory_ids": [
+        "MEM000046"
+      ],
+      "expected_answer": "伯赏在重庆肯德基撤资了合成生物学，数量8620",
+      "expected_time": "2026-05-30 14:55:35",
+      "difficulty": "困难",
+      "search_depth": "浅层"
+    },
+    {
+      "query_id": "Q0016",
+      "query_text": "关于location主题的记录有哪些",
+      "query_type": "聚类检索",
+      "test_dimension": "聚类检索",
+      "expected_memory_ids": [
+        "MEM000018"
+      ],
+      "expected_answer": "谯笪在上海沃尔玛安慰了月球基地，数量620",
+      "expected_time": "2026-03-03 14:55:35",
+      "difficulty": "中等",
+      "search_depth": "浅层"
+    },
+    {
+      "query_id": "Q0017",
+      "query_text": "关于event_type主题的记录有哪些",
+      "query_type": "聚类检索",
+      "test_dimension": "聚类检索",
+      "expected_memory_ids": [
+        "MEM000022"
+      ],
+      "expected_answer": "哈丹在烟台健身房取消了碳达峰，数量6570",
+      "expected_time": "2025-09-04 14:55:35",
+      "difficulty": "困难",
+      "search_depth": "浅层"
+    },
+    {
+      "query_id": "Q0018",
+      "query_text": "用第三方转述风格描述阎峰在焦作的庆祝记录",
+      "query_type": "跨版本",
+      "test_dimension": "跨版本",
+      "expected_memory_ids": [
+        "MEM000060"
+      ],
+      "expected_answer": "阎峰在焦作跳蚤市场庆祝了碳排放权，数量8090",
+      "expected_time": "2025-10-12 14:55:35",
+      "difficulty": "困难",
+      "search_depth": "浅层"
+    },
+    {
+      "query_id": "Q0019",
+      "query_text": "周吴郑王最近做了什么",
       "query_type": "负样本",
+      "test_dimension": "负样本",
       "expected_memory_ids": [],
       "expected_answer": "",
       "expected_time": null,
@@ -4592,20 +4539,10 @@
       "is_negative": true
     },
     {
-      "query_id": "Q0026",
-      "query_text": "赵钱孙李最近做了什么",
-      "query_type": "负样本",
-      "expected_memory_ids": [],
-      "expected_answer": "",
-      "expected_time": null,
-      "difficulty": "困难",
-      "search_depth": "浅层",
-      "is_negative": true
-    },
-    {
-      "query_id": "Q0027",
+      "query_id": "Q0020",
       "query_text": "张伟在火星购买茅台",
       "query_type": "负样本",
+      "test_dimension": "负样本",
       "expected_memory_ids": [],
       "expected_answer": "",
       "expected_time": null,
@@ -4614,9 +4551,10 @@
       "is_negative": true
     },
     {
-      "query_id": "Q0028",
-      "query_text": "关于比特币购买的事件有哪些",
+      "query_id": "Q0021",
+      "query_text": "张伟在火星购买茅台",
       "query_type": "负样本",
+      "test_dimension": "负样本",
       "expected_memory_ids": [],
       "expected_answer": "",
       "expected_time": null,
@@ -4625,20 +4563,10 @@
       "is_negative": true
     },
     {
-      "query_id": "Q0029",
-      "query_text": "蒋沈韩杨最近做了什么",
+      "query_id": "Q0022",
+      "query_text": "张伟在火星购买茅台",
       "query_type": "负样本",
-      "expected_memory_ids": [],
-      "expected_answer": "",
-      "expected_time": null,
-      "difficulty": "困难",
-      "search_depth": "浅层",
-      "is_negative": true
-    },
-    {
-      "query_id": "Q0030",
-      "query_text": "冯陈褚卫最近做了什么",
-      "query_type": "负样本",
+      "test_dimension": "负样本",
       "expected_memory_ids": [],
       "expected_answer": "",
       "expected_time": null,

@@ -357,60 +357,161 @@ QUERY_TEMPLATES = {
     ]
 }
 
+# ====== 评测维度定义 ======
+TEST_DIMENSIONS = {
+    "精确检索": {"description": "单维度精确匹配", "ratio": 0.20, "query_types": ["人物检索", "地点检索", "事件检索"]},
+    "组合检索": {"description": "多维度组合查询", "ratio": 0.15, "query_types": ["组合检索"]},
+    "时序推理": {"description": "时间先后推理", "ratio": 0.12, "query_types": ["时序链"]},
+    "因果推理": {"description": "因果关系推理", "ratio": 0.12, "query_types": ["因果链"]},
+    "对比推理": {"description": "对比关系识别", "ratio": 0.08, "query_types": ["对比链"]},
+    "包含推理": {"description": "层级包含关系", "ratio": 0.08, "query_types": ["包含链"]},
+    "推导推理": {"description": "逻辑推导", "ratio": 0.08, "query_types": ["推导链"]},
+    "聚类检索": {"description": "主题聚类检索", "ratio": 0.07, "query_types": ["聚类检索"]},
+    "跨版本": {"description": "同一记忆不同表述匹配", "ratio": 0.05, "query_types": ["跨版本"]},
+    "负样本": {"description": "不相关查询过滤", "ratio": 0.20, "query_types": ["负样本"]},
+}
+
+def _get_memory_dimension(m: dict) -> str:
+    """根据记忆特征判断其最适合的评测维度。"""
+    if m.get("chain_relation") == "时序":
+        return "时序推理"
+    elif m.get("chain_relation") == "因果":
+        return "因果推理"
+    elif m.get("chain_relation") == "对比":
+        return "对比推理"
+    elif m.get("chain_relation") == "包含":
+        return "包含推理"
+    elif m.get("chain_relation") == "推导":
+        return "推导推理"
+    elif m.get("cluster_id"):
+        return "聚类检索"
+    elif m.get("category") == "存储正确性测试集":
+        return "精确检索"
+    elif m.get("category") == "长期记忆深度检索测试集":
+        return "跨版本"
+    else:
+        return "组合检索"
+
+def _allocate_queries_by_dimension(memories: list, count: int) -> dict:
+    """按评测维度分配查询配额，返回 dimension -> [memories] 映射。"""
+    allocations = {}
+    for dim_name, dim_cfg in TEST_DIMENSIONS.items():
+        n = max(1, int(count * dim_cfg["ratio"]))
+        allocations[dim_name] = n
+    
+    # 按维度分组记忆
+    dim_memories = defaultdict(list)
+    for m in memories:
+        dim = _get_memory_dimension(m)
+        dim_memories[dim].append(m)
+    
+    # 分配查询到记忆
+    result = defaultdict(list)
+    used_mems = set()
+    
+    for dim_name, target_count in allocations.items():
+        available = [m for m in dim_memories[dim_name] if m["memory_id"] not in used_mems]
+        if not available:
+            continue
+        n = min(target_count, len(available))
+        selected = random.sample(available, n)
+        for m in selected:
+            used_mems.add(m["memory_id"])
+        result[dim_name] = selected
+    
+    return dict(result)
+
 def generate_queries_programmatic(memories: list, count: int = 100) -> list:
-    """程序化生成查询（默认），含20%负样本。"""
+    """程序化生成查询（默认），含20%负样本，按评测维度平衡分配。"""
     queries = []
-    selected = random.sample(memories, min(count, len(memories)))
-    # 80% 正样本 + 20% 负样本
-    n_positive = int(count * 0.8)
-    n_negative = count - n_positive
     
-    # 正样本：从选中的记忆中生成
-    for i, m in enumerate(selected[:n_positive]):
-        qtype = random.choice(list(QUERY_TEMPLATES.keys()))
-        templates = QUERY_TEMPLATES[qtype](m)
-        queries.append({
-            "query_id": f"Q{i+1:04d}",
-            "query_text": random.choice(templates),
-            "query_type": qtype,
-            "expected_memory_ids": [m["memory_id"]],
-            "expected_answer": m["versions"][0]["content"],
-            "expected_time": m["time"]["absolute"],
-            "difficulty": m["difficulty"],
-            "search_depth": random.choice(["浅层","中层","深层"])
-        })
+    # 按维度分配记忆
+    dim_allocations = _allocate_queries_by_dimension(memories, count)
     
-    # 负样本：构造与数据库无关或部分矛盾的查询
-    all_cities = set(CITIES)
-    all_names = set(NAMES)
-    all_products = set(PRODUCTS)
-    for i in range(n_negative):
-        q_idx = n_positive + i
-        # 负样本类型1：人物不存在于数据库
-        fake_name = random.choice(["赵钱孙李", "周吴郑王", "冯陈褚卫", "蒋沈韩杨"])
-        fake_city = random.choice(CITIES)
-        fake_product = random.choice(PRODUCTS)
+    # 生成各维度查询
+    for dim_name, mems in dim_allocations.items():
+        if dim_name == "负样本":
+            continue
         
+        for i, m in enumerate(mems):
+            if dim_name in ["精确检索", "组合检索", "聚类检索", "跨版本"]:
+                qtype = random.choice(TEST_DIMENSIONS[dim_name]["query_types"])
+                if qtype == "人物检索":
+                    qtext = f'{m["person"]["name"]}做了什么'
+                elif qtype == "地点检索":
+                    qtext = f'在{m["location"]["city"]}发生过什么'
+                elif qtype == "事件检索":
+                    qtext = f'关于{m["event"]["product"]}的事件有哪些'
+                elif qtype == "组合检索":
+                    qtext = f'{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
+                elif qtype == "聚类检索":
+                    theme = m.get("tags", [""])[2] if len(m.get("tags", [])) > 2 else "相关"
+                    qtext = f'关于{theme}主题的记录有哪些'
+                elif qtype == "跨版本":
+                    styles = ["客观叙述", "主观视角", "第三方转述"]
+                    qstyle = random.choice(styles)
+                    qtext = f'用{qstyle}风格描述{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
+                else:
+                    qtype = "组合检索"
+                    qtext = f'{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
+            elif dim_name in ["时序推理", "因果推理", "对比推理", "包含推理", "推导推理"]:
+                chain_id = m.get("reasoning_chain", "")
+                if chain_id:
+                    chain_mems = sorted([x for x in memories if x.get("reasoning_chain") == chain_id],
+                                        key=lambda x: x.get("chain_position", 0) or 0)
+                    if len(chain_mems) >= 2:
+                        pos = m.get("chain_position", 1)
+                        if pos > 1 and pos <= len(chain_mems):
+                            prev_mem = chain_mems[pos - 2]
+                            qtext = f'在{prev_mem["versions"][0]["content"]}之后，发生了什么？'
+                        else:
+                            qtext = f'{m["person"]["name"]}的{m["event"]["action"]}后续如何？'
+                    else:
+                        qtext = f'{m["person"]["name"]}的{m["event"]["action"]}发生了什么'
+                else:
+                    qtext = f'{m["person"]["name"]}的{m["event"]["action"]}发生了什么'
+                qtype = f"{dim_name}链"
+            else:
+                qtype = "组合检索"
+                qtext = f'{m["person"]["name"]}在{m["location"]["city"]}的{m["event"]["action"]}记录'
+            
+            queries.append({
+                "query_id": f"Q{len(queries)+1:04d}",
+                "query_text": qtext,
+                "query_type": qtype,
+                "test_dimension": dim_name,
+                "expected_memory_ids": [m["memory_id"]],
+                "expected_answer": m["versions"][0]["content"],
+                "expected_time": m["time"]["absolute"],
+                "difficulty": m["difficulty"],
+                "search_depth": random.choice(["浅层","中层","深层"])
+            })
+    
+    # 负样本：20%
+    n_positive = len(queries)
+    n_negative = max(1, int(n_positive * 0.25))
+    for i in range(n_negative):
         neg_type = random.choice(["人物不存在", "地点不存在", "事件不存在", "组合矛盾"])
         if neg_type == "人物不存在":
-            query_text = f"{fake_name}最近做了什么"
+            query_text = f"{random.choice(['赵钱孙李', '周吴郑王', '冯陈褚卫', '蒋沈韩杨'])}最近做了什么"
         elif neg_type == "地点不存在":
             query_text = f"在火星发生了什么"
         elif neg_type == "事件不存在":
             query_text = f"关于比特币购买的事件有哪些"
-        else:  # 组合矛盾
+        else:
             query_text = f"张伟在火星购买茅台"
         
         queries.append({
-            "query_id": f"Q{q_idx+1:04d}",
+            "query_id": f"Q{len(queries)+1:04d}",
             "query_text": query_text,
             "query_type": "负样本",
-            "expected_memory_ids": [],  # 空列表 = 无正确答案
+            "test_dimension": "负样本",
+            "expected_memory_ids": [],
             "expected_answer": "",
             "expected_time": None,
             "difficulty": "困难",
             "search_depth": "浅层",
-            "is_negative": True  # 标记为负样本
+            "is_negative": True
         })
     
     return queries
@@ -436,10 +537,12 @@ def generate_queries_llm(memories: list, count: int = 100, llm=None) -> list:
             # LLM失败，回退程序化
             qtype = random.choice(list(QUERY_TEMPLATES.keys()))
             templates = QUERY_TEMPLATES[qtype](m)
+            test_dim = "精确检索" if qtype in ["人物检索","地点检索","事件检索"] else "组合检索"
             queries.append({
                 "query_id": f"Q{i+1:04d}",
                 "query_text": random.choice(templates),
                 "query_type": qtype,
+                "test_dimension": test_dim,
                 "expected_memory_ids": [m["memory_id"]],
                 "expected_answer": m["versions"][0]["content"],
                 "expected_time": m["time"]["absolute"],
@@ -449,10 +552,23 @@ def generate_queries_llm(memories: list, count: int = 100, llm=None) -> list:
             continue
 
         for q in qs:
+            # 根据查询类型判断评测维度
+            qtype = q.get("query_type", "组合检索")
+            test_dim = "组合检索"
+            if qtype in ["人物检索", "地点检索", "事件检索"]:
+                test_dim = "精确检索"
+            elif qtype in ["时序链", "因果链", "对比链", "包含链", "推导链"]:
+                test_dim = qtype.replace("链", "推理")
+            elif qtype == "聚类检索":
+                test_dim = "聚类检索"
+            elif qtype == "跨版本":
+                test_dim = "跨版本"
+            
             queries.append({
                 "query_id": f"Q{i+1:04d}",
                 "query_text": q.get("query_text", ""),
-                "query_type": q.get("query_type", "组合检索"),
+                "query_type": qtype,
+                "test_dimension": test_dim,
                 "expected_memory_ids": [m["memory_id"]],
                 "expected_answer": m["versions"][0]["content"],
                 "expected_time": m["time"]["absolute"],

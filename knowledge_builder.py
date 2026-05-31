@@ -761,47 +761,73 @@ def generate_queries(memories):
     fake_events = ['时光旅行', '量子跃迁', '黑洞探索', '星际战争', '外星殖民', '维度穿越', '时空折叠', '虫洞穿越', '超光速飞行', '暗物质研究', '反物质引擎', '引力波通讯', '戴森球建设', '基因飞升', '机械飞升']
 
     # ===== 正样本查询 =====
+    # 按评测维度平衡：精确检索、组合检索、时序推理、因果推理、负样本
+    # 计算各类记忆数量，按比例分配查询配额
+    n_memories = len(memories)
+    dim_quotas = {
+        '精确检索': max(3, int(n_memories * 0.15)),
+        '组合检索': max(3, int(n_memories * 0.15)),
+        '时序推理': max(3, int(n_memories * 0.10)),
+        '因果推理': max(3, int(n_memories * 0.10)),
+        '对比推理': max(2, int(n_memories * 0.05)),
+        '包含推理': max(2, int(n_memories * 0.05)),
+        '推导推理': max(2, int(n_memories * 0.05)),
+        '聚类检索': max(2, int(n_memories * 0.05)),
+        '跨版本': max(2, int(n_memories * 0.03)),
+    }
+    
+    # 精确检索：人物/地点/事件
     with_time = [m for m in memories if m['time']['absolute'] and m['person']['name'] != '未知']
-    for i, m in enumerate(random.sample(with_time, min(QUERIES_PER_TYPE, len(with_time)))):
+    for i, m in enumerate(random.sample(with_time, min(dim_quotas['精确检索'], len(with_time)))):
         queries.append({
-            'query_id': f'Q{i+1:04d}',
+            'query_id': f'Q{len(queries)+1:04d}',
             'query_text': f'{m["time"]["absolute"]} {m["person"]["name"]}做了什么',
-            'query_type': '时间检索', 'expected_memory_ids': [m['memory_id']],
+            'query_type': '时间检索',
+            'test_dimension': '精确检索',
+            'expected_memory_ids': [m['memory_id']],
             'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
 
     with_loc = [m for m in memories if m['location']['city']]
-    for i, m in enumerate(random.sample(with_loc, min(QUERIES_PER_TYPE, len(with_loc)))):
+    for i, m in enumerate(random.sample(with_loc, min(dim_quotas['精确检索'], len(with_loc)))):
         queries.append({
             'query_id': f'Q{len(queries)+1:04d}',
             'query_text': f'在{m["location"]["city"]}发生过什么',
-            'query_type': '地点检索', 'expected_memory_ids': [m['memory_id']],
+            'query_type': '地点检索',
+            'test_dimension': '精确检索',
+            'expected_memory_ids': [m['memory_id']],
             'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
 
     with_person = [m for m in memories if m['person']['name'] != '未知']
-    for i, m in enumerate(random.sample(with_person, min(QUERIES_PER_TYPE, len(with_person)))):
+    for i, m in enumerate(random.sample(with_person, min(dim_quotas['精确检索'], len(with_person)))):
         queries.append({
             'query_id': f'Q{len(queries)+1:04d}',
             'query_text': f'{m["person"]["name"]}做了什么',
-            'query_type': '人物检索', 'expected_memory_ids': [m['memory_id']],
+            'query_type': '人物检索',
+            'test_dimension': '精确检索',
+            'expected_memory_ids': [m['memory_id']],
             'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
 
-    for i, m in enumerate(random.sample(with_person, min(QUERIES_PER_TYPE, len(with_person)))):
+    for i, m in enumerate(random.sample(with_person, min(dim_quotas['精确检索'], len(with_person)))):
         queries.append({
             'query_id': f'Q{len(queries)+1:04d}',
             'query_text': f'{m["person"]["name"]}关于{m["event"]["product"]}有什么经历',
-            'query_type': '事件检索', 'expected_memory_ids': [m['memory_id']],
+            'query_type': '事件检索',
+            'test_dimension': '精确检索',
+            'expected_memory_ids': [m['memory_id']],
             'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
 
+    # 组合检索
     with_all = [m for m in memories if m['time']['absolute'] and m['person']['name'] != '未知' and m['location']['city']]
-    for i, m in enumerate(random.sample(with_all, min(QUERIES_PER_TYPE, len(with_all)))):
+    for i, m in enumerate(random.sample(with_all, min(dim_quotas['组合检索'], len(with_all)))):
         queries.append({
             'query_id': f'Q{len(queries)+1:04d}',
             'query_text': f'{m["time"]["absolute"]} {m["person"]["name"]}在{m["location"]["city"]}发生了什么',
-            'query_type': '组合检索', 'expected_memory_ids': [m['memory_id']],
+            'query_type': '组合检索',
+            'test_dimension': '组合检索',
+            'expected_memory_ids': [m['memory_id']],
             'expected_answer': m['versions'][0]['content'], 'difficulty': m.get('difficulty', '中等')})
 
-    # 链式查询
-    # 链式查询
+    # 链式查询（按维度分类）
     cs = set()
     chain_idx = 0
     for m in memories:
@@ -811,10 +837,26 @@ def generate_queries(memories):
             members = sorted([x for x in memories if x['reasoning_chain'] == ch], key=lambda x: x['chain_position'])
             if len(members) >= 3:
                 chain_idx += 1
+                # 判断链类型
+                chain_relation = members[0].get('chain_relation', '')
+                if chain_relation == '时序':
+                    test_dim = '时序推理'
+                elif chain_relation == '因果':
+                    test_dim = '因果推理'
+                elif chain_relation == '对比':
+                    test_dim = '对比推理'
+                elif chain_relation == '包含':
+                    test_dim = '包含推理'
+                elif chain_relation == '推导':
+                    test_dim = '推导推理'
+                else:
+                    test_dim = '组合推理'
+                
                 queries.append({
                     'query_id': f'Q{len(queries) + 1:04d}',
                     'query_text': f'请梳理{members[0]["person"]["name"]}的完整经历脉络',
                     'query_type': '组合推理',
+                    'test_dimension': test_dim,
                     'expected_memory_ids': [x['memory_id'] for x in members],
                     'expected_answer': f'{members[0]["person"]["name"]}的经历脉络',
                     'difficulty': '中等'})
@@ -857,6 +899,7 @@ def generate_queries(memories):
             'query_id': f'NEG{i+1:04d}',
             'query_text': query_text,
             'query_type': '负样本',
+            'test_dimension': '负样本',
             'expected_memory_ids': [],
             'expected_answer': '',
             'difficulty': '困难',

@@ -141,6 +141,7 @@ Standard MemTest JSON contains:
       "query_id": "Q0001",
       "query_text": "Zhang Wei's purchase records in Beijing",
       "query_type": "composite",
+      "test_dimension": "composite_retrieval",
       "expected_memory_ids": ["MEM000001"],
       "expected_answer": "Zhang Wei purchased Maotai at Starbucks in Beijing, quantity 100",
       "expected_time": "2026-05-26 14:30:00",
