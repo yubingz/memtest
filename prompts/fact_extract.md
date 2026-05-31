@@ -142,8 +142,24 @@
 ## 注意
 - 如果文本中没有明确时间，time 字段可为空
 - 如果涉及多个人物，用顿号或逗号分隔
-- 历史文本中的朝代可放入 context
+- 历史文本中的朝代/时代（中文："唐朝"、英文："Tang Dynasty"）可放入 era/period 字段或 context
 - 因果连接词标记："因为""所以""导致""引发""随后""接着""之后""因此""于是"
 - 英文文本中因果词："because" "so" "led to" "resulted in" "then" "after" "therefore"
 - 中文输出
 - 如果文本中没有链式关系，所有 chain_id 留空即可
+
+## 字段映射（多语言适配）
+
+| 字段 | 中文文本 | 英文文本 |
+|------|---------|---------|
+| `time` | 时间（如"2024年1月"） | time |
+| `era` / `period` | 时代/时期（如"唐朝"→"Tang Dynasty"，"文艺复兴"→"Renaissance"） | era/period |
+| `location` | 地点 | location |
+| `person` | 人物 | person |
+| `event_type` | 事件类型 | event_type |
+| `content` | 内容摘要 | content |
+| `chain_id` | 链ID（可选） | chain_id |
+| `chain_position` | 链位置（可选） | chain_position |
+| `chain_relation` | 链关系（可选） | chain_relation |
+
+注意：`dynasty` 字段在英文文本中改为 `era` 或 `period`，以适应非中国历史场景。

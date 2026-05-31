@@ -972,54 +972,6 @@ def generate_queries(memories):
                         'expected_time': members[0]['time']['absolute'],
                         'difficulty': '中等'})
 
-    # ===== 负样本查询（20%） =====
-    n_positive = len(queries)
-    n_negative = max(1, int(n_positive * 0.25))  # 约20%负样本
-    
-    for i in range(n_negative):
-        neg_type = random.choice(['人物不存在', '地点不存在', '事件不存在', '组合矛盾', '微妙错误'])
-        if neg_type == '人物不存在' and all_persons:
-            query_text = random.choice([
-                f'{random.choice(fake_persons)}做了什么',
-                f'{random.choice(fake_persons)}在{random.choice(all_cities)}做了什么',
-                f'{random.choice(fake_persons)}关于{random.choice(all_products)}有什么经历',
-            ]) if all_cities else f'{random.choice(fake_persons)}做了什么'
-        elif neg_type == '地点不存在' and all_cities:
-            query_text = random.choice([
-                f'在{random.choice(fake_cities)}发生了什么',
-                f'{random.choice(all_persons)}在{random.choice(fake_cities)}做了什么',
-            ]) if all_persons else f'在{random.choice(fake_cities)}发生了什么'
-        elif neg_type == '事件不存在' and all_products:
-            query_text = random.choice([
-                f'关于{random.choice(fake_events)}的事件有哪些',
-                f'{random.choice(all_persons)}关于{random.choice(fake_events)}有什么经历',
-            ]) if all_persons else f'关于{random.choice(fake_events)}的事件有哪些'
-        elif neg_type == '微妙错误' and all_persons and all_cities:
-            # 真实人物 + 真实地点 + 不存在的动作
-            real_person = random.choice(all_persons)
-            real_city = random.choice(all_cities)
-            fake_actions = ['打篮球', '游泳', '跳舞', '画画', '唱歌']
-            query_text = f'{real_person}在{real_city}{random.choice(fake_actions)}'
-        else:  # 组合矛盾
-            if all_persons and all_cities and all_products:
-                query_text = f'{random.choice(all_persons)}在{random.choice(fake_cities)}购买了{random.choice(all_products)}'
-            elif all_persons and all_cities:
-                query_text = f'{random.choice(all_persons)}在{random.choice(fake_cities)}做了什么'
-            else:
-                query_text = f'关于{random.choice(fake_events)}的记录'
-        
-        queries.append({
-            'query_id': f'NEG{i+1:04d}',
-            'query_text': query_text,
-            'query_type': '负样本',
-            'test_dimension': '负样本',
-            'expected_memory_ids': [],
-            'expected_answer': '',
-            'difficulty': '困难',
-            'search_depth': '浅层',
-            'is_negative': True,
-        })
-
     # 查询人物平衡（正样本）
     mem_map = {m['memory_id']: m for m in memories}
     by_person = defaultdict(list)
@@ -1049,14 +1001,71 @@ def generate_queries(memories):
                 sampled = random.sample(sampled, cap)
             balanced_queries.extend(sampled)
 
-    # 加入负样本（不参与人物平衡）
-    neg_queries = [q for q in queries if q.get('is_negative')]
-    balanced_queries.extend(neg_queries)
+    # ===== 负样本查询（20%） =====
+    n_positive = len(balanced_queries)
+    n_negative = max(1, int(n_positive * 0.25))  # 约20%负样本
+    
+    # 确定性负样本生成，避免重复
+    fake_persons = ['赵钱孙李', '周吴郑王', '冯陈褚卫', '蒋沈韩杨', '朱秦尤许', '何吕施张', '孔曹严华', '金魏陶姜']
+    fake_cities = ['火星', '月球', '木星', '土星', '冥王星', '水星', '金星', '海王星']
+    fake_events = ['比特币购买', '时光旅行', '量子跃迁', '黑洞探索', '星际战争', '外星殖民', '维度穿越', '时空折叠']
+    fake_actions = ['打篮球', '游泳', '跳舞', '画画', '唱歌', '下棋', '钓鱼', '滑雪']
+    
+    neg_candidates = []
+    
+    # 类型1: 人物不存在
+    for fp in fake_persons:
+        neg_candidates.append(f'{fp}最近做了什么')
+        if all_cities:
+            for fc in fake_cities:
+                neg_candidates.append(f'{fp}在{fc}做了什么')
+    
+    # 类型2: 地点不存在
+    for fc in fake_cities:
+        neg_candidates.append(f'在{fc}发生了什么')
+    
+    # 类型3: 事件不存在
+    for fe in fake_events:
+        neg_candidates.append(f'关于{fe}的事件有哪些')
+    
+    # 类型4: 微妙错误（真实人物 + 真实地点 + 假动作）
+    if all_persons and all_cities:
+        for person in all_persons:
+            for city in all_cities:
+                for action in fake_actions:
+                    neg_candidates.append(f'{person}在{city}{action}')
+    
+    # 类型5: 组合矛盾（真实人物 + 假地点 + 真实产品）
+    if all_persons and all_products:
+        for person in all_persons:
+            for fc in fake_cities:
+                for prod in all_products:
+                    neg_candidates.append(f'{person}在{fc}购买了{prod}')
+    
+    while len(neg_candidates) < n_negative:
+        idx = len(neg_candidates)
+        neg_candidates.append(f'关于未知事件{idx}的记录')
+    
+    random.shuffle(neg_candidates)
+    selected_negs = neg_candidates[:n_negative]
+    
+    for i, query_text in enumerate(selected_negs):
+        balanced_queries.append({
+            'query_id': f'NEG{i+1:04d}',
+            'query_text': query_text,
+            'query_type': '负样本',
+            'test_dimension': '负样本',
+            'expected_memory_ids': [],
+            'expected_answer': '',
+            'difficulty': '困难',
+            'search_depth': '浅层',
+            'is_negative': True,
+        })
 
     random.shuffle(balanced_queries)
     tc = defaultdict(int)
     for q in balanced_queries: tc[q['query_type']] += 1
-    print(f'[{time.strftime("%H:%M")}] Queries: {dict(tc)} total={len(balanced_queries)} (neg={len(neg_queries)})')
+    print(f'[{time.strftime("%H:%M")}] Queries: {dict(tc)} total={len(balanced_queries)} (neg={n_negative})')
     return balanced_queries
 
 

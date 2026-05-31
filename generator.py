@@ -528,7 +528,7 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
                 "search_depth": random.choice(["浅层","中层","深层"])
             })
     
-    # 负样本：20%
+    # 负样本：20% — 确定性生成，避免重复
     n_positive = len(queries)
     n_negative = max(1, int(n_positive * 0.25))
     
@@ -536,33 +536,59 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
     all_persons = list(set(m["person"]["name"] for m in memories if m["person"]["name"]))
     all_cities = list(set(m["location"]["city"] for m in memories if m["location"]["city"]))
     all_products = list(set(m["event"]["product"] for m in memories if m["event"]["product"]))
-    fake_events = ['时光旅行', '量子跃迁', '黑洞探索', '星际战争', '外星殖民', '维度穿越', '时空折叠', '虫洞穿越', '超光速飞行', '暗物质研究', '反物质引擎', '引力波通讯', '戴森球建设', '基因飞升', '机械飞升']
     
-    for i in range(n_negative):
-        neg_type = random.choice(["人物不存在", "地点不存在", "事件不存在", "组合矛盾", "微妙错误"])
-        if neg_type == "人物不存在":
-            query_text = f"{random.choice(['赵钱孙李', '周吴郑王', '冯陈褚卫', '蒋沈韩杨'])}最近做了什么"
-        elif neg_type == "地点不存在":
-            query_text = f"在火星发生了什么"
-        elif neg_type == "事件不存在":
-            query_text = f"关于比特币购买的事件有哪些"
-        elif neg_type == "微妙错误" and all_persons and all_cities:
-            # 真实人物 + 真实地点 + 不存在的动作（测试系统对虚假细节的识别）
-            real_person = random.choice(all_persons)
-            real_city = random.choice(all_cities)
-            fake_actions = ['打篮球', '游泳', '跳舞', '画画', '唱歌']
-            query_text = f"{real_person}在{real_city}{random.choice(fake_actions)}"
-        else:
-            # 组合矛盾：真实人物 + 假地点 + 真事件
-            if all_persons and all_cities and all_products:
-                query_text = f"{random.choice(all_persons)}在火星购买了{random.choice(all_products)}"
-            elif all_persons:
-                query_text = f"{random.choice(all_persons)}在火星做了什么"
-            else:
-                query_text = f"关于{random.choice(fake_events)}的记录"
-        
+    # 确定性负样本模板池，每个组合唯一
+    fake_persons = ['赵钱孙李', '周吴郑王', '冯陈褚卫', '蒋沈韩杨', '朱秦尤许', '何吕施张', '孔曹严华', '金魏陶姜']
+    fake_cities = ['火星', '月球', '木星', '土星', '冥王星', '水星', '金星', '海王星']
+    fake_events = ['比特币购买', '时光旅行', '量子跃迁', '黑洞探索', '星际战争', '外星殖民', '维度穿越', '时空折叠']
+    fake_actions = ['打篮球', '游泳', '跳舞', '画画', '唱歌', '下棋', '钓鱼', '滑雪']
+    
+    # 构建所有可能的负样本组合（笛卡尔积的子集）
+    neg_candidates = []
+    
+    # 类型1: 人物不存在
+    for fp in fake_persons:
+        neg_candidates.append(("人物不存在", f"{fp}最近做了什么"))
+    
+    # 类型2: 地点不存在
+    for fc in fake_cities:
+        neg_candidates.append(("地点不存在", f"在{fc}发生了什么"))
+    
+    # 类型3: 事件不存在
+    for fe in fake_events:
+        neg_candidates.append(("事件不存在", f"关于{fe}的事件有哪些"))
+    
+    # 类型4: 微妙错误（真实人物 + 真实地点 + 假动作）
+    if all_persons and all_cities:
+        for pi, person in enumerate(all_persons):
+            for ci, city in enumerate(all_cities):
+                for ai, action in enumerate(fake_actions):
+                    # 用索引组合确保唯一，但限制总量
+                    idx = (pi * len(all_cities) + ci) * len(fake_actions) + ai
+                    if idx < 200:  # 上限200个微妙错误
+                        neg_candidates.append(("微妙错误", f"{person}在{city}{action}"))
+    
+    # 类型5: 组合矛盾（真实人物 + 假地点 + 真实产品）
+    if all_persons and all_products:
+        for pi, person in enumerate(all_persons):
+            for fi, fc in enumerate(fake_cities):
+                for pri, prod in enumerate(all_products):
+                    idx = (pi * len(fake_cities) + fi) * len(all_products) + pri
+                    if idx < 100:  # 上限100个组合矛盾
+                        neg_candidates.append(("组合矛盾", f"{person}在{fc}购买了{prod}"))
+    
+    # 如果候选不够，补充通用负样本
+    while len(neg_candidates) < n_negative:
+        idx = len(neg_candidates)
+        neg_candidates.append(("通用", f"关于未知事件{idx}的记录"))
+    
+    # 随机打乱后取前n_negative个，保证多样性
+    random.shuffle(neg_candidates)
+    selected_negs = neg_candidates[:n_negative]
+    
+    for i, (neg_type, query_text) in enumerate(selected_negs):
         queries.append({
-            "query_id": f"Q{len(queries)+1:04d}",
+            "query_id": f"NEG{i+1:04d}",
             "query_text": query_text,
             "query_type": "负样本",
             "test_dimension": "负样本",
@@ -645,10 +671,13 @@ def generate_queries_llm(memories: list, count: int = 100, llm=None) -> list:
 
 # ====== 记忆生成器 ======
 class MemoryGenerator:
-    def __init__(self, use_llm: bool = False, llm=None):
+    def __init__(self, use_llm: bool = False, llm=None, domain: str = "daily", time_distribution: str = "recent"):
         self.memory_id = 0
         self.use_llm = use_llm
         self.llm = llm
+        self.domain = domain
+        self.time_distribution = time_distribution
+        self.domain_data = DOMAINS.get(domain, DOMAINS["daily"])
 
     def _id(self) -> str:
         self.memory_id += 1
@@ -658,21 +687,48 @@ class MemoryGenerator:
         return {"简单": 0.5, "中等": 1.0, "困难": 1.5}.get(difficulty, 1.0)
 
     def _base(self, time_period: str) -> dict:
-        ranges = {"24h":(1,1),"7d":(1,7),"30d":(7,30),"90d":(30,90),"1y":(90,365),"fuzzy":(365,730)}
-        lo, hi = ranges.get(time_period, (1,30))
-        days = random.randint(lo, hi)
-        base_time = datetime.now() - timedelta(days=days)
-        p1, p2 = random.sample(NAMES, 2)
+        """生成基础记忆数据，支持领域和时间分布配置。"""
+        # 时间生成策略
+        if self.time_distribution == "historical":
+            # 历史时间分布：使用真实年份（如1900-2020）
+            year = random.randint(1900, 2020)
+            month = random.randint(1, 12)
+            day = random.randint(1, 28)
+            hour = random.randint(0, 23)
+            minute = random.randint(0, 59)
+            base_time = datetime(year, month, day, hour, minute)
+            days_ago = (datetime.now() - base_time).days
+        elif self.time_distribution == "uniform":
+            # 均匀分布：在1-730天内均匀分布
+            days_ago = random.randint(1, 730)
+            base_time = datetime.now() - timedelta(days=days_ago)
+        else:
+            # 默认 recent：近期集中
+            ranges = {"24h":(1,1),"7d":(1,7),"30d":(7,30),"90d":(30,90),"1y":(90,365),"fuzzy":(365,730)}
+            lo, hi = ranges.get(time_period, (1,30))
+            days_ago = random.randint(lo, hi)
+            base_time = datetime.now() - timedelta(days=days_ago)
+        
+        # 从领域数据池中采样
+        names = self.domain_data.get("people", NAMES)
+        cities = self.domain_data.get("cities", CITIES)
+        events = self.domain_data.get("events", list(EVENT_TYPES.keys()))
+        products = self.domain_data.get("products", PRODUCTS)
+        
+        p1, p2 = random.sample(names if len(names) >= 2 else NAMES, 2)
         i1, i2 = random.sample(IDENTITIES, 2)
-        etype = random.choice(list(EVENT_TYPES.keys()))
+        etype = random.choice(events) if events else random.choice(list(EVENT_TYPES.keys()))
+        actions = EVENT_TYPES.get(etype, ["进行" + etype])
+        
         return {
-            "base_time": base_time, "days_ago": days,
-            "city": random.choice(CITIES), "place": random.choice(PLACES),
+            "base_time": base_time, "days_ago": days_ago,
+            "city": random.choice(cities) if cities else random.choice(CITIES),
+            "place": random.choice(PLACES),
             "landmark": random.choice(LANDMARKS),
             "person1": p1, "person2": p2, "identity1": i1, "identity2": i2,
             "relation": random.choice(RELATIONS),
-            "event_type": etype, "action": random.choice(EVENT_TYPES[etype]),
-            "product": random.choice(PRODUCTS),
+            "event_type": etype, "action": random.choice(actions),
+            "product": random.choice(products) if products else random.choice(PRODUCTS),
             "quantity": random.randint(1, 1000) * (10 if random.random() > 0.5 else 1),
             "price": random.randint(10, 10000)
         }
@@ -981,8 +1037,114 @@ class MemoryGenerator:
 
 
 # ====== 主入口 ======
-def build_database(size: int = 100, use_llm: bool = False, llm=None) -> dict:
-    gen = MemoryGenerator(use_llm=use_llm, llm=llm)
+DOMAINS = {
+    "daily": {
+        "people": [
+            "张三", "李四", "王五", "赵六", "孙七", "周八", "吴九", "郑十",
+            "钱十一", "冯十二", "陈十三", "褚十四", "卫十五", "蒋十六", "沈十七", "韩十八",
+            "杨十九", "朱二十", "秦二十一", "尤二十二", "许二十三", "何二十四", "吕二十五", "施二十六",
+            "张二十七", "孔二十八", "曹二十九", "严三十", "华三十一", "金三十二", "魏三十三", "陶三十四",
+        ],
+        "cities": [
+            "北京", "上海", "广州", "深圳", "杭州", "成都", "南京", "武汉",
+            "西安", "重庆", "天津", "苏州", "长沙", "郑州", "青岛", "大连",
+            "宁波", "厦门", "济南", "哈尔滨", "沈阳", "长春", "石家庄", "太原",
+            "合肥", "南昌", "昆明", "贵阳", "南宁", "兰州", "海口", "乌鲁木齐",
+        ],
+        "events": [
+            "参加会议", "购买商品", "签订合同", "提交报告", "出行旅行",
+            "参加面试", "完成项目", "庆祝生日", "拜访客户", "处理投诉",
+            "参加活动", "学习课程", "体检就医", "健身运动", "聚餐聚会",
+        ],
+        "products": [
+            "手机", "电脑", "汽车", "房屋", "股票", "基金", "保险", "书籍",
+            "服装", "食品", "药品", "电器", "家具", "玩具", "乐器", "珠宝",
+            "化妆品", "运动器材", "旅游服务", "教育课程", "医疗服务", "法律服务",
+        ],
+    },
+    "history": {
+        "people": [
+            "秦始皇", "汉武帝", "唐太宗", "宋太祖", "明成祖", "康熙帝", "乾隆帝", "武则天",
+            "曹操", "刘备", "孙权", "诸葛亮", "关羽", "张飞", "赵云", "吕布",
+            "李白", "杜甫", "苏轼", "白居易", "王维", "李清照", "辛弃疾", "陆游",
+            "岳飞", "文天祥", "于谦", "戚继光", "郑成功", "林则徐", "曾国藩", "李鸿章",
+        ],
+        "cities": [
+            "长安", "洛阳", "金陵", "开封", "临安", "大都", "燕京", "咸阳",
+            "邯郸", "临淄", "曲阜", "江陵", "成都", "太原", "大同", "襄阳",
+            "扬州", "苏州", "杭州", "福州", "广州", "泉州", "大理", "拉萨",
+            "平壤", "高句丽", "西域", "楼兰", "敦煌", "张掖", "武威", "酒泉",
+        ],
+        "events": [
+            "统一天下", "改革变法", "发动战争", "签订条约", "建立王朝",
+            "平定叛乱", "出使西域", "编纂典籍", "修建工程", "科举取士",
+            "发明创造", "农业生产", "商业贸易", "文化交流", "宗教传播",
+        ],
+        "products": [
+            "兵器", "书籍", "货币", "丝绸", "茶叶", "瓷器", "香料", "马匹",
+            "粮食", "药材", "珠宝", "玉器", "青铜器", "铁器", "漆器", "纸张",
+            "火药", "指南针", "印刷术", "运河", "长城", "宫殿", "陵墓", "石窟",
+        ],
+    },
+    "scifi": {
+        "people": [
+            "宇航员", "科学家", "AI", "机器人", "外星生物", "时空旅行者", "基因改造人", "意识上传者",
+            "星际指挥官", "舰队司令", "探险家", "考古学家", "物理学家", "生物学家", "数学家", "哲学家",
+            "黑客", "赏金猎人", "走私者", "革命者", "外交官", "商人", "牧师", "艺术家",
+        ],
+        "cities": [
+            "空间站", "火星基地", "月球城", "星际飞船", "未来城", "地下城", "轨道电梯", "戴森球",
+            "异星殖民地", "虫洞枢纽", "量子网络", "虚拟现实", "平行宇宙", "高维空间", "黑洞边缘", "星云中心",
+            "泰坦星", "欧罗巴", "开普勒", "比邻星", "仙女座", "银河系", "太阳系", "宇宙边缘",
+        ],
+        "events": [
+            "时空穿越", "基因改造", "星际战争", "意识上传", "维度跳跃",
+            "黑洞探索", "外星接触", "量子跃迁", "暗物质研究", "反物质引擎",
+            "戴森球建设", "机械飞升", "基因飞升", "虚拟现实", "平行宇宙",
+        ],
+        "products": [
+            "飞船", "机器人", "全息设备", "量子计算机", "基因编辑器", "意识芯片", "纳米机器人", "反物质引擎",
+            "引力波通讯器", "暗物质探测器", "时空折叠器", "虫洞发生器", "戴森球组件", "基因药剂", "虚拟现实头盔",
+            "星际传送门", "量子纠缠器", "黑洞炸弹", "维度切割器", "平行宇宙探测器", "宇宙飞船", "太空站", "星际武器",
+        ],
+    },
+    "business": {
+        "people": [
+            "CEO", "CFO", "CTO", "COO", "投资人", "分析师", "审计师", "律师",
+            "银行家", "交易员", "经纪人", "顾问", "经理", "总监", "副总裁", "总裁",
+            "董事长", "合伙人", "创始人", "股东", "董事", "监事", "高管", "员工",
+        ],
+        "cities": [
+            "交易所", "总部", "工厂", "仓库", "物流中心", "研发中心", "数据中心", "呼叫中心",
+            "分公司", "办事处", "营业部", "门店", "旗舰店", "体验店", "快闪店", "直播间",
+            "产业园区", "自贸区", "保税区", "开发区", "高新区", "经济区", "湾区", "都市圈",
+        ],
+        "events": [
+            "并购", "IPO", "财报发布", "融资", "投资", "分红", "裁员", "扩张",
+            "合作", "竞争", "诉讼", "仲裁", "破产", "重组", "转型", "创新",
+            "上市", "退市", "增发", "回购", "拆分", "合并", "收购", " divestiture",
+        ],
+        "products": [
+            "股票", "债券", "基金", "期货", "期权", "衍生品", "外汇", "黄金",
+            "房地产", "保险", "信托", "资管", "私募", "风投", "天使投资", "众筹",
+            "加密货币", "NFT", "智能合约", "区块链", "AI模型", "SaaS", "PaaS", "IaaS",
+        ],
+    },
+}
+
+
+def build_database(size: int = 100, use_llm: bool = False, llm=None, domain: str = "daily", time_distribution: str = "recent") -> dict:
+    """
+    Build a MemTest database.
+    
+    Args:
+        size: Number of memories to generate
+        use_llm: Whether to use LLM for enhanced generation
+        llm: LLM interface object (required if use_llm=True)
+        domain: Data domain ("daily"|"history"|"scifi"|"business")
+        time_distribution: Time distribution mode ("recent"|"uniform"|"historical")
+    """
+    gen = MemoryGenerator(use_llm=use_llm, llm=llm, domain=domain, time_distribution=time_distribution)
     ratios = {"storage":0.17,"retrieval":0.17,"org":0.17,"forget":0.17,"reason":0.16,"deep":0.16}
     storage = gen.gen_storage(max(1, int(size * ratios["storage"])))
     retrieval = gen.gen_retrieval(max(1, int(size * ratios["retrieval"])))
@@ -1018,8 +1180,12 @@ if __name__ == "__main__":
     full = "--full" in sys.argv
     use_llm = "--llm" in sys.argv
     size = 100
+    domain = "daily"
+    time_distribution = "recent"
     for a in sys.argv:
         if a.startswith("--size="): size = int(a.split("=")[1])
+        if a.startswith("--domain="): domain = a.split("=")[1]
+        if a.startswith("--time="): time_distribution = a.split("=")[1]
     if full: size = 10000
 
     llm = None
@@ -1032,8 +1198,9 @@ if __name__ == "__main__":
             print(f"[警告] LLM初始化失败: {e}，回退到程序化模式")
             use_llm = False
 
-    db = build_database(size, use_llm=use_llm, llm=llm)
-    db_file = f"test_db_{size}.json" if full or size > 100 else "sample_db_100.json"
+    db = build_database(size, use_llm=use_llm, llm=llm, domain=domain, time_distribution=time_distribution)
+    db_file = f"test_db_{size}.json" if full or size > 100 else "sample_db.json"
     with open(db_file, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
     print(f"Generated {db_file}: {len(db['memories'])} memories, {len(db['queries'])} queries")
+    print(f"Domain: {domain}, Time distribution: {time_distribution}")
