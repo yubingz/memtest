@@ -421,6 +421,24 @@ def _allocate_queries_by_dimension(memories: list, count: int) -> dict:
     
     return dict(result)
 
+def _format_answer_structured(m: dict) -> dict:
+    """将记忆格式化为结构化答案，包含关键字段。"""
+    return {
+        "person": m["person"]["name"],
+        "location": f"{m['location']['city']}{m['location']['place']}",
+        "action": m["event"]["action"],
+        "product": m["event"]["product"],
+        "quantity": m["event"]["quantity"],
+        "price": m["event"]["price"],
+        "time": m["time"]["absolute"]
+    }
+
+
+def _format_answer_text(m: dict) -> str:
+    """格式化答案为字段化文本。"""
+    return f"人物：{m['person']['name']}，地点：{m['location']['city']}{m['location']['place']}，动作：{m['event']['action']}，对象：{m['event']['product']}，数量：{m['event']['quantity']}，时间：{m['time']['absolute']}"
+
+
 def generate_queries_programmatic(memories: list, count: int = 100) -> list:
     """程序化生成查询（默认），含20%负样本，按评测维度平衡分配。"""
     queries = []
@@ -492,13 +510,18 @@ def generate_queries_programmatic(memories: list, count: int = 100) -> list:
             # 答案：所有版本作为可接受答案
             acceptable_answers = [v["content"] for v in m.get("versions", [])]
             
+            # 结构化答案
+            structured_answer = _format_answer_structured(m)
+            answer_text = _format_answer_text(m)
+            
             queries.append({
                 "query_id": f"Q{len(queries)+1:04d}",
                 "query_text": qtext,
                 "query_type": qtype,
                 "test_dimension": dim_name,
                 "expected_memory_ids": [m["memory_id"]],
-                "expected_answer": m["versions"][0]["content"],
+                "expected_answer": structured_answer,
+                "expected_answer_text": answer_text,
                 "acceptable_answers": acceptable_answers,
                 "expected_time": m["time"]["absolute"],
                 "difficulty": m["difficulty"],
@@ -581,7 +604,9 @@ def generate_queries_llm(memories: list, count: int = 100, llm=None) -> list:
                 "query_type": qtype,
                 "test_dimension": test_dim,
                 "expected_memory_ids": [m["memory_id"]],
-                "expected_answer": m["versions"][0]["content"],
+                "expected_answer": _format_answer_structured(m),
+                "expected_answer_text": _format_answer_text(m),
+                "acceptable_answers": [v["content"] for v in m.get("versions", [])],
                 "expected_time": m["time"]["absolute"],
                 "difficulty": m["difficulty"],
                 "search_depth": random.choice(["浅层","中层","深层"])
@@ -607,7 +632,8 @@ def generate_queries_llm(memories: list, count: int = 100, llm=None) -> list:
                 "query_type": qtype,
                 "test_dimension": test_dim,
                 "expected_memory_ids": [m["memory_id"]],
-                "expected_answer": m["versions"][0]["content"],
+                "expected_answer": _format_answer_structured(m),
+                "expected_answer_text": _format_answer_text(m),
                 "acceptable_answers": [v["content"] for v in m.get("versions", [])],
                 "expected_time": m["time"]["absolute"],
                 "difficulty": q.get("difficulty", "中等"),

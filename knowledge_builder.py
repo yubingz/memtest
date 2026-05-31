@@ -742,6 +742,28 @@ def deduplicate_memories(memories):
 
 
 # ====== 阶段5: 生成查询 ======
+def _format_answer_structured_kb(m: dict) -> dict:
+    """将记忆格式化为结构化答案（knowledge_builder 版）。"""
+    return {
+        "person": m.get('person', {}).get('name', ''),
+        "location": f"{m.get('location', {}).get('city', '')}{m.get('location', {}).get('place', '')}",
+        "action": m.get('event', {}).get('action', ''),
+        "product": m.get('event', {}).get('product', ''),
+        "time": m.get('time', {}).get('absolute', m.get('time', {}).get('relative', ''))
+    }
+
+
+def _format_answer_text_kb(m: dict) -> str:
+    """格式化答案为字段化文本（knowledge_builder 版）。"""
+    person = m.get('person', {}).get('name', '')
+    city = m.get('location', {}).get('city', '')
+    place = m.get('location', {}).get('place', '')
+    action = m.get('event', {}).get('action', '')
+    product = m.get('event', {}).get('product', '')
+    time = m.get('time', {}).get('absolute', m.get('time', {}).get('relative', ''))
+    return f"人物：{person}，地点：{city}{place}，动作：{action}，对象：{product}，时间：{time}"
+
+
 def generate_queries(memories):
     """生成查询（含20%负样本）。
 
@@ -753,7 +775,7 @@ def generate_queries(memories):
     all_persons = list(set(m['person']['name'] for m in memories if m['person']['name'] != '未知'))
     all_cities = list(set(m['location']['city'] for m in memories if m['location']['city']))
     all_products = list(set(m['event']['product'] for m in memories if m['event']['product']))
-    all_eras = list(set(m['time']['era'] for m in memories if m['time']['era']))
+    all_eras = list(set(m['time'].get('era', '') for m in memories if m['time'].get('era', '')))
     
     # 用于生成负样本的假实体池
     fake_persons = ['赵钱孙', '周吴郑', '冯陈褚', '卫蒋沈', '韩杨朱', '秦尤许', '何吕施', '张孔曹', '严华金', '魏陶姜', '戚谢邹', '喻柏水', '窦章云', '苏潘葛', '范彭郎', '鲁韦昌', '马苗凤', '花方俞', '任袁柳', '酆鲍史']
@@ -785,7 +807,8 @@ def generate_queries(memories):
             'query_type': '时间检索',
             'test_dimension': '精确检索',
             'expected_memory_ids': [m['memory_id']],
-            'expected_answer': m['versions'][0]['content'],
+            'expected_answer': _format_answer_structured_kb(m),
+            'expected_answer_text': _format_answer_text_kb(m),
             'acceptable_answers': [v['content'] for v in m.get('versions', [])],
             'expected_time': m['time']['absolute'],
             'difficulty': m.get('difficulty', '中等')})
@@ -798,7 +821,8 @@ def generate_queries(memories):
             'query_type': '地点检索',
             'test_dimension': '精确检索',
             'expected_memory_ids': [m['memory_id']],
-            'expected_answer': m['versions'][0]['content'],
+            'expected_answer': _format_answer_structured_kb(m),
+            'expected_answer_text': _format_answer_text_kb(m),
             'acceptable_answers': [v['content'] for v in m.get('versions', [])],
             'expected_time': m['time']['absolute'],
             'difficulty': m.get('difficulty', '中等')})
@@ -811,7 +835,8 @@ def generate_queries(memories):
             'query_type': '人物检索',
             'test_dimension': '精确检索',
             'expected_memory_ids': [m['memory_id']],
-            'expected_answer': m['versions'][0]['content'],
+            'expected_answer': _format_answer_structured_kb(m),
+            'expected_answer_text': _format_answer_text_kb(m),
             'acceptable_answers': [v['content'] for v in m.get('versions', [])],
             'expected_time': m['time']['absolute'],
             'difficulty': m.get('difficulty', '中等')})
@@ -823,7 +848,8 @@ def generate_queries(memories):
             'query_type': '事件检索',
             'test_dimension': '精确检索',
             'expected_memory_ids': [m['memory_id']],
-            'expected_answer': m['versions'][0]['content'],
+            'expected_answer': _format_answer_structured_kb(m),
+            'expected_answer_text': _format_answer_text_kb(m),
             'acceptable_answers': [v['content'] for v in m.get('versions', [])],
             'expected_time': m['time']['absolute'],
             'difficulty': m.get('difficulty', '中等')})
@@ -837,7 +863,8 @@ def generate_queries(memories):
             'query_type': '组合检索',
             'test_dimension': '组合检索',
             'expected_memory_ids': [m['memory_id']],
-            'expected_answer': m['versions'][0]['content'],
+            'expected_answer': _format_answer_structured_kb(m),
+            'expected_answer_text': _format_answer_text_kb(m),
             'acceptable_answers': [v['content'] for v in m.get('versions', [])],
             'expected_time': m['time']['absolute'],
             'difficulty': m.get('difficulty', '中等')})
@@ -846,7 +873,7 @@ def generate_queries(memories):
     cs = set()
     chain_idx = 0
     for m in memories:
-        ch = m['reasoning_chain']
+        ch = m.get('reasoning_chain', '')
         if ch and ch not in cs:
             cs.add(ch)
             members = sorted([x for x in memories if x['reasoning_chain'] == ch], key=lambda x: x['chain_position'])
@@ -915,11 +942,24 @@ def generate_queries(memories):
                     else:
                         qtext = f'请梳理{members[0]["person"]["name"]}的完整经历脉络'
                     
-                    # 链式答案：包含所有成员的摘要
+                    # 链式答案：包含所有成员的摘要（结构化）
                     chain_summary = '；'.join([
                         f'{i+1}. {x["person"]["name"]}{x["event"]["action"]}了{x["event"]["product"]}（{x["time"]["absolute"] or x["time"]["relative"]}）'
                         for i, x in enumerate(members)
                     ])
+                    # 链式结构化答案：取所有成员的汇总
+                    chain_structured = {
+                        "chain_type": cr,
+                        "members": [
+                            {
+                                "person": x["person"]["name"],
+                                "action": x["event"]["action"],
+                                "product": x["event"]["product"],
+                                "time": x["time"]["absolute"] or x["time"]["relative"]
+                            }
+                            for x in members
+                        ]
+                    }
                     
                     queries.append({
                         'query_id': f'Q{len(queries) + 1:04d}',
@@ -927,7 +967,8 @@ def generate_queries(memories):
                         'query_type': '组合推理',
                         'test_dimension': test_dim,
                         'expected_memory_ids': [x['memory_id'] for x in members],
-                        'expected_answer': chain_summary,
+                        'expected_answer': chain_structured,
+                        'expected_answer_text': chain_summary,
                         'expected_time': members[0]['time']['absolute'],
                         'difficulty': '中等'})
 
