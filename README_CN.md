@@ -61,16 +61,16 @@ print(report.summary())
 
 | 数据集 | 来源 | 规模 | 获取方式 |
 |--------|------|------|----------|
-| `sample_db_100.json` | 程序合成 | 100 条记忆，50 条查询 | 仓库自带 |
+| `sample_db_100.json` | 程序合成 | 153 条记忆，57 条查询 | 仓库自带 |
 | `hp_benchmark_db.json` | 哈利波特系列（英文） | 1,626 条记忆，133 条查询（清洗自 5,925 条） | 仓库自带 |
-| `four_novels_benchmark.json` | 中国四大名著（中文） | 11,794 条记忆，230 条查询，155 条推理链 | 仓库自带 |
-| `test_db_10000.json` | `generator.py` 生成 | 10,000 条记忆，~5,000 条查询 | `python generator.py --full` |
+| `four_novels_db.json` | 中国四大名著（中文） | 四大名著语料，用 `knowledge_builder.py` 处理 | 仓库自带 |
+| `test_db_10000.json` | `generator.py` 生成 | 13,909 条记忆，5,560 条查询 | `python generator.py --full` |
 | 自定义 | `knowledge_builder.py` | 任意语料 | `python knowledge_builder.py <语料目录>` |
 
 ### 程序化数据生成器
 
 ```bash
-python generator.py              # 100 条样例（快速，零依赖）
+python generator.py              # ~150 条样例（快速，零依赖）
 python generator.py --size=500   # 自定义规模
 python generator.py --full       # 10,000 条全量
 python generator.py --llm        # LLM增强生成（记忆文本更自然，需 API key）
@@ -268,13 +268,12 @@ memtest/
 ├── noesis_adapter.py        # NOESIS-II 记忆系统适配器示例
 ├── llm_evaluator.py         # LLM 语义评估器
 ├── _gen_and_test.py         # 一键生成 & 自测
-├── benchmark/               # 清洗后的评测数据库
+├── benchmark/               # 小说语料库
+│   ├── four_novels_db.json        # 四大名著（中文）
 │   ├── hp_benchmark_db.json       # 哈利波特（英文，1,626 条记忆）
-│   ├── four_novels_benchmark.json # 四大名著（中文，11,794 条记忆）
-│   ├── llm_rerank_benchmark.json  # LLM重排评测数据
 │   └── tianlongbabu_db.json       # 天龙八部（中文，48 条记忆）
-├── sample_db_100.json       # 样例数据库（100 条记忆）
-└── sample_queries.json      # 样例查询
+├── sample_db_100.json       # 样例数据库（约 150 条记忆）
+└── .env.example             # API 密钥配置模板
 ```
 
 ## 更多工具
@@ -284,7 +283,7 @@ memtest/
 | `_gen_and_test.py` | 一键生成样例数据 + 自测，快速验证生成器正常 |
 | `noesis_adapter.py` | NOESIS-II 记忆系统适配器（评测接入示例） |
 | `llm_evaluator.py` | LLM 语义评估器（替代精确匹配的语义相关性判断） |
-| `benchmarks/` | 已有 benchmark 数据（`llm_rerank_benchmark.json` 等） |
+| `benchmark/` | 小说语料库：`four_novels_db.json`（四大名著）、`hp_benchmark_db.json`（哈利波特）、`tianlongbabu_db.json`（天龙八部） |
 
 ## API 参考
 

@@ -16,7 +16,10 @@ memtest/
 │   ├── memory_enhance.md      # Generate 3 expression variants per memory
 │   ├── query_generate.md      # Generate diverse query variants
 │   └── fact_extract.md        # Extract structured facts from text (EN/CN)
-├── benchmarks/                # Pre-built benchmark data (optional)
+├── benchmark/                 # Pre-built benchmark data from novels
+│   ├── four_novels_db.json    # Romance/Monkey/Kong/Three Kingdoms
+│   ├── hp_benchmark_db.json     # Harry Potter (English)
+│   └── tianlongbabu_db.json   # Demi-Gods & Semi-Devils
 ├── TODO.md                    # Task backlog & changelog
 └── .env                       # API keys (see .env.example)
 ```
@@ -26,7 +29,7 @@ memtest/
 ### 1. Procedural Generation (zero dependencies, instant)
 
 ```bash
-python generator.py              # 100 memories + 50 queries
+python generator.py              # 153 memories + 57 queries (~1s, zero deps)
 python generator.py --size=500   # custom scale
 python generator.py --full       # 10,000 memories
 ```
@@ -75,7 +78,7 @@ python _gen_and_test.py            # Generate sample data + self-test
 | `_gen_and_test.py` | One-click generate + self-test |
 | `noesis_adapter.py` | NOESIS-II memory system adapter (evaluation integration example) |
 | `llm_evaluator.py` | LLM semantic evaluator (replaces exact-match with semantic relevance) |
-| `benchmarks/` | Pre-built benchmark data (`llm_rerank_benchmark.json`, etc.) |
+| `benchmark/` | Pre-built novel data: `four_novels_db.json`, `hp_benchmark_db.json`, `tianlongbabu_db.json` |
 
 ## LLM Interface
 
