@@ -472,14 +472,25 @@ def _get_person_field(mem):
 
 
 def _content_similarity(c1, c2):
-    """基于关键词Jaccard相似度，忽略通用词"""
+    """基于关键词Jaccard相似度，忽略通用词。支持中英文混合文本。"""
     generic_en = {'that','this','with','from','they','were','been','have','their','them',
                   'about','would','could','should','when','where','what','which','while',
                   'after','before','during','between','through','around','another','other',
                   'than','some','into','also','very','just','even','still','only','once',
                   'back','over','down','upon','such'}
-    w1 = set(re.findall(r'[a-z]{4,}', c1.lower())) - generic_en
-    w2 = set(re.findall(r'[a-z]{4,}', c2.lower())) - generic_en
+    generic_cn = {'的', '了', '在', '是', '我', '有', '和', '就', '不', '人', '都', '一', '一个', '上', '也', '很', '到', '说', '要', '去', '你', '会', '着', '没有', '看', '好', '自己', '这'}
+    
+    # 英文词提取（4字母以上）
+    w1_en = set(re.findall(r'[a-z]{4,}', c1.lower())) - generic_en
+    w2_en = set(re.findall(r'[a-z]{4,}', c2.lower())) - generic_en
+    
+    # 中文词提取（连续2-6个汉字作为词）
+    w1_cn = set(re.findall(r'[\u4e00-\u9fff]{2,6}', c1)) - generic_cn
+    w2_cn = set(re.findall(r'[\u4e00-\u9fff]{2,6}', c2)) - generic_cn
+    
+    w1 = w1_en | w1_cn
+    w2 = w2_en | w2_cn
+    
     if not w1 or not w2:
         return 0
     return len(w1 & w2) / len(w1 | w2)
@@ -623,9 +634,9 @@ def generate_queries(memories):
     all_eras = list(set(m['time']['era'] for m in memories if m['time']['era']))
     
     # 用于生成负样本的假实体池
-    fake_persons = ['赵钱孙', '周吴郑', '冯陈褚', '卫蒋沈', '韩杨朱', '秦尤许', '何吕施', '张孔曹']
-    fake_cities = ['火星', '月球', '水星', '金星', '木星', '土星', '冥王星', '开普勒']
-    fake_events = ['时光旅行', '量子跃迁', '黑洞探索', '星际战争', '外星殖民', '维度穿越']
+    fake_persons = ['赵钱孙', '周吴郑', '冯陈褚', '卫蒋沈', '韩杨朱', '秦尤许', '何吕施', '张孔曹', '严华金', '魏陶姜', '戚谢邹', '喻柏水', '窦章云', '苏潘葛', '范彭郎', '鲁韦昌', '马苗凤', '花方俞', '任袁柳', '酆鲍史']
+    fake_cities = ['火星', '月球', '水星', '金星', '木星', '土星', '冥王星', '开普勒', '比邻星', '泰坦星', '谷神星', '妊神星', '鸟神星', '阋神星', '齐娜星']
+    fake_events = ['时光旅行', '量子跃迁', '黑洞探索', '星际战争', '外星殖民', '维度穿越', '时空折叠', '虫洞穿越', '超光速飞行', '暗物质研究', '反物质引擎', '引力波通讯', '戴森球建设', '基因飞升', '机械飞升']
 
     # ===== 正样本查询 =====
     with_time = [m for m in memories if m['time']['absolute'] and m['person']['name'] != '未知']

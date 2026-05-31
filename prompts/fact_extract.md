@@ -4,7 +4,7 @@
 从给定文本中提取关键事实，每个事实是一个包含 who/where/when/what 的 JSON 对象。
 
 ## 输入格式
-一段自由文本（小说片段、新闻文章、历史记录等）。
+一段自由文本（小说片段、新闻文章、历史记录等）。支持中文和英文混合文本。
 
 ## 输出格式
 ```json
@@ -31,11 +31,16 @@
 3. **客观性**：只提取文本中明确陈述的内容，不要推断
 4. **去重**：如果同一事件被多次提及，只提取一次
 5. **粒度**：太琐碎的细节（如"他喝了一口水"）可以忽略，但关键动作必须保留
-6. **链式识别**：如果文本中有因果连接词（"因为...所以...""导致""随后""接着"），标注 chain_id
+6. **链式识别**：如果文本中有因果连接词（"因为""所以""导致""引发""随后""接着""之后""因此""于是"），标注 chain_id
+
+## 多语言支持
+- 中文文本：提取中文人名、地名、时间
+- 英文文本：提取英文人名、地名、时间（如 "Harry Potter" / "London" / "1991"）
+- 混合文本：分别提取中英文实体，保持原文语言
 
 ## Few-shot 示例
 
-### 示例1：商务场景
+### 示例1：中文商务场景
 输入：2023年10月15日，李明在北京中关村的一家咖啡馆与王芳会面，讨论了关于人工智能项目的合作细节。李明是这个项目的技术负责人，王芳来自投资部门。
 
 输出：
@@ -57,7 +62,40 @@
 }
 ```
 
-### 示例2：因果链场景
+### 示例2：英文场景（Harry Potter）
+输入：On July 31, 1991, Hagrid visited Harry Potter on the island Hut and told him he was a wizard. Harry then traveled to Diagon Alley with Hagrid to buy school supplies.
+
+输出：
+```json
+{
+  "facts": [
+    {
+      "content": "Hagrid visited Harry Potter on the island Hut and told him he was a wizard",
+      "person": "Hagrid, Harry Potter",
+      "location": "island Hut",
+      "time": "July 31, 1991",
+      "event_type": "visit",
+      "action": "visited, told",
+      "object": "wizard identity",
+      "context": "",
+      "chain_id": "CHAIN_HP_001"
+    },
+    {
+      "content": "Harry traveled to Diagon Alley with Hagrid to buy school supplies",
+      "person": "Harry Potter, Hagrid",
+      "location": "Diagon Alley",
+      "time": "1991-07-31",
+      "event_type": "shopping",
+      "action": "traveled, buy",
+      "object": "school supplies",
+      "context": "after learning he was a wizard",
+      "chain_id": "CHAIN_HP_001"
+    }
+  ]
+}
+```
+
+### 示例3：因果链场景（中文）
 输入：2023年10月15日，李明在北京中关村咖啡馆与王芳会面，讨论了AI项目合作。由于市场变化，10月20日王芳决定追加投资500万。随后11月1日，李明团队完成了第一版原型。
 
 输出：
@@ -101,54 +139,11 @@
 }
 ```
 
-### 示例3：冲突场景
-输入：2023年11月5日，张伟在深圳腾讯大厦与刘洋发生激烈争吵。张伟指责刘洋泄露了项目机密。随后刘洋提交了离职申请，并于11月10日正式离开公司。
-
-输出：
-```json
-{
-  "facts": [
-    {
-      "content": "张伟与刘洋在腾讯大厦发生争吵，张伟指责刘洋泄露项目机密",
-      "person": "张伟、刘洋",
-      "location": "深圳腾讯大厦",
-      "time": "2023-11-05",
-      "event_type": "冲突",
-      "action": "争吵、指责",
-      "object": "项目机密泄露",
-      "context": "",
-      "chain_id": "CHAIN_002"
-    },
-    {
-      "content": "刘洋提交离职申请",
-      "person": "刘洋",
-      "location": "",
-      "time": "2023-11-05",
-      "event_type": "转折",
-      "action": "提交离职申请",
-      "object": "离职申请",
-      "context": "争吵后的决定",
-      "chain_id": "CHAIN_002"
-    },
-    {
-      "content": "刘洋正式离开公司",
-      "person": "刘洋",
-      "location": "",
-      "time": "2023-11-10",
-      "event_type": "转折",
-      "action": "离开",
-      "object": "公司",
-      "context": "提交离职申请后的结果",
-      "chain_id": "CHAIN_002"
-    }
-  ]
-}
-```
-
 ## 注意
 - 如果文本中没有明确时间，time 字段可为空
 - 如果涉及多个人物，用顿号或逗号分隔
 - 历史文本中的朝代可放入 context
 - 因果连接词标记："因为""所以""导致""引发""随后""接着""之后""因此""于是"
+- 英文文本中因果词："because" "so" "led to" "resulted in" "then" "after" "therefore"
 - 中文输出
 - 如果文本中没有链式关系，所有 chain_id 留空即可
