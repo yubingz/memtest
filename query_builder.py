@@ -136,9 +136,10 @@ class QueryBuilder:
                 seen.add(q["query_text"])
                 unique.append(q)
 
-        # 重新编号
+        # 重新编号 + 统一答案为ID集合
         for i, q in enumerate(unique):
             q["query_id"] = f"Q{(i+1):04d}"
+            q["expected_answer"] = ", ".join(q["expected_memory_ids"]) if q["expected_memory_ids"] else ""
 
         return unique
 
