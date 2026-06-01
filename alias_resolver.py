@@ -33,7 +33,11 @@ ALIAS_PATTERNS: List[Tuple[re.Pattern, str]] = [
     (re.compile(r"([^，。,；;、\n]{1,20})\s*[,，]\s*(?:别名|绰号|号称)\s*([^，。,；;、\n]{1,20})"), "nickname"),
     (re.compile(r"([^，。,；;、\n]{1,20})\s*[/／]\s*([^，。,；;、\n]{1,20})"), "slash_separated"),
     (re.compile(r"([\u4e00-\u9fff]{2,20})[,，]\s*(?:大名|名|字)\s*([\u4e00-\u9fff]{1,20})"), "formal_name"),
-    (re.compile(r"([\u4e00-\u9fff]{2,20})[,，]?\s*(?:别名|绰号|昵称)\s*([\u4e00-\u9fff]{1,20})"), "nickname2"),
+    (re.compile(r"[\u4e00-\u9fff]{2,20}[,，]?\s*(?:别名|绰号|昵称)\s*[\u4e00-\u9fff]{1,20}"), "nickname2"),
+    # "又名"模式（支持顿号分隔的多个别名：X，又名A、B、C）
+    (re.compile(r"([^，。,；;\n]{1,20})\s*[,，]\s*又名\s*([^，。,；;\n]+?)(?:[,，]|$)"), "also_known_as"),
+    # "俗名"模式：X，俗名Y
+    (re.compile(r"([^，。,；;\n]{1,20})\s*[,，]\s*俗名\s*([^，。,；;\n]{1,20})"), "vulgar_name"),
     (re.compile(r"([\u4e00-\u9fff]{2,20})是\s*([\u4e00-\u9fff]{1,20})(?:的|就是)"), "be_verb_alias"),
     (re.compile(r"([^，。,；;、\n]{1,20})[,，]?(?:古称|又称|今为|今是)\s*([^，。,；;、\n]{1,10})(?:$|[，。,])"), "place_alias2"),
     (re.compile(r"([^，。,；;、\n]{1,20})[,，]?\s*(?:金陵|今南京|今西安|今洛阳)"), "place_alias"),
@@ -281,6 +285,20 @@ class AliasResolver:
             return
 
         raw_a, raw_b = groups[0].strip(), groups[1].strip()
+
+        # also_known_as 和 vulgar_name: 支持顿号分隔的多个别名
+        if pattern_type in ('also_known_as', 'vulgar_name'):
+            main_name = _clean_name(raw_a.split('，')[0].split(',')[0].strip())
+            # 顿号分隔的多个别名
+            alias_str = raw_b.split('，')[0].split(',')[0].strip()
+            aliases = [_clean_name(a.strip()) for a in alias_str.split('、') if a.strip()]
+            if not main_name or len(main_name) < 2:
+                return
+            for alias in aliases:
+                if alias and len(alias) >= 2 and alias != main_name:
+                    self._add_pair(main_name, alias, source)
+            return
+
         a = raw_a.split('，')[0].split(',')[0].split('、')[0].strip()
         b = raw_b.split('，')[0].split(',')[0].split('、')[0].strip()
 

@@ -637,7 +637,7 @@ class MemTestPipeline:
         return memories, queries
 
     def _deduplicate_memories(self, memories: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """去重（基于 content 子集检测，保留最长版本）"""
+        """去重（字符串子集 + 语义子集检测，保留最长版本）"""
         if not memories:
             return []
 
@@ -651,14 +651,21 @@ class MemTestPipeline:
         unique: List[Dict[str, Any]] = []
         for m in sorted_mems:
             content = m.get("content", "").strip()
-            # 检查是否被已有长内容包含
-            is_subset = False
+            is_duplicate = False
             for existing in unique:
-                existing_content = existing.get("content", "")
+                existing_content = existing.get("content", "").strip()
+                # 1. 字符串子集：短内容是长内容的子字符串
                 if content in existing_content:
-                    is_subset = True
+                    is_duplicate = True
                     break
-            if not is_subset:
+                # 2. 语义子集：短记忆的bigram覆盖率检测
+                #    短记忆占比<60% 且 短记忆的bigram有>70%出现在长记忆中 → 语义子集
+                if len(content) < len(existing_content) * 0.6:
+                    coverage = self._bigram_coverage(content, existing_content)
+                    if coverage > 0.7:
+                        is_duplicate = True
+                        break
+            if not is_duplicate:
                 unique.append(m)
 
         # 重新编号
@@ -666,6 +673,17 @@ class MemTestPipeline:
             m["memory_id"] = make_memory_id(i)
 
         return unique
+
+    @staticmethod
+    def _bigram_coverage(short_text: str, long_text: str) -> float:
+        """短文本的bigram有多少比例出现在长文本中（语义子集检测）"""
+        def _bigrams(text: str) -> set:
+            return {text[i:i+2] for i in range(len(text) - 1)}
+        b_short = _bigrams(short_text)
+        b_long = _bigrams(long_text)
+        if not b_short:
+            return 0.0
+        return len(b_short & b_long) / len(b_short)
 
     def _generate_queries_for_type(
         self,
@@ -701,12 +719,32 @@ class MemTestPipeline:
         queries: List[Dict[str, Any]] = []
         mem_map = {m["memory_id"]: m for m in memories}
 
-        # 按人物分组
+        # 按人物分组（使用别名等价组合并同一人的不同称呼）
         by_person = defaultdict(list)
+        person_to_key = {}  # 人名 → 等价组主键
+        if hasattr(self, 'alias_resolver') and self.alias_resolver:
+            for group in self.alias_resolver.get_all_groups():
+                members = sorted(list(group))
+                key = members[0]  # 用排序后第一个作为主键
+                for member in members:
+                    person_to_key[member] = key
+        
         for m in memories:
             for person in m.get("person", []):
-                by_person[person].append(m)
+                key = person_to_key.get(person, person)
+                by_person[key].append(m)
 
+        # 去重：同一记忆可能因不同别名被多次添加
+        for key in by_person:
+            seen = set()
+            unique = []
+            for m in by_person[key]:
+                if m["memory_id"] not in seen:
+                    seen.add(m["memory_id"])
+                    unique.append(m)
+            by_person[key] = unique
+
+        used_mid_sets = []  # 去重：记录已使用的记忆组合
         for person, person_mems in by_person.items():
             if len(person_mems) < requirement.min_chain_length:
                 continue
@@ -719,6 +757,12 @@ class MemTestPipeline:
 
             chain = sorted_mems[:requirement.min_chain_length]
             mid_list = [m["memory_id"] for m in chain]
+
+            # 去重：跳过与已有查询记忆组合完全相同的
+            mid_set = set(mid_list)
+            if any(mid_set == used for used in used_mid_sets):
+                continue
+            used_mid_sets.append(mid_set)
 
             # 生成查询
             q_texts = [
@@ -745,33 +789,68 @@ class MemTestPipeline:
         memories: List[Dict[str, Any]],
         requirement: QueryRequirement,
     ) -> List[Dict[str, Any]]:
-        """生成因果推理查询"""
+        """生成因果推理查询（v3：从记忆内容中检测因果关系，不依赖chain_id）"""
         queries: List[Dict[str, Any]] = []
 
-        # 按 chain_id 分组
-        chains: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+        # 因果指示词
+        cause_indicators = ["因为", "由于", "因", "所以", "因此", "导致", "结果", "使得", "从而"]
+        # 在记忆中找含因果关系的条目
+        causal_memories = []
         for m in memories:
-            cid = m.get("source", "") or m.get("chain_id", "")
-            if cid:
-                chains[cid].append(m)
+            content = m.get("content", "")
+            if any(ind in content for ind in cause_indicators):
+                causal_memories.append(m)
 
-        for chain_id, chain_mems in chains.items():
-            if len(chain_mems) < 3:
+        for m in causal_memories:
+            content = m.get("content", "")
+            # 尝试分割因果
+            cause_part = ""
+            effect_part = ""
+            for ind in cause_indicators:
+                if ind in content:
+                    parts = content.split(ind, 1)
+                    if len(parts) == 2:
+                        cause_part = parts[0].strip().rstrip("，。,")
+                        effect_part = parts[1].strip().rstrip("，。,")
+                        # 清理cause_part中的别名信息（如"沙悟净，又名卷帘大将、沙和尚"→"沙悟净"）
+                        # 取第一个逗号前的主名
+                        for sep in ["，又名", "，俗名", "，字", "，号"]:
+                            if sep in cause_part:
+                                cause_part = cause_part.split(sep)[0].strip()
+                                break
+                        break
+
+            if not cause_part or not effect_part:
                 continue
 
-            sorted_chain = sorted(chain_mems, key=lambda m: m.get("chain_position", 0) or 0)
-            mid_list = [m["memory_id"] for m in sorted_chain]
+            # 生成双向因果查询
+            queries.append({
+                "query_id": make_query_id(len(queries) + 1),
+                "query_text": f"{cause_part}导致了什么？",
+                "query_type": "因果推理",
+                "test_dimension": "因果关系追踪",
+                "expected_memory_ids": [m["memory_id"]],
+                "expected_answer": f"{cause_part}导致{effect_part}",
+                "difficulty": "medium",
+                "is_negative": False,
+            })
+
+            if len(queries) >= requirement.count:
+                break
 
             queries.append({
                 "query_id": make_query_id(len(queries) + 1),
-                "query_text": f"事件A导致了什么结果？",
+                "query_text": f"{effect_part}是什么原因造成的？",
                 "query_type": "因果推理",
-                "test_dimension": "因果链追踪",
-                "expected_memory_ids": mid_list,
-                "expected_answer": " → ".join(m["content"][:30] for m in sorted_chain[:6]),
-                "difficulty": requirement.difficulty,
+                "test_dimension": "因果关系追踪",
+                "expected_memory_ids": [m["memory_id"]],
+                "expected_answer": f"{effect_part}是因为{cause_part}",
+                "difficulty": "medium",
                 "is_negative": False,
             })
+
+            if len(queries) >= requirement.count:
+                break
 
         return queries[:requirement.count]
 
@@ -795,7 +874,13 @@ class MemTestPipeline:
             if not relevant_mems:
                 continue
 
-            mid_list = [m["memory_id"] for m in relevant_mems]
+            # 别名查询的expected_memory_ids只应包含实际含有别名关系的记忆
+            # （content中包含"又名"/"俗名"/"就是"/"即"等别名标记的记忆）
+            alias_indicators = ["又名", "俗名", "又称", "又叫", "就是", "即", "号", "字", "人称", "别称", "绰号"]
+            alias_mems = [m for m in relevant_mems
+                         if any(ind in m.get("content", "") for ind in alias_indicators)]
+            # 如果找不到含别名标记的记忆，退回所有相关记忆（兜底）
+            mid_list = [m["memory_id"] for m in (alias_mems if alias_mems else relevant_mems)]
             other_members = [m for m in members]  # 全组成员
 
             # 判断等价组类型：人/地/物
