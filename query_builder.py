@@ -323,22 +323,28 @@ class QueryBuilder:
         return queries[:10]
 
     def _build_combined_queries(self, memories: List[Dict]) -> List[Dict]:
-        """组合检索：按(人名,地点)分组"""
-        combo_memories: Dict[Tuple[str, str], List[Dict]] = defaultdict(list)
+        """组合检索：所有两属性组合出题
+
+        组合类型：
+        1. 人名+地点："{name}在{location}的记录"
+        2. 人名+事件类型："{name}的{event_type}经历"
+        3. 人名+时间："{name}在{time}的记录"
+        4. 地点+事件类型："{location}的{event_type}事件"
+        5. 地点+时间："{location}在{time}的事件"
+        """
+        queries = []
+
+        # --- 人名+地点 ---
+        name_loc: Dict[Tuple[str, str], List[Dict]] = defaultdict(list)
         for m in memories:
             person_name = m.get("person", {}).get("name", "") if isinstance(m.get("person"), dict) else ""
             loc = m.get("location", {})
             location = loc.get("city", "") if isinstance(loc, dict) else ""
             if person_name and location:
-                combo_memories[(person_name, location)].append(m)
+                name_loc[(person_name, location)].append(m)
 
-        queries = []
-        for (name, location), mems in sorted(combo_memories.items(), key=lambda x: -len(x[1])):
-            template = COMBINED_TEMPLATES[0]
-            evt = mems[0].get("event", {})
-            evt_type = evt.get("type", "") if isinstance(evt, dict) else ""
-            query_text = template.format(name=name, location=location, event_type=evt_type)
-
+        for (name, location), mems in sorted(name_loc.items(), key=lambda x: -len(x[1])):
+            query_text = f"{name}在{location}的记录"
             queries.append({
                 "query_id": self._next_id(),
                 "query_text": query_text,
@@ -350,7 +356,105 @@ class QueryBuilder:
                 "is_negative": False,
             })
 
-        return queries[:10]
+        # --- 人名+事件类型 ---
+        name_evt: Dict[Tuple[str, str], List[Dict]] = defaultdict(list)
+        for m in memories:
+            person_name = m.get("person", {}).get("name", "") if isinstance(m.get("person"), dict) else ""
+            evt = m.get("event", {})
+            evt_type = evt.get("type", "") if isinstance(evt, dict) else ""
+            if person_name and evt_type:
+                name_evt[(person_name, evt_type)].append(m)
+
+        for (name, evt_type), mems in sorted(name_evt.items(), key=lambda x: -len(x[1])):
+            if len(mems) < 2:
+                continue
+            query_text = f"{name}的{evt_type}经历"
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": query_text,
+                "query_type": "组合检索",
+                "test_dimension": "组合检索",
+                "expected_memory_ids": [m["memory_id"] for m in mems],
+                "difficulty": "困难",
+                "search_depth": "深层",
+                "is_negative": False,
+            })
+
+        # --- 人名+时间 ---
+        name_time: Dict[Tuple[str, str], List[Dict]] = defaultdict(list)
+        for m in memories:
+            person_name = m.get("person", {}).get("name", "") if isinstance(m.get("person"), dict) else ""
+            time_info = m.get("time", {})
+            time_val = ""
+            if isinstance(time_info, dict):
+                time_val = time_info.get("relative", "") or time_info.get("fuzzy", "")
+            if person_name and time_val:
+                name_time[(person_name, time_val)].append(m)
+
+        for (name, time_val), mems in sorted(name_time.items(), key=lambda x: -len(x[1])):
+            query_text = f"{name}在{time_val}的记录"
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": query_text,
+                "query_type": "组合检索",
+                "test_dimension": "组合检索",
+                "expected_memory_ids": [m["memory_id"] for m in mems],
+                "difficulty": "困难",
+                "search_depth": "深层",
+                "is_negative": False,
+            })
+
+        # --- 地点+事件类型 ---
+        loc_evt: Dict[Tuple[str, str], List[Dict]] = defaultdict(list)
+        for m in memories:
+            loc = m.get("location", {})
+            location = loc.get("city", "") if isinstance(loc, dict) else ""
+            evt = m.get("event", {})
+            evt_type = evt.get("type", "") if isinstance(evt, dict) else ""
+            if location and evt_type:
+                loc_evt[(location, evt_type)].append(m)
+
+        for (location, evt_type), mems in sorted(loc_evt.items(), key=lambda x: -len(x[1])):
+            if len(mems) < 2:
+                continue
+            query_text = f"{location}的{evt_type}事件"
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": query_text,
+                "query_type": "组合检索",
+                "test_dimension": "组合检索",
+                "expected_memory_ids": [m["memory_id"] for m in mems],
+                "difficulty": "困难",
+                "search_depth": "深层",
+                "is_negative": False,
+            })
+
+        # --- 地点+时间 ---
+        loc_time: Dict[Tuple[str, str], List[Dict]] = defaultdict(list)
+        for m in memories:
+            loc = m.get("location", {})
+            location = loc.get("city", "") if isinstance(loc, dict) else ""
+            time_info = m.get("time", {})
+            time_val = ""
+            if isinstance(time_info, dict):
+                time_val = time_info.get("relative", "") or time_info.get("fuzzy", "")
+            if location and time_val:
+                loc_time[(location, time_val)].append(m)
+
+        for (location, time_val), mems in sorted(loc_time.items(), key=lambda x: -len(x[1])):
+            query_text = f"{location}在{time_val}的事件"
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": query_text,
+                "query_type": "组合检索",
+                "test_dimension": "组合检索",
+                "expected_memory_ids": [m["memory_id"] for m in mems],
+                "difficulty": "困难",
+                "search_depth": "深层",
+                "is_negative": False,
+            })
+
+        return queries[:20]
 
     def _build_alias_queries(self, memories: List[Dict]) -> List[Dict]:
         """别名查询：按等价组出题"""
