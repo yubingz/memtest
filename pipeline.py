@@ -530,33 +530,85 @@ class MemTestPipeline:
         return results
 
     def _extract_persons(self, text: str) -> List[str]:
-        """简单的人物提取（只返回在原文中出现的名字）
+        """人物提取：先正则候选，再LLM筛选
         
-        注意：这里只做基本提取，别名等价由 alias_resolver 处理。
-        提取的名字必须在原文中能找到，避免张冠李戴。
+        策略：
+        1. 正则提取2-4字中文片段作为候选
+        2. 用LLM判断哪些是真正的人名
+        3. 只返回在原文中出现的名字
         """
-        # 提取连续 2-4 个中文字符（人名候选）
+        # 提取连续 2-4 个中文字符（候选）
         candidates = re.findall(r"[\u4e00-\u9fff]{2,4}", text)
-        # 简单过滤：排除常见非人名词汇
-        exclude = {"有限公司", "公司", "集团", "酒店", "医院", "学校", "银行", "市场",
-                   "因为", "所以", "但是", "然而", "如果", "虽然", "而且",
-                   "魔法界", "巫师", "黑巫师", "通知书", "学习用品",
-                   "格兰芬多", "霍格沃茨", "商业街"}
-        candidates = [p for p in candidates if p not in exclude]
         # 去重保序
         seen = set()
-        persons = []
-        for p in candidates:
-            if p not in seen:
-                seen.add(p)
-                persons.append(p)
-        # 只返回在原文中完整出现的（避免部分匹配）
+        unique_candidates = []
+        for c in candidates:
+            if c not in seen:
+                seen.add(c)
+                unique_candidates.append(c)
+        
+        # 如果候选太多（>10），先用基本规则过滤
+        exclude = {"有限公司", "公司", "集团", "因为", "所以", "但是", "然而",
+                   "如果", "虽然", "而且", "之后", "之前", "之后", "以来",
+                   "年间", "年间", "年间", "年代初", "年代末"}
+        if len(unique_candidates) > 10:
+            unique_candidates = [c for c in unique_candidates if c not in exclude]
+        
+        # 用LLM筛选真正的人名
+        if unique_candidates:
+            persons = self._llm_filter_persons(unique_candidates, text)
+        else:
+            # fallback: 用别名等价组辅助判断
+            persons = self._rule_filter_persons(unique_candidates, text)
+        
+        # 只返回在原文中完整出现的
         result = []
         for p in persons:
             if p in text:
                 result.append(p)
             if len(result) >= 5:
                 break
+        return result
+
+    def _llm_filter_persons(self, candidates: List[str], context: str) -> List[str]:
+        """用LLM从候选中筛选真正的人名"""
+        prompt = f"""从以下词语中选出所有"人物姓名"（真实或虚构人物的名字、字、号、别称），排除地点、时间、事件、组织、物品等非人名。
+
+词语列表：{", ".join(candidates[:30])}
+
+上下文（前200字）：{context[:200]}
+
+请只输出人名，用逗号分隔，不要解释。如果没有则输出"无"："""
+        
+        try:
+            response = self._llm_generate(prompt, max_tokens=200)
+            if response and "无" not in response:
+                persons = [p.strip() for p in response.split(",") if p.strip()]
+                return persons
+        except Exception:
+            pass
+        return []
+
+    def _rule_filter_persons(self, candidates: List[str], context: str) -> List[str]:
+        """规则fallback：用别名等价组和常见人名模式过滤"""
+        # 已知的人名模式：2-3字，且在上下文中出现在"字X""号X""人称X"附近
+        person_set = set()
+        # 从别名等价组获取已知人名
+        if hasattr(self, 'alias_resolver') and self.alias_resolver:
+            for group in self.alias_resolver.get_all_groups():
+                person_set |= group
+        
+        result = []
+        for c in candidates:
+            # 在等价组中 → 是人名
+            if c in person_set:
+                result.append(c)
+                continue
+            # 跟在"字/号/人称"后面 → 是人名
+            for marker in [f"字{c}", f"号{c}", f"人称{c}", f"又名{c}", f"俗名{c}"]:
+                if marker in context:
+                    result.append(c)
+                    break
         return result
 
     def _extract_location(self, text: str) -> Optional[str]:
