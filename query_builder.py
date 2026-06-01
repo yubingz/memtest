@@ -4,13 +4,11 @@
 纯模板，确定性，无LLM。
 
 查询 = 记忆属性 × 模板
-- 有人名 → 人物检索
-- 有地点 → 地点检索
-- 有时间 → 时间检索
-- 有event → 事件检索
-- 有chain → 链式推理
-- 有别名 → 别名查询
-- 负样本 → 构造不存在的实体
+
+核心原则：
+- 一个属性值 → 一个查询 → 所有匹配记忆作为答案
+- 不按单条记忆出题，按属性值出题
+- 答案 = 全部匹配记忆的ID集合，不截断
 
 输入：relation_builder.py 输出的记忆列表
 输出：查询列表（v2格式）
@@ -20,6 +18,7 @@ import json
 import os
 import random
 import re
+from collections import defaultdict
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from relation_builder import AliasGroups
@@ -69,12 +68,6 @@ ALIAS_TEMPLATES = [
     "{alias}指的是什么？",
 ]
 
-CHAIN_TEMPLATES = [
-    "在{prev_event}之后发生了什么？",
-    "{name}的经历脉络是怎样的？",
-    "梳理{name}的完整经历",
-]
-
 NEGATIVE_PERSON_NAMES = [
     "赵钱孙", "周吴郑", "冯陈褚", "蒋沈韩", "朱秦尤",
     "何吕施", "周吴郑王", "张三丰", "李四光", "王五福",
@@ -92,7 +85,10 @@ NEGATIVE_LOCATIONS = [
 # ==============================================================================
 
 class QueryBuilder:
-    """基于记忆属性生成查询，纯模板，确定性"""
+    """基于记忆属性生成查询，纯模板，确定性
+
+    核心逻辑：按属性值分组 -> 每个唯一属性值出一个查询 -> 所有匹配记忆作为答案
+    """
 
     def __init__(self, alias_groups: AliasGroups = None, seed=42):
         self.alias_groups = alias_groups or AliasGroups()
@@ -104,25 +100,25 @@ class QueryBuilder:
         """从记忆列表生成查询"""
         queries = []
 
-        # 1. 人物检索
+        # 1. 人物检索：按人名分组
         queries.extend(self._build_person_queries(memories))
 
-        # 2. 地点检索
+        # 2. 地点检索：按地点分组
         queries.extend(self._build_location_queries(memories))
 
-        # 3. 时间检索
+        # 3. 时间检索：按时间值分组
         queries.extend(self._build_time_queries(memories))
 
-        # 4. 事件检索
+        # 4. 事件检索：按事件类型/产物分组
         queries.extend(self._build_event_queries(memories))
 
-        # 5. 组合检索
+        # 5. 组合检索：按(人名+地点)分组
         queries.extend(self._build_combined_queries(memories))
 
-        # 6. 别名查询
+        # 6. 别名查询：按等价组分组
         queries.extend(self._build_alias_queries(memories))
 
-        # 7. 链式推理
+        # 7. 链式推理：按chain分组
         queries.extend(self._build_chain_queries(memories))
 
         # 8. 负样本
@@ -144,7 +140,7 @@ class QueryBuilder:
         return unique
 
     # --------------------------------------------------------------------------
-    # 内部方法
+    # 辅助方法
     # --------------------------------------------------------------------------
 
     def _next_id(self) -> str:
@@ -152,7 +148,7 @@ class QueryBuilder:
         return f"Q{self.query_counter:04d}"
 
     def _find_memories_by_person(self, memories: List[Dict], person_name: str) -> List[Dict]:
-        """找包含某个人的记忆（考虑别名等价）"""
+        """找包含某个人的所有记忆（考虑别名等价）"""
         results = []
         for m in memories:
             for p in m.get("person_list", []):
@@ -162,7 +158,7 @@ class QueryBuilder:
         return results
 
     def _find_memories_by_location(self, memories: List[Dict], location: str) -> List[Dict]:
-        """找包含某个地点的记忆"""
+        """找包含某个地点的所有记忆"""
         results = []
         for m in memories:
             loc = m.get("location", {})
@@ -171,63 +167,59 @@ class QueryBuilder:
                 results.append(m)
         return results
 
-    def _person_queries(self, name: str, memories: List[Dict]) -> List[Dict]:
-        """为一个人名生成查询"""
-        mems = self._find_memories_by_person(memories, name)
-        if not mems:
-            return []
-
-        template = self.rng.choice(PERSON_TEMPLATES)
-        query_text = template.format(name=name)
-
-        return [{
-            "query_id": self._next_id(),
-            "query_text": query_text,
-            "query_type": "人物检索",
-            "test_dimension": "精确检索",
-            "expected_memory_ids": [m["memory_id"] for m in mems[:5]],
-            "expected_answer": mems[0]["content"] if mems else "",
-            "difficulty": "中等" if len(mems) < 3 else "困难",
-            "search_depth": "中层",
-            "is_negative": False,
-        }]
-
     # --------------------------------------------------------------------------
-    # 各维度查询
+    # 各维度查询 -- 按属性值分组出题
     # --------------------------------------------------------------------------
 
     def _build_person_queries(self, memories: List[Dict]) -> List[Dict]:
-        """人物检索查询"""
-        queries = []
-        # 收集所有人名
-        person_count: Dict[str, int] = {}
+        """人物检索：按人名分组，每个人名出一个查询"""
+        person_memories: Dict[str, List[Dict]] = defaultdict(list)
         for m in memories:
             for p in m.get("person_list", []):
-                person_count[p] = person_count.get(p, 0) + 1
+                person_memories[p].append(m)
 
-        # 对出现2次以上的人名生成查询
-        for name, count in sorted(person_count.items(), key=lambda x: -x[1]):
-            if count < 2:
+        queries = []
+        seen_groups = set()
+        for name, mems in sorted(person_memories.items(), key=lambda x: -len(x[1])):
+            group_key = frozenset(self.alias_groups.get_group(name))
+            if group_key in seen_groups:
                 continue
-            queries.extend(self._person_queries(name, memories))
-            if len(queries) >= 20:  # 限制数量
+            seen_groups.add(group_key)
+
+            if len(mems) < 2:
+                continue
+
+            template = self.rng.choice(PERSON_TEMPLATES)
+            query_text = template.format(name=name)
+
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": query_text,
+                "query_type": "人物检索",
+                "test_dimension": "精确检索",
+                "expected_memory_ids": [m["memory_id"] for m in mems],
+                "difficulty": "中等" if len(mems) < 4 else "困难",
+                "search_depth": "中层",
+                "is_negative": False,
+            })
+
+            if len(queries) >= 20:
                 break
 
         return queries
 
     def _build_location_queries(self, memories: List[Dict]) -> List[Dict]:
-        """地点检索查询"""
-        queries = []
-        locations = set()
+        """地点检索：按地点分组，每个地点出一个查询"""
+        location_memories: Dict[str, List[Dict]] = defaultdict(list)
         for m in memories:
             loc = m.get("location", {})
-            city = loc.get("city", "") if isinstance(loc, dict) else str(loc)
+            city = loc.get("city", "") if isinstance(loc, dict) else ""
             if city:
-                locations.add(city)
+                location_memories[city].append(m)
 
-        for loc in locations:
-            mems = self._find_memories_by_location(memories, loc)
-            if len(mems) < 2:
+        queries = []
+        for loc, mems in sorted(location_memories.items(), key=lambda x: -len(x[1])):
+            if len(mems) < 1:
                 continue
 
             template = self.rng.choice(LOCATION_TEMPLATES)
@@ -238,9 +230,8 @@ class QueryBuilder:
                 "query_text": query_text,
                 "query_type": "地点检索",
                 "test_dimension": "精确检索",
-                "expected_memory_ids": [m["memory_id"] for m in mems[:5]],
-                "expected_answer": mems[0]["content"] if mems else "",
-                "difficulty": "中等",
+                "expected_memory_ids": [m["memory_id"] for m in mems],
+                "difficulty": "中等" if len(mems) < 4 else "困难",
                 "search_depth": "中层",
                 "is_negative": False,
             })
@@ -248,101 +239,130 @@ class QueryBuilder:
         return queries
 
     def _build_time_queries(self, memories: List[Dict]) -> List[Dict]:
-        """时间检索查询"""
-        queries = []
+        """时间检索：按时间值分组，每个唯一时间出一个查询"""
+        time_memories: Dict[str, List[Dict]] = defaultdict(list)
         for m in memories:
             time_info = m.get("time", {})
             if not isinstance(time_info, dict):
                 continue
-            rel = time_info.get("relative")
-            fuzzy = time_info.get("fuzzy")
-            if not rel and not fuzzy:
+            rel = time_info.get("relative", "")
+            fuzzy = time_info.get("fuzzy", "")
+            time_key = rel or fuzzy
+            if time_key:
+                time_memories[time_key].append(m)
+
+        queries = []
+        for time_val, mems in sorted(time_memories.items(), key=lambda x: -len(x[1])):
+            if not mems:
                 continue
 
-            time_str = rel or fuzzy
             template = self.rng.choice(TIME_TEMPLATES)
-            query_text = template.format(time=time_str)
+            query_text = template.format(time=time_val)
 
             queries.append({
                 "query_id": self._next_id(),
                 "query_text": query_text,
                 "query_type": "时间检索",
                 "test_dimension": "精确检索",
-                "expected_memory_ids": [m["memory_id"]],
-                "expected_answer": m["content"],
-                "difficulty": "中等",
+                "expected_memory_ids": [m["memory_id"] for m in mems],
+                "difficulty": "中等" if len(mems) < 3 else "困难",
                 "search_depth": "中层",
                 "is_negative": False,
             })
 
-        return queries[:15]  # 限制数量
+        return queries[:15]
 
     def _build_event_queries(self, memories: List[Dict]) -> List[Dict]:
-        """事件检索查询"""
-        queries = []
+        """事件检索：按事件产物/类型分组"""
+        product_memories: Dict[str, List[Dict]] = defaultdict(list)
+        type_memories: Dict[str, List[Dict]] = defaultdict(list)
+
         for m in memories:
             evt = m.get("event", {})
             if not isinstance(evt, dict):
                 continue
             product = evt.get("product", "")
             evt_type = evt.get("type", "")
-            action = evt.get("action", "")
-
             if product:
-                template = self.rng.choice(EVENT_TEMPLATES)
-                query_text = template.format(product=product, event_type=evt_type, action=action)
-                queries.append({
-                    "query_id": self._next_id(),
-                    "query_text": query_text,
-                    "query_type": "事件检索",
-                    "test_dimension": "精确检索",
-                    "expected_memory_ids": [m["memory_id"]],
-                    "expected_answer": m["content"],
-                    "difficulty": "中等",
-                    "search_depth": "中层",
-                    "is_negative": False,
-                })
+                product_memories[product].append(m)
+            if evt_type:
+                type_memories[evt_type].append(m)
+
+        queries = []
+
+        for product, mems in sorted(product_memories.items(), key=lambda x: -len(x[1])):
+            template = EVENT_TEMPLATES[0]
+            query_text = template.format(product=product)
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": query_text,
+                "query_type": "事件检索",
+                "test_dimension": "精确检索",
+                "expected_memory_ids": [m["memory_id"] for m in mems],
+                "difficulty": "中等",
+                "search_depth": "中层",
+                "is_negative": False,
+            })
+
+        for evt_type, mems in sorted(type_memories.items(), key=lambda x: -len(x[1])):
+            if len(mems) < 2:
+                continue
+            template = EVENT_TEMPLATES[1]
+            query_text = template.format(event_type=evt_type, product="", action="")
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": query_text,
+                "query_type": "事件检索",
+                "test_dimension": "精确检索",
+                "expected_memory_ids": [m["memory_id"] for m in mems],
+                "difficulty": "中等",
+                "search_depth": "中层",
+                "is_negative": False,
+            })
 
         return queries[:10]
 
     def _build_combined_queries(self, memories: List[Dict]) -> List[Dict]:
-        """组合检索查询"""
-        queries = []
+        """组合检索：按(人名,地点)分组"""
+        combo_memories: Dict[Tuple[str, str], List[Dict]] = defaultdict(list)
         for m in memories:
             person_name = m.get("person", {}).get("name", "") if isinstance(m.get("person"), dict) else ""
             loc = m.get("location", {})
             location = loc.get("city", "") if isinstance(loc, dict) else ""
-            evt = m.get("event", {})
-            evt_type = evt.get("type", "") if isinstance(evt, dict) else ""
-
             if person_name and location:
-                template = self.rng.choice(COMBINED_TEMPLATES)
-                query_text = template.format(name=person_name, location=location, event_type=evt_type)
-                queries.append({
-                    "query_id": self._next_id(),
-                    "query_text": query_text,
-                    "query_type": "组合检索",
-                    "test_dimension": "组合检索",
-                    "expected_memory_ids": [m["memory_id"]],
-                    "expected_answer": m["content"],
-                    "difficulty": "困难",
-                    "search_depth": "深层",
-                    "is_negative": False,
-                })
+                combo_memories[(person_name, location)].append(m)
+
+        queries = []
+        for (name, location), mems in sorted(combo_memories.items(), key=lambda x: -len(x[1])):
+            template = COMBINED_TEMPLATES[0]
+            evt = mems[0].get("event", {})
+            evt_type = evt.get("type", "") if isinstance(evt, dict) else ""
+            query_text = template.format(name=name, location=location, event_type=evt_type)
+
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": query_text,
+                "query_type": "组合检索",
+                "test_dimension": "组合检索",
+                "expected_memory_ids": [m["memory_id"] for m in mems],
+                "difficulty": "困难",
+                "search_depth": "深层",
+                "is_negative": False,
+            })
 
         return queries[:10]
 
     def _build_alias_queries(self, memories: List[Dict]) -> List[Dict]:
-        """别名查询"""
+        """别名查询：按等价组出题"""
         queries = []
 
         for group in self.alias_groups.groups().values():
             if len(group) < 2:
                 continue
 
-            members = sorted(list(group), key=len)  # 短的排前面
+            members = sorted(list(group), key=len)
+            primary = max(members, key=len)
 
-            # 找包含这些名字的记忆
             relevant_mems = []
             for m in memories:
                 for member in members:
@@ -353,41 +373,43 @@ class QueryBuilder:
             if not relevant_mems:
                 continue
 
-            # 对每个别名生成查询
             for alias in members:
-                # 找到主名（最长的）
-                primary = max(members, key=len)
-
                 if alias == primary:
-                    # 问主名的别称
-                    query_text = f"{primary}还有哪些称呼？"
-                    query_type = "别名查询"
-                else:
-                    # 用别名问
-                    is_person = any(alias in m.get("person_list", []) for m in relevant_mems)
-                    template = ALIAS_TEMPLATES[0] if is_person else ALIAS_TEMPLATES[1]
-                    query_text = template.format(alias=alias)
-                    query_type = "别名查询"
+                    continue
+
+                is_person = any(alias in m.get("person_list", []) for m in relevant_mems)
+                template = ALIAS_TEMPLATES[0] if is_person else ALIAS_TEMPLATES[1]
+                query_text = template.format(alias=alias)
 
                 queries.append({
                     "query_id": self._next_id(),
                     "query_text": query_text,
-                    "query_type": query_type,
+                    "query_type": "别名查询",
                     "test_dimension": "跨版本",
-                    "expected_memory_ids": [m["memory_id"] for m in relevant_mems[:5]],
-                    "expected_answer": f"{alias}与{primary}是同一{'人' if any(alias in m.get('person_list', []) for m in relevant_mems) else '事物'}",
+                    "expected_memory_ids": [m["memory_id"] for m in relevant_mems],
                     "difficulty": "中等",
                     "search_depth": "中层",
                     "is_negative": False,
                 })
 
+            query_text = f"{primary}还有哪些称呼？"
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": query_text,
+                "query_type": "别名查询",
+                "test_dimension": "跨版本",
+                "expected_memory_ids": [m["memory_id"] for m in relevant_mems],
+                "difficulty": "中等",
+                "search_depth": "中层",
+                "is_negative": False,
+            })
+
         return queries
 
     def _build_chain_queries(self, memories: List[Dict]) -> List[Dict]:
-        """链式推理查询"""
+        """链式推理：按chain分组"""
         queries = []
 
-        # 按chain分组
         chains: Dict[str, List[Dict]] = {}
         for m in memories:
             chain = m.get("reasoning_chain")
@@ -400,10 +422,8 @@ class QueryBuilder:
             if len(chain_mems) < 3:
                 continue
 
-            # 按chain_position排序
             chain_mems.sort(key=lambda m: m.get("chain_position", 0))
 
-            # "梳理X的完整经历"
             person_data = chain_mems[0].get("person", {})
             person_name = person_data.get("name", "") if isinstance(person_data, dict) else ""
             if person_name:
@@ -413,36 +433,32 @@ class QueryBuilder:
                     "query_type": "组合推理",
                     "test_dimension": "时序推理",
                     "expected_memory_ids": [m["memory_id"] for m in chain_mems],
-                    "expected_answer": " → ".join(m["content"][:30] for m in chain_mems),
                     "difficulty": "困难",
                     "search_depth": "深层",
                     "is_negative": False,
                 })
 
-            # "在X之后发生了什么？"
             for i in range(len(chain_mems) - 1):
                 prev = chain_mems[i]
-                next_m = chain_mems[i + 1]
+                subsequent_mems = chain_mems[i + 1:]
                 prev_desc = prev["content"][:30]
                 queries.append({
                     "query_id": self._next_id(),
                     "query_text": f"在{prev_desc}之后发生了什么？",
                     "query_type": "事件检索",
                     "test_dimension": "时序推理",
-                    "expected_memory_ids": [next_m["memory_id"]],
-                    "expected_answer": next_m["content"],
-                    "difficulty": "中等",
+                    "expected_memory_ids": [m["memory_id"] for m in subsequent_mems],
+                    "difficulty": "中等" if len(subsequent_mems) < 3 else "困难",
                     "search_depth": "中层",
                     "is_negative": False,
                 })
 
-        return queries[:10]
+        return queries[:15]
 
     def _build_negative_queries(self, memories: List[Dict]) -> List[Dict]:
         """负样本查询"""
         queries = []
 
-        # 不存在的人名
         used_names = set()
         for m in memories:
             for p in m.get("person_list", []):
@@ -456,13 +472,11 @@ class QueryBuilder:
                     "query_type": "人物检索",
                     "test_dimension": "负样本",
                     "expected_memory_ids": [],
-                    "expected_answer": "",
                     "difficulty": "中等",
                     "search_depth": "中层",
                     "is_negative": True,
                 })
 
-        # 不存在的地点
         for loc in NEGATIVE_LOCATIONS[:3]:
             queries.append({
                 "query_id": self._next_id(),
@@ -470,7 +484,6 @@ class QueryBuilder:
                 "query_type": "地点检索",
                 "test_dimension": "负样本",
                 "expected_memory_ids": [],
-                "expected_answer": "",
                 "difficulty": "中等",
                 "search_depth": "中层",
                 "is_negative": True,
@@ -494,7 +507,6 @@ if __name__ == "__main__":
     with open(args.input, 'r', encoding='utf-8') as f:
         memories = json.load(f)
 
-    # 需要重建alias_groups
     from relation_builder import RelationBuilder
     builder = RelationBuilder()
     builder._build_alias_groups(memories)
@@ -505,13 +517,15 @@ if __name__ == "__main__":
     with open(args.output, 'w', encoding='utf-8') as f:
         json.dump(queries, f, ensure_ascii=False, indent=2)
 
-    # 统计
     by_type = {}
+    multi_answer = 0
     for q in queries:
         t = q["query_type"]
         by_type[t] = by_type.get(t, 0) + 1
+        if len(q["expected_memory_ids"]) > 1:
+            multi_answer += 1
 
     print(f"查询生成完成: {len(queries)} 条")
+    print(f"  多答案查询: {multi_answer} 条 ({multi_answer*100//max(len(queries),1)}%)")
     for t, c in sorted(by_type.items(), key=lambda x: -x[1]):
-        neg = " (负样本)" if t == "负样本" else ""
-        print(f"  {t}: {c} 条{neg}")
+        print(f"  {t}: {c} 条")
