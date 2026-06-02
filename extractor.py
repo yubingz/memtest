@@ -71,11 +71,20 @@ class MemoryExtractor:
     # 主入口
     # --------------------------------------------------------------------------
 
-    def extract(self, corpus_dir: str) -> List[Dict[str, Any]]:
-        """从语料目录提取结构化记忆"""
+    def extract(self, corpus_dir: str, default_source: str = None) -> List[Dict[str, Any]]:
+        """从语料目录提取结构化记忆
+        
+        Args:
+            corpus_dir: 语料目录路径
+            default_source: 默认来源名（如"三国演义"），用于填充LLM未返回source的记忆
+        """
         corpus_text = self._load_corpus(corpus_dir)
         if not corpus_text:
             return []
+
+        # 如果未指定default_source，从目录名/文件名推断
+        if default_source is None:
+            default_source = self._infer_source(corpus_dir)
 
         # 尝试LLM提取
         if self.llm:
@@ -86,11 +95,49 @@ class MemoryExtractor:
         # 后处理
         memories = self._postprocess(memories)
 
+        # 填充缺失的source
+        if default_source:
+            for m in memories:
+                if not m.get("source"):
+                    m["source"] = default_source
+
         return memories
 
     # --------------------------------------------------------------------------
     # 语料加载
     # --------------------------------------------------------------------------
+
+    def _infer_source(self, corpus_dir: str) -> str:
+        """从目录名/文件名推断来源作品名"""
+        # 文件名映射
+        name_map = {
+            "xiyouji": "西游记", "sgyy": "三国演义", "hongloumeng": "红楼梦",
+            "jinyong": "金庸小说", "shuihu": "水浒传", "sanguo": "三国演义",
+        }
+        
+        # 检查目录内文件名
+        if os.path.isdir(corpus_dir):
+            for root, dirs, files in os.walk(corpus_dir):
+                for fn in files:
+                    basename = os.path.splitext(fn)[0].lower()
+                    for key, name in name_map.items():
+                        if key in basename:
+                            return name
+        
+        # 检查目录名本身
+        dirname = os.path.basename(os.path.normpath(corpus_dir)).lower()
+        for key, name in name_map.items():
+            if key in dirname:
+                return name
+        
+        # 如果是单文件，用文件名
+        if os.path.isfile(corpus_dir):
+            basename = os.path.splitext(os.path.basename(corpus_dir))[0].lower()
+            for key, name in name_map.items():
+                if key in basename:
+                    return name
+        
+        return None
 
     def _load_corpus(self, corpus_dir: str) -> str:
         """加载语料目录中的所有文本"""

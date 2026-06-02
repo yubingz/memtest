@@ -1,326 +1,156 @@
-# MemTest
+# MemTest — AI 记忆系统评测数据库生成工具
 
-> AI 记忆系统通用评测工具包。接入任意记忆系统，输出完整评测报告。
+输入任意文本语料 → 输出结构化记忆 + ground-truth 查询（ID 匹配答案），生成标准化、可复现的测试数据库。
 
-[English](README.md) | [📖 详细文档](GUIDE_CN.md)
-
----
-
-## ⚠️ 安全提示
-
-**切勿将 API Key 提交到 Git。** 本仓库已将 `.env` 加入 `.gitignore`，但提交前务必再次检查。如意外提交，请立即在服务商平台撤销该密钥。
-
----
+**[English](README.md)**
 
 ## 为什么需要 MemTest？
 
-AI Agent 越来越依赖长期记忆——但你怎么知道你的记忆系统是否真的*好用*？大多数团队用临时脚本做检索评测，测试数据和后端强耦合。MemTest 把它们解耦：
+当前记忆系统评测都是临时方案：手工写查询、"感觉对了"就过了、私有基准无法横向对比。MemTest 提供**确定性、可复现的测试数据库**，ground truth 受控。
 
-- **一次编写，处处评测** — 同一套测试可跑在任意记忆系统上
-- **6 大评测维度** — 不只看召回率，还看存储完整性、聚类、遗忘、推理和检索深度
-- **零依赖** — 纯 Python 标准库 + JSON，无框架锁定，无安装地狱
-- **合成或真实数据** — 程序化生成万级测试用例，或从自有语料构建
+核心思路：**评测检索，不评测生成**。答案是记忆 ID 集合（不是文本），所以指标是精确匹配、确定性的，可以在任意记忆系统之间对比。
 
-## 快速开始
-
-```python
-from runner import MemoryTestSuite, MemoryAdapter, load_test_db
-
-# 1. 为你的记忆系统实现 3 个方法
-class MyAdapter(MemoryAdapter):
-    def reset(self):
-        self.db.clear()
-
-    def store(self, memory_text: str, metadata: dict):
-        self.db.insert(text=memory_text, **metadata)
-
-    def search(self, query: str, top_k: int = 20) -> list[dict]:
-        return self.db.query(query, limit=top_k)
-
-# 2. 加载评测数据 & 跑评测
-db = load_test_db("sample_db.json")
-suite = MemoryTestSuite(MyAdapter())
-report = suite.run(db)
-print(report.summary())
-```
-
-## 评测维度
-
-| 维度 | 测什么 | 核心指标 |
-|------|--------|----------|
-| **存储完整性** | 所有记忆是否成功写入？3 种风格版本是否全部保留？ | `stored / total`（理想 300%） |
-| **检索 Precision/Recall** | 5 种查询类型（人物/地点/事件/时间/组合），能否命中正确记忆？时间检索含相对时间计算 | Precision, Recall by type |
-| **整理聚类** | 语义相关的记忆是否被归为一组？检索一条时能否浮现同组其他记忆？ | Cluster accuracy |
-| **遗忘合理性** | 高频记忆保留率是否高于低频？遗忘是否有方向性？ | `high_freq > low_freq` |
-| **逻辑推理** | 多约束交叉查询和跨记忆链式推理，系统能否支持多跳？ | Logic/chain accuracy |
-| **深度检索** | 1-2 年前的记忆，近/中/远语义距离的召回率如何衰减？ | Near / Mid / Far recall |
-
-> 📖 每个维度的设计意图、测试方法、评分公式和结果解读，详见 [GUIDE_CN.md](GUIDE_CN.md)
-
-## 测试数据
-
-| 数据集 | 来源 | 规模 | 获取方式 |
-|--------|------|------|----------|
-| `sample_db.json` | 程序合成 | 153 条记忆，57 条查询 | 仓库自带 |
-| `hp_benchmark_db.json` | 哈利波特系列（英文） | 1,626 条记忆，133 条查询（清洗自 5,925 条） | 仓库自带 |
-| `four_novels_db.json` | 中国四大名著（中文） | 四大名著语料，用 `knowledge_builder.py` 处理 | 仓库自带 |
-| `test_db_10000.json` | `generator.py` 生成 | 13,909 条记忆，5,560 条查询 | `python generator.py --full` |
-| 自定义 | `knowledge_builder.py` | 任意语料 | `python knowledge_builder.py <语料目录>` |
-
-### 程序化数据生成器
-
-```bash
-python generator.py              # ~150 条样例（快速，零依赖）
-python generator.py --size=500   # 自定义规模
-python generator.py --full       # 10,000 条全量
-python generator.py --llm        # LLM增强生成（记忆文本更自然，需 API key）
-```
-
-6 大类记忆按比例分配（各约 17%），每条记忆包含 3 种风格版本测试改写鲁棒性。20% 查询为负样本（测试 Precision）。
-
-**质量校验**：
-```bash
-python quality_check.py sample_db.json
-```
-输出 10 项自动检查：ID 唯一性、查询有效性、负样本比例、链式/聚类完整性、版本长度合理性等。
-
-### 知识构建器
-
-从任意文本语料（小说、文档、对话记录）构建测试库，**支持中文、英文或混合文本**：
-
-```bash
-python knowledge_builder.py ./my_books/ output.json
-python knowledge_builder.py ./my_books/ output.json --merge   # 增量追加（已有数据库+新文章）
-python knowledge_builder.py existing_db.json --clean           # 清洗已有数据库
-```
-
-**优化**：3-5x 批量LLM加速 — 提取、分类、查询预解析均使用 `batch_generate()` 并行处理。
-
-已用中国四大名著验证（4,058 条记忆，187 条查询）。详见[评测结果](#评测结果)。
-
-### 哈利波特评测库 (`hp_benchmark_db.json`)
-
-基于哈利波特系列7本书构建的英文记忆检索评测库，采用手写核心事件+程序化扩展方式生成。
-
-**统计（清洗后）：**
-- 1,626 条记忆，覆盖7本书（清洗自 5,925 条 — 去除 626 条完全重复、641 条跨视角重复、裁剪主人公刷屏）
-- 133 条查询，8种类型（平衡自 200 条 — 每人物上限 15 条）
-- 3 条六跳逻辑链，追踪主要剧情线（预言链、魂器链、斯内普/邓布利多链）
-- 难度分布：简单 52% / 中等 42% / 困难 6%
-
-**为什么需要清洗：** 原始 5,925 条记忆中，"Harry" 出现在 81.7% 的记忆里，同一事件被5+角色重复描述。关键词检索几乎随机（BM25 P@20 仅 4.8%）。清洗后 BM25 Hit@20 从 62.5% 提升到 76.5%。
-
-**记忆字段：** `memory_id`, `content`, `person`, `location`, `time`, `era`, `event_type`, `book`, `house`, `tags`, `difficulty`
-
-**使用：**
-```python
-from runner import MemoryTestSuite, MemoryAdapter, load_test_db
-
-db = load_test_db("hp_benchmark_db.json")
-suite = MemoryTestSuite(MyAdapter())
-report = suite.run(db)
-```
-
-**质量保证：** 零模板生成内容，零跨书错误，所有记忆 ≥20 词，每条事件符合原著。
-
-**BM25 基线结果（清洗后数据库）：**
-
-| 指标 | 未清洗 (5,925条) | 清洗后 (1,626条) |
-|------|:---------------:|:---------------:|
-| Precision@20 | 4.8% | 5.7% |
-| Hit Rate@20 | 62.5% | 76.5% |
-| MRR@20 | 0.261 | 0.332 |
-
-未清洗数据库的低分是主人公霸屏和跨视角重复的假象，不是检索本身的问题。清洗后的评测基线更公平。
-
-
-### 语料准备方法
-
-知识构建器需要 `.md` 文件作为输入。以下是常见来源的准备方法：
-
-**从小说/书籍准备（推荐，提取效果最好）：**
-
-1. **获取文本** — 公共领域来源：
-   - 中文：[古登堡计划中文区](https://www.gutenberg.org/browse/languages/zh)、[维基文库](https://zh.wikisource.org/)、[中国哲学书电子化计划](https://ctext.org/)
-   - 英文：[Project Gutenberg](https://www.gutenberg.org/)、[Wikisource](https://en.wikisource.org/)、[Standard Ebooks](https://standardebooks.org/)
-   - 版权作品需自行获取授权文本
-2. **按章节拆分为独立 .md 文件**：
-   ```bash
-   # 中文小说按"第X回"拆分：
-   python -c "
-   import re
-   with open('novel.txt', encoding='utf-8') as f: text = f.read()
-   chapters = re.split(r'(?=第.{1,3}[回章节])', text)
-   for i, ch in enumerate(chapters):
-       if len(ch.strip()) >= 500:
-           with open(f'chapter_{i:03d}.md', 'w', encoding='utf-8') as out:
-               out.write(ch.strip())
-   "
-   # 英文小说按"Chapter X"拆分：
-   python -c "
-   import re
-   with open('novel.txt', encoding='utf-8') as f: text = f.read()
-   chapters = re.split(r'(?=Chapter \\d+)', text, flags=re.IGNORECASE)
-   for i, ch in enumerate(chapters):
-       if len(ch.strip()) >= 500:
-           with open(f'chapter_{i:03d}.md', 'w', encoding='utf-8') as out:
-               out.write(ch.strip())
-   "
-   ```
-3. **按目录组织** — 目录名会作为分类标签：
-   ```
-   my_corpus/
-   ├── book_one/
-   │   ├── chapter_001.md
-   │   └── ...
-   └── book_two/
-       ├── chapter_001.md
-       └── ...
-   ```
-
-**从其他格式转换：**
-
-| 来源 | 转换方法 |
-|------|---------|
-| `.txt` | 直接重命名为 `.md`，或 `cp novel.txt novel.md` |
-| `.pdf` | `pandoc book.pdf -t markdown -o book.md`，再按章节拆分 |
-| `.epub` | `pandoc book.epub -t markdown -o book.md`，再按章节拆分 |
-| `.docx` | `pandoc book.docx -t markdown -o book.md`，再按章节拆分 |
-| 网页文章 | 浏览器扩展或 `pandoc -f html -t markdown URL -o article.md` |
-
-**注意事项：**
-- 每个文件必须 **≥ 500 字符**（过短会跳过）
-- 每个文件只处理 **前 3000 字符**——长章节需拆分为小段
-- 最佳效果：每文件 **500–3000 字符**
-- 叙事类文本（小说、传记）提取效果最好
-
-**快速测试：**
-```bash
-echo "任意文本内容（至少500字符）..." > test_article.md
-mkdir test_corpus && mv test_article.md test_corpus/
-python knowledge_builder.py test_corpus/ test_output.json --lang zh
-```
-
-
-## 评测结果
-
-以下结果基于我们的 **NOESIS-II** 记忆系统，使用四大名著数据集（11,794 条去重记忆，577 条查询）进行评测。TF-IDF 和 ST 结果使用 500 条随机采样；LLM 重排结果使用 100 条随机采样，均为 Top-20 检索。
-
-**评测方法**：检索结果中只要包含目标实体（人物、地点、事件、朝代），即判定为正确。例如"黛玉和宝玉聊天"对"林黛玉"和"贾宝玉"的查询都算命中。
-
-| 方法 | Precision@20 | Recall@20 | MRR@20 |
-|------|:----------:|:---------:|:------:|
-| jieba + SQL LIKE | ~2% | ~2% | N/A |
-| TF-IDF + jieba + Cosine | 49.6% | 83.2% | 0.862 |
-| Sentence-Transformers (MiniLM) | 9.1% | 12.4% | 0.201 |
-| **LLM 重排 (TF-IDF → LLM)** | **87.0%** | **84.9%** | **0.923** |
-
-**按查询类型对比（LLM 重排 vs TF-IDF）**：
-
-| 查询类型 | TF-IDF P@20 | LLM P@20 | TF-IDF R@20 | LLM R@20 |
-|---------|:----------:|:--------:|:----------:|:--------:|
-| 人物 | 67.0% | 90.5% | 90.3% | 87.6% |
-| 地点 | 39.8% | 92.8% | 76.6% | 88.2% |
-| 事件 | 41.9% | 80.9% | 82.6% | 80.8% |
-| 时间 | 60.0% | 93.8% | 92.5% | 100.0% |
-| 组合 | 51.0% | 70.0% | 51.0% | 70.0% |
-
-**按小说对比（LLM 重排 vs TF-IDF）**：
-
-| 小说 | TF-IDF P@20 | LLM P@20 | TF-IDF R@20 | LLM R@20 |
-|-----|:----------:|:--------:|:----------:|:--------:|
-| 水浒传 | 60.0% | 90.3% | 86.3% | 87.1% |
-| 西游记 | 52.8% | 98.9% | 78.0% | 98.3% |
-| 三国演义 | 42.0% | 84.6% | 81.1% | 82.1% |
-| 红楼梦 | 62.5% | 85.0% | 79.2% | 85.0% |
-
-**方法说明**：
-- **jieba + SQL LIKE**：用 jieba 分词后多 token OR LIKE 查询 NOESIS-II 的 SQLite，取 Top-20
-- **TF-IDF + jieba + Cosine**：结构化内容（人物+事件+地点+朝代+文本）经 jieba 分词，TF-IDF 矩阵余弦相似度，取 Top-20
-- **Sentence-Transformers**：`paraphrase-multilingual-MiniLM-L12-v2`（384维）编码同样结构化内容，余弦相似度，取 Top-20
-- **LLM 重排 (TF-IDF → LLM)**：两阶段流水线——先用 TF-IDF 检索 Top-50 候选，再由大语言模型（通过 Coze session API）按相关性重排，从重排结果中取 Top-20
-
-**核心发现**：
-1. **关键词匹配几乎不可用** — jieba + SQL LIKE 的 2% 召回率说明它对语义检索基本无效
-2. **TF-IDF + jieba 是强基线** — 83.2% 的召回率证明，正确的分词+词频匹配对实体类查询效果很好
-3. **MiniLM 在中文古典文本上表现差** — 多语言释义模型（9.1% 精确率）无法精准区分实体
-4. **LLM 重排效果显著** — 精确率从 49.6% 几乎翻倍到 87.0%，召回率持平（83.2% → 84.9%），证明大模型能有效识别候选集中的相关记忆
-5. **两阶段检索（检索器+重排器）是实际最优解** — TF-IDF 的高召回 + LLM 的高精确 = 最佳综合表现（MRR 0.923）
-
-## 项目结构
+## 架构 (v4)
 
 ```
 memtest/
-├── README.md                # 中文文档（主入口）
-├── GUIDE.md                 # 英文详细说明文档
-├── GUIDE_CN.md              # 中文详细说明文档
-├── API.md                   # 适配器接口 & 数据格式规范
-├── OPTIMIZATION.md          # 问题诊断与优化路线图
-├── TODO.md                  # 待办清单与已完成变更
-├── generator.py             # 程序化测试数据生成器（零依赖 / LLM增强）
-├── knowledge_builder.py     # 语料 → 测试库构建器（支持中英文混合）
-├── quality_check.py         # 数据质量校验（10项自动检查）
-├── prompts/                 # 提示词模板（可热更新）
-│   ├── memory_enhance.md    # 3种表达风格（客观/主观/转述）
-│   ├── query_generate.md    # 查询生成提示词
-│   └── fact_extract.md      # 事实提取提示词（中英文）
-├── runner.py                # 可选评测执行器（已从核心剥离）
-├── noesis_adapter.py        # NOESIS-II 记忆系统适配器示例
-├── llm_evaluator.py         # LLM 语义评估器
-├── _gen_and_test.py         # 一键生成 & 自测
-├── benchmark/               # 小说语料库
-│   ├── four_novels_db.json        # 四大名著（中文）
-│   ├── hp_benchmark_db.json       # 哈利波特（英文，1,626 条记忆）
-│   └── tianlongbabu_db.json       # 天龙八部（中文，48 条记忆）
-├── sample_db.json       # 样例数据库（约 150 条记忆）
-└── .env.example             # API 密钥配置模板
+├── pipeline_v4_auto.py      # 自动化 Pipeline（质量门控 + 自动修复 + 迭代）
+├── pipeline_v4.py            # 手动一条龙 Pipeline
+├── extractor.py              # LLM 记忆提取（唯一使用 LLM 的步骤）
+├── relation_builder.py       # 别名组 + 推理链构建（纯规则）
+├── query_builder.py          # 查询生成（纯模板，确定性）
+├── alias_resolver.py         # 人物别名解析
+├── time_resolver.py          # 时间表达式归一化
+├── runner.py                  # 评测执行器（接入被测记忆系统）
+├── quality_check.py          # 数据质量校验（10 项自动检查）
+├── schema.py                  # 数据格式定义
+├── llm_interface.py          # LLM 抽象层（DeepSeek / OpenAI 兼容）
+│
+├── test_corpus*/              # 输入：纯文本语料
+│   ├── test_corpus3/xiyouji.md
+│   ├── test_corpus4/sgyy_extended.md
+│   ├── test_corpus5/hongloumeng_extended.md
+│   └── test_corpus6/jinyong.md
+│
+└── output/                    # 生成的测试数据库
+    └── four_novels.json       # 131 记忆, 1157 查询 (4 小说)
 ```
 
-## 更多工具
+## 快速开始
 
-| 工具 | 说明 |
-|------|------|
-| `_gen_and_test.py` | 一键生成样例数据 + 自测，快速验证生成器正常 |
-| `noesis_adapter.py` | NOESIS-II 记忆系统适配器（评测接入示例） |
-| `llm_evaluator.py` | LLM 语义评估器（替代精确匹配的语义相关性判断） |
-| `benchmark/` | 小说语料库：`four_novels_db.json`（四大名著）、`hp_benchmark_db.json`（哈利波特）、`tianlongbabu_db.json`（天龙八部） |
+### 1. 安装与配置
 
-## API 参考
-
-详见 [API.md](API.md) 获取完整的适配器接口规范和数据格式。
-
-### 最小适配器
-
-只需实现三个方法：
-
-```python
-class MemoryAdapter:
-    def reset(self):
-        """每次评测前清空记忆库"""
-        
-    def store(self, memory_text: str, metadata: dict):
-        """存入一条记忆，附带标准元数据"""
-        
-    def search(self, query: str, top_k: int = 20) -> list[dict]:
-        """检索记忆，返回 [{"memory_id": str, "score": float, "content": str}, ...]"""
+```bash
+git clone https://github.com/yubingz/memtest.git
+cd memtest
+cp .env.example .env
+# 编辑 .env，添加 DEEPSEEK_API_KEY=...（仅记忆提取步骤使用）
 ```
 
-## 参考文档
+### 2. 一条命令生成
 
-| 文档 | 说明 |
-|------|------|
-| [API.md](API.md) | MemoryAdapter 接口定义 + 数据格式完整规范 |
-| [GUIDE.md](GUIDE.md) / [GUIDE_CN.md](GUIDE_CN.md) | 详细使用指南（架构/评测维度/扩展） |
-| [OPTIMIZATION.md](OPTIMIZATION.md) | 问题诊断与优化路线图（已修复 + 待做） |
-| [TODO.md](TODO.md) | 待办清单与已完成变更日志 |
+```bash
+# 手动 Pipeline
+python pipeline_v4.py ./my_corpus/ -o test_db.json --name "My Test Database"
 
-## 贡献
+# 自动 Pipeline（质量门控 + 自动修复 + 迭代）
+python pipeline_v4_auto.py ./my_corpus/ -o test_db.json --max-iterations 3
+```
 
-欢迎贡献，特别是：
-- 新的测试数据生成器（特定领域语料）
-- 流行记忆系统的适配器实现
-- 评测维度扩展
+流程：`提取记忆 → 构建关系 → 生成查询 → 组装 → 校验`
 
-## 许可证
+只有提取步骤使用 LLM，查询生成是**确定性的**（纯模板，无 LLM）。
+
+### 3. 自定义语料
+
+创建目录，放入 `.md` 或 `.txt` 文件：
+
+```
+my_corpus/
+├── chapter1.md
+├── chapter2.md
+└── ...
+```
+
+MemTest 自动提取结构化记忆、解析别名、构建推理链、生成 6 维度查询。
+
+## 评测维度
+
+| 维度 | 数量 | 说明 |
+|------|------|------|
+| **精确检索** | 303 | 人物/地点/时间/事件检索（5 种查询类型） |
+| **组合检索** | 267 | 多属性组合查询（人物+地点、人物+时间等） |
+| **时序推理** | 157 | 先后时序推理链 |
+| **负样本** | 195 | 无匹配记忆的查询（应返回空） |
+| **跨版本/别名** | 146 | 别名等价查询（如"刘皇叔" = "刘备" = "玄德"） |
+
+*数据来自 `four_novels.json`（131 记忆，4 小说）*
+
+### 查询类型
+
+| 类型 | 模板数 | 示例 |
+|------|--------|------|
+| 人物检索 | 8 | "刘备的经历有哪些？" |
+| 地点检索 | 6 | "在涿县发生了什么？" |
+| 时间检索 | 6 | "早年有什么事件？" |
+| 事件检索 | 7 | "关于玉的事件有哪些？" |
+| 别名查询 | 5 | "刘皇叔是谁？" |
+| 组合检索 | 12+ | "刘备在涿县的记录" |
+| 组合推理 | auto | "...之前发生了什么？" |
+
+## 数据格式
+
+### 记忆条目
+
+```json
+{
+  "memory_id": "MEM000001",
+  "content": "刘备，字玄德，人称刘皇叔，是汉景帝之子中山靖王刘胜的后代。",
+  "person_list": ["刘备", "字玄德", "玄德", "刘皇叔", "中山靖王刘胜", "汉景帝"],
+  "location": {"city": "涿县", "place": "楼桑村"},
+  "time": {"relative": "早年"},
+  "event": {"type": "日常", "action": "出生"},
+  "source": "三国演义",
+  "alias_evidence": [{"entity": "刘备", "alias": "刘皇叔", "evidence": "人称刘皇叔"}]
+}
+```
+
+### 查询条目
+
+```json
+{
+  "query_id": "Q0001",
+  "query_text": "刘备的经历有哪些？",
+  "query_type": "人物检索",
+  "test_dimension": "精确检索",
+  "expected_memory_ids": ["MEM000001", "MEM000002", "MEM000005"],
+  "is_negative": false,
+  "difficulty": "困难"
+}
+```
+
+### ID 匹配评测
+
+答案是**记忆 ID 集合**，不是文本。这意味着：
+- **精确匹配**：无文本相似度歧义
+- **确定性**：同样数据库 → 同样结果，永远可复现
+- **可比性**：任意记忆系统都能对标同一 ground truth
+
+## 预构建数据库
+
+| 数据库 | 记忆数 | 查询数 | 来源 |
+|--------|--------|--------|------|
+| `four_novels.json` | 131 | 1157 | 三国演义 + 红楼梦 + 西游记 + 金庸5部 |
+
+## 设计原则
+
+1. **只有提取用 LLM** — 查询生成是纯模板 × 属性，确定且可复现
+2. **ID 匹配答案** — 无文本相似度歧义，精确匹配评测
+3. **自选语料** — 输入任意文本，Pipeline 自动提取事实并生成查询
+4. **原文保存** — 记忆按原文存储，不做变换
+5. **6 评测维度** — 覆盖精确、组合、时序推理、负样本和别名等价
+6. **别名感知** — 人物别名（如孙悟空=齐天大圣=美猴王）解析为等价组测试
+
+## License
 
 MIT

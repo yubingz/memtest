@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""MemTest 质量校验脚本 — v2/v3 兼容
+"""MemTest 质量校验脚本 — v2/v4 兼容
 
 支持格式：
-  - v3 统一 schema（content 为原文片段，无 versions 嵌套）
+  - v4 统一 schema（content 为原文片段，无 versions 嵌套）
   - v2 旧格式（带 versions 嵌套、多种格式并存）
 
 用法：
     python quality_check.py test_db.json
     python quality_check.py sample_db.json --verbose
-    python quality_check.py sample_db.json --format v3  # 强制 v3 模式
+    python quality_check.py sample_db.json --format v4  # 强制 v4 模式
     python quality_check.py sample_db.json --format auto  # 自动检测
 
-检查项（v3）：
+检查项（v4）：
     1. 记忆ID唯一性
     2. 查询ID唯一性
     3. 查询指向有效记忆
@@ -36,18 +36,18 @@ import argparse
 from collections import Counter, defaultdict
 
 # ==============================================================================
-# v3 Schema 校验（从 schema.py 导入，若不存在则内联）
+# v4 Schema 校验（从 schema.py 导入，若不存在则内联）
 # ==============================================================================
 
 try:
-    from schema import validate_database as _validate_database_v3
+    from schema import validate_database as _validate_database_v4
     HAS_SCHEMA = True
 except ImportError:
     HAS_SCHEMA = False
 
 
-def _validate_database_v3_fallback(db: dict) -> dict:
-    """v3 校验（不依赖 schema.py 的备用实现）"""
+def _validate_database_v4_fallback(db: dict) -> dict:
+    """v4 校验（不依赖 schema.py 的备用实现）"""
     errors: list = []
     warnings: list = []
     mems = db.get("memories", [])
@@ -102,26 +102,26 @@ def _detect_format(db: dict) -> str:
     """自动检测数据库格式"""
     mems = db.get("memories", [])
     if not mems:
-        return "v3"
+        return "v4"
 
     first = mems[0]
-    # v3: 直接有 content 字段，无 versions
+    # v4: 直接有 content 字段，无 versions
     if "content" in first and "versions" not in first:
-        return "v3"
+        return "v4"
     # v2: 有 versions 或嵌套 person/location
     if "versions" in first:
         return "v2"
     if isinstance(first.get("person"), dict):
         return "v2"
-    return "v3"
+    return "v4"
 
 
 # ==============================================================================
-# v3 质量校验
+# v4 质量校验
 # ==============================================================================
 
-def check_v3(db: dict, verbose: bool = False) -> dict:
-    """执行 v3 格式质量检查"""
+def check_v4(db: dict, verbose: bool = False) -> dict:
+    """执行 v4 格式质量检查"""
     mems = db.get("memories", [])
     queries = db.get("queries", [])
     report = {
@@ -194,7 +194,7 @@ def check_v3(db: dict, verbose: bool = False) -> dict:
     else:
         _warn(f"负样本比例 {neg_ratio:.1%}，建议 15-25%")
 
-    # content 长度分布（v3 核心）
+    # content 长度分布（v4 核心）
     lengths = [len(m.get("content", "")) for m in mems]
     if lengths:
         avg = sum(lengths) / len(lengths)
@@ -216,7 +216,7 @@ def check_v3(db: dict, verbose: bool = False) -> dict:
     else:
         _warn(f"人物信息不足: 仅 {has_person}/{len(mems)} 条含人物")
 
-    # 时间引用有效性（v3 新增）
+    # 时间引用有效性（v4 新增）
     time_ref_errors = 0
     for m in mems:
         ref_id = m.get("time_ref_id")
@@ -465,9 +465,9 @@ def check(db: dict, verbose: bool = False, format_hint: str = "auto") -> dict:
     else:
         fmt = format_hint
 
-    if fmt == "v3":
-        print(f"[质量校验] v3 格式（检测到）")
-        return check_v3(db, verbose)
+    if fmt == "v4":
+        print(f"[质量校验] v4 格式（检测到）")
+        return check_v4(db, verbose)
     else:
         print(f"[质量校验] v2 格式（检测到）")
         return check_v2(db, verbose)
@@ -495,11 +495,11 @@ def print_report(report: dict) -> None:
 # ==============================================================================
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="MemTest 数据质量校验 (v2/v3 兼容)")
+    parser = argparse.ArgumentParser(description="MemTest 数据质量校验 (v2/v4 兼容)")
     parser.add_argument("file", help="JSON数据库文件路径")
     parser.add_argument("--verbose", "-v", action="store_true", help="详细输出")
     parser.add_argument("--format", "-f", default="auto",
-                        choices=["auto", "v2", "v3"],
+                        choices=["auto", "v2", "v4"],
                         help="强制指定格式 (默认: auto)")
     args = parser.parse_args()
 

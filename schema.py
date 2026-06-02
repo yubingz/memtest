@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""MemTest v3 统一 Schema 定义
+"""MemTest v4 统一 Schema 定义
 
-统一 v3 的记忆条目、查询条目、存储层、数据库顶层 schema，
+统一 v4 的记忆条目、查询条目、存储层、数据库顶层 schema，
 所有模块共用这一套定义。
 
 设计原则：
@@ -17,7 +17,7 @@ from typing import Any, Dict, List, Optional, Union
 from datetime import datetime
 
 # ==============================================================================
-# 一、v3 Schema 定义
+# 一、v4 Schema 定义
 # ==============================================================================
 
 # 记忆条目（内部完整格式，用于出题，不喂给被测系统）
@@ -31,7 +31,7 @@ MEMORY_SCHEMA_V3: Dict[str, Any] = {
     "time_offset_days": (int, type(None)), # 与参照记忆的天数差，正=之后，负=之前，可空
     "location": (str, type(None)),        # 地点，可空
     "event_type": (str, type(None)),      # 事件类型，可空
-    "source": (str, type(None)),          # 来源（书名/文章名），可空
+    "source": str,                           # 来源（书名/文章名），必填
     "tags": list,         # 标签列表，元素为 str
     "difficulty": str,     # easy / medium / hard
 }
@@ -67,7 +67,7 @@ DATABASE_INFO_SCHEMA: Dict[str, Any] = {
     "version": str,          # 固定 "3.0.0"
     "description": (str, type(None)),
     "created_at": str,       # ISO 8601 时间
-    "source": (str, type(None)),
+    "source": str,
     "total_memories": int,
     "total_queries": int,
     "principles": dict,      # 设计原则标记
@@ -174,7 +174,7 @@ def _check_field(value: Any, expected_type: Any, field_name: str) -> Optional[st
 
 
 def validate_memory(memory: Dict[str, Any], strict: bool = False) -> List[str]:
-    """校验单条记忆条目是否符合 v3 schema。
+    """校验单条记忆条目是否符合 v4 schema。
 
     Args:
         memory: 记忆条目字典
@@ -233,7 +233,7 @@ def validate_memory(memory: Dict[str, Any], strict: bool = False) -> List[str]:
 
 
 def validate_query(query: Dict[str, Any]) -> List[str]:
-    """校验单条查询条目是否符合 v3 schema。
+    """校验单条查询条目是否符合 v4 schema。
 
     Args:
         query: 查询条目字典
@@ -304,7 +304,7 @@ def validate_storage(storage_entry: Dict[str, Any]) -> List[str]:
 
 
 def validate_database(db: Dict[str, Any]) -> Dict[str, Any]:
-    """校验整个数据库是否符合 v3 schema。
+    """校验整个数据库是否符合 v4 schema。
 
     Args:
         db: 数据库字典
@@ -432,7 +432,7 @@ def build_database_info(
     """构建数据库元信息"""
     return {
         "name": name,
-        "version": "3.0.0",
+        "version": "4.0.0",
         "description": description,
         "created_at": datetime.now().isoformat(timespec="seconds"),
         "source": source,
@@ -466,14 +466,14 @@ def finalize_database(
 # 五、向后兼容工具
 # ==============================================================================
 
-def is_v3_format(db: Dict[str, Any]) -> bool:
-    """检测数据库是否为 v3 格式"""
+def is_v4_format(db: Dict[str, Any]) -> bool:
+    """检测数据库是否为 v4 格式"""
     info = db.get("database_info", {})
     return info.get("version", "").startswith("3.") or info.get("version") == "3.0.0"
 
 
 def normalize_v2_memory(m: Dict[str, Any]) -> Dict[str, Any]:
-    """将 v2 格式记忆条目转换为 v3 格式（只做字段映射，不做语义转换）"""
+    """将 v2 格式记忆条目转换为 v4 格式（只做字段映射，不做语义转换）"""
     # 兼容 v2 的嵌套 person/name → person list
     person = m.get("person", {})
     if isinstance(person, str):
@@ -527,7 +527,7 @@ def normalize_v2_memory(m: Dict[str, Any]) -> Dict[str, Any]:
         "time_offset_days": None,
         "location": location or None,
         "event_type": event_type or None,
-        "source": None,
+        "source": m.get("source", ""),
         "tags": m.get("tags", []),
         "difficulty": m.get("difficulty", "medium"),
     }
@@ -575,11 +575,11 @@ if __name__ == "__main__":
 
     # 测试 validate_database
     db = {
-        "database_info": {"version": "3.0.0", "name": "Test"},
+        "database_info": {"version": "4.0.0", "name": "Test"},
         "memories": [
             {"memory_id": "MEM001", "content": "测试", "person": [], "tags": [], "difficulty": "easy",
              "time_absolute": None, "time_relative": None, "time_ref_id": None, "time_offset_days": None,
-             "location": None, "event_type": None, "source": None},
+             "location": None, "event_type": None, "source": "测试"},
         ],
         "queries": [
             {"query_id": "Q001", "query_text": "测试？", "query_type": "事实检索",

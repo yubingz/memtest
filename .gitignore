@@ -27,3 +27,15 @@ Thumbs.db
 # 生成的大型数据文件
 four_novels_db_*.json
 hp_db_*.json
+
+# 大型数据文件，请从 GitHub Releases 下载
+benchmark/
+four_novels_benchmark.json
+hp_benchmark_db.json
+*.benchmark.json
+output/*.json
+output/*.md
+batch_extract.py
+test_corpus6/sgyy_complete.md
+test_corpus_combined/
+extracted_memories.json

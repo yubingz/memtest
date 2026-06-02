@@ -1,4 +1,4 @@
-"""MemTest 评测执行器 — v2/v3 兼容，content-only 存储
+"""MemTest 评测执行器 — v4 兼容，content-only 存储
 
 使用方法:
     from runner import MemoryTestSuite, MemoryAdapter, load_test_db
@@ -14,10 +14,10 @@
     report = suite.run(db)
     print(report.summary())
 
-关键变更 (v3):
+关键变更 (v4):
     - adapter.store() 只传 memory_id + content（不传元数据，避免泄题）
     - 元数据（person/time/location）由评测系统内部持有，用于出题，不喂给被测系统
-    - v2 和 v3 格式均可运行，自动检测
+    - v2 和 v4 格式均可运行，自动检测
 """
 
 import json
@@ -37,12 +37,12 @@ class MemoryAdapter:
     def store(self, memory_text: str, metadata: dict):
         """存入一条记忆。
 
-        v3 模式下 metadata 只含 memory_id。
+        v4 模式下 metadata 只含 memory_id。
         v2 模式下 metadata 含 memory_id + 元数据（兼容旧系统）。
 
         Args:
             memory_text: 记忆文本（原文）
-            metadata: {"memory_id": str}  (v3) 或完整元数据 (v2)
+            metadata: {"memory_id": str}  (v4) 或完整元数据 (v2)
         """
         raise NotImplementedError
 
@@ -63,10 +63,10 @@ class MemoryTestSuite:
     def __init__(self, adapter: MemoryAdapter):
         self.adapter = adapter
         self.report: Dict[str, Any] = {}
-        self._db_version: str = "v3"
+        self._db_version: str = "v4"
 
     def run(self, test_db: dict) -> dict:
-        """执行全量评测，自动检测 v2/v3 格式"""
+        """执行全量评测，自动检测 v2/v4 格式"""
         memories = test_db.get("memories", [])
         queries = test_db.get("queries", [])
         if not memories:
@@ -74,17 +74,17 @@ class MemoryTestSuite:
 
         # 检测版本
         self._db_version = self._detect_version(memories)
-        if self._db_version == "v3":
-            return self._run_v3(test_db)
+        if self._db_version == "v4":
+            return self._run_v4(test_db)
         else:
             return self._run_v2(test_db)
 
     # --------------------------------------------------------------------------
-    # v3 存储模式（content-only）
+    # v4 存储模式（content-only）
     # --------------------------------------------------------------------------
 
-    def _run_v3(self, test_db: dict) -> dict:
-        """v3 评测：只传 memory_id + content 给被测系统"""
+    def _run_v4(self, test_db: dict) -> dict:
+        """v4 评测：只传 memory_id + content 给被测系统"""
         memories = test_db.get("memories", [])
         queries = test_db.get("queries", [])
 
@@ -92,7 +92,7 @@ class MemoryTestSuite:
         stored = 0
 
         for m in memories:
-            # v3: 只存 memory_id + content，不传元数据
+            # v4: 只存 memory_id + content，不传元数据
             content = m.get("content", "")
             if content:
                 # metadata 只含 memory_id（用于检索返回）
@@ -102,12 +102,12 @@ class MemoryTestSuite:
 
         self.report = {
             "storage": self._eval_storage(stored, len(memories)),
-            "retrieval": self._eval_retrieval_v3(queries),
+            "retrieval": self._eval_retrieval_v4(queries),
         }
         return self.report
 
-    def _eval_retrieval_v3(self, queries: list) -> dict:
-        """v3 检索评估（基于 content-only 存储）"""
+    def _eval_retrieval_v4(self, queries: list) -> dict:
+        """v4 检索评估（基于 content-only 存储）"""
         by_type: Dict[str, Dict[str, Any]] = {}
         total_correct = 0
         total_expected = 0
@@ -220,15 +220,15 @@ class MemoryTestSuite:
     def _detect_version(self, memories: list) -> str:
         """检测数据库版本"""
         if not memories:
-            return "v3"
+            return "v4"
         first = memories[0]
         if "content" in first and "versions" not in first:
-            return "v3"
+            return "v4"
         if "versions" in first:
             return "v2"
         if isinstance(first.get("person"), dict):
             return "v2"
-        return "v3"
+        return "v4"
 
     # --------------------------------------------------------------------------
     # v2 兼容辅助方法
@@ -501,7 +501,7 @@ def summary(report: dict) -> str:
 if __name__ == "__main__":
     import os
 
-    # 生成一个 v3 格式的测试数据库
+    # 生成一个 v4 格式的测试数据库
     from schema import finalize_database, make_memory_id
 
     test_memories = [
@@ -551,7 +551,7 @@ if __name__ == "__main__":
     db = finalize_database({
         "memories": test_memories,
         "queries": test_queries,
-    }, name="Test DB", description="v3自测")
+    }, name="Test DB", description="v4自测")
 
     # 运行评测
     adapter = JsonMemoryAdapter()
