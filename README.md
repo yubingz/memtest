@@ -2,7 +2,7 @@
 
 Generate standardized, reproducible test databases for evaluating AI memory recall quality. Feed any text corpus → get structured memories + ground-truth queries with ID-based answers.
 
-**[中文文档](README_CN.md)** | **[TruLens Integration](#trulens-integration)**
+**[中文文档](README_CN.md)**
 
 ## Why MemTest?
 
@@ -22,7 +22,6 @@ memtest/
 ├── time_resolver.py          # Normalize temporal expressions
 ├── runner.py                  # Run evaluation against a memory system
 ├── quality_check.py          # Data quality validation (10 automated checks)
-├── convert_to_trulens.py     # Convert to TruLens GroundTruthAgreement format
 ├── schema.py                  # Data format definitions
 ├── llm_interface.py          # LLM abstraction (DeepSeek / OpenAI compatible)
 │
@@ -133,16 +132,6 @@ Answers are **memory ID sets**, not text. This means:
 - **Exact match**: No ambiguity from text similarity
 - **Deterministic**: Same database → same results, always
 - **Comparable**: Any memory system can be evaluated against the same ground truth
-
-## TruLens Integration
-
-MemTest databases can be converted to TruLens `GroundTruthAgreement` format for use with TruLens evaluation pipelines:
-
-```bash
-python convert_to_trulens.py output/four_novels.json -o output/four_novels_trulens.json
-```
-
-This generates a `golden_set` compatible with TruLens PR [#2526](https://github.com/truera/trulens/pull/2526), which adds `conversation_id` support for memory recall evaluation.
 
 ## Pre-built Databases
 
