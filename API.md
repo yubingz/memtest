@@ -97,8 +97,8 @@ class MemoryAdapter:
   },
   "versions": [
     {"version_id": "v1", "style": "客观叙述", "content": "..."},
-    {"version_id": "v2", "style": "主观视角", "content": "..."},
-    {"version_id": "v3", "style": "第三方转述", "content": "..."}
+    {"version_id": "v2", "style": "实体化补全", "content": "..."},
+    {"version_id": "v3", "style": "口语化简化", "content": "..."}
   ],
   "tags": ["存储测试", "中等", "5d"],
   "cluster_id": null,
