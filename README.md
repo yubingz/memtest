@@ -1,181 +1,165 @@
-# MemTest — Benchmark Generator for AI Memory Systems
+# MemTest — Benchmark Database Generator for AI Memory Systems
 
-Generate standardized evaluation databases for AI memory systems, from procedural synthesis or real-text extraction.
+Generate standardized, reproducible test databases for evaluating AI memory recall quality. Feed any text corpus → get structured memories + ground-truth queries with ID-based answers.
 
-**[中文文档](README_CN.md)**
+**[中文文档](README_CN.md)** | **[TruLens Integration](#trulens-integration)**
 
-## Architecture
+## Why MemTest?
+
+Current memory system evaluations are ad-hoc: hand-crafted queries, "feels right" assessments, proprietary benchmarks that can't be compared across systems. MemTest provides **deterministic, reproducible test databases** with controlled ground truth.
+
+Key insight: **evaluate retrieval, not generation**. Answers are memory ID sets (not text), so metrics are exact-match, deterministic, and comparable across any memory system.
+
+## Architecture (v4)
 
 ```
 memtest/
-├── llm_interface.py          # LLM abstraction layer (swappable backends)
-├── generator.py               # Benchmark generator (procedural / LLM-enhanced)
-├── knowledge_builder.py       # Build benchmarks from text (supports EN/CN/mixed)
-├── quality_check.py           # Data quality validation (10 automated checks)
-├── prompts/                   # Prompt templates (hot-reloadable)
-│   ├── memory_enhance.md      # Generate 3 expression variants per memory
-│   ├── query_generate.md      # Generate diverse query variants
-│   └── fact_extract.md        # Extract structured facts from text (EN/CN)
-├── benchmark/                 # Pre-built benchmark data from novels
-│   ├── four_novels_db.json    # Romance/Monkey/Kong/Three Kingdoms
-│   ├── hp_benchmark_db.json     # Harry Potter (English)
-│   └── tianlongbabu_db.json   # Demi-Gods & Semi-Devils
-├── TODO.md                    # Task backlog & changelog
-└── .env                       # API keys (see .env.example)
+├── pipeline_v4.py           # One-command pipeline
+├── extractor.py             # LLM-based memory extraction (only step using LLM)
+├── relation_builder.py       # Build alias groups + reasoning chains (pure rules)
+├── query_builder.py          # Generate queries from memory attributes (pure templates)
+├── alias_resolver.py         # Resolve character aliases across corpus
+├── time_resolver.py          # Normalize temporal expressions
+├── runner.py                  # Run evaluation against a memory system
+├── quality_check.py          # Data quality validation (10 automated checks)
+├── convert_to_trulens.py     # Convert to TruLens GroundTruthAgreement format
+├── schema.py                  # Data format definitions
+├── llm_interface.py          # LLM abstraction (DeepSeek / OpenAI compatible)
+│
+├── test_corpus*/             # Input: plain text corpora
+│   ├── test_corpus3/xiyouji.md
+│   ├── test_corpus4/sgyy_extended.md
+│   ├── test_corpus5/hongloumeng_extended.md
+│   └── test_corpus6/jinyong.md
+│
+└── output/                   # Generated test databases
+    ├── four_novels.json      # 131 memories, 1157 queries (4 novels)
+    ├── hongloumeng.json      # 23 memories, 155 queries
+    └── sgyy_full.json        # 17 memories, 173 queries
 ```
 
 ## Quick Start
 
-### 1. Procedural Generation (zero dependencies, instant)
+### 1. Install & Configure
 
 ```bash
-python generator.py              # 153 memories + 57 queries (~1s, zero deps)
-python generator.py --size=500   # custom scale
-python generator.py --full       # 10,000 memories
-```
-
-Output: `sample_db.json` (standard MemTest format)
-
-### 2. LLM-Enhanced Generation (more natural)
-
-```bash
-# Configure API key
+git clone https://github.com/yubingz/memtest.git
+cd memtest
 cp .env.example .env
-# Edit .env, add DEEPSEEK_API_KEY=...
-
-python generator.py --llm        # LLM generates memory text and queries
+# Edit .env, add DEEPSEEK_API_KEY=... (for memory extraction only)
 ```
 
-### 3. Extract from Real Text
+### 2. One-Command Pipeline
 
 ```bash
-python knowledge_builder.py ./my_books/ output.json
-python knowledge_builder.py ./my_books/ output.json --merge   # incremental append
-python knowledge_builder.py existing_db.json --clean           # clean existing database
+python pipeline_v4.py ./my_corpus/ -o test_db.json --name "My Test Database"
 ```
 
-Input: Directory of Markdown articles (supports English, Chinese, or mixed text)
-Output: Standard database with facts + chains + queries
+This runs: `extract → build relations → generate queries → assemble → validate`
 
-**Performance:** 3–5× batch LLM acceleration — extraction, classification, and query pre-parsing all use `batch_generate()` for parallel processing.
+Only the extraction step uses LLM. Query generation is **deterministic** (pure templates, no LLM).
 
-### 4. Quality Validation
+### 3. Custom Corpus
 
-```bash
-python quality_check.py sample_db.json
+Create a directory with `.md` or `.txt` files containing your text:
+
+```
+my_corpus/
+├── chapter1.md
+├── chapter2.md
+└── ...
 ```
 
-Output: 10-item automated check report covering chain/cluster/negative-sample integrity.
+MemTest extracts structured memories, resolves aliases, builds reasoning chains, and generates queries across 6 evaluation dimensions.
 
-### 5. Additional Tools
+## Evaluation Dimensions
 
-```bash
-python _gen_and_test.py            # Generate sample data + self-test
-```
+| Dimension | Count | Description |
+|-----------|-------|-------------|
+| **精确检索** | 303 | Person, location, time, event retrieval (5 query types) |
+| **组合检索** | 267 | Multi-attribute combination queries (person+location, person+time, etc.) |
+| **时序推理** | 157 | Before/after temporal reasoning chains |
+| **负样本** | 195 | Queries with no matching memories (should return empty) |
+| **跨版本/别名** | 146 | Alias-equivalent queries (e.g., "刘皇叔" = "刘备" = "玄德") |
 
-| Tool | Description |
-|------|-------------|
-| `_gen_and_test.py` | One-click generate + self-test |
-| `noesis_adapter.py` | NOESIS-II memory system adapter (evaluation integration example) |
-| `llm_evaluator.py` | LLM semantic evaluator (replaces exact-match with semantic relevance) |
-| `benchmark/` | Pre-built novel data: `four_novels_db.json`, `hp_benchmark_db.json`, `tianlongbabu_db.json` |
+*Stats from `four_novels.json` (131 memories, 4 novels)*
 
-## LLM Interface
+### Query Types
 
-All LLM calls go through `llm_interface.py` with a unified interface:
-
-| Adapter | Description | Usage |
-|---------|-------------|-------|
-| `deepseek` | DeepSeek API (default) | `create_llm("deepseek")` |
-| `openai` | Any OpenAI-compatible endpoint | `create_llm("openai", api_key="", base_url="", model="")` |
-| `mock` | Local mock (offline testing) | `create_llm("mock")` |
-
-Custom adapter:
-
-```python
-from llm_interface import LLMInterface
-
-class MyAdapter(LLMInterface):
-    def generate(self, prompt, max_tokens=3000, temperature=0, system_prompt=""):
-        # Your model invocation logic
-        return "..."
-```
-
-## Prompt System
-
-All prompts live in `prompts/` and support hot-reload:
-
-- `memory_enhance.md` — Generate 3 expression styles per event (**objective** / **subjective** / **third-party**)
-- `query_generate.md` — Generate diverse queries from memories (with few-shot examples)
-- `fact_extract.md` — Extract structured facts from long text (with chain detection), **supports EN/CN mixed text**
-
-Falls back to inline prompts when template files are absent.
+| Type | Templates | Example |
+|------|-----------|---------|
+| 人物检索 | 8 | "刘备的经历有哪些？" |
+| 地点检索 | 6 | "在涿县发生了什么？" |
+| 时间检索 | 6 | "早年有什么事件？" |
+| 事件检索 | 7 | "关于玉的事件有哪些？" |
+| 别名查询 | 5 | "刘皇叔是谁？" |
+| 组合检索 | 12+ | "刘备在涿县的记录" |
+| 组合推理 | auto | "...之前发生了什么？" |
 
 ## Data Format
 
-Standard MemTest JSON contains:
+### Memory
 
 ```json
 {
-  "database_info": { ... },
-  "memories": [
-    {
-      "memory_id": "MEM000001",
-      "category": "retrieval_test",
-      "difficulty": "medium",
-      "time": { "absolute": "...", "relative": "...", "fuzzy": "..." },
-      "location": { "city": "...", "place": "...", "landmark": "..." },
-      "person": { "name": "...", "identity": "..." },
-      "event": { "type": "...", "action": "...", "product": "..." },
-      "versions": [
-        { "version_id": "v1", "style": "objective", "content": "Zhang Wei purchased Maotai at Starbucks in Beijing, quantity 100" },
-        { "version_id": "v2", "style": "subjective", "content": "Zhang Wei recalled: I was at Starbucks in Beijing, thought the price was decent, so I bought Maotai..." },
-        { "version_id": "v3", "style": "third_party", "content": "Wang Fang said Zhang Wei bought Maotai over there in Beijing, about 100, not sure about the price" }
-      ],
-      "cluster_id": "CLUSTER0001",
-      "reasoning_chain": "CHAIN_causal_001",
-      "chain_position": 1,
-      "chain_prev": "",
-      "chain_next": "MEM000002"
-    }
-  ],
-  "queries": [
-    {
-      "query_id": "Q0001",
-      "query_text": "Zhang Wei's purchase records in Beijing",
-      "query_type": "composite",
-      "test_dimension": "composite_retrieval",
-      "expected_memory_ids": ["MEM000001"],
-      "expected_answer": "Zhang Wei purchased Maotai at Starbucks in Beijing, quantity 100",
-      "expected_time": "2026-05-26 14:30:00",
-      "is_negative": false
-    }
-  ]
+  "memory_id": "MEM000001",
+  "content": "刘备，字玄德，人称刘皇叔，是汉景帝之子中山靖王刘胜的后代。",
+  "person_list": ["刘备", "字玄德", "玄德", "刘皇叔", "中山靖王刘胜", "汉景帝"],
+  "location": {"city": "涿县", "place": "楼桑村"},
+  "time": {"relative": "早年"},
+  "event": {"type": "日常", "action": "出生"},
+  "source": "三国演义",
+  "alias_evidence": [{"entity": "刘备", "alias": "刘皇叔", "evidence": "人称刘皇叔"}]
 }
 ```
 
-## Documentation
+### Query
 
-| Document | Description |
-|----------|-------------|
-| [API.md](API.md) | MemoryAdapter interface + complete data format spec |
-| [GUIDE.md](GUIDE.md) / [GUIDE_CN.md](GUIDE_CN.md) | Detailed usage guide (architecture / evaluation dimensions / extensibility) |
-| [OPTIMIZATION.md](OPTIMIZATION.md) | Issue diagnosis & optimization roadmap |
-| [TODO.md](TODO.md) | Task backlog & changelog |
+```json
+{
+  "query_id": "Q0001",
+  "query_text": "刘备的经历有哪些？",
+  "query_type": "人物检索",
+  "test_dimension": "精确检索",
+  "expected_memory_ids": ["MEM000001", "MEM000002", "MEM000005"],
+  "is_negative": false,
+  "difficulty": "困难"
+}
+```
 
-## Security
+### ID-Based Evaluation
 
-- `.env` is in `.gitignore` — API keys are never accidentally committed
-- Path traversal protection: knowledge builder rejects system directories (`/etc`, `/root`, etc.)
-- JSON payload size limit: 2MB default cap
+Answers are **memory ID sets**, not text. This means:
+- **Exact match**: No ambiguity from text similarity
+- **Deterministic**: Same database → same results, always
+- **Comparable**: Any memory system can be evaluated against the same ground truth
 
-## Testing
+## TruLens Integration
+
+MemTest databases can be converted to TruLens `GroundTruthAgreement` format for use with TruLens evaluation pipelines:
 
 ```bash
-python -m py_compile generator.py
-python -m py_compile knowledge_builder.py
-python -m py_compile llm_interface.py
+python convert_to_trulens.py output/four_novels.json -o output/four_novels_trulens.json
 ```
+
+This generates a `golden_set` compatible with TruLens PR [#2526](https://github.com/truera/trulens/pull/2526), which adds `conversation_id` support for memory recall evaluation.
+
+## Pre-built Databases
+
+| Database | Memories | Queries | Sources |
+|----------|----------|---------|---------|
+| `four_novels.json` | 131 | 1157 | 三国演义 + 红楼梦 + 西游记 + 金庸5部 |
+| `hongloumeng.json` | 23 | 155 | 红楼梦 |
+| `sgyy_full.json` | 17 | 173 | 三国演义 |
+
+## Design Principles
+
+1. **Only extraction uses LLM** — query generation is pure template × attribute, deterministic and reproducible
+2. **ID-based answers** — no text similarity ambiguity, exact match evaluation
+3. **Self-selected corpus** — feed any text, pipeline auto-extracts facts and generates queries
+4. **Original text preservation** — memories stored as-is, no transformation at storage time
+5. **6 evaluation dimensions** — covering precision, combination, temporal reasoning, negatives, and alias equivalence
+6. **Alias-aware** — character aliases (e.g., 孙悟空=齐天大圣=美猴王) resolved and tested as equivalence groups
 
 ## License
 
