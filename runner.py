@@ -84,7 +84,7 @@ class MemoryTestSuite:
     # --------------------------------------------------------------------------
 
     def _run_v4(self, test_db: dict) -> dict:
-        """v4 评测：只传 memory_id + content 给被测系统"""
+        """v4 评测：只传 memory_id + content 给被测系统，但评测全部 6 个维度"""
         memories = test_db.get("memories", [])
         queries = test_db.get("queries", [])
 
@@ -103,6 +103,10 @@ class MemoryTestSuite:
         self.report = {
             "storage": self._eval_storage(stored, len(memories)),
             "retrieval": self._eval_retrieval_v4(queries),
+            "organization": self._eval_organization(memories),
+            "forgetting": self._eval_forgetting(memories),
+            "reasoning": self._eval_reasoning(memories, queries),
+            "deep_retrieval": self._eval_deep(memories, queries),
         }
         return self.report
 
@@ -157,16 +161,10 @@ class MemoryTestSuite:
         self.adapter.reset()
         stored = 0
         for m in memories:
-            versions = m.get("versions")
-            if versions:
-                for v in versions:
-                    meta = self._flatten_meta(m)
-                    self.adapter.store(v.get("content", ""), meta)
-                    stored += 1
-            else:
-                meta = self._flatten_meta(m)
-                self.adapter.store(m.get("content", ""), meta)
-                stored += 1
+            # v2: 存储原始 content，不传 versions（versions 用于查询生成，不用于存储）
+            meta = self._flatten_meta(m)
+            self.adapter.store(m.get("content", ""), meta)
+            stored += 1
 
         self.report = {
             "storage": self._eval_storage(stored, len(memories)),
@@ -398,12 +396,18 @@ class MemoryTestSuite:
     def _eval_deep(self, memories: list, queries: list) -> dict:
         deep_mems = [m for m in memories if m.get("category") == "长期记忆深度检索测试集"]
         if not deep_mems:
-            return {"near": "N/A", "mid": "N/A", "far": "N/A"}
+            return {
+                "depth_breakdown": {"near": "N/A", "mid": "N/A", "far": "N/A"},
+                "overall_retention": "N/A"
+            }
         result = {"near": [0, 0], "mid": [0, 0], "far": [0, 0]}
         for m in deep_mems[:30]:
             dist_map = {"近": "near", "中": "mid", "远": "far"}
             dist_raw = (m.get("depth") or {}).get("semantic_distance", "近")
             dist = dist_map.get(dist_raw, dist_raw)
+            # dist 必须是在 result 中定义的
+            if dist not in result:
+                dist = "near"  # 默认到 near
             versions = m.get("versions")
             q = versions[0].get("content", "") if versions else m.get("content", "")
             results = self.adapter.search(q, top_k=10)
@@ -411,7 +415,16 @@ class MemoryTestSuite:
             if m["memory_id"] in ids:
                 result[dist][0] += 1
             result[dist][1] += 1
-        return {d: round(c / t, 3) if t > 0 else 0 for d, (c, t) in result.items()}
+        
+        depth_breakdown = {d: round(c / t, 3) if t > 0 else 0 for d, (c, t) in result.items()}
+        total_found = sum(c for c, t in result.values())
+        total = sum(t for c, t in result.values())
+        overall_retention = round(total_found / total, 3) if total > 0 else 0
+        
+        return {
+            "depth_breakdown": depth_breakdown,
+            "overall_retention": overall_retention
+        }
 
 
 # ==============================================================================

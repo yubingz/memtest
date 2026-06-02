@@ -37,9 +37,11 @@ _patterns_sorted = sorted(RELATIVE_TIME_PATTERNS.keys(), key=len, reverse=True)
 _PATTERN_STR = "|".join(re.escape(k) for k in _patterns_sorted)
 RELATIVE_TIME_REGEX = re.compile("(" + _PATTERN_STR + ")")
 
-# 解析"X天后""X月后""X年后"等数字形式
+# 解析"X天后""X月后""X年后"等数字形式（支持阿拉伯数字和中文数字）
 _NUMBER_PATTERN = re.compile(
-    r"(?P<num>\d+)\s*(?P<unit>天|日|个月|月|年|周|季)?\s*(?P<dir>后|之前|以前|之后|以内|之内)?",
+    r"(?:(?P<num>\d+)|(?P<cnum>[一二两三四五六七八九十百千万亿零]+))"
+    r"\s*(?P<unit>天|日|个月|月|年|周|季)?"
+    r"\s*(?P<dir>后|之前|以前|之后|以内|之内)?",
     re.IGNORECASE
 )
 
@@ -47,9 +49,44 @@ _NUMBER_PATTERN = re.compile(
 CN_NUM_MAP = {
     "零": 0, "一": 1, "二": 2, "三": 3, "四": 4, "五": 5,
     "六": 6, "七": 7, "八": 8, "九": 9, "十": 10,
-    "百": 100, "千": 1000, "万": 10000,
+    "百": 100, "千": 1000, "万": 10000, "亿": 100000000,
     "两": 2, "几": 3, "数": 3, "多": 5, "半": 0.5,
 }
+
+
+def _parse_chinese_number(cnum: str) -> Optional[int]:
+    """解析中文数字字符串，支持简单复合数字如'十三'、'二十一'、'一百零五'"""
+    if not cnum:
+        return None
+    
+    # 单字直接查表
+    if len(cnum) == 1 and cnum in CN_NUM_MAP:
+        val = CN_NUM_MAP[cnum]
+        return int(val) if val == int(val) else None
+    
+    # 逐位解析（简化版，支持常见的组合）
+    result = 0
+    last_unit = 1
+    i = 0
+    while i < len(cnum):
+        char = cnum[i]
+        if char in CN_NUM_MAP:
+            val = CN_NUM_MAP[char]
+            if val >= 10:  # 是单位（十、百、千、万、亿）
+                if result == 0:
+                    result = val
+                else:
+                    result = result * val if last_unit < 10 else result + val
+                last_unit = val
+            else:
+                # 是个位数字
+                if last_unit >= 10 and i > 0:
+                    result += val
+                else:
+                    result = result * 10 + val if result > 0 else val
+        i += 1
+    
+    return result if result > 0 else None
 
 # ==============================================================================
 # 二、绝对时间解析（基础）
@@ -92,18 +129,33 @@ def parse_relative_days(text: str) -> Optional[int]:
         if pattern in text:
             return days
 
-    # 2. 正则匹配"数字+单位"形式
+    # 3. 正则匹配"数字+单位"形式（支持阿拉伯数字和中文数字）
     m = _NUMBER_PATTERN.search(text)
     if m:
         num_str = m.group("num")
+        cnum_str = m.group("cnum")
         unit = m.group("unit")
-        try:
-            num = int(num_str)
-        except ValueError:
+        dir_str = m.group("dir")
+        
+        if num_str:
+            try:
+                num = int(num_str)
+            except ValueError:
+                return None
+        elif cnum_str:
+            num = _parse_chinese_number(cnum_str)
+            if num is None:
+                return None
+        else:
             return None
+        
         unit_days = {"天": 1, "日": 1, "周": 7, "个月": 30, "月": 30, "年": 365}
         if unit and unit in unit_days:
-            return num * unit_days[unit]
+            days = num * unit_days[unit]
+            # 方向：后/之后/以后/以内/之内 = 正；前/之前/以前 = 负
+            if dir_str in ("前", "之前", "以前"):
+                return -days
+            return days
 
     return None
 
@@ -151,12 +203,14 @@ class TimeResolver:
             # 寻找最近的锚点
             ref_candidates = []
             if offset >= 0:
-                for j in anchored:
-                    if j < i:
-                        ref_candidates.append((j, abs(j - i)))
-            else:
+                # 发生在当前记忆之后 → 找文本顺序上后面的锚点（j > i）
                 for j in anchored:
                     if j > i:
+                        ref_candidates.append((j, abs(j - i)))
+            else:
+                # 发生在当前记忆之前 → 找文本顺序上前面的锚点（j < i）
+                for j in anchored:
+                    if j < i:
                         ref_candidates.append((j, abs(j - i)))
 
             if ref_candidates:

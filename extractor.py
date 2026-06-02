@@ -204,31 +204,32 @@ class MemoryExtractor:
         if "```" in text:
             text = text.rsplit("```", 1)[0]
         
+        text_stripped = text.strip()
         # 尝试直接解析
         try:
-            return _json.loads(text.strip())
+            return _json.loads(text_stripped)
         except (_json.JSONDecodeError, ValueError):
             pass
         
         # 找[...]或{...}
         for start_char, end_char in [('[', ']'), ('{', '}')]:
-            start = text.find(start_char)
-            end = text.rfind(end_char)
+            start = text_stripped.find(start_char)
+            end = text_stripped.rfind(end_char)
             if start >= 0 and end > start:
                 try:
-                    return _json.loads(text[start:end+1])
+                    return _json.loads(text_stripped[start:end+1])
                 except (_json.JSONDecodeError, ValueError):
                     pass
         
-        # 最后尝试：逐步缩小范围（处理截断）
+        # 最后尝试：逐步缩小范围（处理截断）—— 使用步长1避免跳过有效位置
         for start_char in ['[']:
-            start = text.find(start_char)
+            start = text_stripped.find(start_char)
             if start >= 0:
-                # 从end往前找，逐步尝试
-                for end_pos in range(len(text)-1, start, -10):
-                    if text[end_pos] in ']}':
+                # 从end往前找，逐步尝试（步长1，不跳过任何位置）
+                for end_pos in range(len(text_stripped)-1, start, -1):
+                    if text_stripped[end_pos] in ']}':
                         try:
-                            candidate = text[start:end_pos+1]
+                            candidate = text_stripped[start:end_pos+1]
                             # 如果截断，尝试补全
                             if candidate.count('[') > candidate.count(']'):
                                 candidate += ']'
@@ -237,6 +238,8 @@ class MemoryExtractor:
                             return _json.loads(candidate)
                         except (_json.JSONDecodeError, ValueError):
                             continue
+        
+        return {}
         
         return {}
 

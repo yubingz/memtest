@@ -339,8 +339,8 @@ def validate_database(db: Dict[str, Any]) -> Dict[str, Any]:
     if not info:
         warnings.append("缺少 database_info")
     else:
-        if info.get("version") != "3.0.0":
-            warnings.append(f"database_info.version 应为 3.0.0，当前为 {info.get('version', 'missing')}")
+        if info.get("version") != "4.0.0":
+            warnings.append(f"database_info.version 应为 4.0.0，当前为 {info.get('version', 'missing')}")
 
     # 3. 校验每条记忆
     memories = db.get("memories", [])
@@ -451,7 +451,7 @@ def finalize_database(
     """填充数据库元信息，返回最终数据库"""
     info = db.get("database_info", {})
     info["name"] = name
-    info["version"] = "3.0.0"
+    info["version"] = "4.0.0"
     info["description"] = description
     info["source"] = source
     info["total_memories"] = len(db.get("memories", []))
@@ -469,7 +469,7 @@ def finalize_database(
 def is_v4_format(db: Dict[str, Any]) -> bool:
     """检测数据库是否为 v4 格式"""
     info = db.get("database_info", {})
-    return info.get("version", "").startswith("3.") or info.get("version") == "3.0.0"
+    return info.get("version", "").startswith("4.") or info.get("version") == "4.0.0"
 
 
 def normalize_v2_memory(m: Dict[str, Any]) -> Dict[str, Any]:

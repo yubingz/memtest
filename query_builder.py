@@ -341,12 +341,13 @@ class QueryBuilder:
         # 9. 覆盖兜底：为没被命中的记忆补查询
         queries.extend(self._build_coverage_queries(memories, queries))
 
-        # 去重（按query_text）
+        # 去重（按 query_text + expected_memory_ids 联合去重）
         seen = set()
         unique = []
         for q in queries:
-            if q["query_text"] not in seen:
-                seen.add(q["query_text"])
+            key = (q["query_text"], tuple(sorted(q.get("expected_memory_ids", []))))
+            if key not in seen:
+                seen.add(key)
                 unique.append(q)
 
         # 重新编号 + 统一答案为ID集合
@@ -363,23 +364,6 @@ class QueryBuilder:
     def _next_id(self) -> str:
         self.query_counter += 1
         return f"Q{self.query_counter:04d}"
-
-    def _pad_to_min(self, queries: List[Dict], dim_name: str, memories: List[Dict], 
-                    build_one_fn) -> List[Dict]:
-        """如果某个维度查询数不够MIN_PER_DIM，用build_one_fn补充"""
-        if len(queries) >= self.min_per_dim:
-            return queries
-        
-        # 尝试从记忆中补充
-        random.shuffle(queries)  # 避免总是补前面
-        for m in memories:
-            if len(queries) >= self.min_per_dim:
-                break
-            extra = build_one_fn(m)
-            if extra and extra["query_text"] not in {q["query_text"] for q in queries}:
-                queries.append(extra)
-        
-        return queries
 
     # --------------------------------------------------------------------------
     # 各维度查询
@@ -862,15 +846,23 @@ class QueryBuilder:
         return queries
 
     def _build_negative_queries(self, memories: List[Dict]) -> List[Dict]:
-        """负样本查询"""
+        """负样本查询：使用硬编码列表，但排除语料中实际出现的名称"""
         queries = []
 
+        # 收集语料中实际出现的人名和地点
         used_names = set()
+        used_locations = set()
         for m in memories:
             for p in m.get("person_list", []):
                 used_names.add(p)
+            loc = m.get("location", {})
+            if isinstance(loc, dict):
+                city = loc.get("city", "")
+                if city:
+                    used_locations.add(city)
 
-        for name in NEGATIVE_PERSON_NAMES[:self.min_per_dim]:
+        # 生成人物负样本（排除语料中已出现的）
+        for name in NEGATIVE_PERSON_NAMES:
             if name not in used_names:
                 queries.append({
                     "query_id": self._next_id(),
@@ -882,18 +874,24 @@ class QueryBuilder:
                     "search_depth": "中层",
                     "is_negative": True,
                 })
+            if len(queries) >= self.min_per_dim:
+                break
 
-        for loc in NEGATIVE_LOCATIONS[:self.min_per_dim]:
-            queries.append({
-                "query_id": self._next_id(),
-                "query_text": f"在{loc}发生了什么？",
-                "query_type": "地点检索",
-                "test_dimension": "负样本",
-                "expected_memory_ids": [],
-                "difficulty": "中等",
-                "search_depth": "中层",
-                "is_negative": True,
-            })
+        # 生成地点负样本（排除语料中已出现的）
+        for loc in NEGATIVE_LOCATIONS:
+            if loc not in used_locations:
+                queries.append({
+                    "query_id": self._next_id(),
+                    "query_text": f"在{loc}发生了什么？",
+                    "query_type": "地点检索",
+                    "test_dimension": "负样本",
+                    "expected_memory_ids": [],
+                    "difficulty": "中等",
+                    "search_depth": "中层",
+                    "is_negative": True,
+                })
+            if len(queries) >= self.min_per_dim * 2:
+                break
 
         return queries
 

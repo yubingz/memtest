@@ -2,7 +2,7 @@
 """MemTest v4 组装器
 
 把 extractor → relation_builder → query_builder 的输出
-组装成标准 v2 格式的 test_db.json
+组装成标准 v4 格式的 test_db.json
 
 输出的数据库可直接用 runner.py 跑评测。
 """
@@ -12,30 +12,29 @@ import sys
 from datetime import datetime
 from typing import Any, Dict, List
 
+from schema import finalize_database, make_memory_id, make_query_id
+
 
 def assemble(memories: List[Dict[str, Any]], queries: List[Dict[str, Any]],
              name: str = "MemTest Database", source: str = "") -> Dict[str, Any]:
-    """组装成标准v2格式数据库"""
+    """组装成标准 v4 格式数据库"""
 
-    # 统计
-    categories = {}
-    for m in memories:
-        cat = m.get("category", "检索功能测试集")
-        categories[cat] = categories.get(cat, 0) + 1
+    # 确保所有记忆有 memory_id
+    for i, m in enumerate(memories):
+        if not m.get("memory_id"):
+            m["memory_id"] = make_memory_id(i + 1)
+
+    # 确保所有查询有 query_id
+    for i, q in enumerate(queries):
+        if not q.get("query_id"):
+            q["query_id"] = make_query_id(i + 1)
 
     db = {
-        "database_info": {
-            "name": name,
-            "version": "1.0.0",  # v2格式用1.0.0
-            "total_count": len(memories),
-            "categories": categories,
-            "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        },
         "memories": memories,
         "queries": queries,
     }
 
-    return db
+    return finalize_database(db, name=name, source=source)
 
 
 if __name__ == "__main__":

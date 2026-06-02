@@ -20,6 +20,13 @@ def convert(memtest_path: str, output_path: str | None = None):
     db_info = data.get("database_info", {})
     conversation_id = db_info.get("name", "unknown")
 
+    # 构建 memory_id -> content 映射
+    mem_id_to_content = {}
+    for m in data.get("memories", []):
+        mid = m.get("memory_id", "")
+        if mid:
+            mem_id_to_content[mid] = m.get("content", "")
+
     golden_set = []
     stats = {"total": 0, "negative": 0, "multi_answer": 0}
 
@@ -28,7 +35,7 @@ def convert(memtest_path: str, output_path: str | None = None):
         entry = {
             "query": q["query_text"],
             "expected_chunks": [
-                {"text": mid, "expect_score": 1}
+                {"text": mem_id_to_content.get(mid, mid), "expect_score": 1}
                 for mid in expected_ids
             ],
             "conversation_id": conversation_id,
@@ -53,7 +60,7 @@ def convert(memtest_path: str, output_path: str | None = None):
         "description": f"MemTest → TruLens conversion of {memtest_path}",
         "source": "MemTest v4",
         "conversation_id": conversation_id,
-        "num_memories": len(data["memories"]),
+        "num_memories": len(data.get("memories", [])),
         "golden_set": golden_set,
     }
 

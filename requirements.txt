@@ -1,4 +1,5 @@
 # MemTest dependencies
+# Python >= 3.10 required (uses `str | None` union syntax)
 # Install: pip install -r requirements.txt
 
 # Benchmarks (optional — only needed for TF-IDF / embedding baselines)
@@ -10,4 +11,5 @@ jieba
 # sentence-transformers
 
 # Optional: for LLM-powered knowledge builder
-# deepseek-sdk or openai
+# Install one of: openai, deepseek-sdk, or use the built-in urllib adapter
+# openai>=1.0

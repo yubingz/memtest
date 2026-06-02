@@ -192,7 +192,17 @@ class RelationBuilder:
                 chain_id += 1
                 chain_name = f"CHAIN_{chain_id:04d}"
 
+                # 按时间顺序排序（如果有时序信息）
+                chain.sort(key=lambda m: (
+                    m.get("time_absolute", "") or "",
+                    m.get("time_relative", "") or "",
+                    m.get("memory_id", "")
+                ))
+
                 for i, m in enumerate(chain):
+                    # 如果已属于另一条链，跳过（避免覆盖）
+                    if m.get("reasoning_chain") and m.get("reasoning_chain") != chain_name:
+                        continue
                     m["reasoning_chain"] = chain_name
                     m["chain_position"] = i + 1
                     m["chain_relation"] = "时序"
@@ -261,39 +271,89 @@ class RelationBuilder:
     # --------------------------------------------------------------------------
 
     def _generate_versions(self, memories: List[Dict[str, Any]]) -> None:
-        """为每条记忆生成3个风格版本"""
+        """为每条记忆生成3个语义差异化的风格版本
+
+        版本差异化原则：
+        - v1 客观叙述：原文（标准书面语）
+        - v2 实体化：把代词、省略的主体显式补全，把隐含实体提取到文本中
+        - v3 口语化：简化、口语化、使用日常词汇替代书面语
+        """
         for m in memories:
-            content = m["content"]
+            content = m.get("content", "")
+            if not content:
+                continue
+
+            # 提取元数据用于版本生成
+            persons = []
+            if isinstance(m.get("person"), dict):
+                persons = [m["person"].get("name", "")]
+            elif isinstance(m.get("person"), list):
+                persons = [p for p in m["person"] if p]
+            elif isinstance(m.get("person"), str):
+                persons = [m["person"]]
+
+            loc = ""
+            if isinstance(m.get("location"), dict):
+                loc = m["location"].get("city", "")
+            elif isinstance(m.get("location"), str):
+                loc = m["location"]
+
+            time_abs = ""
+            if isinstance(m.get("time"), dict):
+                time_abs = m["time"].get("absolute", "")
 
             # v1: 客观叙述（原文）
             v1 = content
 
-            # v2: 详细描述（补充元数据）
-            parts = []
-            time_info = m.get("time", {})
-            if isinstance(time_info, dict):
-                if time_info.get("absolute"):
-                    parts.append(time_info["absolute"])
-            person_info = m.get("person", {})
-            if isinstance(person_info, dict) and person_info.get("name"):
-                parts.append(person_info["name"])
-            loc_info = m.get("location", {})
-            if isinstance(loc_info, dict) and loc_info.get("city"):
-                parts.append(f"在{loc_info['city']}")
-            parts.append(content)
-            v2 = "，".join(parts) if parts else content
+            # v2: 实体化（补全代词和省略主体，显式嵌入元数据）
+            v2 = content
+            main_person = persons[0] if persons else ""
+            # 尝试补全句子开头的主语（如果原文省略了）
+            if main_person and not v2.startswith(main_person):
+                # 简单判断：如果内容不以人名开头，在前面加上
+                v2 = f"{main_person}：{v2}"
+            if time_abs and time_abs not in v2:
+                v2 = f"【{time_abs}】{v2}"
+            if loc and loc not in v2:
+                v2 = f"【地点：{loc}】{v2}"
 
-            # v3: 口语化（简化）
+            # v3: 口语化（简化句式、替换书面语、增加口语词）
             v3 = content
-            # 去掉"的"字句等书面语
-            v3 = re.sub(r"乃是", "是", v3)
-            v3 = re.sub(r"亦即", "就是", v3)
-            v3 = re.sub(r"便$", "了", v3)
+            # 替换常见书面语
+            replacements = [
+                (r"乃是", "是"),
+                (r"亦即", "就是"),
+                (r"便", "就"),
+                (r"之", "的"),
+                (r"吾", "我"),
+                (r"汝", "你"),
+                (r"彼时", "那时候"),
+                (r"遂", "于是"),
+                (r"乃", "于是"),
+                (r"然", "但是"),
+                (r"因", "因为"),
+                (r"其", "他"),
+                (r"此人", "这个人"),
+                (r"此地", "这个地方"),
+                (r"此事", "这件事"),
+            ]
+            for pattern, repl in replacements:
+                v3 = re.sub(pattern, repl, v3)
+            # 去掉部分连接词让句子更口语化
+            v3 = re.sub(r"，此外", "，还有", v3)
+            v3 = re.sub(r"，然而", "，不过", v3)
+            v3 = re.sub(r"，因此", "，所以", v3)
+            # 如果内容较长，截断到 80% 模拟"只记得大概"
+            if len(v3) > 30:
+                v3 = v3[:int(len(v3) * 0.85)]
+                # 确保不以半截词结尾
+                if v3[-1] not in "。！？；，":
+                    v3 += "…"
 
             m["versions"] = [
                 {"version_id": "v1", "style": "客观叙述", "content": v1},
-                {"version_id": "v2", "style": "主观视角", "content": v2},
-                {"version_id": "v3", "style": "第三方转述", "content": v3},
+                {"version_id": "v2", "style": "实体化补全", "content": v2},
+                {"version_id": "v3", "style": "口语化简化", "content": v3},
             ]
 
     # --------------------------------------------------------------------------
@@ -301,7 +361,11 @@ class RelationBuilder:
     # --------------------------------------------------------------------------
 
     def _assign_categories(self, memories: List[Dict[str, Any]]) -> None:
-        """分配测试集category和difficulty"""
+        """分配测试集category和difficulty
+
+        优先级：遗忘 > 深度 > 推理 > 整理 > 检索
+        每条记忆只分配一个category，避免串行覆盖。
+        """
         categories = [
             "存储正确性测试集",
             "检索功能测试集",
@@ -311,20 +375,17 @@ class RelationBuilder:
             "长期记忆深度检索测试集",
         ]
 
-        for i, m in enumerate(memories):
-            # 按属性分配category
-            if m.get("decay", {}).get("level"):
-                if m["decay"]["level"] in ("低频记忆", "偶发事件"):
-                    m["category"] = "遗忘功能测试集"
-            if m.get("cluster_id"):
-                m["category"] = "记忆整理测试集"
-            if m.get("reasoning_chain"):
-                m["category"] = "逻辑推理测试集"
+        for m in memories:
+            # 按优先级分配category（优先级高的先检查）
             if m.get("depth"):
                 m["category"] = "长期记忆深度检索测试集"
-
-            # 默认
-            if "category" not in m or m["category"] == "检索功能测试集":
+            elif m.get("reasoning_chain"):
+                m["category"] = "逻辑推理测试集"
+            elif m.get("decay", {}).get("level") in ("低频记忆", "偶发事件"):
+                m["category"] = "遗忘功能测试集"
+            elif m.get("cluster_id"):
+                m["category"] = "记忆整理测试集"
+            else:
                 m["category"] = "检索功能测试集"
 
             # difficulty
