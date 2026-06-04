@@ -76,13 +76,13 @@ MemTest extracts structured memories, resolves aliases, builds reasoning chains,
 
 | Dimension | Count | Description |
 |-----------|-------|-------------|
-| **精确检索** | 100 | 人物、地点、时间、事件、别名检索（5 query types） |
-| **组合检索** | 100 | 多属性组合查询（人物+地点、人物+时间等） |
-| **时序推理** | 100 | 基于时序链的 before/after 推理查询 |
-| **负样本** | 100 | 无匹配记忆的查询（应返回空） |
-| **跨版本/别名** | 100 | 别名等价查询（如"刘皇叔" = "刘备" = "玄德"） |
-| **组合推理** | 100 | 多条件跨维度推理 |
-| **总计** | **700** | 6大维度，全覆盖 |
+| **Precision Retrieval** | 100 | Person, location, time, event, alias retrieval |
+| **Combination Retrieval** | 100 | Multi-attribute combination queries (person+location, person+time, etc.) |
+| **Temporal Reasoning** | 100 | Before/after temporal reasoning chains |
+| **Negative Samples** | 100 | Queries with no matching memories (should return empty) |
+| **Alias/Version** | 100 | Alias-equivalent queries (e.g., "刘皇叔" = "刘备" = "玄德") |
+| **Combined Reasoning** | 100 | Multi-condition cross-dimension reasoning |
+| **Total** | **700** | 6 dimensions, full coverage |
 
 *Stats from `v4_full.json` (5736 memories, 4 novels)*
 
@@ -90,13 +90,13 @@ MemTest extracts structured memories, resolves aliases, builds reasoning chains,
 
 | Type | Templates | Example |
 |------|-----------|---------|
-| 人物检索 | 8 | "刘备的经历有哪些？" |
-| 地点检索 | 6 | "在涿县发生了什么？" |
-| 时间检索 | 6 | "早年有什么事件？" |
-| 事件检索 | 7 | "关于玉的事件有哪些？" |
-| 别名查询 | 5 | "刘皇叔是谁？" |
-| 组合检索 | 12+ | "刘备在涿县的记录" |
-| 组合推理 | auto | "...之前发生了什么？" |
+| Person Retrieval | 8 | "What are Liu Bei's experiences?" |
+| Location Retrieval | 6 | "What happened in Zhuoxian?" |
+| Time Retrieval | 6 | "What events happened in the early years?" |
+| Event Retrieval | 7 | "What events are related to jade?" |
+| Alias Query | 5 | "Who is Liu Huangshu?" |
+| Combination Retrieval | 12+ | "Records of Liu Bei in Zhuoxian" |
+| Combined Reasoning | auto | "What happened before ...?" |
 
 ## Data Format
 
