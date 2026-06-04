@@ -24,7 +24,7 @@ EXTRACT_PROMPT = """从以下文本中提取所有有意义的记忆片段。
 
 每条记忆包含以下字段：
 - content: 原文片段（尽量保留原文措辞，30-150字）
-- person: 出现的人物姓名列表（包括别名，如"凤姐"也要列出来）
+- person: 出现的人物姓名列表（包括别名和称呼，如"凤姐"也要列出来）
 - time: 时间信息，格式 {"absolute": "具体日期或null", "relative": "相对时间词或null", "fuzzy": "模糊时间词或null"}
 - location: 地点（字符串或null）
 - event_type: 事件类型标签（如：交易/会议/决策/日常/冲突/情感/技术/发现）
@@ -32,11 +32,11 @@ EXTRACT_PROMPT = """从以下文本中提取所有有意义的记忆片段。
 - event_product: 涉及的事物（如：通灵宝玉/金锁/琉璃盏）
 - dynasty: 朝代或时期（如：东晋/贞观年间），无则为null
 - source: 来源作品名或null
-- alias_evidence: 如果文本中有别名/等价称呼的证据（如"人称凤姐"、"又名XX"、"即XX"），列出所有等价对，格式 [{"entity": "全称", "alias": "别名", "evidence": "原文证据"}]
+- alias_evidence: 人物的名字和称呼（如"宋江"、"宋公明"、"宋押司"、"及时雨"）。注意：不包括代称（如"我"、"你"、"洒家"、"小可"、"小人"、"阿哥"、"这个"）。如果文本中有别名证据，列出等价对，格式 [{"entity": "全称", "alias": "称呼", "evidence": "原文证据"}]
 
 注意：
 1. person 必须包含文中出现的所有人名，包括简称（如"黛玉"和"林黛玉"都要列）
-2. 别名证据要从原文找，不要用外部知识
+2. alias_evidence 只提取名字和称呼，不要提取代称（我/你/他/洒家/小可/小人/阿哥/这个等）
 3. content 保留原文，不要改写
 4. 一段话如果包含多个独立事件，拆成多条记忆
 
@@ -175,8 +175,10 @@ class MemoryExtractor:
 
         for i, chunk in enumerate(chunks):
             prompt = f"{EXTRACT_PROMPT}\n\n=== 文本 ===\n{chunk}\n\n=== 输出 ==="
+            print(f"  [Chunk {i+1}/{len(chunks)}] Prompt size: {len(prompt)} chars, chunk: {len(chunk)} chars", flush=True)
             # 用generate而不是generate_json，手动解析更robust
             raw_text = self.llm.generate(prompt, max_tokens=4000)
+            print(f"  [Chunk {i+1}/{len(chunks)}] API response: {len(raw_text)} chars", flush=True)
             raw = self._robust_json_parse(raw_text)
 
             if isinstance(raw, list):
@@ -192,6 +194,10 @@ class MemoryExtractor:
                 mem = self._parse_llm_item(item)
                 if mem and mem.get("content"):
                     all_memories.append(mem)
+
+            # Progress logging
+            if (i + 1) % 10 == 0 or i == len(chunks) - 1:
+                print(f"  Extracted chunk {i+1}/{len(chunks)} -> {len(all_memories)} memories total", flush=True)
 
         return all_memories
 
@@ -428,10 +434,53 @@ class MemoryExtractor:
                 if len(pl) > 1:
                     m["person"]["partner_name"] = pl[1]
 
+        # 过滤代称（不是人物名字，而是指代或自称）
+        PRONOUNS = {"我", "你", "他", "她", "它", "我们", "你们", "他们", "她们", "它们", "自己", "本人", "俺", "咱", "洒家", "小可", "小人", "在下", "鄙人", "愚", "不才", "不肖", "奴才", "老奴", "臣", "本官", "本府", "本县", "老夫", "老身", "妾", "妾身", "奴家", "奴婢", "小的", "小的们", "阿哥", "大姐", "这个", "那个", "这位", "那位", "此人", "那人", "这厮", "那厮", "这汉子", "那汉子", "这和尚", "那和尚", "这道士", "那道士", "这先生", "那先生", "这妇人", "那妇人", "这女子", "那女子", "这老儿", "那老儿", "这老者", "那老者", "这公公", "那公公", "这婆婆", "那婆婆", "这妈妈", "那妈妈", "这小二", "那小二", "这店家", "那店家", "这主人", "那主人", "这庄客", "那庄客", "这庄主", "那庄主", "这员外", "那员外"}
+        
+        # 过滤官名/身份（单独出现是官名，与姓名组合才是别名，如"鲁提辖"保留，"提辖"过滤）
+        PURE_TITLES = {"提辖", "知县", "都头", "押司", "教头", "制使", "都监", "巡检", "县尉", "指挥", "统制", "将军", "元帅", "先锋", "参谋", "节级", "孔目", "节帅", "节度使", "观察", "防御使", "团练使", "刺史", "太守", "知府", "知州", "通判", "推官", "主簿", "县丞", "典史", "捕快", "差役", "牢头", "狱卒", "仵作", "门子", "管家", "账房", "师爷", "员外", "财主", "地主", "庄主", "寨主", "大王", "头领", "首领", "喽啰", "清客", "幕宾", "门客", "宾客", "客人", "旅客", "过客", "游人", "闲人", "高人", "异人", "奇人", "怪人", "强人", "好汉", "壮士", "勇士", "武夫", "武士", "剑客", "刀客", "枪手", "弓手", "弩手", "炮手", "骑手", "马夫", "车夫", "船夫", "艄公", "渔夫", "猎户", "樵夫", "农夫", "牧童", "书童", "丫鬟", "侍女", "婢女", "仆妇", "老妈", "老嬷", "嬷嬷", "乳母", "奶妈", "养娘", "干娘", "姨娘", "婶娘", "伯娘", "姑母", "姑奶奶", "舅母", "舅奶奶", "姨母", "姨奶奶", "婶母", "伯母", "叔母", "嫂嫂", "弟妹", "弟媳", "侄媳", "侄媳妇", "孙媳", "孙媳妇", "外孙媳", "外甥媳", "表嫂", "表弟媳", "堂弟媳", "堂弟媳妇"}
+        
+        # 过滤通用占位名（如"张三"作为具体人物别名通常是错误）
+        GENERIC_NAMES = {"张三", "李四", "王五", "赵六", "钱七", "孙八", "周九", "吴十", "郑十一", "王十二", "某人", "有人", "那人", "这人"}
+        
+        def _is_valid_alias(entity: str, alias: str, person_list: list) -> bool:
+            """校验别名是否有效：不是代称、不是纯官名、不是通用占位名"""
+            e, a = (entity or "").strip(), (alias or "").strip()
+            if not e or not a:
+                return False
+            if e in PRONOUNS or a in PRONOUNS:
+                return False
+            if e in PURE_TITLES or a in PURE_TITLES:
+                return False
+            if e in GENERIC_NAMES or a in GENERIC_NAMES:
+                return False
+            return True
+        
+        for m in deduped:
+            alias_evidence = m.get("alias_evidence", [])
+            filtered = []
+            person_list = m.get("person_list", [])
+            for ae in alias_evidence:
+                entity = (ae.get("entity") or "").strip()
+                alias = (ae.get("alias") or "").strip()
+                if _is_valid_alias(entity, alias, person_list):
+                    filtered.append(ae)
+            m["alias_evidence"] = filtered
+
         # 规则检测别名（补充LLM可能遗漏的）
         for m in deduped:
             if not m.get("alias_evidence"):
                 m["alias_evidence"] = self._extract_aliases_rule(m["content"])
+                # 再次过滤规则提取的别名
+                alias_evidence = m.get("alias_evidence", [])
+                filtered = []
+                person_list = m.get("person_list", [])
+                for ae in alias_evidence:
+                    entity = (ae.get("entity") or "").strip()
+                    alias = (ae.get("alias") or "").strip()
+                    if _is_valid_alias(entity, alias, person_list):
+                        filtered.append(ae)
+                m["alias_evidence"] = filtered
 
         # 重新编号
         for i, m in enumerate(deduped):

@@ -310,8 +310,17 @@ class QueryBuilder:
         self.query_counter = 0
         self.min_per_dim = min_per_dim
 
-    def build(self, memories: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-        """从记忆列表生成查询"""
+    def build(self, memories: List[Dict[str, Any]], max_queries: int = None) -> List[Dict[str, Any]]:
+        """从记忆列表生成查询
+        
+        Args:
+            memories: 记忆列表
+            max_queries: 若指定，则查询与记忆独立，固定总量（方案A）
+        """
+        if max_queries is not None and max_queries > 0:
+            return self._build_independent(memories, max_queries)
+        
+        # 原有逻辑：记忆驱动，自动比例
         queries = []
 
         # 1. 人物检索
@@ -341,6 +350,147 @@ class QueryBuilder:
         # 9. 覆盖兜底：为没被命中的记忆补查询
         queries.extend(self._build_coverage_queries(memories, queries))
 
+        return self._finalize_queries(queries)
+
+    def _build_independent(self, memories: List[Dict[str, Any]], max_queries: int, min_per_dim: int = 100) -> List[Dict[str, Any]]:
+        """方案A：查询与记忆独立，7维度保底分配
+        
+        7个考察维度，每个至少 min_per_dim 条（默认100）。
+        总查询 = max_queries（默认700=7x100）。
+        优先满足各维度保底，剩余按比例分配。
+        """
+        queries = []
+        
+        # 7个维度定义
+        dim_builders = [
+            ("person", self._dim_person),
+            ("location", self._dim_location),
+            ("time", self._dim_time),
+            ("event", self._dim_event),
+            ("combined", self._dim_combined),
+            ("alias", self._dim_alias),
+            ("negative", self._dim_negative),
+        ]
+        
+        # 收集各维度数据
+        dim_data = {
+            "person": self._collect_persons(memories),
+            "location": self._collect_locations(memories),
+            "time": self._collect_times(memories),
+            "event": self._collect_events(memories),
+            "combined": self._collect_combined(memories),
+            "alias": self._collect_aliases(memories),
+            "negative": None,
+        }
+        
+        # 计算各维度可用数量
+        available = {}
+        for name, _ in dim_builders:
+            if name == "negative":
+                available[name] = len(NEGATIVE_PERSON_NAMES) + len(NEGATIVE_LOCATIONS)
+            else:
+                available[name] = len(dim_data.get(name, {}))
+        
+        # 保底分配：每个维度至少 min_per_dim，但不超过可用数量
+        quotas = {}
+        for name, _ in dim_builders:
+            quotas[name] = min(min_per_dim, available.get(name, 0))
+        
+        total_quota = sum(quotas.values())
+        
+        # 如果 max_queries 更大，剩余按比例追加
+        remaining = max_queries - total_quota
+        if remaining > 0:
+            expandable = {k: v for k, v in available.items() if quotas[k] < v}
+            if expandable:
+                total_expandable = sum(v - quotas[k] for k, v in expandable.items())
+                for name in expandable:
+                    extra = int(remaining * (available[name] - quotas[name]) / total_expandable)
+                    quotas[name] += extra
+                # 余数加到人物（通常最丰富）
+                used = sum(quotas.values())
+                if used < max_queries:
+                    quotas["person"] += (max_queries - used)
+        
+        # 各维度生成查询
+        for name, builder_func in dim_builders:
+            items = dim_data.get(name)
+            dim_queries = builder_func(items, quotas.get(name, 0), memories)
+            queries.extend(dim_queries)
+        
+        return self._finalize_queries(queries[:max_queries])
+
+    def _collect_persons(self, memories: List[Dict]) -> Dict[str, List[str]]:
+        """收集人名->记忆ID映射，按出现频率排序"""
+        person_map: Dict[str, List[str]] = defaultdict(list)
+        for m in memories:
+            for p in m.get("person_list", []):
+                person_map[p].append(m["memory_id"])
+        # 去重
+        return {k: list(dict.fromkeys(v)) for k, v in sorted(person_map.items(), key=lambda x: -len(x[1]))}
+
+    def _collect_locations(self, memories: List[Dict]) -> Dict[str, List[str]]:
+        """收集地点->记忆ID映射"""
+        loc_map: Dict[str, List[str]] = defaultdict(list)
+        for m in memories:
+            loc = m.get("location", {})
+            city = loc.get("city", "") if isinstance(loc, dict) else str(loc) if loc else ""
+            if city:
+                loc_map[city].append(m["memory_id"])
+        return {k: list(dict.fromkeys(v)) for k, v in sorted(loc_map.items(), key=lambda x: -len(x[1]))}
+
+    def _collect_times(self, memories: List[Dict]) -> Dict[str, List[str]]:
+        """收集时间->记忆ID映射"""
+        time_map: Dict[str, List[str]] = defaultdict(list)
+        for m in memories:
+            time_info = m.get("time", {})
+            if not isinstance(time_info, dict):
+                continue
+            for key in ["relative", "fuzzy", "absolute"]:
+                val = time_info.get(key, "")
+                if val:
+                    time_map[str(val)].append(m["memory_id"])
+                    break
+        return {k: list(dict.fromkeys(v)) for k, v in sorted(time_map.items(), key=lambda x: -len(x[1]))}
+
+    def _collect_events(self, memories: List[Dict]) -> Dict[str, List[str]]:
+        """收集事件->记忆ID映射"""
+        evt_map: Dict[str, List[str]] = defaultdict(list)
+        for m in memories:
+            evt = m.get("event", {})
+            if not isinstance(evt, dict):
+                continue
+            for key in ["product", "type", "action"]:
+                val = evt.get(key, "")
+                if val:
+                    evt_map[str(val)].append(m["memory_id"])
+                    break
+        return {k: list(dict.fromkeys(v)) for k, v in sorted(evt_map.items(), key=lambda x: -len(x[1]))}
+
+    def _collect_aliases(self, memories: List[Dict]) -> Dict[str, List[str]]:
+        """收集别名->记忆ID映射"""
+        alias_map: Dict[str, List[str]] = defaultdict(list)
+        # 从 alias_groups 获取
+        groups = self.alias_groups.groups()
+        for name, group in groups.items():
+            # 获取该组对应的记忆ID
+            for mem in memories:
+                content = mem.get("content", "")
+                for alias in group:
+                    if alias in content:
+                        alias_map[name].append(mem["memory_id"])
+                        break
+        # 去重
+        return {k: list(dict.fromkeys(v)) for k, v in sorted(alias_map.items(), key=lambda x: -len(x[1]))}
+
+    def _sample_items(self, items: Dict[str, List[str]], n: int) -> List[Tuple[str, List[str]]]:
+        """从属性映射中采样 n 个，优先高频，不重复"""
+        all_items = list(items.items())
+        # 取前 n 个（已按频率排序）
+        return all_items[:n]
+
+    def _finalize_queries(self, queries: List[Dict]) -> List[Dict]:
+        """去重、编号、格式化"""
         # 去重（按 query_text + expected_memory_ids 联合去重）
         seen = set()
         unique = []
@@ -349,13 +499,217 @@ class QueryBuilder:
             if key not in seen:
                 seen.add(key)
                 unique.append(q)
-
-        # 重新编号 + 统一答案为ID集合
+        
+        # 重新编号
         for i, q in enumerate(unique):
             q["query_id"] = f"Q{(i+1):04d}"
             q["expected_answer"] = ", ".join(q["expected_memory_ids"]) if q["expected_memory_ids"] else ""
-
+        
         return unique
+
+    # ==========================================================================
+    # 7维度独立查询生成器（方案A）
+    # ==========================================================================
+
+    def _collect_combined(self, memories: List[Dict]) -> Dict[Tuple[str, str], List[str]]:
+        """收集组合属性对：(人物, 地点) -> 记忆ID列表"""
+        combined_map: Dict[Tuple[str, str], List[str]] = defaultdict(list)
+        for m in memories:
+            loc = m.get("location", {})
+            city = loc.get("city", "") if isinstance(loc, dict) else str(loc) if loc else ""
+            for p in m.get("person_list", []):
+                if city and p:
+                    combined_map[(p, city)].append(m["memory_id"])
+        # 去重并按频率排序
+        result = {}
+        for k, v in sorted(combined_map.items(), key=lambda x: -len(x[1])):
+            result[k] = list(dict.fromkeys(v))
+        return result
+
+    def _dim_person(self, items: Dict[str, List[str]], quota: int, memories: List[Dict]) -> List[Dict]:
+        """人物检索维度"""
+        if not items or quota <= 0:
+            return []
+        queries = []
+        sampled = self._sample_items(items, quota)
+        for name, mem_ids in sampled:
+            template = self.rng.choice(PERSON_TEMPLATES)
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": template.format(name=name),
+                "query_type": "人物检索",
+                "test_dimension": "精确检索",
+                "expected_memory_ids": mem_ids,
+                "difficulty": "中等" if len(mem_ids) < 4 else "困难",
+                "search_depth": "中层",
+                "is_negative": False,
+            })
+        return queries
+
+    def _dim_location(self, items: Dict[str, List[str]], quota: int, memories: List[Dict]) -> List[Dict]:
+        """地点检索维度"""
+        if not items or quota <= 0:
+            return []
+        queries = []
+        sampled = self._sample_items(items, quota)
+        for loc, mem_ids in sampled:
+            template = self.rng.choice(LOCATION_TEMPLATES)
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": template.format(location=loc),
+                "query_type": "地点检索",
+                "test_dimension": "精确检索",
+                "expected_memory_ids": mem_ids,
+                "difficulty": "中等" if len(mem_ids) < 4 else "困难",
+                "search_depth": "中层",
+                "is_negative": False,
+            })
+        return queries
+
+    def _dim_time(self, items: Dict[str, List[str]], quota: int, memories: List[Dict]) -> List[Dict]:
+        """时间检索维度"""
+        if not items or quota <= 0:
+            return []
+        queries = []
+        sampled = self._sample_items(items, quota)
+        for time_val, mem_ids in sampled:
+            template = self.rng.choice(TIME_TEMPLATES)
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": template.format(time=time_val),
+                "query_type": "时间检索",
+                "test_dimension": "精确检索",
+                "expected_memory_ids": mem_ids,
+                "difficulty": "中等" if len(mem_ids) < 3 else "困难",
+                "search_depth": "中层",
+                "is_negative": False,
+            })
+        return queries
+
+    def _dim_event(self, items: Dict[str, List[str]], quota: int, memories: List[Dict]) -> List[Dict]:
+        """事件检索维度"""
+        if not items or quota <= 0:
+            return []
+        queries = []
+        sampled = self._sample_items(items, quota)
+        templates = EVENT_TEMPLATES_PRODUCT + EVENT_TEMPLATES_TYPE
+        for val, mem_ids in sampled:
+            template = self.rng.choice(templates)
+            var_name = "product" if "{product}" in template else "event_type"
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": template.format(**{var_name: val}),
+                "query_type": "事件检索",
+                "test_dimension": "精确检索",
+                "expected_memory_ids": mem_ids,
+                "difficulty": "中等" if len(mem_ids) < 4 else "困难",
+                "search_depth": "中层",
+                "is_negative": False,
+            })
+        return queries
+
+    def _dim_combined(self, items: Dict[Tuple[str, str], List[str]], quota: int, memories: List[Dict]) -> List[Dict]:
+        """组合检索维度（人物+地点）"""
+        if not items or quota <= 0:
+            return []
+        queries = []
+        sampled = list(items.items())[:quota]
+        for (person, loc), mem_ids in sampled:
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": f"{person}在{loc}的记录",
+                "query_type": "组合检索",
+                "test_dimension": "组合推理",
+                "expected_memory_ids": mem_ids,
+                "difficulty": "困难" if len(mem_ids) < 2 else "困难",
+                "search_depth": "深层",
+                "is_negative": False,
+            })
+        return queries
+
+    def _dim_alias(self, items: Dict[str, List[str]], quota: int, memories: List[Dict]) -> List[Dict]:
+        """别名查询维度"""
+        if not items or quota <= 0:
+            return []
+        queries = []
+        sampled = self._sample_items(items, quota)
+        for alias, mem_ids in sampled:
+            template = self.rng.choice(ALIAS_TEMPLATES)
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": template.format(alias=alias),
+                "query_type": "别名查询",
+                "test_dimension": "精确检索",
+                "expected_memory_ids": mem_ids,
+                "difficulty": "中等",
+                "search_depth": "中层",
+                "is_negative": False,
+            })
+        return queries
+
+    def _dim_negative(self, items: Any, quota: int, memories: List[Dict]) -> List[Dict]:
+        """负样本维度"""
+        if quota <= 0:
+            return []
+        return self._build_negative_queries(memories, max_count=quota)
+
+    def _build_negative_queries(self, memories: List[Dict], max_count: int = None) -> List[Dict]:
+        """生成负样本（可限制数量）"""
+        # ... 原有逻辑，但支持 max_count
+        queries = []
+        
+        # 人物负样本
+        used_names = set()
+        for m in memories:
+            for p in m.get("person_list", []):
+                used_names.add(p)
+        
+        neg_candidates = [n for n in NEGATIVE_PERSON_NAMES if n not in used_names]
+        self.rng.shuffle(neg_candidates)
+        
+        person_neg_count = max_count // 2 if max_count else 100
+        for name in neg_candidates[:person_neg_count]:
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": f"{name}做了什么？",
+                "query_type": "负样本",
+                "test_dimension": "负样本",
+                "expected_memory_ids": [],
+                "expected_answer": "",
+                "difficulty": "简单",
+                "search_depth": "浅层",
+                "is_negative": True,
+            })
+        
+        # 地点负样本
+        used_locs = set()
+        for m in memories:
+            loc = m.get("location", {})
+            city = loc.get("city", "") if isinstance(loc, dict) else str(loc) if loc else ""
+            if city:
+                used_locs.add(city)
+        
+        neg_locs = [l for l in NEGATIVE_LOCATIONS if l not in used_locs]
+        self.rng.shuffle(neg_locs)
+        
+        loc_neg_count = max_count // 2 if max_count else 200
+        for loc in neg_locs[:loc_neg_count]:
+            queries.append({
+                "query_id": self._next_id(),
+                "query_text": f"在{loc}发生了什么？",
+                "query_type": "负样本",
+                "test_dimension": "负样本",
+                "expected_memory_ids": [],
+                "expected_answer": "",
+                "difficulty": "简单",
+                "search_depth": "浅层",
+                "is_negative": True,
+            })
+        
+        if max_count:
+            queries = queries[:max_count]
+        
+        return queries
 
     # --------------------------------------------------------------------------
     # 辅助方法
@@ -842,56 +1196,6 @@ class QueryBuilder:
 
                 if len(queries) >= self.min_per_dim * 2:
                     break
-
-        return queries
-
-    def _build_negative_queries(self, memories: List[Dict]) -> List[Dict]:
-        """负样本查询：使用硬编码列表，但排除语料中实际出现的名称"""
-        queries = []
-
-        # 收集语料中实际出现的人名和地点
-        used_names = set()
-        used_locations = set()
-        for m in memories:
-            for p in m.get("person_list", []):
-                used_names.add(p)
-            loc = m.get("location", {})
-            if isinstance(loc, dict):
-                city = loc.get("city", "")
-                if city:
-                    used_locations.add(city)
-
-        # 生成人物负样本（排除语料中已出现的）
-        for name in NEGATIVE_PERSON_NAMES:
-            if name not in used_names:
-                queries.append({
-                    "query_id": self._next_id(),
-                    "query_text": f"{name}做了什么？",
-                    "query_type": "人物检索",
-                    "test_dimension": "负样本",
-                    "expected_memory_ids": [],
-                    "difficulty": "中等",
-                    "search_depth": "中层",
-                    "is_negative": True,
-                })
-            if len(queries) >= self.min_per_dim:
-                break
-
-        # 生成地点负样本（排除语料中已出现的）
-        for loc in NEGATIVE_LOCATIONS:
-            if loc not in used_locations:
-                queries.append({
-                    "query_id": self._next_id(),
-                    "query_text": f"在{loc}发生了什么？",
-                    "query_type": "地点检索",
-                    "test_dimension": "负样本",
-                    "expected_memory_ids": [],
-                    "difficulty": "中等",
-                    "search_depth": "中层",
-                    "is_negative": True,
-                })
-            if len(queries) >= self.min_per_dim * 2:
-                break
 
         return queries
 

@@ -26,6 +26,7 @@ def main():
     parser.add_argument("--no-llm", action="store_true", help="不使用LLM，纯规则提取")
     parser.add_argument("--name", default="MemTest Database", help="数据库名称")
     parser.add_argument("--seed", type=int, default=42, help="随机种子")
+    parser.add_argument("--max-queries", type=int, default=None, help="最大查询数（方案A：查询与记忆独立）")
     args = parser.parse_args()
 
     start = time.time()
@@ -64,7 +65,7 @@ def main():
     # Step 3: 生成查询
     from query_builder import QueryBuilder
     qb = QueryBuilder(alias_groups=builder.alias_groups, seed=args.seed)
-    queries = qb.build(memories)
+    queries = qb.build(memories, max_queries=args.max_queries)
 
     by_type = {}
     for q in queries:
