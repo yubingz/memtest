@@ -29,9 +29,10 @@ memtest/
 │   ├── test_corpus3/xiyouji.md
 │   ├── test_corpus4/sgyy_extended.md
 │   ├── test_corpus5/hongloumeng_extended.md
-│   └── test_corpus6/jinyong.md
+│   └── test_corpus6/          # 四大名著：三国演义、红楼梦、水浒传、西游记
 │
 └── output/                   # Generated test databases
+    ├── v4_full.json          # 5736 memories, 700 queries (四大名著) ⭐ 最新
     ├── four_novels.json      # 131 memories, 1157 queries (4 novels)
     ├── hongloumeng.json      # 23 memories, 155 queries
     └── sgyy_full.json        # 17 memories, 173 queries
@@ -75,13 +76,15 @@ MemTest extracts structured memories, resolves aliases, builds reasoning chains,
 
 | Dimension | Count | Description |
 |-----------|-------|-------------|
-| **精确检索** | 303 | Person, location, time, event retrieval (5 query types) |
-| **组合检索** | 267 | Multi-attribute combination queries (person+location, person+time, etc.) |
-| **时序推理** | 157 | Before/after temporal reasoning chains |
-| **负样本** | 195 | Queries with no matching memories (should return empty) |
-| **跨版本/别名** | 146 | Alias-equivalent queries (e.g., "刘皇叔" = "刘备" = "玄德") |
+| **精确检索** | 100 | 人物、地点、时间、事件、别名检索（5 query types） |
+| **组合检索** | 100 | 多属性组合查询（人物+地点、人物+时间等） |
+| **时序推理** | 100 | 基于时序链的 before/after 推理查询 |
+| **负样本** | 100 | 无匹配记忆的查询（应返回空） |
+| **跨版本/别名** | 100 | 别名等价查询（如"刘皇叔" = "刘备" = "玄德"） |
+| **组合推理** | 100 | 多条件跨维度推理 |
+| **总计** | **700** | 6大维度，全覆盖 |
 
-*Stats from `four_novels.json` (131 memories, 4 novels)*
+*Stats from `v4_full.json` (5736 memories, 4 novels)*
 
 ### Query Types
 
@@ -135,11 +138,12 @@ Answers are **memory ID sets**, not text. This means:
 
 ## Pre-built Databases
 
-| Database | Memories | Queries | Sources |
-|----------|----------|---------|---------|
-| `four_novels.json` | 131 | 1157 | 三国演义 + 红楼梦 + 西游记 + 金庸5部 |
-| `hongloumeng.json` | 23 | 155 | 红楼梦 |
-| `sgyy_full.json` | 17 | 173 | 三国演义 |
+| Database | Memories | Queries | Sources | Pipeline |
+|----------|----------|---------|---------|----------|
+| `v4_full.json` | **5736** | **700** | 三国演义 + 红楼梦 + 水浒传 + 西游记 | v4 (latest) |
+| `four_novels.json` | 131 | 1157 | 三国演义 + 红楼梦 + 西游记 + 金庸5部 | v3 |
+| `hongloumeng.json` | 23 | 155 | 红楼梦 | v3 |
+| `sgyy_full.json` | 17 | 173 | 三国演义 | v3 |
 
 ## Design Principles
 
