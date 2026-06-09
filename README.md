@@ -10,108 +10,115 @@ Current memory system evaluations are ad-hoc: hand-crafted queries, "feels right
 
 Key insight: **evaluate retrieval, not generation**. Answers are memory ID sets (not text), so metrics are exact-match, deterministic, and comparable across any memory system.
 
-## Architecture (v4)
-
-```
-memtest/
-├── pipeline_v4.py           # One-command pipeline
-├── extractor.py             # LLM-based memory extraction (only step using LLM)
-├── relation_builder.py       # Build alias groups + reasoning chains (pure rules)
-├── query_builder.py          # Generate queries from memory attributes (pure templates)
-├── alias_resolver.py         # Resolve character aliases across corpus
-├── time_resolver.py          # Normalize temporal expressions
-├── runner.py                  # Run evaluation against a memory system
-├── quality_check.py          # Data quality validation (10 automated checks)
-├── schema.py                  # Data format definitions
-├── llm_interface.py          # LLM abstraction (DeepSeek / OpenAI compatible)
-│
-├── test_corpus*/             # Input: plain text corpora
-│   ├── test_corpus3/xiyouji.md
-│   ├── test_corpus4/sgyy_extended.md
-│   ├── test_corpus5/hongloumeng_extended.md
-│   └── test_corpus6/          # 四大名著：三国演义、红楼梦、水浒传、西游记
-│
-└── output/                   # Generated test databases
-    ├── v4_full.json          # 5736 memories, 700 queries (四大名著) ⭐ 最新
-    ├── four_novels.json      # 131 memories, 1157 queries (4 novels)
-    ├── hongloumeng.json      # 23 memories, 155 queries
-    └── sgyy_full.json        # 17 memories, 173 queries
-```
-
 ## Quick Start
 
-### 1. Install & Configure
+### 1. Clone & Try
 
 ```bash
 git clone https://github.com/yubingz/memtest.git
 cd memtest
-cp .env.example .env
-# Edit .env, add DEEPSEEK_API_KEY=... (for memory extraction only)
+
+# Run built-in evaluation with sample database
+python3 -c "
+from runner import MemoryTestSuite, JsonMemoryAdapter, load_test_db
+db = load_test_db('sample_db.json')
+suite = MemoryTestSuite(JsonMemoryAdapter())
+report = suite.run(db)
+print(suite.summary())
+"
 ```
 
-### 2. One-Command Pipeline
+### 2. Generate Your Own Test Database
 
 ```bash
-python pipeline_v4.py ./my_corpus/ -o test_db.json --name "My Test Database"
-```
+# Set up API key (needed for LLM extraction)
+cp .env.example .env
+# Edit .env: add DEEPSEEK_API_KEY=...
 
-This runs: `extract → build relations → generate queries → assemble → validate`
+# One-command pipeline
+python3 pipeline.py ./my_corpus/ -o test_db.json --name "My Test Database"
+```
 
 Only the extraction step uses LLM. Query generation is **deterministic** (pure templates, no LLM).
 
-### 3. Custom Corpus
+### 3. Evaluate Your Memory System
 
-Create a directory with `.md` or `.txt` files containing your text:
+Implement 3 methods:
 
+```python
+from runner import MemoryAdapter, MemoryTestSuite, load_test_db
+
+class MyAdapter(MemoryAdapter):
+    def reset(self):
+        # Clear your memory store
+        ...
+    def store(self, memory_text: str, metadata: dict):
+        # Store memory (v4: metadata only has memory_id)
+        ...
+    def search(self, query: str, top_k: int = 20) -> list:
+        # Return [{"memory_id": str, "score": float, "content": str}, ...]
+        ...
+
+db = load_test_db("sample_db.json")
+suite = MemoryTestSuite(MyAdapter())
+report = suite.run(db)
+print(suite.summary())
 ```
-my_corpus/
-├── chapter1.md
-├── chapter2.md
-└── ...
-```
-
-MemTest extracts structured memories, resolves aliases, builds reasoning chains, and generates queries across 6 evaluation dimensions.
 
 ## Evaluation Dimensions
 
-| Dimension | Count | Description |
-|-----------|-------|-------------|
-| **Precision Retrieval** | 100 | Person, location, time, event, alias retrieval |
-| **Combination Retrieval** | 100 | Multi-attribute combination queries (person+location, person+time, etc.) |
-| **Temporal Reasoning** | 100 | Before/after temporal reasoning chains |
-| **Negative Samples** | 100 | Queries with no matching memories (should return empty) |
-| **Alias/Version** | 100 | Alias-equivalent queries (e.g., "刘皇叔" = "刘备" = "玄德") |
-| **Combined Reasoning** | 100 | Multi-condition cross-dimension reasoning |
-| **Total** | **700** | 6 dimensions, full coverage |
+| Dimension | What it tests | Metric |
+|-----------|--------------|--------|
+| **Precision Retrieval** | Can you find the right memories? | Precision@K, Recall@K, MRR |
+| **Combination Retrieval** | Can you find by multiple attributes? | Same, per query type |
+| **Temporal Reasoning** | Can you retrieve across time? | Temporal recall |
+| **Negative Samples** | Do you return nothing for non-existent queries? | Negative accuracy |
 
-*Stats from `v4_full.json` (5736 memories, 4 novels)*
+## Sample Database
 
-### Query Types
+The repo includes `sample_db.json` with:
+- **131 memories** from 三国演义, 红楼梦, 西游记, 金庸小说
+- **1157 queries** across 7 types (人物检索, 地点检索, 时间检索, 事件检索, 组合检索, 别名查询, 组合推理)
+- **100% memory coverage** — every memory is referenced by at least one query
 
-| Type | Templates | Example |
-|------|-----------|---------|
-| Person Retrieval | 8 | "What are Liu Bei's experiences?" |
-| Location Retrieval | 6 | "What happened in Zhuoxian?" |
-| Time Retrieval | 6 | "What events happened in the early years?" |
-| Event Retrieval | 7 | "What events are related to jade?" |
-| Alias Query | 5 | "Who is Liu Huangshu?" |
-| Combination Retrieval | 12+ | "Records of Liu Bei in Zhuoxian" |
-| Combined Reasoning | auto | "What happened before ...?" |
+For larger databases (5000+ memories), see [GitHub Releases](https://github.com/yubingz/memtest/releases).
+
+## Architecture (v4)
+
+```
+memtest/
+├── pipeline.py              # One-command pipeline
+├── extractor.py             # LLM-based memory extraction (only step using LLM)
+├── relation_builder.py      # Build alias groups + reasoning chains (pure rules)
+├── query_builder.py         # Generate queries from memory attributes (pure templates)
+├── assemble.py              # Assemble into standard v4 format
+├── runner.py                 # Run evaluation against a memory system
+├── schema.py                 # v4 data format definitions + validation
+├── quality_check.py          # Data quality validation (10 automated checks)
+├── llm_interface.py          # LLM abstraction (DeepSeek / OpenAI compatible)
+├── alias_resolver.py         # Resolve character aliases
+├── time_resolver.py          # Normalize temporal expressions
+│
+├── test_corpus6/             # Input: 四大名著 corpus
+│
+├── sample_db.json            # Pre-built sample database (v4 format)
+└── test_v4.py               # Unit tests
+```
 
 ## Data Format
 
-### Memory
+### Memory (internal, not fed to system under test)
 
 ```json
 {
   "memory_id": "MEM000001",
-  "content": "刘备，字玄德，人称刘皇叔，是汉景帝之子中山靖王刘胜的后代。",
-  "person_list": ["刘备", "字玄德", "玄德", "刘皇叔", "中山靖王刘胜", "汉景帝"],
-  "location": {"city": "涿县", "place": "楼桑村"},
-  "time": {"relative": "早年"},
-  "event": {"type": "日常", "action": "出生"},
-  "source": "三国演义",
-  "alias_evidence": [{"entity": "刘备", "alias": "刘皇叔", "evidence": "人称刘皇叔"}]
+  "content": "刘备，字玄德，人称刘皇叔，涿郡涿县人。",
+  "person": ["刘备", "玄德", "刘皇叔"],
+  "time_absolute": "",
+  "time_relative": "早年",
+  "location": "涿县",
+  "event_type": "出生",
+  "source": "三国演义"
 }
 ```
 
@@ -123,36 +130,23 @@ MemTest extracts structured memories, resolves aliases, builds reasoning chains,
   "query_text": "刘备的经历有哪些？",
   "query_type": "人物检索",
   "test_dimension": "精确检索",
-  "expected_memory_ids": ["MEM000001", "MEM000002", "MEM000005"],
+  "expected_memory_ids": ["MEM000001", "MEM000002"],
   "is_negative": false,
-  "difficulty": "困难"
+  "difficulty": "medium"
 }
 ```
 
-### ID-Based Evaluation
+### What gets fed to the system under test
 
-Answers are **memory ID sets**, not text. This means:
-- **Exact match**: No ambiguity from text similarity
-- **Deterministic**: Same database → same results, always
-- **Comparable**: Any memory system can be evaluated against the same ground truth
-
-## Pre-built Databases
-
-| Database | Memories | Queries | Sources | Pipeline |
-|----------|----------|---------|---------|----------|
-| `v4_full.json` | **5736** | **700** | 三国演义 + 红楼梦 + 水浒传 + 西游记 | v4 (latest) |
-| `four_novels.json` | 131 | 1157 | 三国演义 + 红楼梦 + 西游记 + 金庸5部 | v3 |
-| `hongloumeng.json` | 23 | 155 | 红楼梦 | v3 |
-| `sgyy_full.json` | 17 | 173 | 三国演义 | v3 |
+Only `{memory_id, content}` — no metadata. This prevents "cheating" by leaking ground-truth labels.
 
 ## Design Principles
 
 1. **Only extraction uses LLM** — query generation is pure template × attribute, deterministic and reproducible
 2. **ID-based answers** — no text similarity ambiguity, exact match evaluation
-3. **Self-selected corpus** — feed any text, pipeline auto-extracts facts and generates queries
-4. **Original text preservation** — memories stored as-is, no transformation at storage time
-5. **6 evaluation dimensions** — covering precision, combination, temporal reasoning, negatives, and alias equivalence
-6. **Alias-aware** — character aliases (e.g., 孙悟空=齐天大圣=美猴王) resolved and tested as equivalence groups
+3. **Content-only storage** — metadata (person/time/location) is for generating queries, not for the system under test
+4. **Self-selected corpus** — feed any text, pipeline auto-extracts facts and generates queries
+5. **Memory ≠ Understanding** — we test "did you remember it?", not "did you understand it?"
 
 ## License
 

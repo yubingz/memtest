@@ -2,7 +2,7 @@
 """MemTest v4 自动化Pipeline — 生成+校验+修复+迭代
 
 用法:
-    python pipeline_v4_auto.py <corpus_dir> [-o output.json] [--max-iterations 3]
+    python pipeline_auto.py <corpus_dir> [-o output.json] [--max-iterations 3]
 
 流程（自动迭代）:
     1. 提取记忆 (LLM)

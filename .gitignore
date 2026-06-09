@@ -1,10 +1,7 @@
 .env
-_extract_done.txt
-facts_all.json
-_parsed_text.json
-test_db_*.json
 __pycache__/
 *.pyc
+*.pyo
 
 # 临时文件
 *.tmp
@@ -24,18 +21,12 @@ Thumbs.db
 *.swp
 *.swo
 
-# 生成的大型数据文件
-four_novels_db_*.json
-hp_db_*.json
-
-# 大型数据文件，请从 GitHub Releases 下载
+# 大型数据文件（从 GitHub Releases 下载）
+# v4_full.json 等大型 benchmark 数据请从 Releases 页面下载
+output/
 benchmark/
-four_novels_benchmark.json
-hp_benchmark_db.json
-*.benchmark.json
-output/*.json
-output/*.md
-batch_extract.py
-test_corpus6/sgyy_complete.md
-test_corpus_combined/
+
+# LLM提取的中间文件
 extracted_memories.json
+_facts_done.txt
+_extract_done.txt
