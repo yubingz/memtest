@@ -21,7 +21,7 @@ from datetime import datetime
 # ==============================================================================
 
 # 记忆条目（内部完整格式，用于出题，不喂给被测系统）
-MEMORY_SCHEMA_V3: Dict[str, Any] = {
+MEMORY_SCHEMA_V4: Dict[str, Any] = {
     "memory_id": str,       # 唯一标识，格式如 "MEM000001"
     "content": str,         # 原文（也出现在存储层）
     "person": list,        # 人物列表（可多人），元素为 str
@@ -37,7 +37,7 @@ MEMORY_SCHEMA_V3: Dict[str, Any] = {
 }
 
 # 查询条目
-QUERY_SCHEMA_V3: Dict[str, Any] = {
+QUERY_SCHEMA_V4: Dict[str, Any] = {
     "query_id": str,       # 唯一标识，格式如 "Q0001"
     "query_text": str,     # 查询文本
     "query_type": str,     # 时序推理 / 因果推理 / 别名查询 / 事实检索 / 对比推理 / 负样本
@@ -55,7 +55,7 @@ STORAGE_SCHEMA: Dict[str, Any] = {
 }
 
 # 数据库顶层
-DATABASE_SCHEMA_V3: Dict[str, Any] = {
+DATABASE_SCHEMA_V4: Dict[str, Any] = {
     "database_info": dict,   # 数据库元信息
     "memories": list,        # 记忆条目列表
     "queries": list,         # 查询条目列表
@@ -64,7 +64,7 @@ DATABASE_SCHEMA_V3: Dict[str, Any] = {
 # 数据库信息 schema
 DATABASE_INFO_SCHEMA: Dict[str, Any] = {
     "name": str,
-    "version": str,          # 固定 "3.0.0"
+    "version": str,          # 固定 "4.0.0"
     "description": (str, type(None)),
     "created_at": str,       # ISO 8601 时间
     "source": str,
@@ -85,12 +85,12 @@ PRINCIPLES: Dict[str, bool] = {
 # 二、必填字段定义
 # ==============================================================================
 
-MEMORY_REQUIRED_V3: List[str] = [
+MEMORY_REQUIRED_V4: List[str] = [
     "memory_id",
     "content",
 ]
 
-QUERY_REQUIRED_V3: List[str] = [
+QUERY_REQUIRED_V4: List[str] = [
     "query_id",
     "query_text",
     "query_type",
@@ -186,14 +186,14 @@ def validate_memory(memory: Dict[str, Any], strict: bool = False) -> List[str]:
     errors: List[str] = []
 
     # 1. 必填字段存在性
-    for field in MEMORY_REQUIRED_V3:
+    for field in MEMORY_REQUIRED_V4:
         if field not in memory:
             errors.append(f"缺少必填字段: {field}")
 
     # 2. 必填字段类型
-    for field in MEMORY_REQUIRED_V3:
+    for field in MEMORY_REQUIRED_V4:
         if field in memory:
-            err = _check_field(memory[field], MEMORY_SCHEMA_V3.get(field, str), field)
+            err = _check_field(memory[field], MEMORY_SCHEMA_V4.get(field, str), field)
             if err:
                 errors.append(err)
 
@@ -223,7 +223,7 @@ def validate_memory(memory: Dict[str, Any], strict: bool = False) -> List[str]:
 
     # 8. strict 模式：检查所有字段类型
     if strict:
-        for field, expected_type in MEMORY_SCHEMA_V3.items():
+        for field, expected_type in MEMORY_SCHEMA_V4.items():
             if field in memory and memory[field] is not None:
                 err = _check_field(memory[field], expected_type, field)
                 if err:
@@ -244,14 +244,14 @@ def validate_query(query: Dict[str, Any]) -> List[str]:
     errors: List[str] = []
 
     # 1. 必填字段存在性
-    for field in QUERY_REQUIRED_V3:
+    for field in QUERY_REQUIRED_V4:
         if field not in query:
             errors.append(f"缺少必填字段: {field}")
 
     # 2. 必填字段类型
-    for field in QUERY_REQUIRED_V3:
+    for field in QUERY_REQUIRED_V4:
         if field in query:
-            expected = QUERY_SCHEMA_V3.get(field, str)
+            expected = QUERY_SCHEMA_V4.get(field, str)
             err = _check_field(query[field], expected, field)
             if err:
                 errors.append(err)

@@ -1,59 +1,76 @@
 #!/usr/bin/env python3
 """MemTest v4 记忆提取器
 
-唯一使用LLM的环节：从语料提取结构化记忆。
-一次调用提取完整记忆，不按类型分别提取。
+从语料中提取结构化记忆。只在这一步使用LLM，其余步骤纯规则。
 
-输出格式：v2完整schema（兼容现有runner.py和quality_check.py）
+用法:
+    from extractor import MemoryExtractor
+    from llm_interface import create_llm
+
+    llm = create_llm()  # 需要 DEEPSEEK_API_KEY 或 OPENAI_API_KEY
+    extractor = MemoryExtractor(llm)
+    memories = extractor.extract("./my_corpus/", default_source="我的语料")
+
+无 LLM 时：
+    会使用规则提取（段落分割 + 正则提取人物/别名），质量较低但能跑。
+    建议生产环境务必使用 LLM。
 """
 
 import json
 import os
 import re
 import sys
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
-from llm_interface import DeepSeekAdapter, create_llm
+# 尝试导入LLM接口
+try:
+    from llm_interface import create_llm, DeepSeekAdapter
+except ImportError:
+    create_llm = None
+    DeepSeekAdapter = None
 
+# 常见中文姓氏（用于规则提取人名）
+COMMON_SURNAMES = set(
+    "赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜"
+    "戚谢邹喻柏水窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳酆鲍史唐"
+    "费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾孟平黄"
+    "和穆萧尹姚邵堪汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈项祝董梁"
+    "杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡田樊胡凌霍"
+    "虞万支柯昝管卢莫经房裘缪干解应宗丁宣贲邓郁单杭洪包诸左石崔吉钮龚程"
+    "嵇邢滑裴陆荣翁荀羊於惠甄曲家封芮羿储靳汲邴糜松井段富巫乌焦巴弓牧隗"
+    "山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎祖武符刘景詹束龙叶幸司韶"
+    "郜黎蓟薄印宿白怀蒲邰从鄂索咸籍赖卓蔺屠蒙池乔阴鬱胥能苍双闻莘党翟谭贡劳"
+    "逄姬申扶堵冉宰郦雍卻璩桑桂濮牛寿通边扈燕冀郏浦尚农温别庄晏柴瞿阎充慕连"
+    "茹习宦艾鱼容向古易慎戈廖庾终暨居衡步都耿满弘匡国文寇广禄阙东欧殳沃利蔚"
+    "越夔隆师巩厍聂晁勾敖融冷訾辛阚那简饶空曾母沙乜养鞠须丰巢关蒯相查后荆红"
+)
 
-# ==============================================================================
-# 常量
-# ==============================================================================
+# 别名检测正则
+ALIAS_PATTERNS = [
+    (re.compile(r"([\u4e00-\u9fff]{2,10})\s*[,，]?\s*(?:人称|又名|又称|又叫|即|也就是|便是)\s*([\u4e00-\u9fff]{1,20})"), "称谓"),
+    (re.compile(r"([\u4e00-\u9fff]{2,10})\s*[,，]\s*(?:俗名|绰号|号|字|别号|雅号|昵称)\s*([\u4e00-\u9fff]{1,20})"), "字號"),
+    (re.compile(r"([\u4e00-\u9fff]{2,10})\s*(?:就是|便是|即是|等于)\s*([\u4e00-\u9fff]{1,20})"), "等价"),
+]
 
+# 别名噪音过滤
+NOISE_WORDS = {"指的", "这种", "那个", "这是", "也就是", "的", "了", "在", "是", "有", "和", "与", "被", "把"}
+
+# LLM提取提示词
 EXTRACT_PROMPT = """从以下文本中提取所有有意义的记忆片段。
 
-每条记忆包含以下字段：
-- content: 原文片段（尽量保留原文措辞，30-150字）
-- person: 出现的人物姓名列表（包括别名和称呼，如"凤姐"也要列出来）
-- time: 时间信息，格式 {"absolute": "具体日期或null", "relative": "相对时间词或null", "fuzzy": "模糊时间词或null"}
-- location: 地点（字符串或null）
-- event_type: 事件类型标签（如：交易/会议/决策/日常/冲突/情感/技术/发现）
-- event_action: 具体动作（如：购买/召开/誓死不从/初见）
-- event_product: 涉及的事物（如：通灵宝玉/金锁/琉璃盏）
-- dynasty: 朝代或时期（如：东晋/贞观年间），无则为null
-- source: 来源作品名或null
-- alias_evidence: 人物的名字和称呼（如"宋江"、"宋公明"、"宋押司"、"及时雨"）。注意：不包括代称（如"我"、"你"、"洒家"、"小可"、"小人"、"阿哥"、"这个"）。如果文本中有别名证据，列出等价对，格式 [{"entity": "全称", "alias": "称呼", "evidence": "原文证据"}]
+每条记忆输出一行JSON，格式：
+{"content": "记忆原文", "person": ["人物1", "人物2"], "location": "地点", "time_absolute": "绝对时间", "time_relative": "相对时间", "event_type": "事件类型"}
 
-注意：
-1. person 必须包含文中出现的所有人名，包括简称（如"黛玉"和"林黛玉"都要列）
-2. alias_evidence 只提取名字和称呼，不要提取代称（我/你/他/洒家/小可/小人/阿哥/这个等）
-3. content 保留原文，不要改写
-4. 一段话如果包含多个独立事件，拆成多条记忆
+要求：
+1. content必须是原文中的句子或段落，不要改写
+2. person是人物列表，包括所有提到的人物
+3. 如果有别名关系（如"刘备，字玄德"），在person中同时列出两个名字
+4. location可为空字符串
+5. time_absolute: 有明确年月日的写日期，没有的留空
+6. time_relative: 只有相对时间表述（如"三年后"）时填写
+7. event_type: 如"战争""外交""出生""日常"等
 
-输出JSON数组，不要其他内容。"""
-
-# 常见姓氏（用于规则fallback的人名提取）
-COMMON_SURNAMES = "赵钱孙李周吴郑王冯陈褚卫蒋沈韩杨朱秦尤许何吕施张孔曹严华金魏陶姜戚谢邹喻柏窦章云苏潘葛奚范彭郎鲁韦昌马苗凤花方俞任袁柳鲍史唐费廉岑薛雷贺倪汤滕殷罗毕郝邬安常乐于时傅皮卞齐康伍余元卜顾孟平黄和穆萧尹姚邵湛汪祁毛禹狄米贝明臧计伏成戴谈宋茅庞熊纪舒屈项祝董梁杜阮蓝闵席季麻强贾路娄危江童颜郭梅盛林刁钟徐邱骆高夏蔡田樊胡凌霍虞万支柯昝管卢莫经房裘缪干解应宗丁宣贲邓郁单杭洪包诸左石崔吉钮龚程嵇邢滑裴陆荣翁荀羊於惠甄曲家封芮羿储靳汲邴糜松井段富巫乌焦巴弓牧隗山谷车侯宓蓬全郗班仰秋仲伊宫宁仇栾暴甘钭厉戎祖武符刘景詹束龙叶幸司韶郜黎蓟薄印宿白怀蒲邰从鄂索咸籍赖卓蔺屠蒙池乔阴鬱胥能苍双闻莘党翟谭贡劳逄姬申扶堵冉宰郦雍郤璩桑桂濮牛寿通边扈燕冀郏浦尚农温别庄晏柴瞿阎充慕连茹习宦艾鱼容向古易慎戈廖庾终暨居衡步都耿满弘匡国文寇广禄阙东欧殳沃利蔚越夔隆师巩厍聂晁勾敖融冷訾辛阚那简饶空曾母沙乜养鞠须丰巢关蒯相查后荆红游竺权逯盖益桓公"
-
-# 别名检测模式
-ALIAS_PATTERNS = [
-    # "人称X"、"又名X"、"即X"、"也就是X"
-    (re.compile(r"([\u4e00-\u9fff]{2,10})\s*[,，]?\s*(?:人称|又名|又称|又叫|即|也就是|便是)\s*([\u4e00-\u9fff]{1,20})"), "explicit"),
-    # "X是Y之Z，人称W"
-    (re.compile(r"([\u4e00-\u9fff]{2,10})\s*[,，]\s*(?:俗名|绰号|号|字|别号|雅号|昵称)\s*([\u4e00-\u9fff]{1,20})"), "formal"),
-    # "X，就是Y" / "X，便是Y"
-    (re.compile(r"([\u4e00-\u9fff]{2,10})\s*(?:就是|便是|即是|等于)\s*([\u4e00-\u9fff]{1,20})"), "equivalence"),
-]
+输出纯JSON数组，不要其他内容。"""
 
 
 # ==============================================================================
@@ -61,41 +78,42 @@ ALIAS_PATTERNS = [
 # ==============================================================================
 
 class MemoryExtractor:
-    """从语料提取结构化记忆（v2格式）"""
+    """从语料提取结构化记忆（v4格式）"""
 
     def __init__(self, llm_adapter=None, seed=42):
         self.llm = llm_adapter
         self.seed = seed
-
-    # --------------------------------------------------------------------------
-    # 主入口
-    # --------------------------------------------------------------------------
+        if llm_adapter is None:
+            print("⚠️  未提供LLM适配器，将使用规则提取（质量较低，建议配置API key）")
 
     def extract(self, corpus_dir: str, default_source: str = None) -> List[Dict[str, Any]]:
         """从语料目录提取结构化记忆
-        
+
         Args:
-            corpus_dir: 语料目录路径
-            default_source: 默认来源名（如"三国演义"），用于填充LLM未返回source的记忆
+            corpus_dir: 语料目录路径或单个文件路径
+            default_source: 默认来源名（如"三国演义"），用于填充source字段
+
+        Returns:
+            v4格式记忆列表
         """
         corpus_text = self._load_corpus(corpus_dir)
         if not corpus_text:
+            print(f"⚠️  语料为空: {corpus_dir}")
             return []
 
-        # 如果未指定default_source，从目录名/文件名推断
         if default_source is None:
             default_source = self._infer_source(corpus_dir)
 
-        # 尝试LLM提取
+        # LLM or rule-based extraction
         if self.llm:
             memories = self._llm_extract(corpus_text)
         else:
             memories = self._rule_extract(corpus_text)
 
-        # 后处理
+        # Post-process
         memories = self._postprocess(memories)
 
-        # 填充缺失的source
+        # Fill missing source
         if default_source:
             for m in memories:
                 if not m.get("source"):
@@ -107,161 +125,84 @@ class MemoryExtractor:
     # 语料加载
     # --------------------------------------------------------------------------
 
-    def _infer_source(self, corpus_dir: str) -> str:
-        """从目录名/文件名推断来源作品名"""
-        # 文件名映射
-        name_map = {
-            "xiyouji": "西游记", "sgyy": "三国演义", "hongloumeng": "红楼梦",
-            "jinyong": "金庸小说", "shuihu": "水浒传", "sanguo": "三国演义",
-        }
-        
-        # 检查目录内文件名
-        if os.path.isdir(corpus_dir):
-            for root, dirs, files in os.walk(corpus_dir):
-                for fn in files:
-                    basename = os.path.splitext(fn)[0].lower()
-                    for key, name in name_map.items():
-                        if key in basename:
-                            return name
-        
-        # 检查目录名本身
-        dirname = os.path.basename(os.path.normpath(corpus_dir)).lower()
-        for key, name in name_map.items():
-            if key in dirname:
-                return name
-        
-        # 如果是单文件，用文件名
-        if os.path.isfile(corpus_dir):
-            basename = os.path.splitext(os.path.basename(corpus_dir))[0].lower()
-            for key, name in name_map.items():
-                if key in basename:
-                    return name
-        
-        return None
-
     def _load_corpus(self, corpus_dir: str) -> str:
-        """加载语料目录中的所有文本"""
-        texts = []
+        """加载语料文件"""
+        if os.path.isfile(corpus_dir):
+            with open(corpus_dir, "r", encoding="utf-8") as f:
+                return f.read()
+
         if not os.path.isdir(corpus_dir):
+            print(f"⚠️  路径不存在: {corpus_dir}")
             return ""
 
-        for root, dirs, files in os.walk(corpus_dir):
-            dirs[:] = [d for d in dirs if not d.startswith('.')]
-            for fn in sorted(files):
-                if fn.endswith(('.txt', '.md', '.text')) and not fn.startswith('.'):
-                    path = os.path.join(root, fn)
-                    try:
-                        with open(path, encoding='utf-8') as f:
-                            content = f.read()
-                        if content.startswith('---'):
-                            idx = content.find('---', 3)
-                            if idx > 0:
-                                content = content[idx + 3:]
-                        texts.append(content.strip())
-                    except (OSError, IOError):
-                        pass
+        chunks = []
+        for fname in sorted(os.listdir(corpus_dir)):
+            if fname.endswith((".md", ".txt")):
+                fpath = os.path.join(corpus_dir, fname)
+                with open(fpath, "r", encoding="utf-8") as f:
+                    chunks.append(f.read())
 
-        return "\n\n".join(texts)
+        if not chunks:
+            print(f"⚠️  目录中没有 .md/.txt 文件: {corpus_dir}")
+            return ""
+
+        return "\n\n".join(chunks)
+
+    def _infer_source(self, corpus_dir: str) -> str:
+        """从目录名/文件名推断来源"""
+        name_map = {
+            "xiyouji": "西游记", "xi_you_ji": "西游记",
+            "sgyy": "三国演义", "sanguo_yanyi": "三国演义",
+            "hongloumeng": "红楼梦", "hong_lou_meng": "红楼梦",
+            "jinyong": "金庸小说",
+            "shuihu": "水浒传", "shuihu_zhuan": "水浒传",
+        }
+
+        if os.path.isdir(corpus_dir):
+            for fname in os.listdir(corpus_dir):
+                base = os.path.splitext(fname)[0].lower()
+                if base in name_map:
+                    return name_map[base]
+
+        # Try directory name
+        dirname = os.path.basename(os.path.normpath(corpus_dir)).lower()
+        return name_map.get(dirname, dirname)
 
     # --------------------------------------------------------------------------
-    # LLM提取
+    # LLM 提取
     # --------------------------------------------------------------------------
 
     def _llm_extract(self, corpus_text: str) -> List[Dict[str, Any]]:
-        """用LLM一次提取所有结构化记忆"""
-        # 长文本分段处理
-        chunks = self._split_corpus(corpus_text, max_chars=3000)
+        """使用LLM提取记忆"""
+        # Split into chunks
+        chunks = self._split_chunks(corpus_text, max_chars=3000)
         all_memories = []
 
         for i, chunk in enumerate(chunks):
             prompt = f"{EXTRACT_PROMPT}\n\n=== 文本 ===\n{chunk}\n\n=== 输出 ==="
-            print(f"  [Chunk {i+1}/{len(chunks)}] Prompt size: {len(prompt)} chars, chunk: {len(chunk)} chars", flush=True)
-            # 用generate而不是generate_json，手动解析更robust
-            raw_text = self.llm.generate(prompt, max_tokens=4000)
-            print(f"  [Chunk {i+1}/{len(chunks)}] API response: {len(raw_text)} chars", flush=True)
-            raw = self._robust_json_parse(raw_text)
+            print(f"  [Chunk {i+1}/{len(chunks)}] Extracting... ({len(chunk)} chars)", flush=True)
 
-            if isinstance(raw, list):
-                items = raw
-            elif isinstance(raw, dict):
-                items = raw.get("memories", []) or raw.get("items", []) or [raw]
-            else:
-                items = []
-
-            for item in items:
-                if not isinstance(item, dict):
-                    continue
-                mem = self._parse_llm_item(item)
-                if mem and mem.get("content"):
-                    all_memories.append(mem)
-
-            # Progress logging
-            if (i + 1) % 10 == 0 or i == len(chunks) - 1:
-                print(f"  Extracted chunk {i+1}/{len(chunks)} -> {len(all_memories)} memories total", flush=True)
+            try:
+                raw_text = self.llm.generate(prompt, max_tokens=4000)
+                memories = self._parse_llm_output(raw_text)
+                all_memories.extend(memories)
+            except Exception as e:
+                print(f"  ⚠️  Chunk {i+1} LLM error: {e}")
+                # Fallback to rule extraction for this chunk
+                rule_mems = self._rule_extract_from_text(chunk)
+                all_memories.extend(rule_mems)
 
         return all_memories
 
-    def _robust_json_parse(self, text: str):
-        """Robust JSON解析：处理code block、截断等情况"""
-        import json as _json
-        # 去掉markdown code block
-        if "```json" in text:
-            text = text.split("```json", 1)[1]
-        if "```" in text:
-            text = text.rsplit("```", 1)[0]
-        
-        text_stripped = text.strip()
-        # 尝试直接解析
-        try:
-            return _json.loads(text_stripped)
-        except (_json.JSONDecodeError, ValueError):
-            pass
-        
-        # 找[...]或{...}
-        for start_char, end_char in [('[', ']'), ('{', '}')]:
-            start = text_stripped.find(start_char)
-            end = text_stripped.rfind(end_char)
-            if start >= 0 and end > start:
-                try:
-                    return _json.loads(text_stripped[start:end+1])
-                except (_json.JSONDecodeError, ValueError):
-                    pass
-        
-        # 最后尝试：逐步缩小范围（处理截断）—— 使用步长1避免跳过有效位置
-        for start_char in ['[']:
-            start = text_stripped.find(start_char)
-            if start >= 0:
-                # 从end往前找，逐步尝试（步长1，不跳过任何位置）
-                for end_pos in range(len(text_stripped)-1, start, -1):
-                    if text_stripped[end_pos] in ']}':
-                        try:
-                            candidate = text_stripped[start:end_pos+1]
-                            # 如果截断，尝试补全
-                            if candidate.count('[') > candidate.count(']'):
-                                candidate += ']'
-                            if candidate.count('{') > candidate.count('}'):
-                                candidate += '}'
-                            return _json.loads(candidate)
-                        except (_json.JSONDecodeError, ValueError):
-                            continue
-        
-        return {}
-        
-        return {}
-
-    def _split_corpus(self, text: str, max_chars: int = 3000) -> List[str]:
-        """按段落边界分段，每段不超过max_chars"""
-        paragraphs = text.split('\n\n')
+    def _split_chunks(self, text: str, max_chars: int = 3000) -> List[str]:
+        """将长文本按段落分块"""
+        paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
         chunks = []
         current = ""
 
         for para in paragraphs:
-            para = para.strip()
-            if not para:
-                continue
-            if len(current) + len(para) + 2 > max_chars:
-                if current:
-                    chunks.append(current)
+            if len(current) + len(para) + 2 > max_chars and current:
+                chunks.append(current)
                 current = para
             else:
                 current = current + "\n\n" + para if current else para
@@ -269,83 +210,73 @@ class MemoryExtractor:
         if current:
             chunks.append(current)
 
-        return chunks
+        return chunks if chunks else [text[:max_chars]]
 
-    def _parse_llm_item(self, item: Dict[str, Any]) -> Dict[str, Any]:
-        """将LLM输出解析为v2格式记忆"""
-        content = item.get("content", "")
-        if not content:
-            content = item.get("text", "") or item.get("description", "")
-        if not content:
-            return None
+    def _parse_llm_output(self, raw_text: str) -> List[Dict[str, Any]]:
+        """解析LLM输出的JSON"""
+        # Try to find JSON array
+        json_match = re.search(r'\[.*\]', raw_text, re.DOTALL)
+        if json_match:
+            try:
+                items = json.loads(json_match.group())
+                if isinstance(items, list):
+                    return [self._normalize_memory(m) for m in items if isinstance(m, dict)]
+            except json.JSONDecodeError:
+                pass
 
-        # person: 统一为list
-        person_raw = item.get("person", [])
+        # Try line-by-line JSON
+        memories = []
+        for line in raw_text.split("\n"):
+            line = line.strip()
+            if line.startswith("{"):
+                try:
+                    m = json.loads(line.rstrip(","))
+                    if isinstance(m, dict):
+                        memories.append(self._normalize_memory(m))
+                except json.JSONDecodeError:
+                    continue
+
+        return memories
+
+    def _normalize_memory(self, m: dict) -> dict:
+        """归一化为v4格式"""
+        content = m.get("content", "")
+        if not content:
+            return {}
+
+        person_raw = m.get("person", [])
         if isinstance(person_raw, str):
-            person_list = [p.strip() for p in person_raw.replace("，", ",").split(",") if p.strip()]
+            person_list = [person_raw] if person_raw else []
         elif isinstance(person_raw, list):
-            person_list = [str(p).strip() for p in person_raw if str(p).strip()]
+            person_list = person_raw
         else:
             person_list = []
 
-        # time: 统一为v2嵌套格式
-        time_raw = item.get("time", {})
-        if isinstance(time_raw, str):
-            time_data = {"absolute": time_raw, "relative": None, "fuzzy": None}
-        elif isinstance(time_raw, dict):
-            time_data = {
-                "absolute": time_raw.get("absolute") or None,
-                "relative": time_raw.get("relative") or None,
-                "fuzzy": time_raw.get("fuzzy") or None,
-            }
-        else:
-            time_data = {"absolute": None, "relative": None, "fuzzy": None}
-
-        # location: 统一为v2嵌套格式
-        loc_raw = item.get("location")
-        if isinstance(loc_raw, str) and loc_raw:
-            location = {"city": loc_raw, "place": "", "landmark": ""}
-        elif isinstance(loc_raw, dict):
-            location = loc_raw
-        else:
-            location = {"city": "", "place": "", "landmark": ""}
-
-        # event
-        event_type = item.get("event_type") or "日常"
-        event_action = item.get("event_action") or ""
-        event_product = item.get("event_product") or ""
-
-        # alias evidence
-        alias_evidence = item.get("alias_evidence", [])
-        if isinstance(alias_evidence, dict):
-            alias_evidence = [alias_evidence]
-
         return {
-            "content": content.strip(),
-            "person": {"name": person_list[0] if person_list else "",
-                       "identity": "",
-                       "partner_name": person_list[1] if len(person_list) > 1 else "",
-                       "relation": ""},
-            "person_list": person_list,  # 内部用，出题参考
-            "time": time_data,
-            "location": location,
-            "event": {"type": event_type, "action": event_action, "product": event_product},
-            "dynasty": item.get("dynasty"),
-            "source": item.get("source"),
-            "alias_evidence": alias_evidence,
+            "content": content,
+            "person": person_list,
+            "time_absolute": m.get("time_absolute", "") or "",
+            "time_relative": m.get("time_relative", "") or "",
+            "time_ref_id": None,
+            "time_offset_days": None,
+            "location": m.get("location", "") or "",
+            "event_type": m.get("event_type", "") or "",
+            "source": m.get("source", "") or "",
             "tags": [],
-            "category": "检索功能测试集",  # 默认，后续由relation_builder调整
-            "difficulty": "中等",
-            "weight": 1.0,
+            "difficulty": "medium",
         }
 
     # --------------------------------------------------------------------------
-    # 规则fallback提取（无LLM时使用）
+    # 规则提取（fallback）
     # --------------------------------------------------------------------------
 
     def _rule_extract(self, corpus_text: str) -> List[Dict[str, Any]]:
-        """不依赖LLM的规则提取"""
-        paragraphs = [p.strip() for p in corpus_text.split('\n\n') if p.strip() and len(p.strip()) > 20]
+        """不依赖LLM的规则提取（质量较低）"""
+        return self._rule_extract_from_text(corpus_text)
+
+    def _rule_extract_from_text(self, text: str) -> List[Dict[str, Any]]:
+        """从文本中用规则提取记忆"""
+        paragraphs = [p.strip() for p in text.split('\n\n') if p.strip() and len(p.strip()) > 20]
         memories = []
 
         for para in paragraphs:
@@ -353,22 +284,18 @@ class MemoryExtractor:
             alias_evidence = self._extract_aliases_rule(para)
 
             mem = {
-                "content": para[:200],
-                "person": {"name": persons[0] if persons else "",
-                           "identity": "",
-                           "partner_name": persons[1] if len(persons) > 1 else "",
-                           "relation": ""},
-                "person_list": persons,
-                "time": {"absolute": None, "relative": None, "fuzzy": None},
-                "location": {"city": "", "place": "", "landmark": ""},
-                "event": {"type": "日常", "action": "", "product": ""},
-                "dynasty": None,
-                "source": None,
-                "alias_evidence": alias_evidence,
+                "content": para[:500],
+                "person": persons,
+                "time_absolute": "",
+                "time_relative": "",
+                "time_ref_id": None,
+                "time_offset_days": None,
+                "location": "",
+                "event_type": "日常",
+                "source": "",
                 "tags": [],
-                "category": "检索功能测试集",
-                "difficulty": "中等",
-                "weight": 1.0,
+                "difficulty": "medium",
+                "alias_evidence": alias_evidence,
             }
             memories.append(mem)
 
@@ -383,7 +310,6 @@ class MemoryExtractor:
             if c in seen:
                 continue
             if len(c) >= 2 and c[0] in COMMON_SURNAMES:
-                # 排除明显的非人名
                 if c not in ("有限公司", "公司集团", "这是", "那就是"):
                     persons.append(c)
                     seen.add(c)
@@ -399,7 +325,8 @@ class MemoryExtractor:
                 entity = match.group(1).strip()
                 alias = match.group(2).strip()
                 evidence = match.group(0)
-                if entity and alias and len(entity) >= 2 and len(alias) >= 2:
+                if (entity and alias and len(entity) >= 2 and len(alias) >= 2
+                    and entity not in NOISE_WORDS and alias not in NOISE_WORDS):
                     results.append({
                         "entity": entity,
                         "alias": alias,
@@ -415,78 +342,35 @@ class MemoryExtractor:
         """后处理：分配ID、去重、补全字段"""
         # 分配memory_id
         for i, m in enumerate(memories):
+            if not m:
+                continue
             m["memory_id"] = f"MEM{(i+1):06d}"
 
         # 去重（按content前50字）
         seen_content = set()
-        deduped = []
+        unique = []
         for m in memories:
-            key = m["content"][:50]
+            if not m:
+                continue
+            key = m.get("content", "")[:50]
             if key not in seen_content:
                 seen_content.add(key)
-                deduped.append(m)
+                unique.append(m)
 
-        # 如果person_list里有人名但person.name为空，补上
-        for m in deduped:
-            pl = m.get("person_list", [])
-            if pl and not m["person"]["name"]:
-                m["person"]["name"] = pl[0]
-                if len(pl) > 1:
-                    m["person"]["partner_name"] = pl[1]
+        # 补全缺失字段
+        for m in unique:
+            m.setdefault("person", [])
+            m.setdefault("time_absolute", "")
+            m.setdefault("time_relative", "")
+            m.setdefault("time_ref_id", None)
+            m.setdefault("time_offset_days", None)
+            m.setdefault("location", "")
+            m.setdefault("event_type", "")
+            m.setdefault("source", "")
+            m.setdefault("tags", [])
+            m.setdefault("difficulty", "medium")
 
-        # 过滤代称（不是人物名字，而是指代或自称）
-        PRONOUNS = {"我", "你", "他", "她", "它", "我们", "你们", "他们", "她们", "它们", "自己", "本人", "俺", "咱", "洒家", "小可", "小人", "在下", "鄙人", "愚", "不才", "不肖", "奴才", "老奴", "臣", "本官", "本府", "本县", "老夫", "老身", "妾", "妾身", "奴家", "奴婢", "小的", "小的们", "阿哥", "大姐", "这个", "那个", "这位", "那位", "此人", "那人", "这厮", "那厮", "这汉子", "那汉子", "这和尚", "那和尚", "这道士", "那道士", "这先生", "那先生", "这妇人", "那妇人", "这女子", "那女子", "这老儿", "那老儿", "这老者", "那老者", "这公公", "那公公", "这婆婆", "那婆婆", "这妈妈", "那妈妈", "这小二", "那小二", "这店家", "那店家", "这主人", "那主人", "这庄客", "那庄客", "这庄主", "那庄主", "这员外", "那员外"}
-        
-        # 过滤官名/身份（单独出现是官名，与姓名组合才是别名，如"鲁提辖"保留，"提辖"过滤）
-        PURE_TITLES = {"提辖", "知县", "都头", "押司", "教头", "制使", "都监", "巡检", "县尉", "指挥", "统制", "将军", "元帅", "先锋", "参谋", "节级", "孔目", "节帅", "节度使", "观察", "防御使", "团练使", "刺史", "太守", "知府", "知州", "通判", "推官", "主簿", "县丞", "典史", "捕快", "差役", "牢头", "狱卒", "仵作", "门子", "管家", "账房", "师爷", "员外", "财主", "地主", "庄主", "寨主", "大王", "头领", "首领", "喽啰", "清客", "幕宾", "门客", "宾客", "客人", "旅客", "过客", "游人", "闲人", "高人", "异人", "奇人", "怪人", "强人", "好汉", "壮士", "勇士", "武夫", "武士", "剑客", "刀客", "枪手", "弓手", "弩手", "炮手", "骑手", "马夫", "车夫", "船夫", "艄公", "渔夫", "猎户", "樵夫", "农夫", "牧童", "书童", "丫鬟", "侍女", "婢女", "仆妇", "老妈", "老嬷", "嬷嬷", "乳母", "奶妈", "养娘", "干娘", "姨娘", "婶娘", "伯娘", "姑母", "姑奶奶", "舅母", "舅奶奶", "姨母", "姨奶奶", "婶母", "伯母", "叔母", "嫂嫂", "弟妹", "弟媳", "侄媳", "侄媳妇", "孙媳", "孙媳妇", "外孙媳", "外甥媳", "表嫂", "表弟媳", "堂弟媳", "堂弟媳妇"}
-        
-        # 过滤通用占位名（如"张三"作为具体人物别名通常是错误）
-        GENERIC_NAMES = {"张三", "李四", "王五", "赵六", "钱七", "孙八", "周九", "吴十", "郑十一", "王十二", "某人", "有人", "那人", "这人"}
-        
-        def _is_valid_alias(entity: str, alias: str, person_list: list) -> bool:
-            """校验别名是否有效：不是代称、不是纯官名、不是通用占位名"""
-            e, a = (entity or "").strip(), (alias or "").strip()
-            if not e or not a:
-                return False
-            if e in PRONOUNS or a in PRONOUNS:
-                return False
-            if e in PURE_TITLES or a in PURE_TITLES:
-                return False
-            if e in GENERIC_NAMES or a in GENERIC_NAMES:
-                return False
-            return True
-        
-        for m in deduped:
-            alias_evidence = m.get("alias_evidence", [])
-            filtered = []
-            person_list = m.get("person_list", [])
-            for ae in alias_evidence:
-                entity = (ae.get("entity") or "").strip()
-                alias = (ae.get("alias") or "").strip()
-                if _is_valid_alias(entity, alias, person_list):
-                    filtered.append(ae)
-            m["alias_evidence"] = filtered
-
-        # 规则检测别名（补充LLM可能遗漏的）
-        for m in deduped:
-            if not m.get("alias_evidence"):
-                m["alias_evidence"] = self._extract_aliases_rule(m["content"])
-                # 再次过滤规则提取的别名
-                alias_evidence = m.get("alias_evidence", [])
-                filtered = []
-                person_list = m.get("person_list", [])
-                for ae in alias_evidence:
-                    entity = (ae.get("entity") or "").strip()
-                    alias = (ae.get("alias") or "").strip()
-                    if _is_valid_alias(entity, alias, person_list):
-                        filtered.append(ae)
-                m["alias_evidence"] = filtered
-
-        # 重新编号
-        for i, m in enumerate(deduped):
-            m["memory_id"] = f"MEM{(i+1):06d}"
-
-        return deduped
+        return unique
 
 
 # ==============================================================================
@@ -495,26 +379,26 @@ class MemoryExtractor:
 
 if __name__ == "__main__":
     import argparse
-
     parser = argparse.ArgumentParser(description="MemTest v4 记忆提取器")
-    parser.add_argument("corpus_dir", help="语料目录")
+    parser.add_argument("corpus_dir", help="语料目录或文件路径")
     parser.add_argument("-o", "--output", default="extracted_memories.json", help="输出文件")
-    parser.add_argument("--no-llm", action="store_true", help="不使用LLM，纯规则提取")
+    parser.add_argument("--source", default=None, help="来源名（如'三国演义'）")
     args = parser.parse_args()
 
-    if args.no_llm:
-        extractor = MemoryExtractor(llm_adapter=None)
-    else:
-        llm = create_llm("deepseek")
-        extractor = MemoryExtractor(llm_adapter=llm)
+    # Try to create LLM
+    llm = None
+    if create_llm:
+        try:
+            llm = create_llm()
+            print("✅ LLM适配器已加载")
+        except Exception as e:
+            print(f"⚠️  LLM加载失败: {e}")
+            print("   将使用规则提取（质量较低）")
 
-    memories = extractor.extract(args.corpus_dir)
+    extractor = MemoryExtractor(llm)
+    memories = extractor.extract(args.corpus_dir, default_source=args.source)
 
-    with open(args.output, 'w', encoding='utf-8') as f:
+    with open(args.output, "w", encoding="utf-8") as f:
         json.dump(memories, f, ensure_ascii=False, indent=2)
 
-    print(f"提取完成: {len(memories)} 条记忆")
-    for m in memories[:5]:
-        print(f"  [{m['memory_id']}] person={m['person_list']} | {m['content'][:40]}...")
-    if len(memories) > 5:
-        print(f"  ... 还有 {len(memories)-5} 条")
+    print(f"\n✅ 提取完成: {len(memories)} 条记忆 → {args.output}")

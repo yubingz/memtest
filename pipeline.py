@@ -2,7 +2,7 @@
 """MemTest v4 一条龙 Pipeline
 
 用法:
-    python pipeline_v4.py <corpus_dir> [-o output.json] [--no-llm]
+    python pipeline.py <corpus_dir> [-o output.json] [--no-llm]
 
 流程:
     extractor → relation_builder → query_builder → assemble → test_db.json

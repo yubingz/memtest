@@ -1,15 +1,15 @@
-# MemTest dependencies
-# Python >= 3.10 required (uses `str | None` union syntax)
-# Install: pip install -r requirements.txt
+# MemTest v4 dependencies
+# Python >= 3.10 required
 
-# Benchmarks (optional — only needed for TF-IDF / embedding baselines)
-numpy
-scikit-learn
-jieba
+# Core (zero external dependencies for basic usage)
+# - extractor.py needs an LLM API for best results (DeepSeek/OpenAI compatible)
+# - runner.py, quality_check.py, schema.py are pure Python stdlib
 
-# Optional: for sentence-transformer baselines
-# sentence-transformers
+# Optional: for TF-IDF / embedding baselines
+# numpy
+# scikit-learn
+# jieba
 
-# Optional: for LLM-powered knowledge builder
-# Install one of: openai, deepseek-sdk, or use the built-in urllib adapter
+# Optional: for LLM extraction (choose one)
 # openai>=1.0
+# Or use the built-in urllib adapter with DEEPSEEK_API_KEY
