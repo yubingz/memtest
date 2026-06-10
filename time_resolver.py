@@ -41,7 +41,7 @@ RELATIVE_TIME_REGEX = re.compile("(" + _PATTERN_STR + ")")
 _NUMBER_PATTERN = re.compile(
     r"(?:(?P<num>\d+)|(?P<cnum>[一二两三四五六七八九十百千万亿零]+))"
     r"\s*(?P<unit>天|日|个月|月|年|周|季)?"
-    r"\s*(?P<dir>后|之前|以前|之后|以内|之内)?",
+    r"\s*(?P<dir>后|之前|以前|之后|以内|之内|前)?",
     re.IGNORECASE
 )
 
