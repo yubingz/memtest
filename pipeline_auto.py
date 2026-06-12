@@ -18,7 +18,7 @@
     - 无缺失引用
     - 无重复查询
     - source字段完整
-    - person_list非空率 > 80%
+    - person非空率 > 80%
     - 负样本比例 15-25%
 """
 
@@ -115,11 +115,11 @@ class QualityGate:
         stats['source_missing'] = no_source
 
         # 7. Person_list non-empty rate
-        has_person = sum(1 for m in memories if m.get('person_list'))
+        has_person = sum(1 for m in memories if m.get('person'))
         person_rate = has_person / len(memories) if memories else 0
         stats['person_rate'] = f"{person_rate:.1%}"
         if person_rate < self.min_person_rate:
-            warnings.append(f"person_list非空率偏低: {person_rate:.1%} (建议≥{self.min_person_rate:.0%})")
+            warnings.append(f"person非空率偏低: {person_rate:.1%} (建议≥{self.min_person_rate:.0%})")
 
         # 8. Per-dimension query counts
         dim_counts = Counter(q['test_dimension'] for q in queries)
@@ -213,7 +213,7 @@ class AutoFixer:
     def fix_all(self, data: Dict, corpus_dir: str = None) -> Dict:
         """运行所有自动修复"""
         data = self._fix_source_fields(data, corpus_dir)
-        data = self._fix_empty_person_lists(data)
+        data = self._fix_empty_persons(data)
         data = self._fix_memory_id_gaps(data)
         return data
 
@@ -257,22 +257,22 @@ class AutoFixer:
 
         return data
 
-    def _fix_empty_person_lists(self, data: Dict) -> Dict:
-        """尝试从content中提取人名填充空person_list"""
+    def _fix_empty_persons(self, data: Dict) -> Dict:
+        """尝试从content中提取人名填充空person"""
         import re
         memories = data.get('memories', [])
         fixed = 0
 
         for m in memories:
-            if not m.get('person_list') and m.get('content'):
+            if not m.get('person') and m.get('content'):
                 # Simple regex: 2-3 char Chinese names
                 names = re.findall(r'[\u4e00-\u9fff]{2,4}(?=做了|经历|发生|参与|前往|到了)', m['content'])
                 if names:
-                    m['person_list'] = names[:5]
+                    m['person'] = names[:5]
                     fixed += 1
 
         if fixed > 0:
-            print(f"  [AutoFix] 补充person_list: {fixed}条")
+            print(f"  [AutoFix] 补充person: {fixed}条")
 
         return data
 

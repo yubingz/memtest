@@ -424,7 +424,7 @@ class QueryBuilder:
         """收集人名->记忆ID映射，按出现频率排序"""
         person_map: Dict[str, List[str]] = defaultdict(list)
         for m in memories:
-            for p in m.get("person_list", []):
+            for p in m.get("person", []):
                 person_map[p].append(m["memory_id"])
         # 去重
         return {k: list(dict.fromkeys(v)) for k, v in sorted(person_map.items(), key=lambda x: -len(x[1]))}
@@ -443,11 +443,8 @@ class QueryBuilder:
         """收集时间->记忆ID映射"""
         time_map: Dict[str, List[str]] = defaultdict(list)
         for m in memories:
-            time_info = m.get("time", {})
-            if not isinstance(time_info, dict):
-                continue
-            for key in ["relative", "fuzzy", "absolute"]:
-                val = time_info.get(key, "")
+            for key in ["time_relative", "time_absolute"]:
+                val = m.get(key, "")
                 if val:
                     time_map[str(val)].append(m["memory_id"])
                     break
@@ -457,14 +454,9 @@ class QueryBuilder:
         """收集事件->记忆ID映射"""
         evt_map: Dict[str, List[str]] = defaultdict(list)
         for m in memories:
-            evt = m.get("event", {})
-            if not isinstance(evt, dict):
-                continue
-            for key in ["product", "type", "action"]:
-                val = evt.get(key, "")
-                if val:
-                    evt_map[str(val)].append(m["memory_id"])
-                    break
+            evt_type = m.get("event_type", "")
+            if evt_type:
+                evt_map[str(evt_type)].append(m["memory_id"])
         return {k: list(dict.fromkeys(v)) for k, v in sorted(evt_map.items(), key=lambda x: -len(x[1]))}
 
     def _collect_aliases(self, memories: List[Dict]) -> Dict[str, List[str]]:
@@ -517,7 +509,7 @@ class QueryBuilder:
         for m in memories:
             loc = m.get("location", {})
             city = loc.get("city", "") if isinstance(loc, dict) else str(loc) if loc else ""
-            for p in m.get("person_list", []):
+            for p in m.get("person", []):
                 if city and p:
                     combined_map[(p, city)].append(m["memory_id"])
         # 去重并按频率排序
@@ -661,7 +653,7 @@ class QueryBuilder:
         # 人物负样本
         used_names = set()
         for m in memories:
-            for p in m.get("person_list", []):
+            for p in m.get("person", []):
                 used_names.add(p)
         
         neg_candidates = [n for n in NEGATIVE_PERSON_NAMES if n not in used_names]
@@ -727,7 +719,7 @@ class QueryBuilder:
         """人物检索：按人名分组"""
         person_memories: Dict[str, List[Dict]] = defaultdict(list)
         for m in memories:
-            for p in m.get("person_list", []):
+            for p in m.get("person", []):
                 person_memories[p].append(m)
 
         queries = []
@@ -810,12 +802,7 @@ class QueryBuilder:
         """时间检索：按时间值分组"""
         time_memories: Dict[str, List[Dict]] = defaultdict(list)
         for m in memories:
-            time_info = m.get("time", {})
-            if not isinstance(time_info, dict):
-                continue
-            rel = time_info.get("relative", "")
-            fuzzy = time_info.get("fuzzy", "")
-            time_key = rel or fuzzy
+            time_key = m.get("time_relative", "") or m.get("time_absolute", "")
             if time_key:
                 time_memories[time_key].append(m)
 
@@ -867,13 +854,7 @@ class QueryBuilder:
         type_memories: Dict[str, List[Dict]] = defaultdict(list)
 
         for m in memories:
-            evt = m.get("event", {})
-            if not isinstance(evt, dict):
-                continue
-            product = evt.get("product", "")
-            evt_type = evt.get("type", "")
-            if product:
-                product_memories[product].append(m)
+            evt_type = m.get("event_type", "")
             if evt_type:
                 type_memories[evt_type].append(m)
 
@@ -983,7 +964,8 @@ class QueryBuilder:
         # --- 人名+地点 ---
         name_loc: Dict[Tuple[str, str], List[Dict]] = defaultdict(list)
         for m in memories:
-            person_name = m.get("person", {}).get("name", "") if isinstance(m.get("person"), dict) else ""
+            person_list = m.get("person", [])
+            person_name = person_list[0] if isinstance(person_list, list) and person_list else ""
             loc = m.get("location", {})
             location = loc.get("city", "") if isinstance(loc, dict) else ""
             if person_name and location:
@@ -995,9 +977,9 @@ class QueryBuilder:
         # --- 人名+事件类型 ---
         name_evt: Dict[Tuple[str, str], List[Dict]] = defaultdict(list)
         for m in memories:
-            person_name = m.get("person", {}).get("name", "") if isinstance(m.get("person"), dict) else ""
-            evt = m.get("event", {})
-            evt_type = evt.get("type", "") if isinstance(evt, dict) else ""
+            person_list = m.get("person", [])
+            person_name = person_list[0] if isinstance(person_list, list) and person_list else ""
+            evt_type = m.get("event_type", "")
             if person_name and evt_type:
                 name_evt[(person_name, evt_type)].append(m)
 
@@ -1007,11 +989,9 @@ class QueryBuilder:
         # --- 人名+时间 ---
         name_time: Dict[Tuple[str, str], List[Dict]] = defaultdict(list)
         for m in memories:
-            person_name = m.get("person", {}).get("name", "") if isinstance(m.get("person"), dict) else ""
-            time_info = m.get("time", {})
-            time_val = ""
-            if isinstance(time_info, dict):
-                time_val = time_info.get("relative", "") or time_info.get("fuzzy", "")
+            person_list = m.get("person", [])
+            person_name = person_list[0] if isinstance(person_list, list) and person_list else ""
+            time_val = m.get("time_relative", "") or m.get("time_absolute", "")
             if person_name and time_val:
                 name_time[(person_name, time_val)].append(m)
 
@@ -1023,8 +1003,7 @@ class QueryBuilder:
         for m in memories:
             loc = m.get("location", {})
             location = loc.get("city", "") if isinstance(loc, dict) else ""
-            evt = m.get("event", {})
-            evt_type = evt.get("type", "") if isinstance(evt, dict) else ""
+            evt_type = m.get("event_type", "")
             if location and evt_type:
                 loc_evt[(location, evt_type)].append(m)
 
@@ -1036,10 +1015,7 @@ class QueryBuilder:
         for m in memories:
             loc = m.get("location", {})
             location = loc.get("city", "") if isinstance(loc, dict) else ""
-            time_info = m.get("time", {})
-            time_val = ""
-            if isinstance(time_info, dict):
-                time_val = time_info.get("relative", "") or time_info.get("fuzzy", "")
+            time_val = m.get("time_relative", "") or m.get("time_absolute", "")
             if location and time_val:
                 loc_time[(location, time_val)].append(m)
 
@@ -1063,7 +1039,7 @@ class QueryBuilder:
             relevant_mems = []
             for m in memories:
                 for member in members:
-                    if member in m["content"] or member in m.get("person_list", []):
+                    if member in m["content"] or member in m.get("person", []):
                         relevant_mems.append(m)
                         break
 
@@ -1074,7 +1050,7 @@ class QueryBuilder:
                 if alias == primary:
                     continue
 
-                is_person = any(alias in m.get("person_list", []) for m in relevant_mems)
+                is_person = any(alias in m.get("person", []) for m in relevant_mems)
                 # 每个别名用多种模板
                 for tpl in ALIAS_TEMPLATES:
                     qt = tpl.format(alias=alias)
@@ -1214,13 +1190,11 @@ class QueryBuilder:
         queries = []
         for m in uncovered:
             # 根据记忆的属性选择最佳查询类型
-            person_name = m.get("person", {}).get("name", "") if isinstance(m.get("person"), dict) else ""
+            person_list = m.get("person", [])
+            person_name = person_list[0] if isinstance(person_list, list) and person_list else ""
             loc = m.get("location", {})
             location = loc.get("city", "") if isinstance(loc, dict) else ""
-            time_info = m.get("time", {})
-            time_val = ""
-            if isinstance(time_info, dict):
-                time_val = time_info.get("relative", "") or time_info.get("fuzzy", "")
+            time_val = m.get("time_relative", "") or m.get("time_absolute", "")
 
             # 优先组合，其次单属性
             if person_name and location:

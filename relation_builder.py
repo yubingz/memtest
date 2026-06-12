@@ -137,10 +137,10 @@ class RelationBuilder:
                     if len(entity) >= 2 and len(alias) >= 2:
                         self.alias_groups.union(entity, alias)
 
-        # 简称检测：如果"林黛玉"和"黛玉"都出现在person_list中，合并
+        # 简称检测：如果"林黛玉"和"黛玉"都出现在person中，合并
         all_persons = set()
         for m in memories:
-            for p in m.get("person_list", []):
+            for p in m.get("person", []):
                 if p and len(p) >= 2:
                     all_persons.add(p)
 
@@ -163,7 +163,7 @@ class RelationBuilder:
         # 按person分组
         person_memories: Dict[str, List[Dict[str, Any]]] = {}
         for m in memories:
-            for p in m.get("person_list", []):
+            for p in m.get("person", []):
                 if p not in person_memories:
                     person_memories[p] = []
                 person_memories[p].append(m)
@@ -200,7 +200,7 @@ class RelationBuilder:
                 ))
 
                 for i, m in enumerate(chain):
-                    # 如果已属于另一条链，跳过（避免覆盖）
+                    # 已属于另一条链，跳过（避免覆盖）
                     if m.get("reasoning_chain") and m.get("reasoning_chain") != chain_name:
                         continue
                     m["reasoning_chain"] = chain_name
@@ -218,8 +218,7 @@ class RelationBuilder:
         # 按event_type分组
         event_groups: Dict[str, List[Dict[str, Any]]] = {}
         for m in memories:
-            evt = m.get("event", {})
-            evt_type = evt.get("type", "日常") if isinstance(evt, dict) else "日常"
+            evt_type = m.get("event_type", "日常")
             if evt_type not in event_groups:
                 event_groups[evt_type] = []
             event_groups[evt_type].append(m)
